@@ -1,0 +1,12 @@
+#!/bin/bash
+
+find /etc/apparmor.d/enabled/\
+	-maxdepth 1 -type l -exec apparmor_parser -a {} +
+
+enforce=()
+while read bin
+do enforce=( ${enforce[@]} $(bash -c "ls -1 $bin" 2>/dev/null) )
+done < <(awk '{print $1}' /sys/kernel/security/apparmor/profiles)
+
+aa-enforce $enforce
+true
