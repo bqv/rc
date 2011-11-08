@@ -1,0 +1,38 @@
+#include <tunables/global>
+
+/usr/bin/pulseaudio {
+
+	#include <abstractions/base>
+	#include <abstractions/base_ext>
+	#include <abstractions/user-tmp>
+	#include <abstractions/audio>
+	#include <abstractions/nameservice>
+	#include <abstractions/X>
+	#include <abstractions/freedesktop.org>
+
+	/usr/bin/pulseaudio ix,
+	/usr/lib/pulse-*/modules/* m,
+	/usr/share/pulseaudio/** r,
+
+	/etc/udev/udev.conf r,
+	/run/udev/data/+sound* r,
+
+	/tmp/pulse-* k,
+	/tmp/pulse-*/* k,
+
+	owner @{PROC}/[0-9]*/fd/ r,
+
+	/sys/bus/ r,
+	/sys/class/ r,
+	/sys/class/sound/ r,
+	/sys/devices/*/*/sound/** r,
+	/dev/input/event* r, # module-mmkbd-evdev
+
+	network tcp,
+	network udp,
+
+	## Site-local symlinks
+	/etc/core/sys/pulse/* r,
+	/etc/core/sys/asound.conf r,
+
+}
