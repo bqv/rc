@@ -20,7 +20,10 @@
 	/tmp/pulse-* k,
 	/tmp/pulse-*/* k,
 
+	owner @{HOME}/.esd_auth kw,
 	owner @{PROC}/[0-9]*/fd/ r,
+	owner @{PROC}/[0-9]*/fd/ r,
+	owner @{PROC}/*/stat r,
 
 	/sys/bus/ r,
 	/sys/class/ r,
