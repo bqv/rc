@@ -2,3 +2,9 @@
 
 # Started on-demand
 /usr/bin/pulseaudio px,
+
+owner @{HOME}/.esd_auth kw,
+
+## Site-local symlinks
+/etc/core/sys/pulse/* r,
+/etc/core/sys/asound.conf r,

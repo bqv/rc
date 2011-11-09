@@ -3,14 +3,13 @@
 /usr/bin/pulseaudio {
 
 	#include <abstractions/base>
-	#include <abstractions/base_ext>
 	#include <abstractions/user-tmp>
-	#include <abstractions/audio>
+	#include <abstractions/pulse>
 	#include <abstractions/nameservice>
 	#include <abstractions/X>
 	#include <abstractions/freedesktop.org>
+	#include <abstractions/site/base>
 
-	/usr/bin/pulseaudio ix,
 	/usr/lib/pulse-*/modules/* m,
 	/usr/share/pulseaudio/** r,
 
@@ -20,10 +19,8 @@
 	/tmp/pulse-* k,
 	/tmp/pulse-*/* k,
 
-	owner @{HOME}/.esd_auth kw,
 	owner @{PROC}/[0-9]*/fd/ r,
 	owner @{PROC}/[0-9]*/fd/ r,
-	owner @{PROC}/*/stat r,
 
 	/sys/bus/ r,
 	/sys/class/ r,
@@ -33,9 +30,5 @@
 
 	network tcp,
 	network udp,
-
-	## Site-local symlinks
-	/etc/core/sys/pulse/* r,
-	/etc/core/sys/asound.conf r,
 
 }

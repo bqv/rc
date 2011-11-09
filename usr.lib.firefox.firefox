@@ -1,0 +1,64 @@
+#include <tunables/global>
+
+/usr/lib/firefox/firefox flags=(complain) {
+
+	#include <abstractions/base>
+	#include <abstractions/user-tmp>
+	#include <abstractions/pulse>
+	#include <abstractions/nameservice>
+	#include <abstractions/ssl_certs>
+	#include <abstractions/fonts>
+	#include <abstractions/X>
+	#include <abstractions/freedesktop.org>
+	#include <abstractions/gnome>
+	#include <abstractions/site/base>
+	#include <abstractions/site/de>
+
+	owner @{HOME}/.mozilla/firefox/** rwk,
+
+	/opt/netscape/plugins/ r,
+	/opt/netscape/plugins/** mr,
+	owner @{HOME}/.mozilla/plugins/ r,
+	owner @{HOME}/.mozilla/plugins/** mr,
+	owner @{HOME}/.mozilla/firefox/*/extensions/** m,
+	owner @{HOME}/.mozilla/extensions/** mr,
+
+	/usr/share/ r,
+	/usr/share/mime/ r,
+	@{HOME}/.local/share/ r,
+
+	owner @{PROC}/[0-9]*/fd/ r,
+
+
+	/usr/lib/xulrunner*/plugin-container cx -> plugin_container,
+
+	profile plugin_container flags=(complain) {
+
+		#include <abstractions/base>
+		#include <abstractions/user-tmp>
+		#include <abstractions/pulse>
+		#include <abstractions/nameservice>
+		#include <abstractions/consoles>
+		#include <abstractions/gnome>
+		#include <abstractions/site/base>
+
+		deny /etc/passwd r,
+		deny @{PROC}/uptime r,
+		deny @{HOME}/.mozilla/firefox/profiles.ini r,
+
+		/opt/netscape/plugins/ r,
+		/opt/netscape/plugins/** mr,
+		owner @{HOME}/.mozilla/plugins/ r,
+		owner @{HOME}/.mozilla/plugins/** mr,
+
+		owner @{HOME}/.adobe/Flash_Player/** rw,
+		owner @{HOME}/.macromedia/Flash_Player/** rw,
+
+		# UNFINISHED
+		# /bin/bash ux,
+		# /bin/grep ux,
+		# /bin/ps ux,
+
+	}
+
+}

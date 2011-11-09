@@ -3,7 +3,6 @@
 /usr/bin/skype {
 
 	#include <abstractions/base>
-	#include <abstractions/base_ext>
 	#include <abstractions/user-tmp>
 	#include <abstractions/pulse>
 	#include <abstractions/nameservice>
@@ -12,15 +11,17 @@
 	#include <abstractions/X>
 	#include <abstractions/freedesktop.org>
 	#include <abstractions/kde>
+	#include <abstractions/site/base>
+	#include <abstractions/site/de>
 
 	/usr/bin/skype mr,
 	/opt/skype/skype pix,
 	/opt/skype/** kmr,
 	/usr/share/fonts/X11/** m,
 
-	owner @{PROC}/*/fd/ r,
-	owner @{PROC}/*/task/ r,
-	owner @{PROC}/*/task/** r,
+	owner @{PROC}/[0-9]*/fd/ r,
+	owner @{PROC}/[0-9]*/task/ r,
+	owner @{PROC}/[0-9]*/task/** r,
 
 	@{PROC}/*/net/arp r,
 	@{PROC}/sys/kernel/ostype r,
@@ -33,10 +34,5 @@
 
 	@{HOME}/.Skype/ rw,
 	@{HOME}/.Skype/** krw,
-
-	## Site-local symlinks
-	@{HOME}/hatch/cFG/fonts.conf r,
-	/etc/core/sys/pulse/client.conf r,
-	/etc/core/sys/asound.conf r,
 
 }
