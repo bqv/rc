@@ -35,4 +35,6 @@
 	@{HOME}/.Skype/ rw,
 	@{HOME}/.Skype/** krw,
 
+	deny @{HOME}/.mozilla/ r, # no idea what it needs there
+
 }

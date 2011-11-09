@@ -2,3 +2,4 @@
 
 @{HOME}/hatch/cFG/fonts.conf r,
 @{HOME}/hatch/cFG/gtkrc-2.0 r,
+@{HOME}/hatch/cFG/gtk-bookmarks r,

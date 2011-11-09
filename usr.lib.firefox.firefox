@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/usr/lib/firefox/firefox flags=(complain) {
+/usr/lib/firefox/firefox {
 
 	#include <abstractions/base>
 	#include <abstractions/user-tmp>
@@ -16,6 +16,11 @@
 
 	owner @{HOME}/.mozilla/firefox/** rwk,
 
+	# For downloads only
+	/etc/fstab r,
+	owner @{HOME}/DLz/ rw,
+	owner @{HOME}/DLz/** rwk,
+
 	/opt/netscape/plugins/ r,
 	/opt/netscape/plugins/** mr,
 	owner @{HOME}/.mozilla/plugins/ r,
@@ -28,11 +33,12 @@
 	@{HOME}/.local/share/ r,
 
 	owner @{PROC}/[0-9]*/fd/ r,
+	owner @{PROC}/[0-9]*/mountinfo r,
 
 
 	/usr/lib/xulrunner*/plugin-container cx -> plugin_container,
 
-	profile plugin_container flags=(complain) {
+	profile plugin_container {
 
 		#include <abstractions/base>
 		#include <abstractions/user-tmp>
@@ -41,10 +47,11 @@
 		#include <abstractions/consoles>
 		#include <abstractions/gnome>
 		#include <abstractions/site/base>
+		#include <abstractions/site/de>
 
 		deny /etc/passwd r,
 		deny @{PROC}/uptime r,
-		deny @{HOME}/.mozilla/firefox/profiles.ini r,
+		deny @{HOME}/.mozilla/firefox/** r,
 
 		/opt/netscape/plugins/ r,
 		/opt/netscape/plugins/** mr,
@@ -54,10 +61,9 @@
 		owner @{HOME}/.adobe/Flash_Player/** rw,
 		owner @{HOME}/.macromedia/Flash_Player/** rw,
 
-		# UNFINISHED
-		# /bin/bash ux,
-		# /bin/grep ux,
-		# /bin/ps ux,
+		/bin/bash Ux,
+		/bin/grep Ux,
+		/bin/ps Ux,
 
 	}
 
