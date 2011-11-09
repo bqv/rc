@@ -61,9 +61,7 @@
 		owner @{HOME}/.adobe/Flash_Player/** rw,
 		owner @{HOME}/.macromedia/Flash_Player/** rw,
 
-		/bin/bash Ux,
-		/bin/grep Ux,
-		/bin/ps Ux,
+		deny /bin/bash x, # execve("/bin/sh", ["sh", "-c", "ps x | grep netscape"])
 
 	}
 
