@@ -1,7 +1,7 @@
 #!/bin/bash
 
 cd /etc/apparmor.d
-xargs apparmor_parser -a < /etc/apparmor/enabled.conf
+xargs -n1 apparmor_parser -a < /etc/apparmor/enabled.conf
 
 enforce=()
 while read bin
