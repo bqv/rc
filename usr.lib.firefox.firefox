@@ -34,6 +34,7 @@
 
 	owner @{PROC}/[0-9]*/fd/ r,
 	owner @{PROC}/[0-9]*/mountinfo r,
+	owner @{PROC}/[0-9]*/task/[0-9]*/stat r,
 
 
 	/usr/lib/xulrunner*/plugin-container cx -> plugin_container,
