@@ -16,11 +16,6 @@
 
 	owner @{HOME}/.mozilla/firefox/** rwk,
 
-	# For downloads only
-	/etc/fstab r,
-	owner @{HOME}/DLz/ rw,
-	owner @{HOME}/DLz/** rwk,
-
 	/opt/netscape/plugins/ r,
 	/opt/netscape/plugins/** mr,
 	owner @{HOME}/.mozilla/plugins/ r,
@@ -37,6 +32,14 @@
 	owner @{PROC}/[0-9]*/task/[0-9]*/stat r,
 
 	deny /bin/bash x, # not sure what it tries to do there
+
+	## Site-local paths
+	# FlashGot leechers
+	owner @{HOME}/hatch/cFG/bin/leech_bt Ux,
+	# downloads
+	/etc/fstab r,
+	owner @{HOME}/DLz/ rw,
+	owner @{HOME}/DLz/** rwk,
 
 
 	/usr/lib/xulrunner*/plugin-container cx -> plugin_container,
