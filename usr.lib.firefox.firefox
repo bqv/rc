@@ -31,11 +31,10 @@
 	owner @{PROC}/[0-9]*/mountinfo r,
 	owner @{PROC}/[0-9]*/task/[0-9]*/stat r,
 
-	deny /bin/bash x, # not sure what it tries to do there
-
 	## Site-local paths
 	# FlashGot leechers
 	owner @{HOME}/hatch/cFG/bin/leech_bt Ux,
+	deny /bin/bash x, # leechers' detection
 	# downloads
 	/etc/fstab r,
 	owner @{HOME}/DLz/ rw,
