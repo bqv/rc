@@ -22,6 +22,7 @@
 	owner @{HOME}/.mozilla/plugins/** mr,
 	owner @{HOME}/.mozilla/firefox/*/extensions/** m,
 	owner @{HOME}/.mozilla/extensions/** mr,
+	owner @{HOME}/.macromedia/Flash_Player/** rwk,
 
 	/usr/share/ r,
 	/usr/share/mime/ r,
