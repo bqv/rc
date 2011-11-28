@@ -36,6 +36,8 @@
 	# FlashGot leechers
 	owner @{HOME}/hatch/cFG/bin/leech_bt Ux,
 	deny /bin/bash x, # leechers' detection
+	# It's All Text
+	owner @{HOME}/hatch/cFG/bin/ec Ux,
 	# downloads
 	/etc/fstab r,
 	owner @{HOME}/DLz/ rw,
