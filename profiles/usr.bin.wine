@@ -14,14 +14,12 @@
 	/usr/bin/wineserver px,
 	/usr/bin/wine mr,
 
-	# for initial ~/.wine creation only
-	/ r,
-	/usr/share/wine/** r,
-
 	/usr/lib/wine/*.so mr,
 	/usr/share/wine/fonts/ r,
 	/usr/share/wine/fonts/* r,
 	/usr/share/wine/wine.inf r,
+
+	/tmp/.wine-*/server-*/* rwmk,
 
 	/etc/fstab r,
 	/usr/share/terminfo/** r,
@@ -34,11 +32,14 @@
 	owner @{HOME}/.local/share/icons/hicolor/** rwk,
 	owner @{HOME}/.local/share/applications/** rwk,
 
+	# for initial ~/.wine creation only
+	/ r,
+	/usr/share/wine/** r,
+
 	# Actual games
 	owner @{PROC}/[0-9]*/mounts r,
 	/etc/machine-id r,
 	deny /dev/video0 rw, # what for?
-	/tmp/.wine-*/server-*/* rwmk,
 
 }
 
@@ -50,10 +51,6 @@
 
 	/usr/bin/wineserver r,
 
-	# for initial ~/.wine creation only
-	/ r,
-	/usr/share/wine/** r,
-
 	/tmp/.wine-*/ rw,
 	/tmp/.wine-*/server-*/ rw,
 	/tmp/.wine-*/server-*/* rwmk,
@@ -62,6 +59,10 @@
 	owner @{HOME}/.wine/ rw,
 	owner @{HOME}/.wine/** rwmk,
 	owner @{HOME}/.local/share/icons/hicolor/** rwk,
+
+	# for initial ~/.wine creation only
+	/ r,
+	/usr/share/wine/** r,
 
 	# Actual games
 	network ipx dgram, # IPX, wow ;)
