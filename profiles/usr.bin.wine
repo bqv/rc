@@ -1,0 +1,57 @@
+#include <tunables/global>
+
+/usr/bin/wine-preloader flags=(complain) {
+
+	#include <abstractions/base>
+	#include <abstractions/fonts>
+	#include <abstractions/nameservice>
+	#include <abstractions/site/de>
+	#include <abstractions/X>
+	#include <abstractions/freedesktop.org>
+
+	/usr/bin/wine-preloader rix,
+	/usr/bin/wineserver px,
+	/usr/bin/wine mr,
+
+	# for initial ~/.wine creation only
+	/ r,
+	/usr/share/wine/** r,
+
+	/usr/lib/wine/*.so mr,
+	/usr/share/wine/fonts/ r,
+	/usr/share/wine/fonts/* r,
+	/usr/share/wine/wine.inf r,
+
+	/etc/fstab r,
+	/usr/share/terminfo/** r,
+
+	owner @{HOME}/ r,
+	owner @{HOME}/.wine/ rw,
+	owner @{HOME}/.wine/** rwmk,
+	owner @{HOME}/.local/share/icons/hicolor/** rwk,
+
+}
+
+/usr/bin/wineserver flags=(complain) {
+
+	#include <abstractions/base>
+	#include <abstractions/nameservice>
+	#include <abstractions/freedesktop.org>
+
+	/usr/bin/wineserver r,
+
+	# for initial ~/.wine creation only
+	/ r,
+	/usr/share/wine/** r,
+
+	/tmp/.wine-*/server-*/ rw,
+	/tmp/.wine-*/server-*/* rwk,
+
+	owner @{HOME}/ r,
+	owner @{HOME}/.wine/ rw,
+	owner @{HOME}/.wine/** rwmk,
+	owner @{HOME}/.local/share/icons/hicolor/** rwk,
+
+}
+
+/**.exe { }
