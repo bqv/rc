@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/usr/bin/wine-preloader flags=(complain) {
+/usr/bin/wine-preloader {
 
 	#include <abstractions/base>
 	#include <abstractions/fonts>
@@ -8,6 +8,7 @@
 	#include <abstractions/site/de>
 	#include <abstractions/X>
 	#include <abstractions/freedesktop.org>
+	#include <abstractions/pulse>
 
 	/usr/bin/wine-preloader rix,
 	/usr/bin/wineserver px,
@@ -25,14 +26,23 @@
 	/etc/fstab r,
 	/usr/share/terminfo/** r,
 
+	deny /usr/bin/update-mime-database x, # winemenubuilder, non-critical
+
 	owner @{HOME}/ r,
 	owner @{HOME}/.wine/ rw,
 	owner @{HOME}/.wine/** rwmk,
 	owner @{HOME}/.local/share/icons/hicolor/** rwk,
+	owner @{HOME}/.local/share/applications/** rwk,
+
+	# Actual games
+	owner @{PROC}/[0-9]*/mounts r,
+	/etc/machine-id r,
+	deny /dev/video0 rw, # what for?
+	/tmp/.wine-*/server-*/* rwmk,
 
 }
 
-/usr/bin/wineserver flags=(complain) {
+/usr/bin/wineserver {
 
 	#include <abstractions/base>
 	#include <abstractions/nameservice>
@@ -44,14 +54,19 @@
 	/ r,
 	/usr/share/wine/** r,
 
+	/tmp/.wine-*/ rw,
 	/tmp/.wine-*/server-*/ rw,
-	/tmp/.wine-*/server-*/* rwk,
+	/tmp/.wine-*/server-*/* rwmk,
 
 	owner @{HOME}/ r,
 	owner @{HOME}/.wine/ rw,
 	owner @{HOME}/.wine/** rwmk,
 	owner @{HOME}/.local/share/icons/hicolor/** rwk,
 
+	# Actual games
+	network ipx dgram, # IPX, wow ;)
+	/etc/machine-id r,
+
 }
 
-/**.exe { }
+/**.exe { } # I don't use these, preferring "wine ..." syntax
