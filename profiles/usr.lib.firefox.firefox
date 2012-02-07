@@ -33,6 +33,8 @@
 	owner @{PROC}/[0-9]*/task/[0-9]*/stat r,
 
 	## Site-local paths
+	# Images in file selection dialogs
+	owner @{HOME}/.thumbnails/** w,
 	# FlashGot leechers
 	owner @{HOME}/hatch/cFG/bin/leech_bt Ux,
 	owner @{HOME}/hatch/cFG/bin/leech_mld Ux,
