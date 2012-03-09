@@ -36,6 +36,10 @@
 	deny @{PROC}/[0-9]*/task/ r,
 	deny @{PROC}/[0-9]*/task/** r,
 
+	# for incoming file transfers
+	owner @{HOME}/DLz/ rw,
+	owner @{HOME}/DLz/** rwk,
+
 	owner @{HOME}/hatch/cFG/bin/skype_notify cx -> skype_notify,
 
 	profile skype_notify {
