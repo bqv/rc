@@ -28,8 +28,8 @@
 	/dev/pts/* rw,
 	/dev/video* mrw,
 
-	@{HOME}/.Skype/ rw,
-	@{HOME}/.Skype/** krw,
+	owner @{HOME}/.Skype/ rw,
+	owner @{HOME}/.Skype/** krw,
 
 	deny @{HOME}/.mozilla/ r, # no idea what it needs there
 	deny @{PROC}/[0-9]*/fd/ r,
