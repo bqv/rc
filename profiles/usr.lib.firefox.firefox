@@ -11,6 +11,7 @@
 	#include <abstractions/X>
 	#include <abstractions/freedesktop.org>
 	#include <abstractions/gnome>
+	#include <abstractions/user-download>
 	#include <abstractions/site/base>
 	#include <abstractions/site/de>
 
@@ -43,8 +44,6 @@
 	owner @{HOME}/hatch/cFG/bin/ec Ux,
 	# downloads
 	/etc/fstab r,
-	owner @{HOME}/DLz/ rw,
-	owner @{HOME}/DLz/** rwk,
 
 
 	/usr/lib/xulrunner*/plugin-container cx -> plugin_container,

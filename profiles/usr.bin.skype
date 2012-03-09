@@ -11,6 +11,7 @@
 	#include <abstractions/X>
 	#include <abstractions/freedesktop.org>
 	#include <abstractions/kde>
+	#include <abstractions/user-download>
 	#include <abstractions/site/base>
 	#include <abstractions/site/de>
 
@@ -36,9 +37,6 @@
 	deny @{PROC}/[0-9]*/task/ r,
 	deny @{PROC}/[0-9]*/task/** r,
 
-	# for incoming file transfers
-	owner @{HOME}/DLz/ rw,
-	owner @{HOME}/DLz/** rwk,
 
 	owner @{HOME}/hatch/cFG/bin/skype_notify cx -> skype_notify,
 
