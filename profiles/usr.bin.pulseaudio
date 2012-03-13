@@ -18,6 +18,7 @@
 
 	/tmp/pulse-* k,
 	/tmp/pulse-*/* k,
+	/tmp/orcexec.* m,
 
 	owner @{PROC}/[0-9]*/fd/ r,
 	owner @{PROC}/[0-9]*/fd/ r,
