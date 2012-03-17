@@ -19,7 +19,7 @@
 	/home/tahoe/tahoe-lafs/support/bin/tahoe ix,
 
 	# Misc harmless access
-	deny /etc r,
+	deny /etc/ r,
 	/dev/tty rw,
 	/usr/bin/python2.[4567] r,
 	/usr/include/python2.7/pyconfig.h r,
