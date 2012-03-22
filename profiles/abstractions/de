@@ -1,3 +1,4 @@
+/etc/pango/*/pango.modules r,
 /etc/core/app/X/drirc r,
 
 @{HOME}/hatch/cFG/fonts.conf r,
