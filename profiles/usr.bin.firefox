@@ -15,6 +15,11 @@
 	#include <abstractions/site/base>
 	#include <abstractions/site/de>
 
+	# Launcher
+	/dev/tty rw,
+	/usr/bin/firefox r,
+	/usr/lib/xulrunner/xulrunner-stub ix,
+
 	owner @{HOME}/.mozilla/firefox/** rwk,
 
 	/opt/netscape/plugins/ r,
