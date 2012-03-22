@@ -32,6 +32,9 @@
 	owner @{HOME}/.Skype/ rw,
 	owner @{HOME}/.Skype/** krw,
 
+	# Skype locks files
+	owner @{HOME}/[dD]ownload{,s}/** k,
+
 	deny @{HOME}/.mozilla/ r, # no idea what it needs there
 	deny @{PROC}/[0-9]*/fd/ r,
 	deny @{PROC}/[0-9]*/task/ r,
