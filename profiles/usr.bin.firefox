@@ -42,8 +42,8 @@
 	# Images in file selection dialogs
 	owner @{HOME}/.thumbnails/** w,
 	# FlashGot leechers
-	owner @{HOME}/hatch/cFG/bin/leech_bt Ux,
-	owner @{HOME}/hatch/cFG/bin/leech_mld Ux,
+	/usr/local/bin/leech_torrent Ux,
+	/usr/local/bin/leech_mldonkey Ux,
 	deny /bin/bash x, # leechers' detection
 	# It's All Text
 	owner @{HOME}/hatch/cFG/bin/ec Ux,
