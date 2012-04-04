@@ -41,7 +41,8 @@
 	## Site-local paths
 	# Images in file selection dialogs
 	owner @{HOME}/.thumbnails/** w,
-	# FlashGot leechers
+	# Download handlers
+	/usr/local/bin/leech_magnet Ux,
 	/usr/local/bin/leech_torrent Ux,
 	/usr/local/bin/leech_mldonkey Ux,
 	deny /bin/bash x, # leechers' detection
