@@ -1,0 +1,6 @@
+# "dotfiles" git repo
+@{HOME_GIT}=@{HOMEDIRS}/hatch/cFG/
+
+# I have ~/bin path symlinked to a git repo, hence the abstraction
+@{HOME_BIN}=@{HOMEDIRS}/bin/
+@{HOME_BIN}=@{HOME_GIT}/bin/
