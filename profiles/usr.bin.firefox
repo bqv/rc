@@ -42,9 +42,9 @@
 	# Images in file selection dialogs
 	owner @{HOME}/.thumbnails/** w,
 	# Download handlers
-	/usr/local/bin/leech_magnet Ux,
-	/usr/local/bin/leech_torrent Ux,
-	/usr/local/bin/leech_mldonkey Ux,
+	owner @{HOME}/bin/wrappers/leech_magnet.wrapper Ux,
+	owner @{HOME}/bin/wrappers/leech_torrent.wrapper Ux,
+	owner @{HOME}/bin/wrappers/leech_mldonkey.wrapper Ux,
 	deny /bin/bash x, # leechers' detection
 	# It's All Text
 	owner @{HOME}/hatch/cFG/bin/ec Ux,
