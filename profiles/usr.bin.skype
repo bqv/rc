@@ -41,7 +41,7 @@
 	deny @{PROC}/[0-9]*/task/** r,
 
 
-	owner @{HOME}/hatch/cFG/bin/skype_notify cx -> skype_notify,
+	owner ${HOME_BIN}/skype_notify cx -> skype_notify,
 
 	profile skype_notify {
 

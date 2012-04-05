@@ -42,10 +42,8 @@
 	# Images in file selection dialogs
 	owner @{HOME}/.thumbnails/** w,
 	# Download handlers
-	owner @{HOME}/bin/wrappers/leech_magnet.wrapper Ux,
-	owner @{HOME}/bin/wrappers/leech_torrent.wrapper Ux,
-	owner @{HOME}/bin/wrappers/leech_mldonkey.wrapper Ux,
-	deny /bin/bash x, # leechers' detection
+	owner @{HOME_BIN}/wrappers/leech_*.wrapper Ux,
+	deny /bin/bash x, # flashgot leechers' detection
 	# It's All Text
 	owner @{HOME}/hatch/cFG/bin/ec Ux,
 	# downloads

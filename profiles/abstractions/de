@@ -1,6 +1,6 @@
 /etc/pango/*/pango.modules r,
 /etc/core/app/X/drirc r,
 
-@{HOME}/hatch/cFG/fonts.conf r,
-@{HOME}/hatch/cFG/gtkrc-2.0 r,
-@{HOME}/hatch/cFG/gtk-bookmarks r,
+owner @{HOME_GIT}/fonts.conf r,
+owner @{HOME_GIT}/gtkrc-2.0 r,
+owner @{HOME_GIT}/gtk-bookmarks r,
