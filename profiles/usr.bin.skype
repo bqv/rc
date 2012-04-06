@@ -41,6 +41,6 @@
 	deny @{PROC}/[0-9]*/task/** r,
 
 	# Script to make it work with desktop-notificaton system
-	owner ${HOME_BIN}/skype_notify.wrapper Ux,
+	owner @{HOME_BIN}/wrappers/skype_notify.wrapper Ux,
 
 }
