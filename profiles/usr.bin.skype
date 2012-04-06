@@ -40,18 +40,7 @@
 	deny @{PROC}/[0-9]*/task/ r,
 	deny @{PROC}/[0-9]*/task/** r,
 
-
-	owner ${HOME_BIN}/skype_notify cx -> skype_notify,
-
-	profile skype_notify {
-
-		#include <abstractions/base>
-		#include <abstractions/dbus>
-		#include <abstractions/dbus-session>
-		#include <abstractions/python>
-
-		/usr/bin/python2.[4567] Ux,
-
-	}
+	# Script to make it work with desktop-notificaton system
+	owner ${HOME_BIN}/skype_notify.wrapper Ux,
 
 }
