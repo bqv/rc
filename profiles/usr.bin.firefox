@@ -30,6 +30,7 @@
 	owner @{HOME}/.mozilla/extensions/** mr,
 	owner @{HOME}/.macromedia/Flash_Player/** rwk,
 
+	/etc/mime.types r,
 	/usr/share/ r,
 	/usr/share/mime/ r,
 	@{HOME}/.local/share/ r,
