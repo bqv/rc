@@ -31,6 +31,7 @@
 	owner @{HOME}/.macromedia/Flash_Player/** rwk,
 
 	/etc/mime.types r,
+	/etc/mailcap r,
 	/usr/share/ r,
 	/usr/share/mime/ r,
 	@{HOME}/.local/share/ r,
