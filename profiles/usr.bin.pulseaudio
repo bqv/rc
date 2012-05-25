@@ -19,6 +19,7 @@
 	/tmp/pulse-* k,
 	/tmp/pulse-*/* k,
 	/tmp/orcexec.* m,
+	/run/systemd/users/* r,
 
 	owner @{PROC}/[0-9]*/fd/ r,
 	owner @{PROC}/[0-9]*/fd/ r,
