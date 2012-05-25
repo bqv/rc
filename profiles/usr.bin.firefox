@@ -30,6 +30,7 @@
 	owner @{HOME}/.mozilla/extensions/** mr,
 	owner @{HOME}/.macromedia/Flash_Player/** rwk,
 
+	/etc/drirc r,
 	/etc/mime.types r,
 	/etc/mailcap r,
 	/usr/share/ r,
