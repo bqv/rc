@@ -70,5 +70,3 @@
 	/etc/machine-id r,
 
 }
-
-/**.exe { } # I don't use these, preferring "wine ..." syntax
