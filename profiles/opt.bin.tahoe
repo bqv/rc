@@ -12,7 +12,7 @@
 	/bin/bash ix,
 	/bin/uname Ux,
 	/usr/bin/file Ux,
-	/sbin/ifconfig Ux,
+	/{s,}bin/ifconfig Ux,
 
 	# Subprocesses
 	/home/tahoe/tahoe-lafs/bin/tahoe ix,
@@ -20,6 +20,7 @@
 
 	# Misc harmless access
 	deny /etc/ r,
+	/etc/mime.types r,
 	/dev/tty rw,
 	/usr/bin/python2.[0-7] r,
 
