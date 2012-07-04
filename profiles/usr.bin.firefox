@@ -14,6 +14,7 @@
 	#include <abstractions/user-download>
 	#include <abstractions/site/base>
 	#include <abstractions/site/de>
+	#include <abstractions/site/flash_plugin>
 
 	# Launcher
 	/dev/tty rw,
@@ -28,7 +29,6 @@
 	owner @{HOME}/.mozilla/plugins/** mr,
 	owner @{HOME}/.mozilla/firefox/*/extensions/** m,
 	owner @{HOME}/.mozilla/extensions/** mr,
-	owner @{HOME}/.macromedia/Flash_Player/** rwk,
 
 	/etc/mime.types r,
 	/etc/mailcap r,
@@ -64,6 +64,7 @@
 		#include <abstractions/gnome>
 		#include <abstractions/site/base>
 		#include <abstractions/site/de>
+		#include <abstractions/site/flash_plugin>
 
 		deny /etc/passwd r,
 		deny @{PROC}/uptime r,
@@ -73,9 +74,6 @@
 		/opt/netscape/plugins/** mr,
 		owner @{HOME}/.mozilla/plugins/ r,
 		owner @{HOME}/.mozilla/plugins/** mr,
-
-		owner @{HOME}/.adobe/Flash_Player/** rw,
-		owner @{HOME}/.macromedia/Flash_Player/** rw,
 
 		deny /bin/bash x, # execve("/bin/sh", ["sh", "-c", "ps x | grep netscape"])
 

@@ -13,6 +13,7 @@
 	#include <abstractions/user-download>
 	#include <abstractions/site/base>
 	#include <abstractions/site/de>
+	#include <abstractions/site/flash_plugin>
 
 	owner @{PROC}/[0-9]*/fd/ r,
 	owner @{PROC}/[0-9]*/auxv r,
@@ -49,7 +50,6 @@
 	owner @{HOME}/.mozilla/plugins/ r,
 	owner @{HOME}/.mozilla/plugins/** mr,
 	owner @{HOME}/.mozilla/extensions/** mr,
-	owner @{HOME}/.macromedia/Flash_Player/** rwk,
 
 	owner @{HOME}/.pki/nssdb/** rwk,
 	owner @{HOME}/.config/chromium/ rwk,

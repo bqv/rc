@@ -1,0 +1,3 @@
+owner @{HOME}/{.macromedia,.adobe}/ rwk,
+owner @{HOME}/{.macromedia,.adobe}/Flash_Player/ rwk,
+owner @{HOME}/{.macromedia,.adobe}/Flash_Player/** rwk,
