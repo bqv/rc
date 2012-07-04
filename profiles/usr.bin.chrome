@@ -1,0 +1,62 @@
+#include <tunables/global>
+
+/{opt/chromium,usr/bin}/chrome {
+
+	#include <abstractions/base>
+	#include <abstractions/user-tmp>
+	#include <abstractions/pulse>
+	#include <abstractions/nameservice>
+	#include <abstractions/fonts>
+	#include <abstractions/X>
+	#include <abstractions/freedesktop.org>
+	#include <abstractions/gnome>
+	#include <abstractions/user-download>
+	#include <abstractions/site/base>
+	#include <abstractions/site/de>
+
+	owner @{PROC}/[0-9]*/fd/ r,
+	owner @{PROC}/[0-9]*/auxv r,
+	owner @{PROC}/[0-9]*/io r,
+	owner @{PROC}/[0-9]*/status r,
+	owner @{PROC}/[0-9]*/mounts r,
+	owner @{PROC}/[0-9]*/task/ r,
+	owner @{PROC}/[0-9]*/task/[0-9]*/stat r,
+
+	/proc/sys/kernel/shmmax r,
+
+	# Presumably it's for WebGL
+	/sys/bus/pci/devices/ r,
+	/sys/devices/pci*/** r,
+	/usr/share/misc/pci.ids r,
+
+	# No cheating, chrome! You eat RAM - you die first
+	deny @{PROC}/[0-9]*/oom_score_adj rw,
+
+	# No snooping into firefox data!
+	deny @{HOME}/.mozilla/firefox/ rw,
+	deny @{HOME}/.mozilla/firefix/** rw,
+
+	# Tries to create it
+	deny /opt/chromium/extensions/ rw,
+
+	/opt/chromium/** rm,
+	/opt/chromium/chrome ix,
+
+	/usr/bin/xdg-settings Ux,
+
+	/opt/netscape/plugins/ r,
+	/opt/netscape/plugins/** mr,
+	owner @{HOME}/.mozilla/plugins/ r,
+	owner @{HOME}/.mozilla/plugins/** mr,
+	owner @{HOME}/.mozilla/extensions/** mr,
+	owner @{HOME}/.macromedia/Flash_Player/** rwk,
+
+	owner @{HOME}/.pki/nssdb/** rwk,
+	owner @{HOME}/.config/chromium/ rwk,
+	owner @{HOME}/.config/chromium/** rwk,
+	owner @{HOME}/.cache/chromium/ rwk,
+	owner @{HOME}/.cache/chromium/** rwk,
+	/{run,dev}/shm/.org.chromium.Chromium.* rwkm,
+	/{run,dev}/shm/org.chromium.Chromium.shmem.* rwkm,
+
+}
