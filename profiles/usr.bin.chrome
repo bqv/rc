@@ -43,8 +43,8 @@
 
 	# File selection dialogs
 	/etc/fstab r,
-	owner @{HOME}/.thumbnails/ w,
-	owner @{HOME}/.thumbnails/** w,
+	owner @{HOME}/.thumbnails/ rw,
+	owner @{HOME}/.thumbnails/** rw,
 
 	# Plugins
 	/opt/netscape/plugins/ r,
