@@ -23,6 +23,7 @@
 	owner @{PROC}/[0-9]*/task/ r,
 	owner @{PROC}/[0-9]*/task/[0-9]*/stat r,
 
+	/etc/fstab r,
 	/proc/sys/kernel/shmmax r,
 
 	# Presumably it's for WebGL
@@ -52,6 +53,8 @@
 	owner @{HOME}/.mozilla/plugins/** mr,
 	owner @{HOME}/.mozilla/extensions/** mr,
 
+	owner @{HOME}/.thumbnails/ w,
+	owner @{HOME}/.thumbnails/** w,
 	owner @{HOME}/.pki/nssdb/** rwk,
 	owner @{HOME}/.config/chromium/ rwk,
 	owner @{HOME}/.config/chromium/** rwk,
