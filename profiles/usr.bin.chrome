@@ -44,6 +44,7 @@
 	/opt/chromium/chrome ix,
 
 	/usr/bin/xdg-settings Ux,
+	/usr/bin/man Ux, # for "chrome -h"
 
 	/opt/netscape/plugins/ r,
 	/opt/netscape/plugins/** mr,
