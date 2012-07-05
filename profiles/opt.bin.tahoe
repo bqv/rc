@@ -27,6 +27,7 @@
 	# Build tree of tahoe, I don't install it system-wide
 	/home/tahoe/tahoe-lafs r,
 	/home/tahoe/tahoe-lafs/** rm,
+	deny /home/tahoe/tahoe-lafs/**.pyc w,
 
 	# Grids and network
 	network tcp,
