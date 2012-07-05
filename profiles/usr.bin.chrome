@@ -15,6 +15,9 @@
 	#include <abstractions/site/de>
 	#include <abstractions/site/flash_plugin>
 
+	# Don't like to allow that much snooping into my pids,
+	#  but chrome seem to rely on it heavily
+	/proc/sys/kernel/shmmax r,
 	owner @{PROC}/[0-9]*/fd/ r,
 	owner @{PROC}/[0-9]*/auxv r,
 	owner @{PROC}/[0-9]*/io r,
@@ -22,9 +25,6 @@
 	owner @{PROC}/[0-9]*/mounts r,
 	owner @{PROC}/[0-9]*/task/ r,
 	owner @{PROC}/[0-9]*/task/[0-9]*/stat r,
-
-	/etc/fstab r,
-	/proc/sys/kernel/shmmax r,
 
 	# Presumably it's for WebGL
 	/sys/bus/pci/devices/ r,
@@ -41,20 +41,25 @@
 	# Tries to create it
 	deny /opt/chromium/extensions/ rw,
 
-	/opt/chromium/** rm,
-	/opt/chromium/chrome ix,
+	# File selection dialogs
+	/etc/fstab r,
+	owner @{HOME}/.thumbnails/ w,
+	owner @{HOME}/.thumbnails/** w,
 
-	/usr/bin/xdg-settings Ux,
-	/usr/bin/man Ux, # for "chrome -h"
-
+	# Plugins
 	/opt/netscape/plugins/ r,
 	/opt/netscape/plugins/** mr,
 	owner @{HOME}/.mozilla/plugins/ r,
 	owner @{HOME}/.mozilla/plugins/** mr,
 	owner @{HOME}/.mozilla/extensions/** mr,
 
-	owner @{HOME}/.thumbnails/ w,
-	owner @{HOME}/.thumbnails/** w,
+	# Binaries
+	/opt/chromium/** rm,
+	/opt/chromium/chrome ix,
+	/usr/bin/xdg-settings Ux,
+	/usr/bin/man Ux, # for "chrome -h"
+
+	# Chrome-specific stuff
 	owner @{HOME}/.pki/nssdb/** rwk,
 	owner @{HOME}/.config/chromium/ rwk,
 	owner @{HOME}/.config/chromium/** rwk,
