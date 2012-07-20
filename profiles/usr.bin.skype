@@ -31,6 +31,8 @@
 
 	owner @{HOME}/.Skype/ rw,
 	owner @{HOME}/.Skype/** krw,
+	owner @{HOME}/.config/Skype/ rw,
+	owner @{HOME}/.config/Skype/** krw,
 
 	# Skype locks files
 	owner @{HOME}/[dD]ownload{,s}/** k,
