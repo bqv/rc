@@ -34,6 +34,7 @@
 	/etc/mailcap r,
 	/usr/share/ r,
 	/usr/share/mime/ r,
+	/usr/share/glib-*/schemas/* r,
 	@{HOME}/.local/share/ r,
 
 	owner @{PROC}/[0-9]*/fd/ r,
