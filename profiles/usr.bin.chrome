@@ -18,6 +18,7 @@
 	# Don't like to allow that much snooping into my pids,
 	#  but chrome seem to rely on it heavily
 	/proc/sys/kernel/shmmax r,
+	@{PROC} r,
 	owner @{PROC}/[0-9]*/fd/ r,
 	owner @{PROC}/[0-9]*/auxv r,
 	owner @{PROC}/[0-9]*/io r,
@@ -27,6 +28,7 @@
 	owner @{PROC}/[0-9]*/task/[0-9]*/stat r,
 
 	# Presumably it's for WebGL
+	/etc/udev/udev.conf r,
 	/sys/bus/pci/devices/ r,
 	/sys/devices/pci*/** r,
 	/usr/share/misc/pci.ids r,

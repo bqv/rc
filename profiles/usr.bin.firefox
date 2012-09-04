@@ -68,6 +68,7 @@
 		#include <abstractions/site/flash_plugin>
 
 		deny /etc/passwd r,
+		deny @{PROC}/[0-9]*/fd/ r,
 		deny @{PROC}/uptime r,
 		deny @{HOME}/.mozilla/firefox/** r,
 
