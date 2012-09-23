@@ -20,6 +20,8 @@
 	/tmp/pulse-*/* k,
 	/tmp/orcexec.* m,
 	/run/systemd/users/* r,
+	owner /home/fraggod/.config/pulse/ rwk,
+	owner /home/fraggod/.config/pulse/** rwk,
 
 	owner @{PROC}/[0-9]*/fd/ r,
 	owner @{PROC}/[0-9]*/fd/ r,

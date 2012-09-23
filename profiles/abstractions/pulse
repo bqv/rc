@@ -3,7 +3,10 @@
 # Started on-demand
 /usr/bin/pulseaudio px,
 
-owner @{HOME}/.esd_auth kw,
+owner /run/user/*/pulse/ rwk,
+owner /run/user/*/pulse/** rwk,
+owner @{HOME}/.esd_auth r,
+owner @{HOME}/.config/pulse/cookie rk,
 
 ## Site-local symlinks
 /etc/core/sys/pulse/* r,
