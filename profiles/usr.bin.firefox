@@ -17,7 +17,7 @@
 	#include <abstractions/site/flash_plugin>
 
 	# Launcher
-	/dev/tty rw,
+	/dev/tty* rw,
 	/usr/bin/firefox r,
 	/usr/lib/xulrunner/xulrunner-stub ix,
 
