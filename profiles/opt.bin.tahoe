@@ -20,7 +20,7 @@
 
 	# Misc harmless access
 	deny /etc/ r,
-	/etc/mime.types r,
+	/etc/{,apache/,apache2/,httpd/}mime.types r,
 	/dev/tty rw,
 	/usr/bin/python2.[0-7] r,
 
