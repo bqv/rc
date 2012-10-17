@@ -1,7 +1,6 @@
 #include <tunables/global>
 
-# Doesn't work with /opt/bin/tahoe symlink here
-/home/tahoe/tahoe-lafs/bin/tahoe {
+/opt/bin/tahoe {
 
 	#include <abstractions/base>
 	#include <abstractions/python>
@@ -15,8 +14,9 @@
 	/{s,}bin/ifconfig Ux,
 
 	# Subprocesses
-	/home/tahoe/tahoe-lafs/bin/tahoe ix,
-	/home/tahoe/tahoe-lafs/support/bin/tahoe ix,
+	/opt/bin/tahoe rmix,
+	/home/tahoe/{,grids/*/_}tahoe-lafs/bin/tahoe ix,
+	/home/tahoe/{,grids/*/_}tahoe-lafs/support/bin/tahoe ix,
 
 	# Misc harmless access
 	deny /etc/ r,
@@ -25,8 +25,8 @@
 	/usr/bin/python2.[0-7] r,
 
 	# Build tree of tahoe, I don't install it system-wide
-	/home/tahoe/tahoe-lafs r,
-	/home/tahoe/tahoe-lafs/** rm,
+	/home/tahoe/{,grids/*/_}tahoe-lafs r,
+	/home/tahoe/{,grids/*/_}tahoe-lafs/** rm,
 	deny /**.pyc w,
 
 	# Grids and network
