@@ -15,8 +15,8 @@
 
 	# Subprocesses
 	/opt/bin/tahoe rmix,
-	/home/tahoe/{,grids/*/_}tahoe-lafs/bin/tahoe ix,
-	/home/tahoe/{,grids/*/_}tahoe-lafs/support/bin/tahoe ix,
+	/home/tahoe/{,grids/*/_,grids/*/*/_}tahoe-lafs/bin/tahoe ix,
+	/home/tahoe/{,grids/*/_,grids/*/*/_}tahoe-lafs/support/bin/tahoe ix,
 
 	# Misc harmless access
 	deny /etc/ r,
