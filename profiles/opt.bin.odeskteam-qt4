@@ -15,6 +15,7 @@
 	@{HOME}/.odesk/** rwk,
 	@{HOME}/.config/oDesk/ rwk,
 	@{HOME}/.config/oDesk/** rwk,
+	@{HOME}/.config/Trolltech.conf* rw,
 
 	/etc/ r,
 	/etc/exherbo-release r,

@@ -16,6 +16,8 @@
 	@{HOME}/.bitcoin/** rwk,
 	@{HOME}/.config/Bitcoin/ rwk,
 	@{HOME}/.config/Bitcoin/** rwk,
+	/mnt/volatiles/bitcoin/ rwk,
+	/mnt/volatiles/bitcoin/** rwk,
 
 	/dev/shm/* rwk,
 
