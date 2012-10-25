@@ -10,6 +10,7 @@
 	#include <abstractions/X>
 	#include <abstractions/freedesktop.org>
 	#include <abstractions/kde>
+	#include <abstractions/user-download>
 
 	@{HOME}/.bitcoin/ rwk,
 	@{HOME}/.bitcoin/** rwk,
