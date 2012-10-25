@@ -1,0 +1,23 @@
+#include <tunables/global>
+
+/opt/bin/bitcoin-qt {
+
+	#include <abstractions/base>
+	#include <abstractions/fonts>
+	#include <abstractions/nameservice>
+	#include <abstractions/site/base>
+	#include <abstractions/site/de>
+	#include <abstractions/X>
+	#include <abstractions/freedesktop.org>
+	#include <abstractions/kde>
+
+	@{HOME}/.bitcoin/ rwk,
+	@{HOME}/.bitcoin/** rwk,
+	@{HOME}/.config/Bitcoin/ rwk,
+	@{HOME}/.config/Bitcoin/** rwk,
+
+	/dev/shm/* rwk,
+
+	network tcp,
+
+}
