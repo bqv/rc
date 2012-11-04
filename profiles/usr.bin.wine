@@ -6,6 +6,7 @@
 	#include <abstractions/fonts>
 	#include <abstractions/nameservice>
 	#include <abstractions/site/de>
+	#include <abstractions/site/base>
 	#include <abstractions/X>
 	#include <abstractions/freedesktop.org>
 	#include <abstractions/pulse>
@@ -41,6 +42,31 @@
 	owner @{PROC}/[0-9]*/mounts r,
 	/etc/machine-id r,
 	deny /dev/video0 rw, # what for?
+
+
+	/usr/bin/dosbox cx -> dosbox,
+
+	profile dosbox {
+		#include <abstractions/base>
+		#include <abstractions/X>
+		#include <abstractions/pulse>
+		#include <abstractions/site/base>
+
+		/etc/fstab r,
+		owner @{PROC}/[0-9]*/mounts r,
+
+		# DosBox seem to use these directly
+		/dev/input/event[0-9]* r,
+		/dev/input/js[0-9]* r,
+
+		owner @{HOME}/ r,
+		owner @{HOME}/.wine/ rw,
+		owner @{HOME}/.wine/** rwmk,
+
+		# Site-specific paths
+		/mnt/iso/ r,
+		/mnt/iso/** r,
+	}
 
 }
 
