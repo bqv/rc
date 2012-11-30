@@ -6,4 +6,5 @@ owner @{HOME_GIT}/gtkrc-2.0 r,
 owner @{HOME_GIT}/gtk-bookmarks r,
 
 # Paths of a new fontconfig
+owner @{HOME}/.config/fontconfig/fonts.conf r,
 /usr/share/fontconfig/conf.avail/* r,
