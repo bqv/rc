@@ -1,0 +1,8 @@
+{ pkgs, ... }: ''
+owner @{HOME}/[dD]ownload{,s}/ r,
+owner @{HOME}/[dD]ownload{,s}/** rwl,
+owner @{HOME}/@{XDG_DESKTOP_DIR}/ r,
+owner @{HOME}/@{XDG_DESKTOP_DIR}/* rwl,
+owner @{HOME}/@{XDG_DOWNLOAD_DIR}/ r,
+owner @{HOME}/@{XDG_DOWNLOAD_DIR}/* rwl,
+''

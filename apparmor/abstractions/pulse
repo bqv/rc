@@ -1,0 +1,15 @@
+{ pkgs, ... }: ''
+include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/audio"
+
+# Started on-demand
+/usr/bin/pulseaudio pxrm,
+
+## Site-local symlinks
+#@{SYS_GIT}/sys/pulse/* r,
+#@{SYS_GIT}/sys/asound.conf r,
+#@{SYS_GIT}/sys/secure/pulse.cookie rk,
+
+/tmp/orcexec.* m,
+owner /run/user/*/orcexec.* rwkm,
+deny owner @{HOME}/orcexec.* m,
+''
