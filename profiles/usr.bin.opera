@@ -24,6 +24,7 @@
 	# $HOME stuff
 	owner @{HOME}/.opera/ rwk,
 	owner @{HOME}/.opera/** rwk,
+	owner @{HOME}/[dD]ownload{,s}/** k,
 
 	# Not really necessary, but opens a whole can of worms
 	deny /bin/bash x, # execve("/bin/sh", ["sh", "-c", "uname -s"], ...)
