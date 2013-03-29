@@ -1,0 +1,55 @@
+#include <tunables/global>
+
+/usr/bin/opera {
+
+	#include <abstractions/pulse>
+	#include <abstractions/nameservice>
+	#include <abstractions/gnome>
+	#include <abstractions/user-download>
+	#include <abstractions/site/base>
+	#include <abstractions/site/de>
+	#include <abstractions/site/flash_plugin>
+
+	# Launcher
+	/dev/tty* rw,
+	/usr/bin/opera r,
+	/usr/lib/opera/opera ix,
+
+	# System
+	/usr/share/opera/** rk,
+	/usr/share/fonts/X11/** rmk,
+	/usr/share/locale/** m,
+	/proc/sys/vm/overcommit_memory r,
+
+	# $HOME stuff
+	owner @{HOME}/.opera/ rwk,
+	owner @{HOME}/.opera/** rwk,
+
+	# Not really necessary, but opens a whole can of worms
+	deny /bin/bash x, # execve("/bin/sh", ["sh", "-c", "uname -s"], ...)
+
+	/usr/lib/opera/pluginwrapper/operapluginwrapper cx -> plugin_wrapper,
+
+	profile plugin_wrapper {
+
+		#include <abstractions/pulse>
+		#include <abstractions/nameservice>
+		#include <abstractions/gnome>
+		#include <abstractions/site/base>
+		#include <abstractions/site/de>
+		#include <abstractions/site/flash_plugin>
+
+		/dev/tty* rw,
+		/usr/lib/opera/pluginwrapper/operapluginwrapper-* ix,
+
+		/opt/netscape/plugins/ r,
+		/opt/netscape/plugins/** mr,
+		owner @{HOME}/.mozilla/plugins/ r,
+		owner @{HOME}/.mozilla/plugins/** mr,
+
+		deny /bin/bash x, # execve("/bin/sh", ["sh", "-c", "ps x | grep netscape"])
+		deny @{HOME}/.mozilla/firefox/profiles.ini r, # no idea what it needs there
+
+	}
+
+}
