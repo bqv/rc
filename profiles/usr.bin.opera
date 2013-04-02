@@ -29,6 +29,9 @@
 	# Not really necessary, but opens a whole can of worms
 	deny /bin/bash x, # execve("/bin/sh", ["sh", "-c", "uname -s"], ...)
 
+	# Only manual updates here
+	deny /usr/lib/opera/opera_autoupdatechecker x,
+
 	/usr/lib/opera/pluginwrapper/operapluginwrapper cx -> plugin_wrapper,
 
 	profile plugin_wrapper {
