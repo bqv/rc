@@ -3,6 +3,7 @@
 /opt/bin/tahoe {
 
 	#include <abstractions/base>
+	#include <abstractions/site/base>
 	#include <abstractions/python>
 	#include <abstractions/nameservice>
 	#include <abstractions/user-tmp>
