@@ -1,4 +1,4 @@
-/etc/ld.so.* r,
+/etc/ld.so.* rm,
 /etc/machine-id r,
 
 /sys/devices/system/cpu/ r,
