@@ -18,13 +18,20 @@
 	# System
 	/usr/share/opera/** rk,
 	/usr/share/fonts/X11/** rmk,
-	/usr/share/locale/** m,
 	/proc/sys/vm/overcommit_memory r,
 
 	# $HOME stuff
 	owner @{HOME}/.opera/ rwk,
 	owner @{HOME}/.opera/** rwkm,
 	owner @{HOME}/[dD]ownload{,s}/** k,
+
+	# Opera likes mmap a lot
+	/usr/share/mime/** m,
+	/usr/share/{locale,icons}/** m,
+	owner @{HOME}/.local/share/mime/** m,
+
+	# File picker dialog can work without that
+	deny /etc/fstab r,
 
 	# Not really necessary, but opens a whole can of worms
 	deny /bin/bash x, # execve("/bin/sh", ["sh", "-c", "uname -s"], ...)
