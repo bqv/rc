@@ -28,6 +28,13 @@
 	/sys/devices/pci*/** r,
 	/usr/share/misc/pci.ids r,
 
+	# Apparently it's StorageMonitorLinux queries udev
+	#  for some Media Gallery API - http://crbug.com/141229
+	/run/udev/data/* r,
+	/sys/devices/virtual/block/*/{uevent,removable,size} r,
+	# Try to cut it off as much as possible though
+	deny /dev/ r,
+
 	# No cheating, chrome! You eat RAM - you die first
 	deny @{PROC}/[0-9]*/oom_score_adj rw,
 
