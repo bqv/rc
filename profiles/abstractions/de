@@ -1,5 +1,6 @@
 /etc/pango/*/pango.modules r,
 /etc/core/app/X/drirc r,
+/etc/mailcap r,
 
 owner @{HOME_GIT}/fonts.conf r,
 owner @{HOME_GIT}/gtkrc-2.0 r,
