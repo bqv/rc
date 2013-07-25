@@ -1,0 +1,30 @@
+#include <tunables/global>
+
+/usr/bin/cjdroute {
+	#include <abstractions/base>
+	#include <abstractions/site/base>
+	/proc/sys/kernel/random/uuid r,
+	/usr/bin/cjdroute px -> cjdroute_angel,
+}
+
+profile cjdroute_angel {
+	#include <abstractions/base>
+	#include <abstractions/site/base>
+	/proc/sys/kernel/random/uuid r,
+	/usr/bin/cjdroute mrpx -> cjdroute_drone,
+}
+
+profile cjdroute_drone {
+	#include <abstractions/base>
+	#include <abstractions/site/base>
+	/proc/sys/kernel/random/uuid r,
+	/usr/bin/cjdroute mr,
+
+	capability setuid,
+	capability net_admin,
+
+	/dev/net/tun rw,
+	/etc/passwd mr,
+	/etc/nsswitch.conf r,
+	network udp,
+}
