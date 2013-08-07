@@ -3,10 +3,12 @@
 cd /etc/apparmor.d
 xargs -n1 apparmor_parser -a < /etc/apparmor/enabled.conf
 
-enforce=()
-while read bin
-do enforce=( ${enforce[@]} $(bash -c "ls -1 $bin" 2>/dev/null) )
-done < <(awk '{print $1}' /sys/kernel/security/apparmor/profiles)
+[[ -e /sys/kernel/security/apparmor/profiles ]] && {
+	enforce=()
+	while read bin
+	do enforce=( ${enforce[@]} $(bash -c "ls -1 $bin" 2>/dev/null) )
+	done < <(awk '{print $1}' /sys/kernel/security/apparmor/profiles)
+	[[ ${#enforce[@]} -gt 0 ]] && aa-enforce "${enforce[@]}"
+}
 
-aa-enforce $enforce
-true
+:
