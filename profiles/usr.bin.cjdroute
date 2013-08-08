@@ -5,6 +5,7 @@
 	#include <abstractions/site/base>
 	#include <abstractions/user-tmp>
 	/proc/sys/kernel/random/uuid r,
+	/ r,
 	/usr/bin/cjdroute px -> cjdroute_angel,
 }
 
@@ -13,6 +14,7 @@ profile cjdroute_angel {
 	#include <abstractions/site/base>
 	#include <abstractions/user-tmp>
 	/proc/sys/kernel/random/uuid r,
+	/ r,
 	/usr/bin/cjdroute mrpx -> cjdroute_drone,
 }
 
@@ -20,6 +22,7 @@ profile cjdroute_drone {
 	#include <abstractions/base>
 	#include <abstractions/site/base>
 	/proc/sys/kernel/random/uuid r,
+	/ r,
 	/usr/bin/cjdroute mr,
 
 	capability setuid,
