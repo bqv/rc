@@ -3,8 +3,8 @@
 /usr/bin/cjdroute {
 	#include <abstractions/base>
 	#include <abstractions/site/base>
-	#include <abstractions/user-tmp>
 	/proc/sys/kernel/random/uuid r,
+	/tmp/cjdns_pipe_* rwk,
 	/ r,
 	/usr/bin/cjdroute px -> cjdroute_angel,
 }
@@ -12,8 +12,8 @@
 profile cjdroute_angel {
 	#include <abstractions/base>
 	#include <abstractions/site/base>
-	#include <abstractions/user-tmp>
 	/proc/sys/kernel/random/uuid r,
+	/tmp/cjdns_pipe_* rwk,
 	/ r,
 	/usr/bin/cjdroute mrpx -> cjdroute_drone,
 }
