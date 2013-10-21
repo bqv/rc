@@ -34,6 +34,10 @@
 	owner @{HOME}/.local/share/icons/hicolor/** rwk,
 	owner @{HOME}/.local/share/applications/** rwk,
 
+	/tmp/.wine-*/ rw,
+	/tmp/.wine-*/server-*/ rw,
+	/tmp/.wine-*/server-*/* rwmk,
+
 	# for initial ~/.wine creation/updates only
 	/ r,
 	/usr/share/wine/** r,
@@ -41,6 +45,7 @@
 	# Actual games
 	owner @{PROC}/[0-9]*/mounts r,
 	/etc/machine-id r,
+	@{PROC}/sys/vm/overcommit_memory r,
 	deny /dev/video0 rw, # what for?
 
 
@@ -87,6 +92,8 @@
 	owner @{HOME}/.wine/** rwmk,
 	owner @{HOME}/.local/share/icons/hicolor/** rwk,
 
+	deny @{HOME}/Downloads/ r, # not sure why it looks there, wine addon downloads?
+
 	# for initial ~/.wine creation only
 	/ r,
 	/usr/share/wine/** r,
@@ -94,5 +101,6 @@
 	# Actual games
 	network ipx dgram, # IPX, wow ;)
 	/etc/machine-id r,
+	/etc/ld.so.preload r,
 
 }
