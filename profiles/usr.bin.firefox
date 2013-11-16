@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/usr/bin/firefox {
+/usr/{lib/firefox,bin}/firefox {
 
 	#include <abstractions/pulse>
 	#include <abstractions/nameservice>
@@ -17,6 +17,10 @@
 	/usr/lib/xulrunner/xulrunner-stub ix,
 
 	owner @{HOME}/.mozilla/firefox/** rwk,
+	owner @{HOME}/.cache/ rw,
+	owner @{HOME}/.cache/mozilla/ rw,
+	owner @{HOME}/.cache/mozilla/firefox/ rw,
+	owner @{HOME}/.cache/mozilla/firefox/** rwk,
 
 	/opt/netscape/plugins/ r,
 	/opt/netscape/plugins/** mr,
@@ -49,7 +53,7 @@
 	/etc/fstab r,
 
 
-	/usr/lib/xulrunner*/plugin-container cx -> plugin_container,
+	/usr/lib/{xulrunner*,firefox}/plugin-container cx -> plugin_container,
 
 	profile plugin_container {
 
