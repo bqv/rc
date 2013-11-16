@@ -18,7 +18,6 @@
 	# System
 	/usr/share/opera/** rk,
 	/usr/share/fonts/X11/** rmk,
-	/proc/sys/vm/overcommit_memory r,
 
 	# $HOME stuff
 	owner @{HOME}/.opera/ rwk,

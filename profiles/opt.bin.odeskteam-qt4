@@ -24,7 +24,6 @@
 	/usr/share/icons/** k,
 
 	deny /dev/video0 rwk, # that's a bit too much
-	/proc/sys/vm/overcommit_memory r, # autoupdater thread
 
 	network tcp,
 

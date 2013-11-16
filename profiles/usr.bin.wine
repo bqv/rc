@@ -45,7 +45,6 @@
 	# Actual games
 	owner @{PROC}/[0-9]*/mounts r,
 	/etc/machine-id r,
-	@{PROC}/sys/vm/overcommit_memory r,
 	deny /dev/video0 rw, # what for?
 
 

@@ -15,4 +15,3 @@ owner @{HOME_GIT}/xdg/** r,
 
 # Paths of a new fontconfig
 owner @{HOME}/.config/fontconfig/fonts.conf r,
-/usr/share/fontconfig/conf.avail/* r,
