@@ -7,6 +7,8 @@
 	/tmp/cjdns_pipe_* rwk,
 	/ r,
 	/usr/bin/cjdroute px -> cjdroute_angel,
+
+	network udp,
 }
 
 profile cjdroute_angel {
@@ -31,5 +33,6 @@ profile cjdroute_drone {
 	/dev/net/tun rw,
 	/etc/passwd mr,
 	/etc/nsswitch.conf r,
+
 	network udp,
 }
