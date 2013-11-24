@@ -20,8 +20,9 @@
 	/tmp/pulse-*/* k,
 	/tmp/orcexec.* m,
 	/run/systemd/users/* r,
-	owner /home/fraggod/.config/pulse/ rwk,
-	owner /home/fraggod/.config/pulse/** rwk,
+	owner @{HOME}/.config/pulse/ rwk,
+	owner @{HOME}/.config/pulse/** rwk,
+	owner @{HOME}/.esd_auth r,
 
 	owner @{PROC}/[0-9]*/fd/ r,
 	owner @{PROC}/[0-9]*/fd/ r,
@@ -30,9 +31,15 @@
 	/sys/class/ r,
 	/sys/class/sound/ r,
 	/sys/devices/*/*/sound/** r,
+	/sys/devices/*/*/*/sound/** r,
+	/sys/devices/virtual/dmi/id/*_vendor r,
 	/dev/input/event* r, # module-mmkbd-evdev
 
 	network tcp,
 	network udp,
+
+	## Site-local symlinks
+	/etc/core/sys/pulse/* r,
+	/etc/core/sys/asound.conf r,
 
 }

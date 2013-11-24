@@ -2,12 +2,3 @@
 
 # Started on-demand
 /usr/bin/pulseaudio px,
-
-# Presumably for sink names
-/sys/devices/virtual/dmi/id/*_vendor r,
-
-owner @{HOME}/.esd_auth r,
-
-## Site-local symlinks
-/etc/core/sys/pulse/* r,
-/etc/core/sys/asound.conf r,
