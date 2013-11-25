@@ -65,9 +65,11 @@
 		#include <abstractions/site/de>
 		#include <abstractions/site/flash_plugin>
 
-		deny /etc/passwd r,
 		deny @{PROC}/[0-9]*/fd/ r,
 		deny @{PROC}/uptime r,
+		deny @{PROC}/[0-9]*/smaps r,
+
+		deny /etc/passwd r,
 		deny @{HOME}/.mozilla/firefox/** r,
 
 		/opt/netscape/plugins/ r,
