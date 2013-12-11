@@ -24,10 +24,13 @@
 	owner @{HOME}/.opera/** rwkm,
 	owner @{HOME}/[dD]ownload{,s}/** k,
 
-	# Opera does mmap/locks a lot
-	/usr/share/mime/** mk,
+	# Opera does mmap/locks a lot - maybe a qt thing
+	/etc/mailcap k,
 	/usr/share/{locale,icons}/** mk,
+	/usr/share/mime/** mk,
+	/usr/share/applications/mimeinfo.cache k,
 	owner @{HOME}/.local/share/mime/** mk,
+	owner @{HOME}/.local/share/applications/{mimeinfo.cache,defaults.list} k,
 
 	# File picker dialog can work without that
 	deny /etc/fstab r,
