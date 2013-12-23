@@ -1,0 +1,55 @@
+#include <tunables/global>
+
+/usr/bin/steam {
+
+	#include <abstractions/base>
+	#include <abstractions/bash>
+	#include <abstractions/consoles>
+	#include <abstractions/python>
+	#include <abstractions/user-tmp>
+	#include <abstractions/nameservice>
+	#include <abstractions/fonts>
+	#include <abstractions/X>
+	#include <abstractions/freedesktop.org>
+	#include <abstractions/user-download>
+	#include <abstractions/pulse>
+	#include <abstractions/site/base>
+
+	# Should always have dedicated uid and home
+	owner @{HOME}/ rwk,
+	owner @{HOME}/** rwkmix,
+
+	# Steam bootstrap is a bash script
+	/ r,
+	/usr/bin/steam mrix,
+	/{usr/,}bin/* rix,
+	/etc/os-release r,
+
+	# A lot of hw access
+	/etc/core/app/X/drirc r,
+	/etc/udev/udev.conf r,
+	/run/udev/data/* r,
+	/sys/ r,
+	/sys/** r,
+	/dev/** r,
+	/dev/dri/card* m,
+
+	# lspci is too messy
+	deny /usr/sbin/lspci rx,
+
+	# shm
+	/dev/shm/org.chromium.Chromium.shmem.* rwmk,
+	/dev/shm/steam-* rwm,
+	/dev/shm/mono.* rwm,
+	/dev/shm/mono-* rwm,
+
+	# Misc
+	@{PROC}/version r,
+	@{PROC}/[0-9]*/auxv r,
+	@{PROC}/[0-9]*/status r,
+	@{PROC}/[0-9]*/task/ r,
+	/usr/share/zenity/* r,
+	/usr/share/themes/*/gtk-2.0/gtkrc r,
+
+	network,
+}
