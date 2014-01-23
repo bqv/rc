@@ -39,15 +39,16 @@
 
 	# shm
 	/dev/shm/org.chromium.Chromium.shmem.* rwmk,
-	/dev/shm/steam-* rwm,
-	/dev/shm/mono.* rwm,
-	/dev/shm/mono-* rwm,
+	/dev/shm/steam-* rwmk,
+	/dev/shm/mono.* rwmk,
+	/dev/shm/mono-* rwmk,
 
 	# Misc
+	owner @{PROC}/[0-9]*/auxv r,
+	owner @{PROC}/[0-9]*/status r,
+	owner @{PROC}/[0-9]*/task/ r,
+	owner @{PROC}/[0-9]*/environ r,
 	@{PROC}/version r,
-	@{PROC}/[0-9]*/auxv r,
-	@{PROC}/[0-9]*/status r,
-	@{PROC}/[0-9]*/task/ r,
 	/usr/share/zenity/* r,
 	/usr/share/themes/*/gtk-2.0/gtkrc r,
 
