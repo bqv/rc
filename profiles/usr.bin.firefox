@@ -13,7 +13,7 @@
 
 	# Launcher
 	/dev/tty* rw,
-	/usr/bin/firefox r,
+	/usr/{lib/firefox,bin}/firefox rix,
 	/usr/lib/xulrunner/xulrunner-stub ix,
 
 	owner @{HOME}/.mozilla/firefox/** rwk,
