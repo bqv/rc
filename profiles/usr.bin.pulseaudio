@@ -19,13 +19,15 @@
 	/tmp/pulse-* k,
 	/tmp/pulse-*/* k,
 	/tmp/orcexec.* m,
+	/run/udev/queue.bin r,
 	/run/systemd/users/* r,
 	owner @{HOME}/.config/pulse/ rwk,
 	owner @{HOME}/.config/pulse/** rwk,
 	owner @{HOME}/.esd_auth r,
 
 	owner @{PROC}/[0-9]*/fd/ r,
-	owner @{PROC}/[0-9]*/fd/ r,
+	owner @{PROC}/[0-9]*/fd/* r,
+	owner @{PROC}/[0-9]*/mountinfo r,
 
 	/sys/bus/ r,
 	/sys/class/ r,
