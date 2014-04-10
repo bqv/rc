@@ -7,6 +7,7 @@
 	#include <abstractions/ssl_certs>
 	#include <abstractions/gnome>
 	#include <abstractions/user-download>
+	#include <abstractions/consoles>
 	#include <abstractions/site/base>
 	#include <abstractions/site/de>
 	#include <abstractions/site/flash_plugin>
