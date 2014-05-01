@@ -7,6 +7,7 @@
 	#include <abstractions/ssl_certs>
 	#include <abstractions/gnome>
 	#include <abstractions/user-download>
+	#include <abstractions/freedesktop.org>
 	#include <abstractions/consoles>
 	#include <abstractions/site/base>
 	#include <abstractions/site/de>
@@ -35,12 +36,19 @@
 	/usr/share/ r,
 	/usr/share/mime/ r,
 	/usr/share/glib-*/schemas/* r,
-	@{HOME}/.local/share/ r,
+	/usr/share/applications/screensavers/ r,
+	owner @{HOME}/.local/share/ r,
+	owner @{HOME}/.local/share/applications/ r,
 
 	owner @{PROC}/[0-9]*/fd/ r,
 	owner @{PROC}/[0-9]*/mountinfo r,
 	owner @{PROC}/[0-9]*/statm r, # for about:memory
 	owner @{PROC}/[0-9]*/task/[0-9]*/stat r,
+
+	# Minor udev stuff
+	/etc/udev/udev.conf r,
+	/sys/devices/pci**/uevent r,
+	/run/udev/data/+pci* r,
 
 	## Site-local paths
 	# Images in file selection dialogs
