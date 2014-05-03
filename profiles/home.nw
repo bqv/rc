@@ -13,6 +13,7 @@
 	owner @{HOME}/.nw/ r,
 	owner @{HOME}/.nw/** mr,
 	owner @{HOME}/.nw/nw ix,
+	owner @{HOME}/.nw/config/** mrwk,
 
 	owner @{HOME}/.config/node-webkit/ rw,
 	owner @{HOME}/.config/node-webkit/** rwmk,
