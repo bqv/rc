@@ -30,6 +30,7 @@
 	owner @{PROC}/[0-9]*/mountinfo r,
 	owner @{PROC}/[0-9]*/task/ r,
 	owner @{PROC}/[0-9]*/task/[0-9]*/stat r,
+	owner @{PROC}/[0-9]*/environ r,
 	owner @{PROC}/[0-9]*/oom_score_adj rw,
 
 	/etc/udev/udev.conf r,
