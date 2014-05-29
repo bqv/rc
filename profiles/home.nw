@@ -44,6 +44,11 @@
 	/dev/shm/.org.chromium.Chromium.* rwkm,
 	/dev/shm/org.chromium.Chromium.shmem.* rwmk,
 
+	## planetscape app
+	/ r,
+	/usr/sbin/mtr Ux,
+	/sbin/ss Ux,
+
 	network,
 
 }
