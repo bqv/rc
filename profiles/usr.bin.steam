@@ -11,13 +11,13 @@
 	#include <abstractions/fonts>
 	#include <abstractions/X>
 	#include <abstractions/freedesktop.org>
+	#include <abstractions/gnome>
 	#include <abstractions/user-download>
-	#include <abstractions/pulse>
 	#include <abstractions/site/base>
 
 	# Should always have dedicated uid and home
-	owner @{HOME}/ rwk,
-	owner @{HOME}/** rwkmix,
+	owner @{HOME}/ rwkl,
+	owner @{HOME}/** rwkmixl,
 
 	# Steam bootstrap is a bash script
 	/ r,
@@ -25,29 +25,46 @@
 	/{usr/,}bin/* rix,
 	/etc/os-release r,
 
+	# Special case - don't restrict pulse/dbus session
+	/usr/bin/dbus-daemon Ux,
+	/usr/bin/pulseaudio Ux,
+	/etc/pulse/ r,
+	/etc/pulse/* r,
+	/etc/core/sys/pulse/* r,
+	/etc/core/sys/asound.conf r,
+	/etc/core/sys/secure/pulse.cookie rk,
+	/usr/share/alsa/** r,
+	deny /dev/snd/** rw,
+
 	# A lot of hw access
 	/etc/core/app/X/drirc r,
 	/etc/udev/udev.conf r,
 	/run/udev/data/* r,
+	/run/udev/queue.bin r,
 	/sys/ r,
 	/sys/** r,
 	/dev/** r,
 	/dev/dri/card* m,
 
-	# lspci is too messy
+	# lspci/fontconfig/webkit mess
 	deny /usr/sbin/lspci rx,
+	deny /var/cache/fontconfig/ w,
+	deny /opt/netscape/plugins/ r,
 
 	# shm
 	/dev/shm/org.chromium.Chromium.shmem.* rwmk,
 	/dev/shm/steam-* rwmk,
 	/dev/shm/mono.* rwmk,
 	/dev/shm/mono-* rwmk,
+	/dev/shm/pulse-shm-* rwmk,
 
 	# Misc
 	owner @{PROC}/[0-9]*/auxv r,
 	owner @{PROC}/[0-9]*/status r,
 	owner @{PROC}/[0-9]*/task/ r,
 	owner @{PROC}/[0-9]*/environ r,
+	owner @{PROC}/[0-9]*/fd/ r,
+	owner @{PROC}/[0-9]*/mountinfo r,
 	@{PROC}/version r,
 	/usr/share/zenity/* r,
 	/usr/share/themes/*/gtk-2.0/gtkrc r,
