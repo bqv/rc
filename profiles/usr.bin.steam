@@ -25,19 +25,15 @@
 	/{usr/,}bin/* rix,
 	/etc/os-release r,
 
-	# Special case - don't restrict pulse/dbus session
+	# Special case - don't restrict dbus session
 	/usr/bin/dbus-daemon Ux,
-	/usr/bin/pulseaudio Ux,
+
+	# System sound/video configuration and hw
 	/etc/pulse/ r,
 	/etc/pulse/* r,
-	/etc/core/sys/pulse/* r,
-	/etc/core/sys/asound.conf r,
-	/etc/core/sys/secure/pulse.cookie rk,
+	/etc/asound.conf r,
 	/usr/share/alsa/** r,
-	deny /dev/snd/** rw,
-
-	# A lot of hw access
-	/etc/core/app/X/drirc r,
+	/etc/drirc r,
 	/etc/udev/udev.conf r,
 	/run/udev/data/* r,
 	/run/udev/queue.bin r,
@@ -45,6 +41,13 @@
 	/sys/** r,
 	/dev/** r,
 	/dev/dri/card* m,
+	deny /dev/snd/** rw, # alsa should always use pulse plugin
+
+	# Site-local configuration links
+	/etc/core/sys/pulse/* r,
+	/etc/core/sys/asound.conf r,
+	/etc/core/sys/secure/pulse.cookie rk,
+	/etc/core/app/X/drirc r,
 
 	# lspci/fontconfig/webkit mess
 	deny /usr/sbin/lspci rx,
