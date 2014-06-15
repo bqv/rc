@@ -68,6 +68,7 @@
 	owner @{PROC}/[0-9]*/environ r,
 	owner @{PROC}/[0-9]*/fd/ r,
 	owner @{PROC}/[0-9]*/mountinfo r,
+	@{PROC}/uptime r,
 	@{PROC}/version r,
 	/usr/share/zenity/* r,
 	/usr/share/themes/*/gtk-2.0/gtkrc r,
