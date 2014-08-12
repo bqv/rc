@@ -8,6 +8,16 @@
 	/ r,
 	/usr/bin/cjdroute px -> cjdroute_angel,
 
+	# Cut-down DNS access
+	/etc/nsswitch.conf r,
+	/etc/host.conf r,
+	/etc/hosts r,
+	/etc/resolv.conf r,
+	network inet stream,
+	network inet6 stream,
+	network inet dgram,
+	network inet6 dgram,
+
 	network udp,
 }
 
