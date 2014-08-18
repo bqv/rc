@@ -55,7 +55,8 @@
 	deny /opt/netscape/plugins/ r,
 
 	# shm
-	/dev/shm/org.chromium.Chromium.shmem.* rwmk,
+	/dev/shm/org.chromium.Chromium.* rwmk,
+	/dev/shm/.org.chromium.Chromium.* rwmk,
 	/dev/shm/steam-* rwmk,
 	/dev/shm/mono.* rwmk,
 	/dev/shm/mono-* rwmk,
@@ -65,11 +66,17 @@
 	owner @{PROC}/[0-9]*/auxv r,
 	owner @{PROC}/[0-9]*/status r,
 	owner @{PROC}/[0-9]*/task/ r,
+	owner @{PROC}/[0-9]*/task/** r,
 	owner @{PROC}/[0-9]*/environ r,
 	owner @{PROC}/[0-9]*/fd/ r,
 	owner @{PROC}/[0-9]*/mountinfo r,
+	deny @{PROC}/[0-9]*/oom_score_adj rw, # should be manual
+
 	@{PROC}/uptime r,
 	@{PROC}/version r,
+	@{PROC}/sys/kernel/yama/ptrace_scope r,
+	@{PROC}/sys/kernel/shmmax r,
+
 	/usr/share/zenity/* r,
 	/usr/share/themes/*/gtk-2.0/gtkrc r,
 
