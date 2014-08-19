@@ -54,6 +54,15 @@
 	deny /var/cache/fontconfig/ w,
 	deny /opt/netscape/plugins/ r,
 
+	# DE bits
+	/usr/share/zenity/* r,
+	/usr/share/themes/*/gtk-2.0/gtkrc r,
+
+	# gdb on game crashes
+	/usr/share/locale/** m,
+	/usr/share/gdb/** r,
+	deny /usr/share/gdb/**.pyc w,
+
 	# shm
 	/dev/shm/org.chromium.Chromium.* rwmk,
 	/dev/shm/.org.chromium.Chromium.* rwmk,
@@ -62,23 +71,9 @@
 	/dev/shm/mono-* rwmk,
 	/dev/shm/pulse-shm-* rwmk,
 
-	# Misc
-	owner @{PROC}/[0-9]*/auxv r,
-	owner @{PROC}/[0-9]*/status r,
-	owner @{PROC}/[0-9]*/task/ r,
-	owner @{PROC}/[0-9]*/task/** r,
-	owner @{PROC}/[0-9]*/environ r,
-	owner @{PROC}/[0-9]*/fd/ r,
-	owner @{PROC}/[0-9]*/mountinfo r,
-	deny @{PROC}/[0-9]*/oom_score_adj rw, # should be manual
-
-	@{PROC}/uptime r,
-	@{PROC}/version r,
-	@{PROC}/sys/kernel/yama/ptrace_scope r,
-	@{PROC}/sys/kernel/shmmax r,
-
-	/usr/share/zenity/* r,
-	/usr/share/themes/*/gtk-2.0/gtkrc r,
+	# Too much stuff here to bother
+	@{PROC}/ r,
+	@{PROC}/** r,
 
 	network,
 }
