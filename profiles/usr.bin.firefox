@@ -70,10 +70,12 @@
 		#include <abstractions/nameservice>
 		#include <abstractions/consoles>
 		#include <abstractions/gnome>
-		#include <abstractions/openssl>
 		#include <abstractions/site/base>
 		#include <abstractions/site/de>
 		#include <abstractions/site/flash_plugin>
+
+		#include <abstractions/openssl>
+		/etc/core/app/sec/openssl.cnf r,
 
 		deny @{PROC}/[0-9]*/fd/ r,
 		deny @{PROC}/uptime r,
