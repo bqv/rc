@@ -36,4 +36,8 @@
 	/home/tahoe/grids/ rw,
 	/home/tahoe/grids/** krw,
 
+	# Deny CFFI doing random dumb bullshit
+	deny /**bin/ldconfig rx,
+	deny /**bin/gcc-* rx,
+
 }
