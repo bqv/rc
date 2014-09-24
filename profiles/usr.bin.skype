@@ -42,6 +42,7 @@
 	deny @{PROC}/[0-9]*/task/ r,
 	deny @{PROC}/[0-9]*/task/** r,
 	deny /sys/devices/pci*/*/usb*/*/*/idVendor r, # scan for usb mics?
+	deny /sys/class/power_supply/ r,
 
 	# Script to make it work with desktop-notificaton system
 	owner @{HOME_BIN}/wrappers/skype_notify.wrapper Ux,
