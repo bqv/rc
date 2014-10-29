@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/{usr/bin,opt/skype}/skype {
+/usr/bin/skype {
 
 	#include <abstractions/base>
 	#include <abstractions/user-tmp>
