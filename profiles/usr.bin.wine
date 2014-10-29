@@ -43,7 +43,7 @@
 	/usr/share/wine/** r,
 
 	# Actual games
-	owner @{PROC}/[0-9]*/mounts r,
+	owner @{PROC}/@{pid}/mounts r,
 	/etc/machine-id r,
 	deny /dev/video0 rw, # what for?
 
@@ -57,7 +57,7 @@
 		#include <abstractions/site/base>
 
 		/etc/fstab r,
-		owner @{PROC}/[0-9]*/mounts r,
+		owner @{PROC}/@{pid}/mounts r,
 
 		# DosBox seem to use these directly
 		/dev/input/event[0-9]* r,

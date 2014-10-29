@@ -56,7 +56,6 @@
 
 	# DE bits
 	/usr/share/zenity/* r,
-	/usr/share/themes/*/gtk-2.0/gtkrc r,
 
 	# gdb on game crashes
 	/usr/share/locale/** m,
@@ -74,6 +73,7 @@
 	# Too much stuff here to bother
 	@{PROC}/ r,
 	@{PROC}/** r,
+	deny @{PROC}/@{pid}/oom_score_adj w,
 
 	network,
 }

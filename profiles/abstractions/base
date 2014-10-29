@@ -4,8 +4,8 @@
 /sys/devices/system/cpu/ r,
 /sys/devices/system/cpu/** r,
 
-owner @{PROC}/[0-9]*/stat r,
-owner @{PROC}/[0-9]*/cmdline r,
+owner @{PROC}/@{pid}/stat r,
+owner @{PROC}/@{pid}/cmdline r,
 
 # Blacklist here shouldn't be relied upon for actual deny, only for audit
 #  private-tmp in wrapper scripts is the proper solution for not sharing stuff there

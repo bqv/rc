@@ -38,9 +38,9 @@
 	owner @{HOME}/[dD]ownload{,s}/** k,
 
 	deny @{HOME}/.mozilla/ r, # no idea what it needs there
-	deny @{PROC}/[0-9]*/fd/ r,
-	deny @{PROC}/[0-9]*/task/ r,
-	deny @{PROC}/[0-9]*/task/** r,
+	deny @{PROC}/@{pid}/fd/ r,
+	deny @{PROC}/@{pid}/task/ r,
+	deny @{PROC}/@{pid}/task/** r,
 	deny /sys/devices/pci*/*/usb*/*/*/idVendor r, # scan for usb mics?
 	deny /sys/class/power_supply/ r,
 

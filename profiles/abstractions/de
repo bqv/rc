@@ -14,6 +14,3 @@ owner @{HOME_GIT}/gtk-3.0.css r,
 # Custom xdg icon path, specs and such stuff
 owner @{HOME}/.xdg/** r,
 owner @{HOME_GIT}/xdg/** r,
-
-# Paths of a new fontconfig
-owner @{HOME}/.config/fontconfig/fonts.conf r,
