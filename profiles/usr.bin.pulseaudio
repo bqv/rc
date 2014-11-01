@@ -21,6 +21,9 @@
 	/tmp/orcexec.* m,
 	/run/udev/queue.bin r,
 	/run/systemd/users/* r,
+
+	owner /run/user/*/pulse/* rwk,
+
 	owner @{HOME}/.config/pulse/ rwk,
 	owner @{HOME}/.config/pulse/** rwk,
 	owner @{HOME}/.esd_auth r,
