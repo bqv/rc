@@ -40,6 +40,7 @@
 	/usr/share/applications/screensavers/ r,
 	owner @{HOME}/.local/share/ r,
 	owner @{HOME}/.local/share/applications/ r,
+	owner @{HOME}/.local/share/applications/** r,
 
 	deny /{,var/}run/user/*/dconf/user w,
   deny @{HOME}/.config/dconf/user w,
