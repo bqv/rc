@@ -10,6 +10,7 @@
 	#include <abstractions/X>
 	#include <abstractions/freedesktop.org>
 	#include <abstractions/pulse>
+	#include <abstractions/p11-kit>
 
 	/usr/bin/wine-preloader rix,
 	/usr/bin/wineserver px,
@@ -20,33 +21,49 @@
 	/usr/share/wine/fonts/* r,
 	/usr/share/wine/wine.inf r,
 
-	/tmp/.wine-*/server-*/* rwmk,
-
 	/etc/fstab r,
 	/usr/share/terminfo/** r,
 
-	deny /usr/bin/update-mime-database x, # winemenubuilder, non-critical
-	deny capability sys_ptrace, # wine debugger, don't know how to use it anyway
+	/tmp/.wine-*/ rw,
+	/tmp/.wine-*/server-*/ rw,
+	/tmp/.wine-*/server-*/* rwmk,
 
 	owner @{HOME}/ r,
 	owner @{HOME}/.wine/ rw,
 	owner @{HOME}/.wine/** rwmk,
 	owner @{HOME}/.local/share/icons/hicolor/** rwk,
 	owner @{HOME}/.local/share/applications/** rwk,
+	owner @{HOME}/.config/menus/applications-merged/wine-* rwk,
+	owner @{HOME}/.local/share/desktop-directories/wine-* rwk,
 
-	/tmp/.wine-*/ rw,
-	/tmp/.wine-*/server-*/ rw,
-	/tmp/.wine-*/server-*/* rwmk,
+	# Mostly winemenubuilder stuff
+	deny /usr/bin/update-mime-database x,
+	deny /usr/bin/update-desktop-database x,
+	deny @{HOME}/.local/share/mime/** w,
+	deny capability sys_ptrace, # wine debugger, don't know how to use it anyway
+
+	# hw
+	/etc/udev/udev.conf r,
+	/run/udev/data/+pci:* r,
+	/run/udev/queue.bin r,
+	/sys/devices/pci** r,
+	/dev/video0 rw, # dri?
 
 	# for initial ~/.wine creation/updates only
 	/ r,
 	/usr/share/wine/** r,
+	owner @{HOME}/.cache/ r,
+	owner @{HOME}/.cache/wine/ rwk,
+	owner @{HOME}/.cache/wine/** rwk,
 
-	# Actual games
+	# Actual apps/games
 	owner @{PROC}/@{pid}/mounts r,
 	/etc/machine-id r,
-	deny /dev/video0 rw, # what for?
-
+	/mnt/iso/ r,
+	/mnt/iso/** r,
+	deny @{HOME}/Downloads/ rw,
+	deny @{HOME}/Downloads/** rw,
+	deny @{HOME}/.local/share/Trash/ rw,
 
 	/usr/bin/dosbox cx -> dosbox,
 
@@ -67,7 +84,7 @@
 		owner @{HOME}/.wine/ rw,
 		owner @{HOME}/.wine/** rwmk,
 
-		# Site-specific paths
+		# Actual apps/games
 		/mnt/iso/ r,
 		/mnt/iso/** r,
 	}
@@ -91,15 +108,22 @@
 	owner @{HOME}/.wine/** rwmk,
 	owner @{HOME}/.local/share/icons/hicolor/** rwk,
 
-	deny @{HOME}/Downloads/ r, # not sure why it looks there, wine addon downloads?
+	deny capability sys_ptrace, # wine debugger, don't know how to use it anyway
 
 	# for initial ~/.wine creation only
 	/ r,
-	/usr/share/wine/** r,
+	/usr/share/wine/** rk,
+	owner @{HOME}/.cache/ r,
+	owner @{HOME}/.cache/wine/ rwk,
+	owner @{HOME}/.cache/wine/** rwk,
 
-	# Actual games
+	# Actual apps/games
 	network ipx dgram, # IPX, wow ;)
 	/etc/machine-id r,
 	/etc/ld.so.preload r,
+	/mnt/iso/ r,
+	/mnt/iso/** r,
+	deny @{HOME}/Downloads/ rw,
+	deny @{HOME}/.local/share/Trash/ rw,
 
 }
