@@ -40,7 +40,10 @@
 	deny /usr/bin/update-mime-database x,
 	deny /usr/bin/update-desktop-database x,
 	deny @{HOME}/.local/share/mime/** w,
-	deny capability sys_ptrace, # wine debugger, don't know how to use it anyway
+
+	# For winedbg
+	deny capability sys_ptrace,
+	# owner @{PROC}/*/mem rw,
 
 	# hw
 	/etc/udev/udev.conf r,
@@ -108,7 +111,9 @@
 	owner @{HOME}/.wine/** rwmk,
 	owner @{HOME}/.local/share/icons/hicolor/** rwk,
 
-	deny capability sys_ptrace, # wine debugger, don't know how to use it anyway
+	# For winedbg
+	deny capability sys_ptrace,
+	# owner @{PROC}/*/mem rw,
 
 	# for initial ~/.wine creation only
 	/ r,
