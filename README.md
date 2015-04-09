@@ -36,3 +36,22 @@ needs access), and not as a drop-in things.
 
 Some paths in these profiles (like ~/.cFG/*) are specific to my systems, and
 can/should be removed or updated to local paths.
+
+### Note on abstractions
+
+In my distro, multiarch is structured like this:
+
+	/usr/*-linux-gnu*/bin/...
+	/usr/*-linux-gnu*/sbin -> bin
+	/usr/*-linux-gnu*/lib/...
+	/usr/*-linux-gnu*/include/...
+	/usr/host -> *-linux-gnu*
+	/usr/share/...
+	/usr/{bin,sbin,lib} -> host/{bin,sbin,lib}
+	/{bin,sbin,lib} -> host/{bin,sbin,lib}
+
+And stuff under "profile/abstractions" is copied from those shipped from
+apparmor (in "/etc/apparmor.d/abstractions"), but with path adjusted for that layout.
+
+Default "/etc/apparmor.d/abstractions" can be used with these profiles, as they
+should have same exact stuff, but with more "classic" layout.
