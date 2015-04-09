@@ -9,9 +9,9 @@
 	#include <abstractions/site/base>
 	#include <abstractions/site/de>
 
-	/bin/bash ix,
-	/usr/bin/xset ix,
-	/usr/bin/which ix,
+	/usr/@{multiarch}/bin/bash ix,
+	/usr/@{multiarch}/bin/xset ix,
+	/usr/@{multiarch}/bin/which ix,
 
 	/usr/share/electricsheep/ r,
 	/usr/share/electricsheep/** r,

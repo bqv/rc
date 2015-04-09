@@ -1,0 +1,56 @@
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2002-2006 Novell/SUSE
+#    Copyright (C) 2009-2011 Canonical Ltd.
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+#include <abstractions/base>
+#include <abstractions/fonts>
+#include <abstractions/X>
+#include <abstractions/freedesktop.org>
+#include <abstractions/xdg-desktop>
+#include <abstractions/user-tmp>
+
+/etc/qt3/kstylerc r,
+/etc/qt3/qt_plugins_3.3rc r,
+/etc/qt3/qtrc r,
+/etc/kderc r,
+/etc/kde3/* r,
+/etc/kde4rc r,
+/etc/xdg/Trolltech.conf r,
+
+owner @{HOME}/.DCOPserver_* r,
+owner @{HOME}/.ICEauthority r,
+owner @{HOME}/.fonts.* lrw,
+owner @{HOME}/.kde{,4}/share/config/kdeglobals rw,
+owner @{HOME}/.kde{,4}/share/config/*.lock rwl,
+owner @{HOME}/.qt/** rw,
+owner @{HOME}/.config/Trolltech.conf rwk,
+
+/usr/share/icons/ r,
+/usr/share/icons/** r,
+/usr/share/X11/XKeysymDB r,
+
+# kde3
+/usr/@{multiarch}/lib/kde3/plugins/styles/ r,
+/usr/@{multiarch}/lib/kde3/plugins/styles/* mr,
+/usr/@{multiarch}/lib/kde3/lib*so* mr,
+/usr/@{multiarch}/lib/qt3/lib/lib*so* mr,
+/usr/@{multiarch}/lib/qt3/plugins/**  mr,
+/usr/@{multiarch}/lib/libqt-mt*so* mr,
+/usr/@{multiarch}/lib/libqui*so* mr,
+/usr/share/qt3/lib/libqt-mt*so* mr,
+/usr/share/qt3/lib/libqui*so* mr,
+
+# kde4
+/usr/@{multiarch}/lib/kde4/plugins/*/*.so mr,
+/usr/@{multiarch}/lib/kde4/plugins/*/ r,
+/usr/@{multiarch}/lib/kde4/lib*so* mr,
+/usr/@{multiarch}/lib/qt4/lib/lib*so* mr,
+/usr/@{multiarch}/lib/qt4/plugins/**  mr,
+/usr/share/qt4/** r,

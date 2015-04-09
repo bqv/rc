@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/usr/bin/pulseaudio {
+/usr/*-linux-gnu*/bin/pulseaudio {
 
 	#include <abstractions/base>
 	#include <abstractions/user-tmp>
@@ -10,7 +10,7 @@
 	#include <abstractions/freedesktop.org>
 	#include <abstractions/site/base>
 
-	/usr/lib/pulse-*/modules/* m,
+	/usr/@{multiarch}/lib/pulse-*/modules/* m,
 	/usr/share/pulseaudio/** r,
 
 	/etc/udev/udev.conf r,

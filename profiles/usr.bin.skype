@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/usr/bin/skype {
+/usr/*-linux-gnu*/bin/skype {
 
 	#include <abstractions/base>
 	#include <abstractions/user-tmp>
@@ -15,7 +15,7 @@
 	#include <abstractions/site/base>
 	#include <abstractions/site/de>
 
-	/usr/bin/skype mr,
+	/usr/@{multiarch}/bin/skype mr,
 	/opt/skype/skype pix,
 	/opt/skype/** kmr,
 	/usr/share/fonts/X11/** m,

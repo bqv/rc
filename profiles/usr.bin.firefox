@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/usr/{lib/firefox,bin}/firefox {
+/usr/*-linux-gnu*/{lib/firefox,bin}/firefox {
 
 	#include <abstractions/pulse>
 	#include <abstractions/nameservice>
@@ -16,8 +16,8 @@
 
 	# Launcher
 	/dev/tty* rw,
-	/usr/{lib/firefox,bin}/firefox rix,
-	/usr/lib/xulrunner/xulrunner-stub ix,
+	/usr/@{multiarch}/{lib/firefox,bin}/firefox rix,
+	/usr/@{multiarch}/lib/xulrunner/xulrunner-stub ix,
 
 	owner @{HOME}/.mozilla/firefox/** rwk,
 	owner @{HOME}/.cache/ rw,
@@ -56,21 +56,21 @@
 	/run/udev/data/+pci* r,
 
 	# Used in private mode
-	/usr/bin/shred ix,
+	/usr/@{multiarch}/bin/shred ix,
 
 	## Site-local paths
 	# Images in file selection dialogs
 	owner @{HOME}/.thumbnails/** w,
 	# Download handlers
 	owner @{HOME_BIN}/wrappers/leech_*.wrapper Ux,
-	deny /bin/bash x, # flashgot leechers' detection
+	deny /usr/@{multiarch}/bin/bash x, # flashgot leechers' detection
 	# It's All Text
 	owner @{HOME}/hatch/cFG/bin/ec Ux,
 	# downloads
 	/etc/fstab r,
 
 
-	/usr/lib/{xulrunner*,firefox}/plugin-container cx -> plugin_container,
+	/usr/*-linux-gnu*/lib/firefox/plugin-container cx -> plugin_container,
 
 	profile plugin_container {
 
@@ -97,7 +97,7 @@
 		owner @{HOME}/.mozilla/plugins/ r,
 		owner @{HOME}/.mozilla/plugins/** mr,
 
-		deny /bin/bash x, # execve("/bin/sh", ["sh", "-c", "ps x | grep netscape"])
+		deny /usr/@{multiarch}/bin/bash x, # execve("/bin/sh", ["sh", "-c", "ps x | grep netscape"])
 
 	}
 
