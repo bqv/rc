@@ -1,10 +1,7 @@
 #include <tunables/global>
 
-/usr/*-linux-gnu*/bin/skype {
+/home/*/.Skype/env/skype {
 
-	#include <abstractions/base>
-	#include <abstractions/user-tmp>
-	#include <abstractions/pulse>
 	#include <abstractions/nameservice>
 	#include <abstractions/ssl_certs>
 	#include <abstractions/fonts>
@@ -12,13 +9,12 @@
 	#include <abstractions/freedesktop.org>
 	#include <abstractions/kde>
 	#include <abstractions/user-download>
+	#include <abstractions/user-tmp>
 	#include <abstractions/site/base>
 	#include <abstractions/site/de>
 
-	/usr/@{multiarch}/bin/skype mr,
-	/opt/skype/skype pix,
-	/opt/skype/** kmr,
-	/usr/share/fonts/X11/** m,
+	owner @{HOME}/.Skype/env/** kmr, # skype libs
+	audit deny @{HOME}/.Skype/env/** w, # write-or-execute
 
 	@{PROC}/*/net/arp r,
 	@{PROC}/sys/kernel/ostype r,
@@ -34,9 +30,12 @@
 	owner @{HOME}/.config/Skype/ rw,
 	owner @{HOME}/.config/Skype/** krw,
 
-	# Skype locks files
+	# Skype-specific file access quirks
+	/usr/share/icons/** k,
+	/usr/share/fonts/X11/** m,
 	owner @{HOME}/[dD]ownload{,s}/** k,
 
+	deny /etc/ld.so.preload r, # shouldn't be loaded from outside the env
 	deny @{HOME}/.mozilla/ r, # no idea what it needs there
 	deny @{PROC}/@{pid}/fd/ r,
 	deny @{PROC}/@{pid}/task/ r,
