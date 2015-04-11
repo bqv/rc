@@ -5,11 +5,12 @@
 	#include <abstractions/base>
 	#include <abstractions/fonts>
 	#include <abstractions/nameservice>
-	#include <abstractions/site/base>
-	#include <abstractions/site/de>
 	#include <abstractions/X>
 	#include <abstractions/freedesktop.org>
 	#include <abstractions/kde>
+	#include <abstractions/ssl_certs>
+	#include <abstractions/site/base>
+	#include <abstractions/site/de>
 
 	@{HOME}/.odesk/ rwk,
 	@{HOME}/.odesk/** rwk,
