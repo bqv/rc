@@ -46,8 +46,8 @@
 
 	## planetscape app
 	/ r,
-	/usr/@{multiarch}/bin/mtr Ux,
-	/usr/@{multiarch}/bin/ss Ux,
+	/usr/@{multiarch}bin/mtr Ux,
+	/usr/@{multiarch}bin/ss Ux,
 
 	network,
 

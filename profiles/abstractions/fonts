@@ -12,7 +12,7 @@
 
   /usr/share/AbiSuite/fonts/**          r,
 
-  /usr/@{multiarch}/lib/xorg/modules/fonts/**.so*    mr,
+  /usr/@{multiarch}lib/xorg/modules/fonts/**.so*    mr,
 
   /usr/share/fonts/                     r,
   /usr/share/fonts/**                   r,
@@ -22,7 +22,7 @@
 
   /opt/kde3/share/fonts/**              r,
 
-  /usr/@{multiarch}/lib/openoffice/share/fonts/**    r,
+  /usr/@{multiarch}lib/openoffice/share/fonts/**    r,
 
   /var/cache/fonts/**                   r,
   /var/cache/fontconfig/**              mr,

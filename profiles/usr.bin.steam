@@ -21,12 +21,12 @@
 
 	# Steam bootstrap is a bash script
 	/ r,
-	/usr/@{multiarch}/bin/steam mrix,
-	/usr/@{multiarch}/bin/* rix,
+	/usr/@{multiarch}bin/steam mrix,
+	/usr/@{multiarch}bin/* rix,
 	/etc/os-release r,
 
 	# Special case - don't restrict dbus session
-	/usr/@{multiarch}/bin/dbus-daemon Ux,
+	/usr/@{multiarch}bin/dbus-daemon Ux,
 
 	# System sound/video configuration and hw
 	/etc/pulse/ r,
@@ -50,7 +50,7 @@
 	/etc/core/app/X/drirc r,
 
 	# lspci/fontconfig/webkit mess
-	deny /usr/@{multiarch}/bin/lspci rx,
+	deny /usr/@{multiarch}bin/lspci rx,
 	deny /var/cache/fontconfig/ w,
 	deny /opt/netscape/plugins/ r,
 

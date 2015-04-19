@@ -27,22 +27,22 @@
        type=stream
        peer=(addr="@/tmp/.X11-unix/X[0-9]*"),
 
-  /usr/@{multiarch}/include/X11/               r,
-  /usr/@{multiarch}/include/X11/**             r,
+  /usr/@{multiarch}include/X11/               r,
+  /usr/@{multiarch}include/X11/**             r,
 
   # The X tree changes and is large -- grant read access to the whole thing
   /usr/share/X11/                 r,
   /usr/share/X11/**               r,
-  /usr/@{multiarch}/X11R6/**                   r,
-  /usr/@{multiarch}/X11R6/**.so*               mr,
+  /usr/@{multiarch}X11R6/**                   r,
+  /usr/@{multiarch}X11R6/**.so*               mr,
 
   # EGL
-  /usr/@{multiarch}/lib/egl/*.so* mr,
+  /usr/@{multiarch}lib/egl/*.so* mr,
 
   # DRI
-  /usr/@{multiarch}/lib/dri/**         mr,
-  /usr/@{multiarch}/lib/dri/**    mr,
-  /usr/@{multiarch}/lib/fglrx/dri/**           mr,
+  /usr/@{multiarch}lib/dri/**         mr,
+  /usr/@{multiarch}lib/dri/**    mr,
+  /usr/@{multiarch}lib/fglrx/dri/**           mr,
   /dev/dri/**                     rw,
   /etc/drirc                      r,
   owner @{HOME}/.drirc            r,

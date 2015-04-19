@@ -33,9 +33,9 @@
   /usr/share/zoneinfo/**         r,
   /usr/share/X11/locale/**       r,
 
-  /usr/@{multiarch}/lib/locale/**             mr,
-  /usr/@{multiarch}/lib/gconv/*.so            mr,
-  /usr/@{multiarch}/lib/gconv/gconv-modules*  mr,
+  /usr/@{multiarch}lib/locale/**             mr,
+  /usr/@{multiarch}lib/gconv/*.so            mr,
+  /usr/@{multiarch}lib/gconv/gconv-modules*  mr,
 
   # used by glibc when binding to ephemeral ports
   /etc/bindresvport.blacklist    r,
@@ -43,19 +43,19 @@
   # ld.so.cache and ld are used to load shared libraries; they are best
   # available everywhere
   /etc/ld.so.cache               mr,
-  /usr/@{multiarch}/lib/ld-*.so   mrix,
-  /usr/@{multiarch}/lib/**/ld-*.so     mrix,
-  /usr/@{multiarch}/lib/tls/i686/{cmov,nosegneg}/ld-*.so     mrix,
-  /usr/@{multiarch}/lib/i386-linux-gnu/tls/i686/{cmov,nosegneg}/ld-*.so     mrix,
+  /usr/@{multiarch}lib/ld-*.so   mrix,
+  /usr/@{multiarch}lib/**/ld-*.so     mrix,
+  /usr/@{multiarch}lib/tls/i686/{cmov,nosegneg}/ld-*.so     mrix,
+  /usr/@{multiarch}lib/i386-linux-gnu/tls/i686/{cmov,nosegneg}/ld-*.so     mrix,
   /opt/*-linux-uclibc/lib/ld-uClibc*so* mrix,
 
   # we might as well allow everything to use common libraries
-  /usr/@{multiarch}/lib/**                r,
-  /usr/@{multiarch}/lib/lib*.so*          mr,
-  /usr/@{multiarch}/lib/**/lib*.so*       mr,
-  /usr/@{multiarch}/lib/**            r,
-  /usr/@{multiarch}/lib/*.so*         mr,
-  /usr/@{multiarch}/lib/**/lib*.so*   mr,
+  /usr/@{multiarch}lib/**                r,
+  /usr/@{multiarch}lib/lib*.so*          mr,
+  /usr/@{multiarch}lib/**/lib*.so*       mr,
+  /usr/@{multiarch}lib/**            r,
+  /usr/@{multiarch}lib/*.so*         mr,
+  /usr/@{multiarch}lib/**/lib*.so*   mr,
 
   # /dev/null is pretty harmless and frequently used
   /dev/null                      rw,

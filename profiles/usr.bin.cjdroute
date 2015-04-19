@@ -8,7 +8,7 @@
 	/proc/sys/kernel/random/uuid r,
 	/tmp/cjdns_pipe_* rwk,
 	/ r,
-	/usr/@{multiarch}/bin/cjdroute px -> cjdroute_angel,
+	/usr/@{multiarch}bin/cjdroute px -> cjdroute_angel,
 
 	# Cut-down DNS access
 	/etc/nsswitch.conf r,
@@ -31,7 +31,7 @@ profile cjdroute_angel {
 	/proc/sys/kernel/random/uuid r,
 	/tmp/cjdns_pipe_* rwk,
 	/ r,
-	/usr/@{multiarch}/bin/cjdroute mrpx -> cjdroute_drone,
+	/usr/@{multiarch}bin/cjdroute mrpx -> cjdroute_drone,
 }
 
 profile cjdroute_drone {
@@ -41,7 +41,7 @@ profile cjdroute_drone {
 
 	/proc/sys/kernel/random/uuid r,
 	/ r,
-	/usr/@{multiarch}/bin/cjdroute mr,
+	/usr/@{multiarch}bin/cjdroute mr,
 
 	capability setuid,
 	capability net_admin,

@@ -10,10 +10,10 @@
 #
 # ------------------------------------------------------------------
 
-  /usr/@{multiarch}/lib/python{2.[4-7],3.[0-4]}/**.{pyc,so}           mr,
-  /usr/@{multiarch}/lib/python{2.[4-7],3.[0-4]}/**.{egg,py,pth}       r,
-  /usr/@{multiarch}/lib/python{2.[4-7],3.[0-4]}/{site,dist}-packages/ r,
-  /usr/@{multiarch}/lib/python3.[0-4]/lib-dynload/*.so            mr,
+  /usr/@{multiarch}lib/python{2.[4-7],3.[0-4]}/**.{pyc,so}           mr,
+  /usr/@{multiarch}lib/python{2.[4-7],3.[0-4]}/**.{egg,py,pth}       r,
+  /usr/@{multiarch}lib/python{2.[4-7],3.[0-4]}/{site,dist}-packages/ r,
+  /usr/@{multiarch}lib/python3.[0-4]/lib-dynload/*.so            mr,
 
   /usr/local/lib/python{2.[4-7],3.[0-4]}/**.{pyc,so}           mr,
   /usr/local/lib/python{2.[4-7],3.[0-4]}/**.{egg,py,pth}       r,
@@ -25,14 +25,14 @@
 
   # shared python paths
   /usr/share/{pyshared,pycentral,python-support}/**      r,
-  /usr/@{multiarch}/lib/{pyshared,pycentral,python-support}/**  r,
+  /usr/@{multiarch}lib/{pyshared,pycentral,python-support}/**  r,
   /var/lib/{pyshared,pycentral,python-support}/**  r,
-  /usr/@{multiarch}/lib/{pyshared,pycentral,python-support}/**.so     mr,
+  /usr/@{multiarch}lib/{pyshared,pycentral,python-support}/**.so     mr,
   /var/lib/{pyshared,pycentral,python-support}/**.pyc    mr,
-  /usr/@{multiarch}/lib/python3/dist-packages/**.so                   mr,
+  /usr/@{multiarch}lib/python3/dist-packages/**.so                   mr,
 
   # wx paths
-  /usr/@{multiarch}/lib/wx/python/*.pth r,
+  /usr/@{multiarch}lib/wx/python/*.pth r,
 
   # python build configuration and headers
-  /usr/@{multiarch}/include/python{2.[4-7],3.[0-4]}*/pyconfig.h r,
+  /usr/@{multiarch}include/python{2.[4-7],3.[0-4]}*/pyconfig.h r,
