@@ -70,7 +70,7 @@
 	/etc/fstab r,
 
 
-	/usr/*-linux-gnu*/lib/firefox/plugin-container cx -> plugin_container,
+	/usr/lib/firefox/plugin-container cx -> plugin_container,
 
 	profile plugin_container {
 

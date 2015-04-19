@@ -11,7 +11,7 @@
 # @{multiarch} is the set of patterns matching multi-arch library
 # install prefixes.
 # MUST end with a slash
-@{multiarch}=/
+@{multiarch}=""
 
 # Also, include files in tunables/multiarch.d for site and packaging
 # specific adjustments to @{multiarch}.
