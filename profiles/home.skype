@@ -46,4 +46,7 @@
 	# Script to make it work with desktop-notificaton system
 	owner @{HOME_BIN}/wrappers/skype_notify.wrapper Ux,
 
+	deny /var/cache/fontconfig/ w,
+	deny owner @{HOME}/.cache/fontconfig/ w,
+	deny owner @{HOME}/.cache/fontconfig/*.cache-*.TMP* w,
 }
