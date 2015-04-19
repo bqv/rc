@@ -81,9 +81,7 @@
 		#include <abstractions/site/base>
 		#include <abstractions/site/de>
 		#include <abstractions/site/flash_plugin>
-
 		#include <abstractions/openssl>
-		/etc/core/app/sec/openssl.cnf r,
 
 		deny @{PROC}/@{pid}/fd/ r,
 		deny @{PROC}/uptime r,
@@ -98,6 +96,17 @@
 		owner @{HOME}/.mozilla/plugins/** mr,
 
 		deny /usr/@{multiarch}bin/bash x, # execve("/bin/sh", ["sh", "-c", "ps x | grep netscape"])
+
+		# VDPAU
+		/etc/adobe/mms.cfg r,
+		/etc/vdpau_wrapper.cfg r,
+		/etc/udev/udev.conf r,
+		/sys/devices/pci**/uevent r,
+		/run/udev/data/+pci* r,
+
+		## Site-local paths
+		/etc/core/app/X/* r,
+		/etc/core/app/sec/openssl.cnf r,
 
 	}
 
