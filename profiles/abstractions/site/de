@@ -16,3 +16,6 @@ owner @{HOME}/.xdg/** r,
 owner @{HOME_GIT}/xdg/** r,
 
 /usr/@{multiarch}lib/xorg/modules/dri/*.so rm,
+
+deny /usr/lib/gstreamer-*/gst-plugin-scanner x,
+deny owner @{HOME}/.cache/gstreamer-*/ rw,
