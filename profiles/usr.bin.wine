@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/usr/*-linux-gnu*/bin/wine-preloader {
+/usr/bin/wine-preloader {
 
 	#include <abstractions/base>
 	#include <abstractions/fonts>
@@ -68,7 +68,7 @@
 	deny @{HOME}/Downloads/** rw,
 	deny @{HOME}/.local/share/Trash/ rw,
 
-	/usr/*-linux-gnu*/bin/dosbox cx -> dosbox,
+	/usr/bin/dosbox cx -> dosbox,
 
 	profile dosbox {
 		#include <abstractions/base>

@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/usr/*-linux-gnu*/bin/steam {
+/usr/bin/steam {
 
 	#include <abstractions/base>
 	#include <abstractions/bash>

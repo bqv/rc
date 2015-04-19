@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/usr/*-linux-gnu*/bin/cjdroute {
+/usr/bin/cjdroute {
 
 	#include <abstractions/base>
 	#include <abstractions/site/base>

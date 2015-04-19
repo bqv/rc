@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/usr/*-linux-gnu*/{lib/firefox,bin}/firefox {
+/usr/{lib/firefox,bin}/firefox {
 
 	#include <abstractions/pulse>
 	#include <abstractions/nameservice>
