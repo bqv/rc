@@ -19,8 +19,7 @@
 	@{HOME}/.config/Trolltech.conf* rw,
 
 	/etc/ r,
-	/etc/exherbo-release r,
-	/etc/os-release r,
+	/etc/*-release r,
 
 	/usr/share/icons/** k,
 
