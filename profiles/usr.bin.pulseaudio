@@ -18,10 +18,11 @@
 
 	/tmp/pulse-* k,
 	/tmp/pulse-*/* k,
-	/tmp/orcexec.* m,
 	/run/udev/queue.bin r,
 	/run/systemd/users/* r,
 
+	/tmp/orcexec.* m,
+	owner /run/user/*/orcexec.* rwk,
 	owner /run/user/*/pulse/* rwk,
 
 	owner @{HOME}/.config/pulse/ rwk,
