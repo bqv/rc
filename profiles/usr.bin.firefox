@@ -24,6 +24,8 @@
 	owner @{HOME}/.cache/mozilla/ rw,
 	owner @{HOME}/.cache/mozilla/firefox/ rw,
 	owner @{HOME}/.cache/mozilla/firefox/** rwk,
+	owner @{HOME}/.cache/gstreamer-*/ rw,
+	owner @{HOME}/.cache/gstreamer-*/** rw,
 
 	/opt/netscape/plugins/ r,
 	/opt/netscape/plugins/** mr,

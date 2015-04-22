@@ -9,5 +9,5 @@
 /etc/core/sys/secure/pulse.cookie rk,
 
 /tmp/orcexec.* m,
-owner /run/user/*/orcexec.* rwk,
+owner /run/user/*/orcexec.* rwkm,
 deny owner @{HOME}/orcexec.* m,
