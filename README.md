@@ -16,9 +16,9 @@ caution here, plus apparmor itself is insanely easy to use and non-intrusive.
 
 I tried to re-use profiles from upstreams like ubuntu, suse and various misc
 repos and googleable blogs, but often found them too lax, allowing stuff like
-"@{HOME}/** r", so I prefer to use them just reference, copying only the obvious
-and safe access lines from there, getting (or confirming) the rest from audit
-logs.
+`@{HOME}/** r`, so I prefer to use them just for reference, copying only the
+obvious and safe access lines from there, getting (or confirming) the rest from
+audit logs.
 
 ### Important note
 

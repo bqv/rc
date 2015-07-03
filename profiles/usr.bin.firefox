@@ -55,7 +55,7 @@
 	# Minor udev stuff
 	/etc/udev/udev.conf r,
 	/sys/devices/pci**/uevent r,
-	/run/udev/data/+pci* r,
+	/run/udev/data/* r,
 	/sys/bus/ r,
 	/sys/class/ r,
 

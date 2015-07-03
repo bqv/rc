@@ -14,7 +14,7 @@
 	/usr/share/pulseaudio/** r,
 
 	/etc/udev/udev.conf r,
-	/run/udev/data/+sound* r,
+	/run/udev/data/* r,
 
 	/tmp/pulse-* k,
 	/tmp/pulse-*/* k,
@@ -34,9 +34,10 @@
 	/sys/bus/ r,
 	/sys/class/ r,
 	/sys/class/sound/ r,
+	/sys/devices/virtual/dmi/id/*_vendor r,
+	/sys/devices/virtual/sound/** r,
 	/sys/devices/*/*/sound/** r,
 	/sys/devices/*/*/*/sound/** r,
-	/sys/devices/virtual/dmi/id/*_vendor r,
 	/dev/input/event* r, # module-mmkbd-evdev
 
 	network tcp,

@@ -47,7 +47,7 @@
 
 	# hw
 	/etc/udev/udev.conf r,
-	/run/udev/data/+pci:* r,
+	/run/udev/data/* r,
 	/run/udev/queue.bin r,
 	/sys/devices/pci** r,
 	/dev/video0 rw, # dri?
