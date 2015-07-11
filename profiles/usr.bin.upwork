@@ -1,0 +1,65 @@
+#include <tunables/global>
+
+/usr/share/upwork/upwork {
+
+	#include <abstractions/base>
+	#include <abstractions/fonts>
+	#include <abstractions/nameservice>
+	#include <abstractions/X>
+	#include <abstractions/freedesktop.org>
+	#include <abstractions/gnome>
+	#include <abstractions/ssl_certs>
+	#include <abstractions/site/base>
+	#include <abstractions/site/de>
+	#include <abstractions/user-tmp>
+	#include <abstractions/pulse>
+
+	@{HOME}/.Upwork/ rwk,
+	@{HOME}/.Upwork/** rwk,
+
+	/etc/ r,
+	/etc/*-release r,
+
+	/usr/share/upwork/upwork ix,
+	/usr/share/upwork/ r,
+	/usr/share/upwork/** rm,
+
+	deny @{HOME}/.config/autostart/ rw,
+	deny @{HOME}/.mozilla/ rw,
+	deny @{HOME}/.mozilla/** rw,
+
+	deny /dev/ r,
+	deny /dev/video0 rwk, # that's a bit too much
+
+	network,
+
+
+	### It's a webkit app
+
+	owner @{HOME}/.pki{,/nssdb}/ rw,
+	owner @{HOME}/.pki/nssdb/** rwmk,
+	audit deny @{HOME}/.pki/nssdb/*.so{,.[0-9]*} wl,
+
+	@{PROC} r,
+	@{PROC}/sys/kernel/shmmax r,
+	owner @{PROC}/@{pid}/auxv r,
+	owner @{PROC}/@{pid}/fd/ r,
+	owner @{PROC}/@{pid}/status r,
+	owner @{PROC}/@{pid}/mountinfo r,
+	owner @{PROC}/@{pid}/task/ r,
+	owner @{PROC}/@{pid}/task/[0-9]*/stat r,
+	owner @{PROC}/@{pid}/environ r,
+	owner @{PROC}/@{pid}/oom_score_adj rw,
+
+	/etc/udev/udev.conf r,
+	/sys/bus/pci/devices/ r,
+	/sys/devices/pci** r,
+	/run/udev/queue.bin r,
+	/run/udev/data/* r,
+
+	/tmp/.org.chromium.Chromium.*/ rw,
+	/tmp/.org.chromium.Chromium.*/** rwmk,
+	/dev/shm/.org.chromium.Chromium.* rwkm,
+	/dev/shm/org.chromium.Chromium.shmem.* rwmk,
+
+}
