@@ -28,27 +28,18 @@ profile cjdroute_angel {
 	#include <abstractions/base>
 	#include <abstractions/site/base>
 
-	/proc/sys/kernel/random/uuid r,
-	/tmp/cjdns_pipe_* rwk,
-	/ r,
-	/usr/@{multiarch}bin/cjdroute mrpx -> cjdroute_drone,
-}
-
-profile cjdroute_drone {
-
-	#include <abstractions/base>
-	#include <abstractions/site/base>
-
-	/proc/sys/kernel/random/uuid r,
-	/ r,
-	/usr/@{multiarch}bin/cjdroute mr,
+	/etc/nsswitch.conf r,
+	/etc/passwd r,
+	/dev/net/tun rw,
 
 	capability setuid,
 	capability net_admin,
+	capability sys_chroot,
 
-	/dev/net/tun rw,
-	/etc/passwd mr,
-	/etc/nsswitch.conf r,
+	/ r,
+	/proc/sys/kernel/random/uuid r,
+	/usr/@{multiarch}bin/cjdroute mr,
 
 	network udp,
+
 }
