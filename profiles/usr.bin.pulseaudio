@@ -48,4 +48,21 @@
 	/etc/core/sys/asound.conf r,
 	/etc/core/sys/secure/pulse.cookie rk,
 
+	## JACK integration via module-jack-*
+	/dev/shm/jack-*/** rw,
+	/usr/bin/bash px -> jackd_check,
+
+}
+
+profile jackd_check {
+
+	#include <abstractions/base>
+	#include <abstractions/site/base>
+
+	# Only purpose of bash here is to run "jackd -l"
+	/usr/bin/bash rm,
+	deny /dev/** rw,
+
+	/usr/bin/jackd Ux,
+
 }
