@@ -50,19 +50,20 @@
 
 	## JACK integration via module-jack-*
 	/dev/shm/jack-*/** rw,
-	/usr/bin/bash px -> jackd_check,
+	/usr/bin/bash px -> pulse_jackd_sh,
 
 }
 
-profile jackd_check {
-
+# Only purpose of these is to run "jackd -l"
+profile pulse_jackd_sh {
 	#include <abstractions/base>
 	#include <abstractions/site/base>
-
-	# Only purpose of bash here is to run "jackd -l"
 	/usr/bin/bash rm,
 	deny /dev/** rw,
-
-	/usr/bin/jackd Ux,
-
+	/usr/bin/jackd px -> pulse_jackd_check,
+}
+profile pulse_jackd_check {
+	#include <abstractions/base>
+	#include <abstractions/site/base>
+	/usr/bin/jackd rm,
 }
