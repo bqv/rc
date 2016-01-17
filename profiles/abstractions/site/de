@@ -10,6 +10,7 @@ owner @{HOME_GIT}/gtk-bookmarks-2.0 r,
 owner @{HOME_GIT}/gtk-bookmarks-3.0 r,
 owner @{HOME_GIT}/gtk-3.0.css r,
 /usr/share/gtk-2.0/gtkrc r,
+/usr/share/gtk-3.0/settings.ini r,
 
 # Custom xdg icon path, specs and such stuff
 owner @{HOME}/.xdg/** r,
