@@ -43,7 +43,7 @@
   /usr/@{multiarch}lib/dri/**         mr,
   /usr/@{multiarch}lib/dri/**    mr,
   /usr/@{multiarch}lib/fglrx/dri/**           mr,
-  /dev/dri/**                     rw,
+  /dev/dri/**                     rwm,
   /etc/drirc                      r,
   owner @{HOME}/.drirc            r,
 
