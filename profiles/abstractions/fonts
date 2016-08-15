@@ -15,25 +15,25 @@
   /usr/@{multiarch}lib/xorg/modules/fonts/**.so*    mr,
 
   /usr/share/fonts/                     r,
-  /usr/share/fonts/**                   r,
+  /usr/share/fonts/**                   rm,
 
-  /etc/fonts/**                         r,
+  /etc/fonts/**                         rm,
   /usr/share/fontconfig/conf.avail/**   r,
 
-  /opt/kde3/share/fonts/**              r,
+  /opt/kde3/share/fonts/**              rm,
 
-  /usr/@{multiarch}lib/openoffice/share/fonts/**    r,
+  /usr/@{multiarch}lib/openoffice/share/fonts/**    rm,
 
-  /var/cache/fonts/**                   r,
+  /var/cache/fonts/**                   rm,
   /var/cache/fontconfig/**              mr,
   /var/lib/defoma/**                    mr,
 
-  /usr/share/a2ps/fonts/**              r,
-  /usr/share/xfce/fonts/**              r,
-  /usr/share/ghostscript/fonts/**       r,
-  /usr/share/javascript/*/fonts/**      r,
-  /usr/share/texmf/{,*/}fonts/**        r,
-  /usr/share/texlive/texmf-dist/fonts/** r,
+  /usr/share/a2ps/fonts/**              rm,
+  /usr/share/xfce/fonts/**              rm,
+  /usr/share/ghostscript/fonts/**       rm,
+  /usr/share/javascript/*/fonts/**      rm,
+  /usr/share/texmf/{,*/}fonts/**        rm,
+  /usr/share/texlive/texmf-dist/fonts/** rm,
   /var/lib/ghostscript/**               r,
 
   owner @{HOME}/.fonts.conf             r,
@@ -48,7 +48,7 @@
   owner @{HOME}/.config/fontconfig/**   r,
 
   /usr/local/share/fonts/               r,
-  /usr/local/share/fonts/**             r,
+  /usr/local/share/fonts/**             rm,
 
   # poppler CMap tables
   /usr/share/poppler/cMap/**            r,
