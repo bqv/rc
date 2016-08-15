@@ -23,6 +23,8 @@
 	owner @{HOME}/.config/skypeforlinux/** krwm,
 	owner @{HOME}/[dD]ownload{,s}/** k,
 
+	deny /proc/sys/kernel/yama/ptrace_scope r, # no clue
+
 	# Site-local thing
 	/etc/core/app/sec/openssl.cnf r,
 
