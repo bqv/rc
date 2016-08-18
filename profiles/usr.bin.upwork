@@ -14,8 +14,10 @@
 	#include <abstractions/site/base>
 	#include <abstractions/site/de>
 
-	@{HOME}/.Upwork/ rwk,
-	@{HOME}/.Upwork/** rwk,
+	owner @{HOME}/.Upwork/ rwk,
+	owner @{HOME}/.Upwork/** rwk,
+	owner @{HOME}/.config/cef_user_data/ rwk,
+	owner @{HOME}/.config/cef_user_data/** rwk,
 
 	/etc/ r,
 	/etc/*-release r,
