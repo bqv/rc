@@ -41,7 +41,7 @@
   owner @{HOME}/.fonts/**               rm,
   owner @{HOME}/.fonts.cache-2          mr,
   owner @{HOME}/.{,cache/}fontconfig/   r,
-  owner @{HOME}/.{,cache/}fontconfig/** mrl,
+  owner @{HOME}/.{,cache/}fontconfig/** mrlwk,
   owner @{HOME}/.fonts.conf.d/          r,
   owner @{HOME}/.fonts.conf.d/**        rm,
   owner @{HOME}/.config/fontconfig/     r,
