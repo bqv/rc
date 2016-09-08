@@ -58,6 +58,7 @@
 	/run/udev/data/* r,
 	/sys/bus/ r,
 	/sys/class/ r,
+	/sys/class/drm/ r,
 
 	# Used in private mode
 	/usr/@{multiarch}bin/shred ix,
