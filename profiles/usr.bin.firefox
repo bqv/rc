@@ -51,14 +51,16 @@
 	owner @{PROC}/@{pid}/mountinfo r,
 	owner @{PROC}/@{pid}/statm r, # for about:memory
 	owner @{PROC}/@{pid}/task/[0-9]*/stat r,
+	@{PROC}/@{pid}/net/arp r, # for local "network id", to detect changes
 
 	# Minor udev stuff
 	/etc/udev/udev.conf r,
-	/sys/devices/pci**/uevent r,
+	/sys/devices/**/uevent r,
 	/run/udev/data/* r,
 	/sys/bus/ r,
 	/sys/class/ r,
 	/sys/class/drm/ r,
+	/sys/class/input/ r,
 
 	# Used in private mode
 	/usr/@{multiarch}bin/shred ix,
