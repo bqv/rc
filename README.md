@@ -37,34 +37,3 @@ general idea where app needs access), and not as a drop-in things.
 Some paths in these profiles (like ~/.cFG/* and /etc/core) are specific to my
 systems (configuration git repos), and can/should be removed or updated to local
 paths.
-
-### Note on abstractions with multiarch
-
-In the distro I've used in the past, multiarch was structured like this:
-
-	/usr/*-linux-gnu*/bin/...
-	/usr/*-linux-gnu*/sbin -> bin
-	/usr/*-linux-gnu*/lib/...
-	/usr/*-linux-gnu*/include/...
-	/usr/host -> *-linux-gnu*
-	/usr/share/...
-	/usr/{bin,sbin,lib} -> host/{bin,sbin,lib}
-	/{bin,sbin,lib} -> host/{bin,sbin,lib}
-
-And stuff under "profiles/abstractions" is copied from those shipped from
-apparmor (in "/etc/apparmor.d/abstractions"), but with paths adjustable for that
-layout via "multiarch" var (see "profiles/tunables/multiarch").
-
-For instance, with default `@{multiarch}=""`,
-`/usr/@{multiarch}{lib/firefox,bin}/firefox` will be
-`/usr/{lib/firefox,bin}/firefox`, but with `@{multiarch}=*-linux-gnu*/`, it will
-be `/usr/x86_64-pc-linux-gnu/{lib/firefox,bin}/firefox`.
-Note that final slash in "multiarch" var is required if it isn't empty.
-
-Default "/etc/apparmor.d/abstractions" can probably be used with these profiles,
-as they should have same stuff, but with more "classic" layout.
-
-**BUT** as I'm not using multiarch-distro these days, all this stuff might be
-  bitrotten, and all the profile attachment specs are wrong for multiarch
-  (e.g. "/usr/bin/firefox"), as I've never figured-out how to attach same
-  profile to multiple binaries easily.

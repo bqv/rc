@@ -12,45 +12,45 @@
 
   /usr/share/AbiSuite/fonts/**          r,
 
-  /usr/@{multiarch}lib/xorg/modules/fonts/**.so*    mr,
+  /usr/lib/xorg/modules/fonts/**.so*    mr,
 
   /usr/share/fonts/                     r,
-  /usr/share/fonts/**                   rm,
+  /usr/share/fonts/**                   mr,
 
-  /etc/fonts/**                         rm,
+  /etc/fonts/**                         mr,
   /usr/share/fontconfig/conf.avail/**   r,
 
-  /opt/kde3/share/fonts/**              rm,
+  /opt/kde3/share/fonts/**              mr,
 
-  /usr/@{multiarch}lib/openoffice/share/fonts/**    rm,
+  /usr/lib{,32,64}/openoffice/share/fonts/**    mr,
 
-  /var/cache/fonts/**                   rm,
+  /var/cache/fonts/**                   mr,
   /var/cache/fontconfig/**              mr,
   /var/lib/defoma/**                    mr,
 
-  /usr/share/a2ps/fonts/**              rm,
-  /usr/share/xfce/fonts/**              rm,
-  /usr/share/ghostscript/fonts/**       rm,
-  /usr/share/javascript/*/fonts/**      rm,
-  /usr/share/texmf/{,*/}fonts/**        rm,
-  /usr/share/texlive/texmf-dist/fonts/** rm,
-  /var/lib/ghostscript/**               r,
+  /usr/share/a2ps/fonts/**              mr,
+  /usr/share/xfce/fonts/**              mr,
+  /usr/share/ghostscript/fonts/**       mr,
+  /usr/share/javascript/*/fonts/**      mr,
+  /usr/share/texmf/{,*/}fonts/**        mr,
+  /usr/share/texlive/texmf-dist/fonts/** mr,
+  /var/lib/ghostscript/**               mr,
 
   owner @{HOME}/.fonts.conf             r,
   owner @{HOME}/.fonts/                 r,
-  owner @{HOME}/.fonts/**               rm,
+  owner @{HOME}/.fonts/**               mr,
   owner @{HOME}/.fonts.cache-2          mr,
   owner @{HOME}/.{,cache/}fontconfig/   r,
-  owner @{HOME}/.{,cache/}fontconfig/** mrlwk,
+  owner @{HOME}/.{,cache/}fontconfig/** mrl,
   owner @{HOME}/.fonts.conf.d/          r,
-  owner @{HOME}/.fonts.conf.d/**        rm,
+  owner @{HOME}/.fonts.conf.d/**        mr,
   owner @{HOME}/.config/fontconfig/     r,
-  owner @{HOME}/.config/fontconfig/**   rm,
+  owner @{HOME}/.config/fontconfig/**   mr,
   owner @{HOME}/.local/share/fonts/ r,
   owner @{HOME}/.local/share/fonts/** rm,
 
   /usr/local/share/fonts/               r,
-  /usr/local/share/fonts/**             rm,
+  /usr/local/share/fonts/**             mr,
 
   # poppler CMap tables
   /usr/share/poppler/cMap/**            r,

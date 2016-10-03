@@ -38,6 +38,9 @@
   # /etc/resolvconf/run/resolv.conf
   /{,var/}run/resolvconf/resolv.conf r,
   /etc/resolvconf/run/resolv.conf r,
+  # on systems using systemd's networkd, /etc/resolv.conf is a symlink to
+  # /run/systemd/resolve/resolv.conf
+  /{,var/}run/systemd/resolve/resolv.conf r,
 
   /etc/samba/lmhosts      r,
   /etc/services           r,
@@ -47,15 +50,17 @@
   # to vast speed increases when working with network-based lookups.
   /{,var/}run/.nscd_socket   rw,
   /{,var/}run/nscd/socket    rw,
-  /{var/db,var/cache,var/run,run}/nscd/{passwd,group,services,host}    r,
+  /{var/db,var/cache,var/run,run}/nscd/{passwd,group,services,hosts}    r,
   # nscd renames and unlinks files in it's operation that clients will
   # have open
   /{,var/}run/nscd/db*  rmix,
 
   # The nss libraries are sometimes used in addition to PAM; make sure
   # they are available
-  /usr/@{multiarch}lib/libnss_*.so*      mr,
-  /usr/@{multiarch}lib/libnss_*.so*  mr,
+  /lib{,32,64}/libnss_*.so*      mr,
+  /usr/lib{,32,64}/libnss_*.so*  mr,
+  /lib/@{multiarch}/libnss_*.so*      mr,
+  /usr/lib/@{multiarch}/libnss_*.so*  mr,
   /etc/default/nss               r,
 
   # avahi-daemon is used for mdns4 resolution

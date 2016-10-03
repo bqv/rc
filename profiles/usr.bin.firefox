@@ -72,7 +72,7 @@
 	owner @{HOME_BIN}/wrappers/leech_*.wrapper Ux,
 	deny /usr/@{multiarch}bin/bash x, # flashgot leechers' detection
 	# It's All Text
-	owner @{HOME}/hatch/cFG/bin/ec Ux,
+	owner @{HOME_GIT}bin/ec Ux,
 	# downloads
 	/etc/fstab r,
 
