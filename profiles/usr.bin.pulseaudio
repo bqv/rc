@@ -10,7 +10,7 @@
 	#include <abstractions/freedesktop.org>
 	#include <abstractions/site/base>
 
-	/usr/@{multiarch}lib/pulse-*/modules/* m,
+	/usr/lib/pulse-*/modules/* m,
 	/usr/share/pulseaudio/** r,
 
 	/etc/udev/udev.conf r,

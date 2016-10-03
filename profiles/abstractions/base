@@ -35,11 +35,9 @@
   /usr/share/X11/locale/**       r,
   /{,var/}run/systemd/journal/dev-log w,
 
-  /usr/lib{,32,64}/locale/**             mr,
-  /usr/lib{,32,64}/gconv/*.so            mr,
-  /usr/lib{,32,64}/gconv/gconv-modules*  mr,
-  /usr/lib/@{multiarch}/gconv/*.so           mr,
-  /usr/lib/@{multiarch}/gconv/gconv-modules* mr,
+  /usr/lib/locale/**             mr,
+  /usr/lib/gconv/*.so            mr,
+  /usr/lib/gconv/gconv-modules*  mr,
 
   # used by glibc when binding to ephemeral ports
   /etc/bindresvport.blacklist    r,
@@ -47,26 +45,11 @@
   # ld.so.cache and ld are used to load shared libraries; they are best
   # available everywhere
   /etc/ld.so.cache               mr,
-  /lib{,32,64}/ld{,32,64}-*.so   mrix,
-  /lib{,32,64}/**/ld{,32,64}-*.so     mrix,
-  /lib/@{multiarch}/ld{,32,64}-*.so    mrix,
-  /lib/tls/i686/{cmov,nosegneg}/ld-*.so     mrix,
-  /lib/i386-linux-gnu/tls/i686/{cmov,nosegneg}/ld-*.so     mrix,
-  /opt/*-linux-uclibc/lib/ld-uClibc*so* mrix,
 
   # we might as well allow everything to use common libraries
-  /lib{,32,64}/**                r,
-  /lib{,32,64}/lib*.so*          mr,
-  /lib{,32,64}/**/lib*.so*       mr,
-  /lib/@{multiarch}/**            r,
-  /lib/@{multiarch}/lib*.so*      mr,
-  /lib/@{multiarch}/**/lib*.so*   mr,
-  /usr/lib{,32,64}/**            r,
-  /usr/lib{,32,64}/*.so*         mr,
-  /usr/lib{,32,64}/**/lib*.so*   mr,
-  /usr/lib/@{multiarch}/**          r,
-  /usr/lib/@{multiarch}/lib*.so*    mr,
-  /usr/lib/@{multiarch}/**/lib*.so* mr,
+  /usr/lib/**            r,
+  /usr/lib/*.so*         mr,
+  /usr/lib/**/lib*.so*   mr,
   /lib/tls/i686/{cmov,nosegneg}/lib*.so*    mr,
   /lib/i386-linux-gnu/tls/i686/{cmov,nosegneg}/lib*.so*    mr,
 
@@ -157,4 +140,3 @@
   owner @{HOME}/.Private/** mrixwlk,
   # new-style encrypted $HOME
   owner @{HOMEDIRS}/.ecryptfs/*/.Private/** mrixwlk,
-

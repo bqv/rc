@@ -20,8 +20,8 @@
 
 	## planetscape app
 	/ r,
-	/usr/@{multiarch}bin/mtr Ux,
-	/usr/@{multiarch}bin/ss Ux,
+	/usr/bin/mtr Ux,
+	/usr/bin/ss Ux,
 
 	network,
 

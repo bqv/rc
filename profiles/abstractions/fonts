@@ -20,9 +20,7 @@
   /etc/fonts/**                         mr,
   /usr/share/fontconfig/conf.avail/**   r,
 
-  /opt/kde3/share/fonts/**              mr,
-
-  /usr/lib{,32,64}/openoffice/share/fonts/**    mr,
+  /usr/lib/openoffice/share/fonts/**    mr,
 
   /var/cache/fonts/**                   mr,
   /var/cache/fontconfig/**              mr,

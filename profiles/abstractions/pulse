@@ -1,7 +1,7 @@
 #include <abstractions/audio>
 
 # Started on-demand
-/usr/@{multiarch}bin/pulseaudio pxrm,
+/usr/bin/pulseaudio pxrm,
 
 ## Site-local symlinks
 /etc/core/sys/pulse/* r,

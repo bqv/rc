@@ -57,10 +57,7 @@
 
   # The nss libraries are sometimes used in addition to PAM; make sure
   # they are available
-  /lib{,32,64}/libnss_*.so*      mr,
-  /usr/lib{,32,64}/libnss_*.so*  mr,
-  /lib/@{multiarch}/libnss_*.so*      mr,
-  /usr/lib/@{multiarch}/libnss_*.so*  mr,
+  /usr/lib/libnss_*.so*  mr,
   /etc/default/nss               r,
 
   # avahi-daemon is used for mdns4 resolution

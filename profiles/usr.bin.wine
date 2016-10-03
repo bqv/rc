@@ -12,11 +12,11 @@
 	#include <abstractions/pulse>
 	#include <abstractions/p11-kit>
 
-	/usr/@{multiarch}bin/wine-preloader rix,
-	/usr/@{multiarch}bin/wineserver px,
-	/usr/@{multiarch}bin/wine mr,
+	/usr/bin/wine-preloader rix,
+	/usr/bin/wineserver px,
+	/usr/bin/wine mr,
 
-	/usr/@{multiarch}lib/wine/*.so mr,
+	/usr/lib/wine/*.so mr,
 	/usr/share/wine/fonts/ r,
 	/usr/share/wine/fonts/* r,
 	/usr/share/wine/wine.inf r,
@@ -37,8 +37,8 @@
 	owner @{HOME}/.local/share/desktop-directories/wine-* rwk,
 
 	# Mostly winemenubuilder stuff
-	deny /usr/@{multiarch}bin/update-mime-database x,
-	deny /usr/@{multiarch}bin/update-desktop-database x,
+	deny /usr/bin/update-mime-database x,
+	deny /usr/bin/update-desktop-database x,
 	deny @{HOME}/.local/share/mime/** w,
 
 	# For winedbg
@@ -100,7 +100,7 @@
 	#include <abstractions/nameservice>
 	#include <abstractions/freedesktop.org>
 
-	/usr/@{multiarch}bin/wineserver r,
+	/usr/bin/wineserver r,
 
 	/tmp/.wine-*/ rw,
 	/tmp/.wine-*/server-*/ rw,

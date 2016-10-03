@@ -16,6 +16,8 @@
   /etc/pki/trust/* mr,
   /etc/pki/trust/anchors/ r,
   /etc/pki/trust/anchors/** mr,
+  /etc/ca-certificates/ r,
+  /etc/ca-certificates/** rm,
   /usr/share/ca-certificates/ r,
   /usr/share/ca-certificates/** mr,
   /usr/share/ssl/certs/ca-bundle.crt mr,

@@ -41,12 +41,12 @@
   /usr/X11R6/**.so*               mr,
 
   # EGL
-  /usr/lib/@{multiarch}/egl/*.so* mr,
+  /usr/lib/egl/*.so* mr,
 
   # DRI
-  /usr/lib{,32,64}/dri/**         mr,
-  /usr/lib/@{multiarch}/dri/**    mr,
+  /usr/lib/dri/**         mr,
   /usr/lib/fglrx/dri/**           mr,
+  /usr/lib/xorg/modules/dri/*.so* mr,
   /dev/dri/**                     mrw,
   /etc/drirc                      r,
   owner @{HOME}/.drirc            r,

@@ -10,28 +10,16 @@
 #
 # ------------------------------------------------------------------
 
-  /usr/lib{,32,64}/python{2.[4-7],3.[0-5]}/**.{pyc,so}           mr,
-  /usr/lib{,32,64}/python{2.[4-7],3.[0-5]}/**.{egg,py,pth}       r,
-  /usr/lib{,32,64}/python{2.[4-7],3.[0-5]}/{site,dist}-packages/ r,
-  /usr/lib{,32,64}/python3.[0-5]/lib-dynload/*.so            mr,
-
-  /usr/local/lib{,32,64}/python{2.[4-7],3.[0-5]}/**.{pyc,so}           mr,
-  /usr/local/lib{,32,64}/python{2.[4-7],3.[0-5]}/**.{egg,py,pth}       r,
-  /usr/local/lib{,32,64}/python{2.[4-7],3.[0-5]}/{site,dist}-packages/ r,
-  /usr/local/lib{,32,64}/python3.[0-5]/lib-dynload/*.so            mr,
+  /usr/lib/python{2.[4-7],3.[0-9]}/**.{pyc,so}           mr,
+  /usr/lib/python{2.[4-7],3.[0-9]}/**.{egg,py,pth}       r,
+  /usr/lib/python{2.[4-7],3.[0-9]}/site-packages/ r,
+  /usr/lib/python3.[0-9]/lib-dynload/*.so            mr,
 
   # Site-wide configuration
-  /etc/python{2.[4-7],3.[0-5]}/** r,
-
-  # shared python paths
-  /usr/share/{pyshared,pycentral,python-support}/**      r,
-  /{var,usr}/lib/{pyshared,pycentral,python-support}/**  r,
-  /usr/lib/{pyshared,pycentral,python-support}/**.so     mr,
-  /var/lib/{pyshared,pycentral,python-support}/**.pyc    mr,
-  /usr/lib/python3/dist-packages/**.so                   mr,
+  /etc/python{2.[4-7],3.[0-9]}/** r,
 
   # wx paths
   /usr/lib/wx/python/*.pth r,
 
   # python build configuration and headers
-  /usr/include/python{2.[4-7],3.[0-5]}*/pyconfig.h r,
+  /usr/include/python{2.[4-7],3.[0-9]}*/pyconfig.h r,

@@ -16,7 +16,6 @@ owner @{HOME_GIT}/gtk-3.0.css r,
 owner @{HOME}/.xdg/** r,
 owner @{HOME_GIT}/xdg/** r,
 
-/usr/@{multiarch}lib/xorg/modules/dri/*.so rm,
-
+# Disable gstreamer stuff, not used for anything relevant here
 deny /usr/lib/gstreamer-*/gst-plugin-scanner x,
 deny owner @{HOME}/.cache/gstreamer-*/ rw,

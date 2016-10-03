@@ -19,8 +19,7 @@
   # systemwide gtk defaults
   /etc/gnome/gtkrc*               r,
   /etc/gtk/*                      r,
-  /usr/lib{,32,64}/gtk/**         mr,
-  /usr/lib/@{multiarch}/gtk/**    mr,
+  /usr/lib/gtk/**         mr,
   /usr/share/themes/              r,
   /usr/share/themes/**            r,
 
@@ -31,12 +30,9 @@
   /etc/fonts/*                    r,
   /etc/gtk-*/*                    r,
   /etc/pango/*                    r,
-  /usr/lib{,32,64}/pango/**       mr,
-  /usr/lib{,32,64}/gtk-*/**       mr,
-  /usr/lib{,32,64}/gdk-pixbuf-*/** mr,
-  /usr/lib/@{multiarch}/pango/**        mr,
-  /usr/lib/@{multiarch}/gtk-*/**        mr,
-  /usr/lib/@{multiarch}/gdk-pixbuf-*/** mr,
+  /usr/lib/pango/**       mr,
+  /usr/lib/gtk-*/**       mr,
+  /usr/lib/gdk-pixbuf-*/** mr,
 
   # per-user gtk configuration
   owner @{HOME}/.gnome/Gnome            r,
@@ -66,7 +62,6 @@
   /etc/gnome-vfs-2.0/modules/ r,
   /etc/gnome-vfs-2.0/modules/* r,
   /usr/lib/gnome-vfs-2.0/modules/*.so mr,
-  /usr/lib/@{multiarch}/gnome-vfs-2.0/modules/*.so mr,
 
   # gvfs
   /usr/share/gvfs/remote-volume-monitors/  r,
