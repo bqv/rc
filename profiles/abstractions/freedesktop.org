@@ -24,7 +24,7 @@
   /usr/local/share/pixmaps/**           mr,
 
   # this should probably go elsewhere
-  /usr/share/mime/**              r,
+  /usr/share/mime/**              mr,
 
   # per-user configurations
   owner @{HOME}/.icons/                 r,
