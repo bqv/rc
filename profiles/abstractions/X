@@ -47,6 +47,7 @@
   /usr/lib/dri/**         mr,
   /usr/lib/fglrx/dri/**           mr,
   /usr/lib/xorg/modules/dri/*.so* mr,
+  /dev/dri/ r,
   /dev/dri/**                     mrw,
   /etc/drirc                      r,
   owner @{HOME}/.drirc            r,
