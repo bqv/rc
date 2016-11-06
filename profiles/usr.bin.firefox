@@ -55,8 +55,11 @@
 
 	# Minor udev stuff
 	/etc/udev/udev.conf r,
+	/sys/devices/**/name r,
 	/sys/devices/**/uevent r,
+	/sys/devices/pci**/config r,
 	/run/udev/data/* r,
+	/run/mount/utab r,
 	/sys/bus/ r,
 	/sys/class/ r,
 	/sys/class/drm/ r,
@@ -75,46 +78,5 @@
 	owner @{HOME_GIT}bin/ec Ux,
 	# downloads
 	/etc/fstab r,
-
-
-	/usr/lib/firefox/plugin-container cx -> plugin_container,
-
-	profile plugin_container {
-
-		#include <abstractions/pulse>
-		#include <abstractions/nameservice>
-		#include <abstractions/consoles>
-		#include <abstractions/gnome>
-		#include <abstractions/site/base>
-		#include <abstractions/site/de>
-		#include <abstractions/site/flash_plugin>
-		#include <abstractions/openssl>
-
-		deny @{PROC}/@{pid}/fd/ r,
-		deny @{PROC}/uptime r,
-		deny @{PROC}/@{pid}/smaps r,
-
-		deny /etc/passwd r,
-		deny @{HOME}/.mozilla/firefox/** r,
-
-		/opt/netscape/plugins/ r,
-		/opt/netscape/plugins/** mr,
-		owner @{HOME}/.mozilla/plugins/ r,
-		owner @{HOME}/.mozilla/plugins/** mr,
-
-		deny /usr/bin/bash x, # execve("/bin/sh", ["sh", "-c", "ps x | grep netscape"])
-
-		# VDPAU
-		/etc/adobe/mms.cfg r,
-		/etc/vdpau_wrapper.cfg r,
-		/etc/udev/udev.conf r,
-		/sys/devices/pci**/uevent r,
-		/run/udev/data/+pci* r,
-
-		## Site-local paths
-		/etc/core/app/X/* r,
-		/etc/core/app/sec/openssl.cnf r,
-
-	}
 
 }
