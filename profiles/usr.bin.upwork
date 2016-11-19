@@ -32,6 +32,10 @@
 
 	deny /dev/video0 rwk, # that's a bit too much
 
+	# Not sure if these are from new node-webkit or upwork-specific
+	/proc/uptime r,
+	owner @{PROC}/@{pid}/statm r,
+
 	network,
 
 }
