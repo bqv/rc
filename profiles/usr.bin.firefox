@@ -44,9 +44,6 @@
 	owner @{HOME}/.local/share/applications/ r,
 	owner @{HOME}/.local/share/applications/** r,
 
-	deny /{,var/}run/user/*/dconf/user w,
-  deny @{HOME}/.config/dconf/user w,
-
 	owner @{PROC}/@{pid}/fd/ r,
 	owner @{PROC}/@{pid}/mountinfo r,
 	owner @{PROC}/@{pid}/statm r, # for about:memory
@@ -67,6 +64,13 @@
 
 	# Used in private mode
 	/usr/bin/shred ix,
+
+	# Allowing to change these doesn't seem to be a good idea
+	# And denying it should be harmless
+	deny /{,var/}run/user/*/dconf/user w,
+	deny @{HOME}/.config/dconf/user w,
+	deny /var/cache/fontconfig/ w,
+	deny @{HOME}/.cache/fontconfig/** w,
 
 	## Site-local paths
 	# Images in file selection dialogs
