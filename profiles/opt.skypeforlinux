@@ -16,6 +16,10 @@
 	#include <abstractions/site/base>
 	#include <abstractions/site/de>
 
+	/etc/os-release r,
+	/sys/devices/virtual/tty/tty*/active r,
+	deny /dev/video0 rw,
+
 	/opt/skypeforlinux/** kmr,
 	/opt/skypeforlinux/skypeforlinux ix,
 
