@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/usr/{lib/firefox,bin}/firefox {
+/usr/lib/firefox/firefox {
 
 	#include <abstractions/pulse>
 	#include <abstractions/nameservice>
@@ -82,5 +82,10 @@
 	owner @{HOME_GIT}bin/ec Ux,
 	# downloads
 	/etc/fstab r,
+
+	## New e10s profiles
+	/usr/lib/firefox/plugin-container ix, # used to create new tab
+	audit deny /dev/shm/org.chromium.Chromium.* rw, # used by Chromium
+	owner /dev/shm/org.chromium.* rwmk,
 
 }
