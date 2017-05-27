@@ -19,6 +19,7 @@
 
   /etc/fonts/**                         mr,
   /usr/share/fontconfig/conf.avail/**   r,
+  /usr/share/fontconfig/conf.avail.*/**   r,
 
   /usr/lib/openoffice/share/fonts/**    mr,
 
