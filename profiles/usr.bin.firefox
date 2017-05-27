@@ -54,13 +54,16 @@
 	/etc/udev/udev.conf r,
 	/sys/devices/**/name r,
 	/sys/devices/**/uevent r,
-	/sys/devices/pci**/config r,
 	/run/udev/data/* r,
 	/run/mount/utab r,
 	/sys/bus/ r,
 	/sys/class/ r,
 	/sys/class/drm/ r,
 	/sys/class/input/ r,
+
+	# Wants more and more info on pci devs with each version
+	# Didn't check what for, probably some hw-change detection
+	deny /sys/devices/pci**/{config,vendor,device} r,
 
 	# Used in private mode
 	/usr/bin/shred ix,
