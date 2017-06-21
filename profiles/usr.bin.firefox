@@ -63,6 +63,7 @@
 
 	# Wants more and more info on pci devs with each version
 	# Didn't check what for, probably some hw-change detection
+	deny /dev/ r,
 	deny /sys/devices/pci**/{config,vendor,device} r,
 
 	# Used in private mode
