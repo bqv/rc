@@ -11,6 +11,7 @@
 	owner @{PROC}/@{pid}/auxv r,
 	owner @{PROC}/@{pid}/fd/ r,
 	owner @{PROC}/@{pid}/status r,
+	owner @{PROC}/@{pid}/task/@{pid}/status r,
 	owner @{PROC}/@{pid}/mountinfo r,
 	owner @{PROC}/@{pid}/task/ r,
 	owner @{PROC}/@{pid}/task/[0-9]*/stat r,
