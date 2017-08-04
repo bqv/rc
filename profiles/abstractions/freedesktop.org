@@ -41,3 +41,6 @@
   owner @{HOME}/.local/share/icons/**   mr,
   owner @{HOME}/.local/share/mime/      r,
   owner @{HOME}/.local/share/mime/**    mr,
+
+  # xorg caches
+  owner @{HOME}/.cache/mesa/** mrw,
