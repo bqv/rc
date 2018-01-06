@@ -35,6 +35,10 @@
 	owner @{HOME}/.mozilla/firefox/*/extensions/** m,
 	owner @{HOME}/.mozilla/extensions/** mr,
 
+	# Didn't check what this one is for
+	deny @{HOME}/.mozilla/systemextensionsdev/ rw,
+	deny @{HOME}/.mozilla/systemextensionsdev/** rw,
+
 	/etc/mime.types r,
 	/etc/mailcap r,
 	/usr/share/ r,
@@ -81,22 +85,5 @@
 	/usr/lib/firefox/plugin-container ix, # used to create new tab
 	audit deny /dev/shm/org.chromium.Chromium.* rw, # used by Chromium
 	owner /dev/shm/org.chromium.* rwmk,
-
-	## Special case: helper binary for u2f extension - prefiks/u2f4moz
-
-	owner @{HOME}/.mozilla/firefox/*/extensions/u2f4moz@prefiks.org/bin/*/u2f cx -> u2f,
-
-	profile u2f {
-		#include <abstractions/udev>
-		#include <abstractions/base>
-		#include <abstractions/site/base>
-
-		owner @{HOME}/.mozilla/firefox/*/extensions/u2f4moz@prefiks.org/bin/*/u2f rm,
-		/sys/class/hidraw/ r,
-		/sys/class/hidraw/** r,
-		/sys/devices/pci*/*/usb*/** r,
-		/sys/devices/pci*/*/subsystem_{vendor,device} r,
-		/dev/hidraw* rw,
-	}
 
 }
