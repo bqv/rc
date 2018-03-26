@@ -18,10 +18,11 @@
 	owner @{PROC}/@{pid}/environ r,
 	owner @{PROC}/@{pid}/oom_score_adj rw,
 
+	# Can be used for stats/fingerprinting, but also for adapting to local hw
 	/dev/ r,
-	/etc/udev/udev.conf r,
 	/sys/bus/pci/devices/ r,
 	/sys/devices/pci** r,
+	/etc/udev/udev.conf r,
 	/run/udev/queue.bin r,
 	/run/udev/data/* r,
 
