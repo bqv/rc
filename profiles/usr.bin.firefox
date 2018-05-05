@@ -27,6 +27,7 @@
 	owner @{HOME}/.cache/mozilla/firefox/** rwk,
 	owner @{HOME}/.cache/gstreamer-*/ rw,
 	owner @{HOME}/.cache/gstreamer-*/** rw,
+	owner @{HOME}/.cache/thumbnails/** rw,
 
 	/opt/netscape/plugins/ r,
 	/opt/netscape/plugins/** mr,
@@ -69,6 +70,7 @@
 	deny @{HOME}/.config/dconf/user w,
 	deny /var/cache/fontconfig/ w,
 	deny @{HOME}/.cache/fontconfig/** w,
+	deny /usr/lib/firefox/fonts/** w,
 
 	## Site-local paths
 	# Images in file selection dialogs
