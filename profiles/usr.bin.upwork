@@ -14,10 +14,8 @@
 	#include <abstractions/site/base>
 	#include <abstractions/site/de>
 
-	owner @{HOME}/.Upwork/ rwk,
-	owner @{HOME}/.Upwork/** rwk,
-	owner @{HOME}/.config/cef_user_data/ rwk,
-	owner @{HOME}/.config/cef_user_data/** rwk,
+	owner @{HOME}/.{,config/,cache/}Upwork/ rwkm,
+	owner @{HOME}/.{,config/,cache/}Upwork/** rwkm,
 
 	/etc/ r,
 	/etc/*-release r,
@@ -30,11 +28,19 @@
 	deny @{HOME}/.mozilla/ rw,
 	deny @{HOME}/.mozilla/** rw,
 
-	deny /dev/video0 rwk, # that's a bit too much
+	# What it tries to do with bash [5.1.0.562]:
+	#  fingerprint platform: /bin/sh -c dmidecode -t ...
+	#  check for vm: /bin/sh -c dmesg | grep -i virtual | grep -iE "vmware|qemu|kvm|xen"
+	deny /usr/bin/bash x,
 
-	# Not sure if these are from new node-webkit or upwork-specific
-	/proc/uptime r,
-	owner @{PROC}/@{pid}/statm r,
+	deny /usr/share/upwork/cmon x, # crash monitor binary
+	deny /dev/video0 rwk, # that's a bit too much
+	deny @{PROC}/*/stat{,m} r,
+	deny @{PROC}/uptime r,
+
+	# Common noise when running from console
+	deny /dev/tty rw,
+	deny /dev/pts/* rw,
 
 	network,
 
