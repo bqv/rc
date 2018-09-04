@@ -1,0 +1,147 @@
+# For https://github.com/gcarq/inox-patchset variant of chromium
+
+#include <tunables/global>
+
+profile /usr/bin/inox {
+	#include <abstractions/base>
+	#include <abstractions/site/base>
+
+	owner @{HOME}/.config/inox-flags.conf r,
+	owner @{HOME_GIT}/inox-flags.conf r,
+
+	/usr/lib/inox/inox cx -> inox,
+
+	profile inox {
+		#include <abstractions/base>
+		#include <abstractions/site/base>
+		#include <abstractions/X>
+		#include <abstractions/pulse>
+		#include <abstractions/gnome>
+		#include <abstractions/nameservice>
+		#include <abstractions/user-download>
+		#include <abstractions/ssl-certs>
+		#include <abstractions/site/de>
+		#include <abstractions/dconf>
+
+		/usr/lib/inox/** mr,
+		/usr/lib/inox/inox mr,
+		deny /usr/bin/xdg-settings x, # "default browser" stuff
+
+		/usr/lib/inox/inox ix,
+		/usr/lib/inox/chrome-sandbox cx -> chrome_sandbox,
+
+		@{PROC}/ r,
+		owner @{PROC}/@{pid}/fd/ r,
+		deny @{PROC}/[0-9]*/oom_{,score_}adj rw,
+
+		# sandbox/linux/services/namespace_sandbox.cc credentials.cc
+		capability sys_admin,
+		capability sys_chroot,
+		owner @{PROC}/@{pid}/setgroups w,
+		owner @{PROC}/@{pid}/gid_map w,
+		owner @{PROC}/@{pid}/uid_map w,
+
+		# Presumably for built-in debugger/crash-report
+		capability sys_ptrace,
+		@{PROC}/@{pid}/status r,
+		@{PROC}/sys/kernel/yama/ptrace_scope r,
+
+		owner @{HOME}/.inoxunpack/** r,
+		owner @{HOME}/.pki/nssdb/** rwk,
+		owner @{HOME}/.config/inox/ rwk,
+		owner @{HOME}/.config/inox/** rwk,
+		owner @{HOME}/.cache/inox/ rwk,
+		owner @{HOME}/.cache/inox/** rwk,
+		/{run,dev}/shm/.org.chromium.Chromium.* rwkm,
+		/{run,dev}/shm/org.chromium.Chromium.shmem.* rwkm,
+		owner @{HOME}/.cache/mesa_shader_cache/** rw,
+
+		@{PROC}/vmstat r,
+		owner @{PROC}/@{pid}/stat r,
+		owner @{PROC}/@{pid}/task/ r,
+		owner @{PROC}/@{pid}/task/@{pids}/status r,
+
+		# Looks at root-owned pids as well
+		deny @{PROC}/@{pids}/stat r,
+		deny /usr/lib/inox/extensions/ rw,
+
+		# Device access stuff - should allow for GPU, but nothing else, ideally
+		/etc/udev/udev.conf r,
+		/sys/{bus,class}/ r,
+		/sys/bus/pci/devices/ r,
+		/sys/devices/pci[0-9:.]*/**/{uevent,resource,irq,vendor,device,class} r,
+		/sys/devices/pci[0-9:.]*/**/{subsystem_vendor,subsystem_device} r,
+
+		# Other known device-query things:
+		#  - StorageMonitorLinux for Media Gallery API - http://crbug.com/141229
+		deny /run/udev/data/** r,
+		deny /sys/devices/virtual/tty/tty*/active r,
+		deny /sys/class/*/ r,
+
+		# Wildcard rule doesn't work here, as it overrides "/sys/bus/pci/devices/ r"
+		deny /sys/bus/{clockevents,platform,pci_express,serio,event_source}/devices/ r,
+		deny /sys/bus/{machinecheck,cpu,hdaudio,scsi,clocksource,hid,edac}/devices/ r,
+		deny /sys/bus/{pnp,usb,workqueue,virtio,container,acpi,i2c}/devices/ r,
+
+		# Site-local stuff
+		/etc/core/app/X/vdpau_wrapper.cfg r,
+
+		# File selection dialogs
+		deny @{HOME} r,
+		/etc/fstab r,
+		/run/mount/utab r,
+		@{PROC}/@{pid}/mountinfo r,
+		/usr/share/glib-*/schemas/gschemas.compiled r,
+		deny /{,var/}run/user/*/dconf/user w,
+
+		# Import for bookmarks and such
+		deny @{HOME}/.mozilla/firefox/ rw,
+		deny @{HOME}/.mozilla/firefox/** rw,
+	}
+
+	# From ubuntu profile, don't seem to generate audit logging, not sure why
+	profile chrome_sandbox {
+		/usr/lib/libgcc_s.so* mr,
+		/usr/lib/libm-*.so* mr,
+		/usr/lib/libpthread-*.so* mr,
+		/usr/lib/libc-*.so* mr,
+		/usr/lib/libld-*.so* mr,
+		/usr/lib/ld-*.so* mr,
+		/usr/lib/libstdc++.so* mr,
+		/etc/ld.so.cache r,
+		deny /etc/ld.so.preload r,
+
+		capability chown,
+		capability fsetid,
+		capability setgid,
+		capability setuid,
+		capability dac_override,
+		capability sys_chroot,
+
+		capability sys_ptrace,
+		ptrace (read, readby),
+
+		signal (receive) peer=unconfined,
+		signal peer=@{profile_name},
+		signal (receive, send) set=("exists"),
+		signal (receive) peer=/usr/lib/inox/inox,
+
+		unix (receive, send) peer=(label=/usr/lib/inox/inox),
+		unix (create),
+		unix peer=(label=@{profile_name}),
+		unix (getattr, getopt, setopt, shutdown) addr=none,
+
+		@{PROC}/ r,
+		@{PROC}/[0-9]*/ r,
+		@{PROC}/[0-9]*/fd/ r,
+		deny @{PROC}/[0-9]*/oom_adj w,
+		deny @{PROC}/[0-9]*/oom_score_adj w,
+		@{PROC}/[0-9]*/status r,
+		@{PROC}/[0-9]*/task/[0-9]*/stat r,
+
+		/dev/null rw,
+
+		owner /tmp/** rw,
+	}
+
+}

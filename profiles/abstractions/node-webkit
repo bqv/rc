@@ -1,6 +1,6 @@
 
 	# Be sure to also include:
-	#  base, ssl_certs, fonts, X, freedesktop.org, user-tmp, site/*
+	#  base, ssl-certs, fonts, X, freedesktop.org, user-tmp, site/*
 
 	owner @{HOME}/.pki{,/nssdb}/ rw,
 	owner @{HOME}/.pki/nssdb/** rwmk,

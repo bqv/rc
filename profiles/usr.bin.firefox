@@ -6,7 +6,7 @@
 	#include <abstractions/udev>
 	#include <abstractions/pulse>
 	#include <abstractions/nameservice>
-	#include <abstractions/ssl_certs>
+	#include <abstractions/ssl-certs>
 	#include <abstractions/gnome>
 	#include <abstractions/dconf>
 	#include <abstractions/user-download>
