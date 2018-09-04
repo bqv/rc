@@ -31,5 +31,5 @@ basic hygeine than hardening against a dedicated attacker.
 Therefore it might be wise to only use these profiles for reference
 (e.g. to get the general idea where app needs access), and not as a drop-in things.
 
-Some paths in these profiles (like ~/.cFG/* and /etc/core) are specific to my
+Some paths in these profiles (like @{HOME\_GIT} and @{SYS\_GIT}) are specific to my
 systems (configuration git repos), and can/should be removed or updated to local paths.

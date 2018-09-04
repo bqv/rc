@@ -1,5 +1,8 @@
 # "dotfiles" git repo
 @{HOME_GIT}=@{HOME}/hatch/cFG/
 
-# I have ~/bin path symlinked to a git repo, hence the abstraction
+# Have ~/bin path symlinked to a git repo, hence the abstraction
 @{HOME_BIN}=@{HOME}/bin/ @{HOME_GIT}/bin/
+
+# "system-wide configs" git repo
+@{SYS_GIT}=/etc/core/

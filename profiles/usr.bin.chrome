@@ -84,7 +84,7 @@ profile /usr/bin/inox {
 		deny /sys/bus/{pnp,usb,workqueue,virtio,container,acpi,i2c}/devices/ r,
 
 		# Site-local stuff
-		/etc/core/app/X/vdpau_wrapper.cfg r,
+		@{SYS_GIT}/app/X/vdpau_wrapper.cfg r,
 
 		# File selection dialogs
 		deny @{HOME} r,

@@ -44,10 +44,10 @@
 	deny /dev/snd/** rw, # alsa should always use pulse plugin
 
 	# Site-local configuration links
-	/etc/core/sys/pulse/* r,
-	/etc/core/sys/asound.conf r,
-	/etc/core/sys/secure/pulse.cookie rk,
-	/etc/core/app/X/drirc r,
+	@{SYS_GIT}/sys/pulse/* r,
+	@{SYS_GIT}/sys/asound.conf r,
+	@{SYS_GIT}/sys/secure/pulse.cookie rk,
+	@{SYS_GIT}/app/X/drirc r,
 
 	# lspci/fontconfig/webkit mess
 	deny /usr/bin/lspci rx,

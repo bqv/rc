@@ -44,12 +44,12 @@
 	network udp,
 
 	## Site-local symlinks
-	/etc/core/sys/pulse/* r,
-	/etc/core/sys/asound.conf r,
-	/etc/core/sys/secure/pulse.cookie rk,
+	@{SYS_GIT}/sys/pulse/* r,
+	@{SYS_GIT}/sys/asound.conf r,
+	@{SYS_GIT}/sys/secure/pulse.cookie rk,
 	# No need to ever write new cookies there:
 	deny /etc/pulse/auth.tcp.cookie w,
-	deny /etc/core/sys/secure/pulse.cookie w,
+	deny @{SYS_GIT}/sys/secure/pulse.cookie w,
 
 	## JACK integration via module-jack-*
 	/dev/shm/jack-*/** rw,

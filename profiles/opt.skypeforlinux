@@ -50,7 +50,7 @@
 	deny /sys/devices/virtual/net/** r,
 
 	# Site-local thing
-	/etc/core/app/sec/openssl.cnf r,
+	@{SYS_GIT}/app/sec/openssl.cnf r,
 
 	network,
 

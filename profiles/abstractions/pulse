@@ -4,9 +4,9 @@
 /usr/bin/pulseaudio pxrm,
 
 ## Site-local symlinks
-/etc/core/sys/pulse/* r,
-/etc/core/sys/asound.conf r,
-/etc/core/sys/secure/pulse.cookie rk,
+@{SYS_GIT}/sys/pulse/* r,
+@{SYS_GIT}/sys/asound.conf r,
+@{SYS_GIT}/sys/secure/pulse.cookie rk,
 
 /tmp/orcexec.* m,
 owner /run/user/*/orcexec.* rwkm,
