@@ -46,23 +46,27 @@ profile /usr/bin/inox {
 		@{PROC}/@{pid}/status r,
 		@{PROC}/sys/kernel/yama/ptrace_scope r,
 
+		owner @{HOME}/.inoxunpack/ r,
 		owner @{HOME}/.inoxunpack/** r,
+		owner @{HOME}/.inoxunpack/*/Cached*.pak rwk,
+
 		owner @{HOME}/.pki/nssdb/** rwk,
+		owner @{HOME}/.cache/thumbnails/** rw,
 		owner @{HOME}/.config/inox/ rwk,
 		owner @{HOME}/.config/inox/** rwk,
 		owner @{HOME}/.cache/inox/ rwk,
 		owner @{HOME}/.cache/inox/** rwk,
 		/{run,dev}/shm/.org.chromium.Chromium.* rwkm,
 		/{run,dev}/shm/org.chromium.Chromium.shmem.* rwkm,
-		owner @{HOME}/.cache/mesa_shader_cache/** rw,
+		owner @{HOME}/.cache/mesa_shader_cache/** rwk,
 
 		@{PROC}/vmstat r,
+		@{PROC}/@{pids}/stat r,
 		owner @{PROC}/@{pid}/stat r,
 		owner @{PROC}/@{pid}/task/ r,
+		owner @{PROC}/@{pid}/task/@{pids}/stat r,
 		owner @{PROC}/@{pid}/task/@{pids}/status r,
 
-		# Looks at root-owned pids as well
-		deny @{PROC}/@{pids}/stat r,
 		deny /usr/lib/inox/extensions/ rw,
 
 		# Device access stuff - should allow for GPU, but nothing else, ideally
