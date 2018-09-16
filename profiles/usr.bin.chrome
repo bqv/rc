@@ -72,6 +72,7 @@ profile /usr/bin/inox {
 		deny /usr/lib/inox/extensions/ rw,
 
 		# Device access stuff - should allow for GPU, but nothing else, ideally
+		/dev/ r,
 		/etc/udev/udev.conf r,
 		/sys/{bus,class}/ r,
 		/sys/bus/pci/devices/ r,
