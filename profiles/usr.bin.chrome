@@ -52,6 +52,7 @@ profile /usr/bin/inox {
 		owner @{HOME}/.inoxunpack/** r,
 		owner @{HOME}/.inoxunpack/*/Cached*.pak rwk,
 
+		/etc/chromium/** rk,
 		owner @{HOME}/.pki/nssdb/** rwk,
 		owner @{HOME}/.cache/thumbnails/** rw,
 		owner @{HOME}/.config/inox/ rwk,
@@ -61,6 +62,10 @@ profile /usr/bin/inox {
 		/{run,dev}/shm/.org.chromium.Chromium.* rwkm,
 		/{run,dev}/shm/org.chromium.Chromium.shmem.* rwkm,
 		owner @{HOME}/.cache/mesa_shader_cache/** rwk,
+
+		# Fills these paths with gigs of trash fast otherwise
+		deny @{HOME}/.config/inox/BrowserMetrics/ rw,
+		deny @{HOME}/.config/inox/BrowserMetrics/** rw,
 
 		@{PROC}/vmstat r,
 		@{PROC}/@{pids}/stat r,
@@ -77,7 +82,7 @@ profile /usr/bin/inox {
 		/sys/{bus,class}/ r,
 		/sys/bus/pci/devices/ r,
 		/sys/devices/pci[0-9:.]*/**/{uevent,resource,irq,vendor,device,class} r,
-		/sys/devices/pci[0-9:.]*/**/{subsystem_vendor,subsystem_device} r,
+		/sys/devices/pci[0-9:.]*/**/{subsystem_vendor,subsystem_device,config} r,
 
 		# Other known device-query things:
 		#  - StorageMonitorLinux for Media Gallery API - http://crbug.com/141229
@@ -88,7 +93,7 @@ profile /usr/bin/inox {
 		# Wildcard rule doesn't work here, as it overrides "/sys/bus/pci/devices/ r"
 		deny /sys/bus/{clockevents,platform,pci_express,serio,event_source}/devices/ r,
 		deny /sys/bus/{machinecheck,cpu,hdaudio,scsi,clocksource,hid,edac}/devices/ r,
-		deny /sys/bus/{pnp,usb,workqueue,virtio,container,acpi,i2c}/devices/ r,
+		deny /sys/bus/{pnp,usb,workqueue,virtio,container,acpi,i2c,snd_seq,mipi-dsi}/devices/ r,
 
 		# Site-local stuff
 		@{SYS_GIT}/app/X/vdpau_wrapper.cfg r,
