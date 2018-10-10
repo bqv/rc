@@ -16,6 +16,7 @@
 
   /usr/share/fonts/                     r,
   /usr/share/fonts/**                   mr,
+  deny /usr/share/fonts/**/.uuid.TMP-* w,
 
   /etc/fonts/**                         mr,
   /usr/share/fontconfig/conf.avail/**   r,
