@@ -32,6 +32,10 @@ profile /usr/bin/inox {
 		/usr/lib/inox/inox mr,
 		deny /usr/bin/xdg-settings x, # "default browser" stuff
 
+		# Inherited via fd, apparently
+		owner @{HOME}/.config/inox-flags.conf r,
+		owner @{HOME_GIT}/inox-flags.conf r,
+
 		@{PROC}/ r,
 		owner @{PROC}/@{pid}/fd/ r,
 		deny @{PROC}/[0-9]*/oom_{,score_}adj rw,
@@ -94,6 +98,7 @@ profile /usr/bin/inox {
 		deny /sys/bus/{clockevents,platform,pci_express,serio,event_source}/devices/ r,
 		deny /sys/bus/{machinecheck,cpu,hdaudio,scsi,clocksource,hid,edac}/devices/ r,
 		deny /sys/bus/{pnp,usb,workqueue,virtio,container,acpi,i2c,snd_seq,mipi-dsi}/devices/ r,
+		deny /sys/bus/{mdio_bus,nvmem,wmi}/devices/ r,
 
 		# Site-local stuff
 		@{SYS_GIT}/app/X/vdpau_wrapper.cfg r,
