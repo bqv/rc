@@ -63,9 +63,10 @@ profile /usr/bin/inox {
 		owner @{HOME}/.config/inox/** rwk,
 		owner @{HOME}/.cache/inox/ rwk,
 		owner @{HOME}/.cache/inox/** rwk,
+		owner @{HOME}/.cache/mesa_shader_cache/** rwk,
 		/{run,dev}/shm/.org.chromium.Chromium.* rwkm,
 		/{run,dev}/shm/org.chromium.Chromium.shmem.* rwkm,
-		owner @{HOME}/.cache/mesa_shader_cache/** rwk,
+		owner @{HOME}/.local/share/.org.chromium.Chromium.* rwkm,
 
 		# Fills these paths with gigs of trash fast otherwise
 		deny @{HOME}/.config/inox/BrowserMetrics/ rw,
@@ -87,6 +88,7 @@ profile /usr/bin/inox {
 		/sys/bus/pci/devices/ r,
 		/sys/devices/pci[0-9:.]*/**/{uevent,resource,irq,vendor,device,class} r,
 		/sys/devices/pci[0-9:.]*/**/{subsystem_vendor,subsystem_device,config} r,
+		deny /dev/video* r,
 
 		# Other known device-query things:
 		#  - StorageMonitorLinux for Media Gallery API - http://crbug.com/141229
