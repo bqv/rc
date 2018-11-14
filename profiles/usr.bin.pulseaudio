@@ -44,6 +44,8 @@
 	network udp,
 
 	## Site-local symlinks
+	/etc/alsa/conf.d/ r,
+	/etc/alsa/conf.d/* r,
 	@{SYS_GIT}/sys/pulse/* r,
 	@{SYS_GIT}/sys/asound.conf r,
 	@{SYS_GIT}/sys/secure/pulse.cookie rk,
