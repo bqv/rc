@@ -50,6 +50,8 @@
   /dev/dri/ r,
   /dev/dri/**                     mrw,
   /etc/drirc                      r,
+  /usr/share/drirc.d/ r,
+  /usr/share/drirc.d/* r,
   owner @{HOME}/.drirc            r,
 
   # Xcompose
