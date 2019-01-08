@@ -7,7 +7,7 @@ Description
 This is a modified uk-dvorak layout for x.org's xkb which includes a bunch of extra characters:
 
 - ÄÖÜÆØÅÐÞ for typing Scandinavian/Germanic languages, or other languages that use them.
-- A lot of combining diacritics for creating even more letters.
+- A lot of combining diacritics for creating even more letters (âőæà...).
 - A series of greek characters for mathematical equations and similar things
 - Various other symbols like ©®¤¢¥¶×÷†‡±☭¡¹²³¼¾° for various other uses.
 
@@ -22,7 +22,7 @@ Some languages allow replacing characters (for example, german ö can be written
 oe when no ö is available), but not all of them (for instance finnish äijä
 cannot be spelled aeijae.). Further typing some names of people or places
 without the correct letters is a bit of a hack, and properly writing *Rhône*,
-*Eyjafjallajökull*, *Tromsø*, *Österreich* or *Säynäjä* is better.
+*Eyjafjallajökull*, *Tromsø*, *Österreich*, *Erdős* or *Säynäjä* is better.
 
 Full Layout
 -----------
@@ -48,3 +48,10 @@ Full Layout
     ┃       ┃       ┃       ┃ ␣                               ⍽ ┃       ┃       ┃       ┃
     ┃Ctrl   ┃Meta   ┃Alt    ┃ ␣           Space               ⍽ ┃AltGr ⇮┃Menu   ┃Ctrl   ┃
     ┗━━━━━━━┻━━━━━━━┻━━━━━━━┹───────────────────────────────────┺━━━━━━━┻━━━━━━━┻━━━━━━━┛
+
+Installation
+------------
+
+Place the `zz` file in `/usr/share/X11/xkb/symbols/` or other folder that xorg
+gets these things from. I am not sure how exactly xkb works, and it doesn't
+seem to be exactly well documented, this is all I have figured out so far.
