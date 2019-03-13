@@ -36,10 +36,11 @@
 	deny /usr/share/upwork/cmon x, # crash monitor binary
 	deny /dev/video0 rwk, # that's a bit too much
 	deny @{PROC}/*/stat{,m} r,
-	deny @{PROC}/uptime r,
+	deny @{PROC}/{uptime,vmstat} r,
 
 	# Common noise when running from console
 	deny /dev/tty rw,
+	deny /sys/devices/virtual/tty/tty*/active rw,
 	deny /dev/pts/* rw,
 
 	network,
