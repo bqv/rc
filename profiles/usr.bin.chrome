@@ -1,4 +1,4 @@
-# For https://github.com/gcarq/inox-patchset variant of chromium
+# For https://github.com/Eloston/ungoogled-chromium variant of chromium
 
 # NOTE: assumes kernel support for ns-sandbox, and not suid-sandbox
 #   modern chromium uses ns-sandbox if it can, with suid as a fallback
@@ -6,16 +6,13 @@
 
 #include <tunables/global>
 
-profile /usr/bin/inox {
+profile /usr/bin/chromium {
 	#include <abstractions/base>
 	#include <abstractions/site/base>
 
-	owner @{HOME}/.config/inox-flags.conf r,
-	owner @{HOME_GIT}/inox-flags.conf r,
+	/usr/lib/chromium/chromium cx -> chromium,
 
-	/usr/lib/inox/inox cx -> inox,
-
-	profile inox {
+	profile chromium {
 		#include <abstractions/base>
 		#include <abstractions/site/base>
 		#include <abstractions/X>
@@ -27,18 +24,14 @@ profile /usr/bin/inox {
 		#include <abstractions/site/de>
 		#include <abstractions/dconf>
 
-		/usr/lib/inox/inox ix,
-		/usr/lib/inox/** mr,
-		/usr/lib/inox/inox mr,
-		deny /usr/bin/xdg-settings x, # "default browser" stuff
-
-		# Inherited via fd, apparently
-		owner @{HOME}/.config/inox-flags.conf r,
-		owner @{HOME_GIT}/inox-flags.conf r,
+		/usr/lib/chromium/chromium ix,
+		/usr/lib/chromium/** mr,
+		/usr/lib/chromium/chromium mr,
+		deny /usr/bin/xdg-{settings,desktop-menu} x, # "default browser" stuff
 
 		@{PROC}/ r,
 		owner @{PROC}/@{pid}/fd/ r,
-		deny @{PROC}/[0-9]*/oom_{,score_}adj rw,
+		deny @{PROC}/@{pid}/oom_{,score_}adj rw,
 
 		# sandbox/linux/services/namespace_sandbox.cc credentials.cc
 		capability sys_admin,
@@ -52,6 +45,7 @@ profile /usr/bin/inox {
 		@{PROC}/@{pid}/status r,
 		@{PROC}/sys/kernel/yama/ptrace_scope r,
 
+		# Extensions leftover from inox profile
 		owner @{HOME}/.inoxunpack/ r,
 		owner @{HOME}/.inoxunpack/** r,
 		owner @{HOME}/.inoxunpack/*/Cached*.pak rwk,
@@ -59,27 +53,28 @@ profile /usr/bin/inox {
 		/etc/chromium/** rk,
 		owner @{HOME}/.pki/nssdb/** rwk,
 		owner @{HOME}/.cache/thumbnails/** rw,
-		owner @{HOME}/.config/inox/ rwk,
-		owner @{HOME}/.config/inox/** rwk,
-		owner @{HOME}/.cache/inox/ rwk,
-		owner @{HOME}/.cache/inox/** rwk,
+		owner @{HOME}/.config/chromium/ rwk,
+		owner @{HOME}/.config/chromium/** rwk,
+		owner @{HOME}/.cache/chromium/ rwk,
+		owner @{HOME}/.cache/chromium/** rwk,
 		owner @{HOME}/.cache/mesa_shader_cache/** rwk,
 		/{run,dev}/shm/.org.chromium.Chromium.* rwkm,
 		/{run,dev}/shm/org.chromium.Chromium.shmem.* rwkm,
 		owner @{HOME}/.local/share/.org.chromium.Chromium.* rwkm,
 
 		# Fills these paths with gigs of trash fast otherwise
-		deny @{HOME}/.config/inox/BrowserMetrics/ rw,
-		deny @{HOME}/.config/inox/BrowserMetrics/** rw,
+		deny @{HOME}/.config/chromium/BrowserMetrics/ rw,
+		deny @{HOME}/.config/chromium/BrowserMetrics/** rw,
+		deny @{HOME}/.config/chromium/BrowserMetrics* rw,
 
 		@{PROC}/vmstat r,
 		@{PROC}/@{pids}/stat r,
-		owner @{PROC}/@{pid}/stat r,
+		owner @{PROC}/@{pid}/{stat,statm} r,
 		owner @{PROC}/@{pid}/task/ r,
 		owner @{PROC}/@{pid}/task/@{pids}/stat r,
 		owner @{PROC}/@{pid}/task/@{pids}/status r,
 
-		deny /usr/lib/inox/extensions/ rw,
+		deny /usr/lib/chromium/extensions/ rw,
 
 		# Device access stuff - should allow for GPU, but nothing else, ideally
 		/dev/ r,
