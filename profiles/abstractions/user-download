@@ -15,7 +15,7 @@
   owner @{HOME}/tmp/**       		rwl,
   owner @{HOME}/[dD]ownload{,s}/	r,
   owner @{HOME}/[dD]ownload{,s}/**	rwl,
-  owner @{HOME}/[a-zA-Z0-9]* 		rwl,
+  owner @{HOME}/[^.]* 		rwl,
   owner @{HOME}/@{XDG_DESKTOP_DIR}/	r,
   owner @{HOME}/@{XDG_DESKTOP_DIR}/*	rwl,
   owner @{HOME}/@{XDG_DOWNLOAD_DIR}/	r,

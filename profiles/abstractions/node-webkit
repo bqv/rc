@@ -8,9 +8,7 @@
 
 	@{PROC} r,
 	@{PROC}/sys/kernel/shmmax r,
-	owner @{PROC}/@{pid}/auxv r,
 	owner @{PROC}/@{pid}/fd/ r,
-	owner @{PROC}/@{pid}/status r,
 	owner @{PROC}/@{pid}/task/@{pid}/status r,
 	owner @{PROC}/@{pid}/mountinfo r,
 	owner @{PROC}/@{pid}/task/ r,

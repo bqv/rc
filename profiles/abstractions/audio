@@ -49,7 +49,7 @@ owner @{HOME}/.cache/event-sound-cache.* rwk,
 
 # pulse
 /etc/pulse/ r,
-/etc/pulse/* r,
+/etc/pulse/** r,
 /{run,dev}/shm/ r,
 owner /{run,dev}/shm/pulse-shm* rwk,
 owner @{HOME}/.pulse-cookie rwk,
@@ -68,6 +68,8 @@ owner /tmp/pulse-*/* rw,
 # openal
 /etc/openal/alsoft.conf r,
 owner @{HOME}/.alsoftrc r,
+/usr/{,local/}share/openal/hrtf/{,**} r,
+owner @{HOME}/.local/share/openal/hrtf/{,**} r,
 
 # wildmidi
 /etc/wildmidi/wildmidi.cfg r,

@@ -21,26 +21,12 @@
   /etc/passwd             r,
   /etc/protocols          r,
 
-  # When using libnss-extrausers, the passwd and group files are merged from
-  # an alternate path
-  /var/lib/extrausers/group  r,
-  /var/lib/extrausers/passwd r,
-
-  # When using sssd, the passwd and group files are stored in an alternate path
-  # and the nss plugin also needs to talk to a pipe
-  /var/lib/sss/mc/group   r,
-  /var/lib/sss/mc/passwd  r,
-  /var/lib/sss/pipes/nss  rw,
-
   /etc/resolv.conf        r,
-  # on systems using resolvconf, /etc/resolv.conf is a symlink to
-  # /{,var/}run/resolvconf/resolv.conf and a file sometimes referenced in
-  # /etc/resolvconf/run/resolv.conf
-  /{,var/}run/resolvconf/resolv.conf r,
+  # On systems where /etc/resolv.conf is managed programmatically, it is
+  # a symlink to /{,var/}run/(whatever program is managing it)/resolv.conf.
+  /{,var/}run/{resolvconf,NetworkManager,systemd/resolve,connman}/resolv.conf r,
   /etc/resolvconf/run/resolv.conf r,
-  # on systems using systemd's networkd, /etc/resolv.conf is a symlink to
-  # /run/systemd/resolve/resolv.conf
-  /{,var/}run/systemd/resolve/resolv.conf r,
+  /{,var/}run/systemd/resolve/stub-resolv.conf r,
 
   /etc/samba/lmhosts      r,
   /etc/services           r,
@@ -50,7 +36,7 @@
   # to vast speed increases when working with network-based lookups.
   /{,var/}run/.nscd_socket   rw,
   /{,var/}run/nscd/socket    rw,
-  /{var/db,var/cache,var/run,run}/nscd/{passwd,group,services,hosts}    r,
+  /{var/db,var/cache,var/lib,var/run,run}/nscd/{passwd,group,services,hosts}    r,
   # nscd renames and unlinks files in it's operation that clients will
   # have open
   /{,var/}run/nscd/db*  rmix,
@@ -62,6 +48,10 @@
 
   # avahi-daemon is used for mdns4 resolution
   /{,var/}run/avahi-daemon/socket rw,
+
+  # libnl-3-200 via libnss-gw-name
+  @{PROC}/@{pid}/net/psched r,
+  /etc/libnl-*/classid r,
 
   # TCP/UDP network access
   network inet  stream,

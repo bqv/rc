@@ -33,7 +33,13 @@
   /usr/share/zoneinfo/           r,
   /usr/share/zoneinfo/**         r,
   /usr/share/X11/locale/**       r,
-  /{,var/}run/systemd/journal/dev-log w,
+  /run/systemd/journal/dev-log w,
+  # systemd native journal API (see sd_journal_print(4))
+  /run/systemd/journal/socket w,
+  # Nested containers and anything using systemd-cat need this. 'r' shouldn't
+  # be required but applications fail without it. journald doesn't leak
+  # anything when reading so this is ok.
+  /run/systemd/journal/stdout rw,
 
   /usr/lib/locale/**             mr,
   /usr/lib/gconv/*.so            mr,
@@ -45,13 +51,14 @@
   # ld.so.cache and ld are used to load shared libraries; they are best
   # available everywhere
   /etc/ld.so.cache               mr,
+  /etc/ld.so.conf                r,
+  /etc/ld.so.conf.d/{,*.conf}    r,
+  /etc/ld.so.preload             r,
 
   # we might as well allow everything to use common libraries
   /usr/lib/**            r,
   /usr/lib/*.so*         mr,
   /usr/lib/**/lib*.so*   mr,
-  /lib/tls/i686/{cmov,nosegneg}/lib*.so*    mr,
-  /lib/i386-linux-gnu/tls/i686/{cmov,nosegneg}/lib*.so*    mr,
 
   # /dev/null is pretty harmless and frequently used
   /dev/null                      rw,
@@ -71,10 +78,11 @@
   @{PROC}/meminfo                r,
   @{PROC}/stat                   r,
   @{PROC}/cpuinfo                r,
+  /sys/devices/system/cpu/       r,
   /sys/devices/system/cpu/online r,
 
   # glibc's *printf protections read the maps file
-  @{PROC}/@{pid}/maps            r,
+  @{PROC}/@{pid}/{maps,auxv,status} r,
 
   # libgcrypt reads some flags from /proc
   @{PROC}/sys/crypto/*           r,

@@ -22,8 +22,6 @@
   /usr/share/fontconfig/conf.avail/**   r,
   /usr/share/fontconfig/conf.avail.*/**   r,
 
-  /usr/lib/openoffice/share/fonts/**    mr,
-
   /var/cache/fonts/**                   mr,
   /var/cache/fontconfig/**              mr,
   /var/lib/defoma/**                    mr,
@@ -39,6 +37,8 @@
   owner @{HOME}/.fonts.conf             r,
   owner @{HOME}/.fonts/                 r,
   owner @{HOME}/.fonts/**               mr,
+  owner @{HOME}/.local/share/fonts/     mr,
+  owner @{HOME}/.local/share/fonts/**   mr,
   owner @{HOME}/.fonts.cache-2          mr,
   owner @{HOME}/.{,cache/}fontconfig/   r,
   owner @{HOME}/.{,cache/}fontconfig/** mrl,
@@ -46,8 +46,6 @@
   owner @{HOME}/.fonts.conf.d/**        mr,
   owner @{HOME}/.config/fontconfig/     r,
   owner @{HOME}/.config/fontconfig/**   mr,
-  owner @{HOME}/.local/share/fonts/ r,
-  owner @{HOME}/.local/share/fonts/** rm,
 
   /usr/local/share/fonts/               r,
   /usr/local/share/fonts/**             mr,

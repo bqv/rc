@@ -10,16 +10,16 @@
 #
 # ------------------------------------------------------------------
 
-  /usr/lib/python{2.[4-7],3.[0-9]}/**.{pyc,so}           mr,
-  /usr/lib/python{2.[4-7],3.[0-9]}/**.{egg,py,pth}       r,
-  /usr/lib/python{2.[4-7],3.[0-9]}/site-packages/ r,
-  /usr/lib/python3.[0-9]/lib-dynload/*.so            mr,
+  /usr/lib/python{2.7,3.[0-9]*}/**.{pyc,so}           mr,
+  /usr/lib/python{2.7,3.[0-9]*}/**.{egg,py,pth}       r,
+  /usr/lib/python{2.7,3.[0-9]*}/site-packages/ r,
+  /usr/lib/python3.[0-9]*/lib-dynload/*.so            mr,
 
   # Site-wide configuration
-  /etc/python{2.[4-7],3.[0-9]}/** r,
+  /etc/python{2.7,3.[0-9]*}/** r,
 
   # wx paths
   /usr/lib/wx/python/*.pth r,
 
   # python build configuration and headers
-  /usr/include/python{2.[4-7],3.[0-9]}*/pyconfig.h r,
+  /usr/include/python{2.7,3.[0-9]*}*/pyconfig.h r,

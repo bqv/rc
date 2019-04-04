@@ -3,7 +3,6 @@
 # /usr/lib/firefox/firefox flags=( complain ) {
 /usr/lib/firefox/firefox {
 
-	#include <abstractions/udev>
 	#include <abstractions/pulse>
 	#include <abstractions/nameservice>
 	#include <abstractions/ssl-certs>
@@ -56,8 +55,14 @@
 	owner @{PROC}/@{pid}/task/[0-9]*/stat r,
 	@{PROC}/@{pid}/net/arp r, # for local "network id", to detect changes
 
-	# Wants more and more info on pci devs with each version
-	# Didn't check what for, probably some hw-change detection
+	# udev
+	/etc/udev/udev.conf r,
+	/sys/devices/**/name r,
+	/sys/devices/**/uevent r,
+	/run/udev/data/* r,
+	/run/mount/utab r,
+	/sys/{bus,class}/ r,
+	/sys/class/{drm,input}/ r,
 	deny /dev/ r,
 	deny /sys/devices/pci**/{config,vendor,device} r,
 
