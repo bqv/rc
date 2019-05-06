@@ -100,6 +100,10 @@ profile /usr/bin/chromium {
 		# Site-local stuff
 		@{SYS_GIT}/app/X/vdpau_wrapper.cfg r,
 
+		# URL handlers
+		owner @{HOME_BIN}/wrappers/xdg-open Ux,
+		owner @{HOME_BIN}/wrappers/leech_*.wrapper Ux,
+
 		# File selection dialogs
 		deny @{HOME} r,
 		/etc/fstab r,
