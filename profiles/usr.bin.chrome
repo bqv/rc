@@ -83,6 +83,7 @@ profile /usr/bin/chromium {
 		/sys/bus/pci/devices/ r,
 		/sys/devices/pci[0-9:.]*/**/{uevent,resource,irq,vendor,device,class} r,
 		/sys/devices/pci[0-9:.]*/**/{subsystem_vendor,subsystem_device,config} r,
+		deny /sys/devices/pci[0-9:.]*/**/descriptors r, # block any further android-debug checks
 		deny /dev/video* r,
 
 		# Other known device-query things:
