@@ -38,6 +38,14 @@
 	deny @{PROC}/*/stat{,m} r,
 	deny @{PROC}/{uptime,vmstat} r,
 
+	# Tries to spy on every command line for everything in the system
+	# Security risk if anything sensitive gets passed there, e.g. passwords/keys/paths
+	deny @{PROC}/*/comm r,
+
+	# Tries to ptrace itself for some reason (integrity check?)
+	allow capability sys_ptrace,
+	deny ptrace,
+
 	# Common noise when running from console
 	deny /dev/tty rw,
 	deny /sys/devices/virtual/tty/tty*/active rw,
