@@ -44,6 +44,7 @@ profile /usr/bin/chromium {
 		capability sys_ptrace,
 		@{PROC}/@{pid}/status r,
 		@{PROC}/sys/kernel/yama/ptrace_scope r,
+		deny ptrace, # triggers on xdg handlers
 
 		# Extensions leftover from inox profile
 		owner @{HOME}/.inoxunpack/ r,
