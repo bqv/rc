@@ -69,8 +69,10 @@ profile /usr/bin/chromium {
 		deny @{HOME}/.config/chromium/BrowserMetrics* rw,
 
 		@{PROC}/vmstat r,
+		@{PROC}/sys/fs/inotify/max_user_watches r,
 		@{PROC}/@{pids}/stat r,
-		owner @{PROC}/@{pid}/{stat,statm} r,
+		owner @{PROC}/@{pid}/{mem,stat,statm} r,
+		owner @{PROC}/@{pid}/clear_refs w,
 		owner @{PROC}/@{pid}/task/ r,
 		owner @{PROC}/@{pid}/task/@{pids}/stat r,
 		owner @{PROC}/@{pid}/task/@{pids}/status r,
@@ -117,6 +119,10 @@ profile /usr/bin/chromium {
 		# Import for bookmarks and such
 		deny @{HOME}/.mozilla/firefox/ rw,
 		deny @{HOME}/.mozilla/firefox/** rw,
+
+		# Weird mmap probes
+		deny @{HOME}/#[0-9]* m,
+		/tmp/#[0-9]* m,
 	}
 
 }
