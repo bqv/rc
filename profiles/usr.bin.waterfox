@@ -1,0 +1,66 @@
+# For waterfox-current
+
+#include <tunables/global>
+
+profile /opt/waterfox-current/waterfox-current {
+	#include <abstractions/base>
+	#include <abstractions/site/base>
+	#include <abstractions/site/de>
+	#include <abstractions/X>
+	#include <abstractions/fonts>
+	#include <abstractions/nameservice>
+	#include <abstractions/freedesktop.org>
+	#include <abstractions/ssl-certs>
+	#include <abstractions/pulse>
+	#include <abstractions/dconf>
+	#include <abstractions/user-download>
+
+	/opt/waterfox-current/** rm,
+	/opt/waterfox-current/waterfox-current cix, # tabs
+
+	/etc/mime.types r,
+	/usr/share/glib-2.0/schemas/gschemas.compiled r,
+
+	capability sys_admin,
+	capability sys_chroot,
+
+	owner @{HOME}/.waterfox/ rwk,
+	owner @{HOME}/.waterfox/** rwkm,
+
+	owner @{HOME}/.cache/waterfox/ rwk,
+	owner @{HOME}/.cache/waterfox/** rwkm,
+	owner @{HOME}/.cache/mesa_shader_cache/** rwk,
+
+	owner @{PROC}/@{pid}/fd/ r,
+	owner @{PROC}/@{pid}/{mountinfo,statm,smaps} r,
+	owner @{PROC}/@{pid}/task/@{pids}/stat r,
+	@{PROC}/@{pids}/net/arp r,
+	@{PROC}/@{pids}/{uid_map,gid_map,setgroups} rw,
+
+	owner /run/user/[0-9]*/dconf/user rw,
+
+	/dev/ r,
+	/dev/shm/org.chromium.* rwkm,
+	/dev/shm/org.mozilla.ipc.* rwkm,
+
+	/tmp/waterfox/ rwk,
+	/tmp/waterfox/** rwk,
+	/tmp/Temp-????????-????-????-????-????????????/ rwk,
+	/tmp/Temp-????????-????-????-????-????????????/** rwk,
+
+	network inet dgram,
+	network inet stream,
+
+	# Need to check what it's looking for there
+	deny /sys/devices/pci[0-9:.]*/[0-9:.]*/[0-9:.]*/* r,
+
+	# URL handlers
+	owner @{HOME_BIN}/wrappers/xdg-open Ux,
+	owner @{HOME_BIN}/wrappers/leech_*.wrapper Ux,
+
+	# File selection dialogs
+	deny @{HOME} r,
+	/etc/fstab r,
+	/run/mount/utab r,
+
+}
