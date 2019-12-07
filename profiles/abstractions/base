@@ -133,18 +133,3 @@
 
   # Allow us to getattr, getopt, setop and shutdown on unix sockets
   unix (getattr, getopt, setopt, shutdown),
-
-  # Workaround https://launchpad.net/bugs/359338 until upstream handles stacked
-  # filesystems generally. This does not appreciably decrease security with
-  # Ubuntu profiles because the user is expected to have access to files owned
-  # by him/her. Exceptions to this are explicit in the profiles. While this rule
-  # grants access to those exceptions, the intended privacy is maintained due to
-  # the encrypted contents of the files in this directory. Files in this
-  # directory will also use filename encryption by default, so the files are
-  # further protected. Also, with the use of 'owner', this rule properly
-  # prevents access to the files from processes running under a different uid.
-
-  # encrypted ~/.Private and old-style encrypted $HOME
-  owner @{HOME}/.Private/** mrixwlk,
-  # new-style encrypted $HOME
-  owner @{HOMEDIRS}/.ecryptfs/*/.Private/** mrixwlk,
