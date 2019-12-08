@@ -21,8 +21,9 @@ profile /opt/waterfox-current/waterfox-current {
 	/etc/mime.types r,
 	/usr/share/glib-2.0/schemas/gschemas.compiled r,
 
-	capability sys_admin,
-	capability sys_chroot,
+	deny capability sys_admin,
+	deny capability sys_chroot,
+	deny capability sys_ptrace,
 
 	owner @{HOME}/.waterfox/ rwk,
 	owner @{HOME}/.waterfox/** rwkm,
@@ -43,10 +44,10 @@ profile /opt/waterfox-current/waterfox-current {
 	/dev/shm/org.chromium.* rwkm,
 	/dev/shm/org.mozilla.ipc.* rwkm,
 
+	# Must use TMPDIR=/tmp/waterfox/ env to have it store all its stuff there
+	# Otherwise it creates a lot of different non-descriptive files/dirs in /tmp root
 	/tmp/waterfox/ rwk,
 	/tmp/waterfox/** rwk,
-	/tmp/Temp-????????-????-????-????-????????????/ rwk,
-	/tmp/Temp-????????-????-????-????-????????????/** rwk,
 
 	network inet dgram,
 	network inet stream,
