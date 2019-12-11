@@ -23,6 +23,7 @@ profile /opt/waterfox-current/waterfox-current {
 
 	/etc/mime.types r,
 	/usr/share/glib-2.0/schemas/gschemas.compiled r,
+	/usr/share/applications/screensavers/ r,
 
 	deny capability sys_admin,
 	deny capability sys_chroot,
@@ -33,6 +34,9 @@ profile /opt/waterfox-current/waterfox-current {
 
 	owner @{HOME}/.waterfox/ rwk,
 	owner @{HOME}/.waterfox/** rwkm,
+
+	deny @{HOME}/.mozilla/ rw,
+	deny @{HOME}/.mozilla/** rw,
 
 	owner @{HOME}/.cache/waterfox/ rwk,
 	owner @{HOME}/.cache/waterfox/** rwkm,
@@ -59,6 +63,8 @@ profile /opt/waterfox-current/waterfox-current {
 	network inet stream,
 
 	# Need to check what it's looking for there
+	deny /sys/bus/pci/devices/ r,
+	deny /sys/devices/pci[0-9:.]*/[0-9:.]*/* r,
 	deny /sys/devices/pci[0-9:.]*/[0-9:.]*/[0-9:.]*/* r,
 
 	# URL handlers

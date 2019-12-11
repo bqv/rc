@@ -16,7 +16,6 @@
 
   /usr/share/fonts/                     r,
   /usr/share/fonts/**                   mr,
-  deny /usr/share/fonts/**/.uuid.TMP-* w,
 
   /etc/fonts/**                         mr,
   /usr/share/fontconfig/conf.avail/**   r,
@@ -55,3 +54,9 @@
 
   # data files for LibThai
   /usr/share/libthai/thbrk.tri          r,
+
+  deny @{HOME}/.cache/fontconfig/ w,
+  deny @{HOME}/.cache/fontconfig/** w,
+  deny /var/cache/fontconfig/ w,
+  deny /var/cache/fontconfig/** w,
+  deny /usr/share/fonts/**/.uuid.TMP-* w,
