@@ -59,11 +59,11 @@ profile /opt/waterfox-current/waterfox-current {
 	/tmp/waterfox/ rwk,
 	/tmp/waterfox/** rwk,
 
-	# GPU identification
-	/sys/bus/pci/devices/ r,
-	/sys/devices/pci0000:00/0000:00:02.0/0000:04:00.0/{uevent,device,config,vendor} r,
-	/sys/devices/pci0000:00/0000:00:02.0/0000:04:00.0/{revision,subsystem_vendor,subsystem_device} r,
+	# GPU identification - not really needed here, but can be easy to enable
+	deny /sys/bus/pci/devices/ r,
 	deny /sys/devices/pci[0-9:.]*/[0-9:.]*/[0-9:.]*/* r,
+	# /sys/devices/pci0000:00/0000:00:02.0/0000:04:00.0/{uevent,device,config,vendor} r,
+	# /sys/devices/pci0000:00/0000:00:02.0/0000:04:00.0/{revision,subsystem_vendor,subsystem_device} r,
 
 	# U2F token, tested via https://webauthn.io/
 	/sys/devices/system/cpu/present r,
