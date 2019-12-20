@@ -23,6 +23,7 @@ profile /opt/waterfox-current/waterfox-current {
 
 	/etc/mime.types r,
 	/usr/share/glib-2.0/schemas/gschemas.compiled r,
+	/usr/share/applications/screensavers/ r,
 
 	deny capability sys_admin,
 	deny capability sys_chroot,
@@ -33,7 +34,9 @@ profile /opt/waterfox-current/waterfox-current {
 
 	owner @{HOME}/.waterfox/ rwk,
 	owner @{HOME}/.waterfox/** rwkm,
+
 	deny @{HOME}/.mozilla/ rw,
+	deny @{HOME}/.mozilla/** rw,
 
 	owner @{HOME}/.cache/waterfox/ rwk,
 	owner @{HOME}/.cache/waterfox/** rwkm,
@@ -57,9 +60,10 @@ profile /opt/waterfox-current/waterfox-current {
 	/tmp/waterfox/** rwk,
 
 	# GPU identification
-	deny /sys/devices/pci[0-9:.]*/[0-9:.]*/[0-9:.]*/* r,
+	/sys/bus/pci/devices/ r,
 	/sys/devices/pci0000:00/0000:00:02.0/0000:04:00.0/{uevent,device,config,vendor} r,
 	/sys/devices/pci0000:00/0000:00:02.0/0000:04:00.0/{revision,subsystem_vendor,subsystem_device} r,
+	deny /sys/devices/pci[0-9:.]*/[0-9:.]*/[0-9:.]*/* r,
 
 	# U2F token, tested via https://webauthn.io/
 	/sys/devices/system/cpu/present r,
