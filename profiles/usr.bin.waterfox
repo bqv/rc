@@ -33,6 +33,7 @@ profile /opt/waterfox-current/waterfox-current {
 
 	owner @{HOME}/.waterfox/ rwk,
 	owner @{HOME}/.waterfox/** rwkm,
+	deny @{HOME}/.mozilla/ rw,
 
 	owner @{HOME}/.cache/waterfox/ rwk,
 	owner @{HOME}/.cache/waterfox/** rwkm,
@@ -55,11 +56,21 @@ profile /opt/waterfox-current/waterfox-current {
 	/tmp/waterfox/ rwk,
 	/tmp/waterfox/** rwk,
 
-	network inet dgram,
-	network inet stream,
-
-	# Need to check what it's looking for there
+	# GPU identification
 	deny /sys/devices/pci[0-9:.]*/[0-9:.]*/[0-9:.]*/* r,
+	/sys/devices/pci0000:00/0000:00:02.0/0000:04:00.0/{uevent,device,config,vendor} r,
+	/sys/devices/pci0000:00/0000:00:02.0/0000:04:00.0/{revision,subsystem_vendor,subsystem_device} r,
+
+	# U2F token, tested via https://webauthn.io/
+	/sys/devices/system/cpu/present r,
+	/run/udev/data/* r,
+	/sys/devices/pci*/ r,
+	/sys/devices/pci*/*/ r,
+	/sys/devices/pci*/*/usb*/ r,
+	/sys/devices/pci*/*/usb*/**/uevent r,
+	/sys/{bus,class,class/hidraw}/ r,
+	/sys/class/hidraw/hidraw* r,
+	/dev/hidraw* rw,
 
 	# URL handlers
 	owner @{HOME_BIN}/wrappers/xdg-open Ux,
@@ -70,4 +81,7 @@ profile /opt/waterfox-current/waterfox-current {
 	/etc/fstab r,
 	/run/mount/utab r,
 
+	# All network
+	network inet dgram,
+	network inet stream,
 }
