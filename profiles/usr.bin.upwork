@@ -45,6 +45,10 @@
 	# Tries to ptrace itself for some reason (integrity check?)
 	allow capability sys_ptrace,
 	deny ptrace,
+	deny @{PROC}/sys/kernel/yama/ptrace_scope r,
+
+	# Not sure what happens here, maybe signal to missing pid?
+	deny signal (send) peer=unconfined,
 
 	# Common noise when running from console
 	deny /dev/tty rw,

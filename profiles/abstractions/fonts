@@ -59,4 +59,4 @@
   deny @{HOME}/.cache/fontconfig/** w,
   deny /var/cache/fontconfig/ w,
   deny /var/cache/fontconfig/** w,
-  deny /usr/share/fonts/**/.uuid.TMP-* w,
+  deny /usr/share/fonts/** w,
