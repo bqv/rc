@@ -84,6 +84,12 @@ profile /opt/waterfox-current/waterfox-current {
 	/etc/fstab r,
 	/run/mount/utab r,
 
+	# User GTK3 theme/icon dirs
+  owner @{HOME}/.themes/ r,
+  owner @{HOME}/.themes/** r,
+  owner @{HOME}/.icons/ r,
+  owner @{HOME}/.icons/** r,
+
 	# All network
 	network inet dgram,
 	network inet stream,
