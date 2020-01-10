@@ -5,8 +5,9 @@
 
   inputs.nixpkgs.url = "github:nrdxp/nixpkgs/fork";
   inputs.home.url = "github:nrdxp/home-manager/flakes";
+  inputs.nur.url = "github:nrdxp/NUR/flake";
 
-  outputs = inputs@{ self, home, nixpkgs }:
+  outputs = inputs@{ self, home, nixpkgs, nur }:
     let
       inherit (builtins) listToAttrs baseNameOf attrNames readDir;
       inherit (nixpkgs.lib) removeSuffix;

@@ -13,6 +13,8 @@ let
       inherit system;
 
       specialArgs.usr = { inherit utils; };
+      specialArgs.nurModules = inputs.nur.nixosModules;
+      specialArgs.nurOverlays = inputs.nur.overlays;
 
       modules = let
         inherit (home.nixosModules) home-manager;
@@ -30,6 +32,7 @@ let
           system.configurationRevision = self.rev;
 
           nixpkgs = { inherit pkgs; };
+          nixpkgs.overlays = [ inputs.nur.overlay ];
         };
 
         local = import "${toString ./.}/${hostName}.nix";
