@@ -115,9 +115,20 @@ of this one:
 You can use packages, modules and overlays from the
 [Nix User Repository][nur].
 
-Since NUR packages are completely unchecked, they are not included by default.
-Check out the NUR [branch](https://github.com/nrdxp/nixflk/tree/NUR#nur-usage)
-for usage.
+For modules and overlays, you can pull them in via the new top-level arguements
+`nurModules` and `nurOverlays`, respectively:
+
+```nix
+{ nurModules, nurOverlays, pkgs, ... }:
+{
+  # ...
+  imports = [ nurModules."${nur-username}.modules.${aModule}" ];
+  nixpkgs.overlays = [ nurOverlays."${nur-username}".overlays."${anOverlay}" ];
+}
+```
+
+Packages are installable the same way as without flakes via
+`pkgs.nur."${nur-username}"."${aPackage}"`.
 
 # License
 
