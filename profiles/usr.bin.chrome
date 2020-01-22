@@ -15,6 +15,7 @@ profile /usr/bin/chromium {
 	profile chromium {
 		#include <abstractions/base>
 		#include <abstractions/site/base>
+		#include <abstractions/fonts>
 		#include <abstractions/X>
 		#include <abstractions/pulse>
 		#include <abstractions/gnome>
@@ -36,9 +37,8 @@ profile /usr/bin/chromium {
 		# sandbox/linux/services/namespace_sandbox.cc credentials.cc
 		capability sys_admin,
 		capability sys_chroot,
-		owner @{PROC}/@{pid}/setgroups w,
-		owner @{PROC}/@{pid}/gid_map w,
-		owner @{PROC}/@{pid}/uid_map w,
+		signal (receive) peer=unconfined,
+		deny signal (send) peer=unconfined,
 
 		# Presumably for built-in debugger/crash-report
 		capability sys_ptrace,
@@ -71,6 +71,9 @@ profile /usr/bin/chromium {
 		@{PROC}/vmstat r,
 		@{PROC}/sys/fs/inotify/max_user_watches r,
 		@{PROC}/@{pids}/stat r,
+		owner @{PROC}/@{pid}/setgroups w,
+		owner @{PROC}/@{pid}/gid_map w,
+		owner @{PROC}/@{pid}/uid_map w,
 		owner @{PROC}/@{pid}/{mem,stat,statm} r,
 		owner @{PROC}/@{pid}/clear_refs w,
 		owner @{PROC}/@{pid}/task/ r,
@@ -123,6 +126,10 @@ profile /usr/bin/chromium {
 		# Weird mmap probes
 		deny @{HOME}/#[0-9]* m,
 		/tmp/#[0-9]* m,
+
+		# All network
+		network inet dgram,
+		network inet stream,
 	}
 
 }
