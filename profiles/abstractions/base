@@ -58,7 +58,7 @@
   # we might as well allow everything to use common libraries
   /usr/lib/**            r,
   /usr/lib/*.so*         mr,
-  /usr/lib/**/lib*.so*   mr,
+  /usr/lib/**/*.so*      mr,
 
   # /dev/null is pretty harmless and frequently used
   /dev/null                      rw,
