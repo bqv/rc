@@ -41,6 +41,10 @@
   # have open
   /{,var/}run/nscd/db*  rmix,
 
+  # systemd-245
+  /run/systemd/userdb/ rw,
+  /run/systemd/userdb/* rw,
+
   # The nss libraries are sometimes used in addition to PAM; make sure
   # they are available
   /usr/lib/libnss_*.so*  mr,
