@@ -4,6 +4,7 @@ enabled_conf=/etc/apparmor/enabled.conf
 profiles_dir=/etc/apparmor.d
 profiles_sysfs=/sys/kernel/security/apparmor/profiles
 cache_dir=/var/lib/apparmor
+err=0
 
 mkdir -p -m700 "$cache_dir"
 chown root: "$cache_dir"
@@ -11,7 +12,9 @@ chmod 700 "$cache_dir"
 cache=( --cache-loc "$cache_dir" --write-cache )
 
 cd "$profiles_dir"
-xargs -n1 apparmor_parser "${cache[@]}" -r < "$enabled_conf"
+while read p
+do apparmor_parser "${cache[@]}" -r "$p" >&2 || err=1
+done < "$enabled_conf"
 
 if [[ -e "$profiles_sysfs" ]]; then
 	enforce=()
@@ -24,4 +27,4 @@ if [[ -e "$profiles_sysfs" ]]; then
 		|| { echo >&2 "ERROR: non-enforced profiles are detected"; exit 1; }
 fi
 
-exit 0
+exit $err
