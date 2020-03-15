@@ -75,10 +75,6 @@ profile /opt/waterfox-current/waterfox-current {
 	/sys/class/hidraw/hidraw* r,
 	/dev/hidraw* rw,
 
-	# URL handlers
-	owner @{HOME_BIN}/wrappers/xdg-open Ux,
-	owner @{HOME_BIN}/wrappers/leech_*.wrapper Ux,
-
 	# File selection dialogs
 	deny @{HOME} r,
 	/etc/fstab r,
