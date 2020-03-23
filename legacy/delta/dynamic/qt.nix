@@ -1,0 +1,1 @@
+/etc/static/nixos/dynamic/qt.nix
