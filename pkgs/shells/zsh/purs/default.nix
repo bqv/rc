@@ -18,7 +18,7 @@ in buildRustPackage {
 
   buildInputs = [ openssl pkgconfig ];
 
-  cargoSha256 = "sha256-vyO2JRRA7FCNVmIeN1xybQXkdgoHbhMGT2AhUJEnp0s=";
+  cargoSha256 = "sha256-iyH35w2wwtkIMnGqyVtz3TbislCX12Ma6gB8njJ8Z8I";
 
   postInstall = ''
     mkdir -p $out/share/zsh/plugins/purs

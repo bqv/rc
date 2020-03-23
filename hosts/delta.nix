@@ -1,22 +1,24 @@
-{ config, lib, pkgs, ... }:
+args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
 
 {
   imports =
     [
       ../legacy/delta/configuration.nix
+      ../users/root
+      ../users/bao
     ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot = {
     enable = true;
-    configurationLimit = 8;
+    configurationLimit = 2;
   };
   boot.loader.efi.canTouchEfiVariables = true;
   boot.cleanTmpDir = true;
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbcore" "sd_mod" "sr_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbcore" "sd_mod" "sr_mod" "amdgpu" ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.kernelModules = [ "kvm-intel" "amdgpu" ];
   boot.extraModulePackages = [ ];
   boot.binfmt.emulatedSystems = [ "armv7l-linux" "aarch64-linux" ];
 
@@ -80,9 +82,9 @@
   # Enable bluetooth modules.
   hardware.bluetooth.enable = true;
 
-  # Set your locale.
-  i18n.defaultLocale = "en_GB.UTF-8";
+  programs.vim.defaultEditor = true;
 
-  # Set your time zone.
-  time.timeZone = "Europe/London";
+  programs.adb.enable = true;
+
+  services.locate.enable = true;
 }

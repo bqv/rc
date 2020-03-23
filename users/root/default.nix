@@ -1,4 +1,4 @@
-# recommend using `hashedPassword`
 {
-  users.users.root.password = "";
+  users.users.root = {
+  } // import ../../secrets/root.password.nix;
 }

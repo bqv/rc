@@ -3,9 +3,9 @@
 
   epoch = 201909;
 
-  inputs.nixpkgs.url = "github:nrdxp/nixpkgs/fork";
-  inputs.home.url = "github:nrdxp/home-manager/flakes";
-  inputs.nur.url = "github:nrdxp/NUR/flake";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  inputs.home.url = "github:bqv/home-manager/flakes";
+  inputs.nur.url = "github:bqv/NUR/flakes";
 
   outputs = inputs@{ self, home, nixpkgs, nur }:
     let

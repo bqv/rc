@@ -1,4 +1,10 @@
 { ... }: {
-  i18n.defaultLocale = "en_US.UTF-8";
-  time.timeZone = "America/Denver";
+  # Set your locale.
+  i18n = {
+    defaultLocale = "en_GB.UTF-8";
+    consoleUseXkbConfig = true;
+  };
+
+  # Set your time zone.
+  time.timeZone = "Europe/London";
 }

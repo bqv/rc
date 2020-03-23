@@ -7,8 +7,8 @@
     PAGER = "less";
     LESS = "-iFJMRWX -z-4 -x4";
     LESSOPEN = "|${pkgs.lesspipe}/bin/lesspipe.sh %s";
-    EDITOR = "k";
-    VISUAL = "k";
+    EDITOR = "vim";
+    VISUAL = "vim";
   };
 
   environment.systemPackages = with pkgs; [
@@ -21,6 +21,7 @@
     pass
     tig
     tokei
+    vim
     wget
   ];
 
