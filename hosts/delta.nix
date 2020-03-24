@@ -18,7 +18,7 @@ args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbcore" "sd_mod" "sr_mod" "amdgpu" ];
   boot.initrd.kernelModules = [ "amdgpu" ];
-  boot.kernelModules = [ "kvm-intel" "amdgpu" ];
+  boot.kernelModules = [ "kvm-intel" "amdgpu" "fuse" ];
   boot.extraModulePackages = [ ];
   boot.binfmt.emulatedSystems = [ "armv7l-linux" "aarch64-linux" ];
 
@@ -62,6 +62,26 @@ args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
       fsType = "btrfs";
       options = [ "subvolid=0" ];
     };
+
+  programs.fuse.userAllowOther = true;
+  systemd.services.nixos-git = let
+    repo = "http://github.com/bqv/nixos";
+    branch = "live";
+    target = "/etc/nixos.git";
+    workdir = "/var/lib/gitfs";
+  in {
+    enable = true;
+    after = [ "network.target" ];
+    preStart = "mkdir -p ${workdir} ${target}";
+    script = with pkgs; let params = "foreground=true,idle_fetch_timeout=10,allow_other=true";
+                        in "${gitfs}/bin/gitfs ${repo} -o branch=${branch},${params} ${target}";
+    environment.HOME = workdir;
+    wantedBy = [ "multi-user.target" ];
+    serviceConfig = {
+      Restart = "always";
+      RestartSec = 15;
+    };
+  };
 
   swapDevices =
     [ { device = "/dev/disk/by-uuid/86868083-921c-452a-bf78-ae18f26b78bf"; }
