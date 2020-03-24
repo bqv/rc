@@ -16,7 +16,7 @@ let
       if [[ $1 == "iso" ]]; then
         $NIX build ${configs}.niximg.${build}.isoImage
       elif [[ -z $2 ]]; then
-        sudo -E $NIX run ${configs}.${hostname}.${build}.toplevel -c switch-to-configuration $1
+        sudo -E $NIX run ${configs}.${hostname}.${build}.toplevel -c switch-to-configuration $1 && \
         if [[ $1 == "switch" ]]; then
           sudo -E nix-env -p /nix/var/nix/profiles/system --set /run/current-system
           sudo -E $NIX run ${configs}.${hostname}.${build}.toplevel -c switch-to-configuration boot
