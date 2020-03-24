@@ -51,12 +51,6 @@ args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
       options = [ "subvol=games" ];
     };
 
- #fileSystems."/home/bao/tmp/TopGear" =
- #  { device = "/dev/sda6";
- #    fsType = "ext4";
- #    options = [ "ro" ];
- #  };
-
   fileSystems."/var/run/btrfs" =
     { device = "/dev/disk/by-uuid/f46f6fe4-c480-49f0-b3fb-22e61c57069c";
       fsType = "btrfs";
