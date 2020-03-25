@@ -5,7 +5,7 @@
 
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
   inputs.home.url = "github:bqv/home-manager/flakes";
-  inputs.nur.url = "github:bqv/NUR/flakes";
+  inputs.nur.url = "github:nix-community/NUR";
 
   outputs = inputs@{ self, home, nixpkgs, nur }:
     let
