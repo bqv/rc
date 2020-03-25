@@ -105,6 +105,14 @@ args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
     acceptRisk = true;
   };
 
+  programs.firejail = {
+    enable = true;
+    wrappedBinaries = {
+      firefox-safe = "${lib.getBin pkgs.firefox}/bin/firefox";
+      mpv-safe = "${lib.getBin pkgs.mpv}/bin/mpv";
+    };
+  };
+
   programs.vim.defaultEditor = true;
 
   programs.adb.enable = true;
