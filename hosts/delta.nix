@@ -52,6 +52,8 @@ args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
   hardware.bluetooth.enable = true;
+  hardware.ckb-next.enable = true;
+  hardware.opengl.driSupport32Bit = true;
 
   programs.firejail = {
     enable = true;

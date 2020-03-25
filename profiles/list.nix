@@ -1,6 +1,6 @@
 [
   ./develop
-  ./develop/kakoune
+  ./develop/emacs
   ./develop/tmux
   ./develop/zsh
   ./games
