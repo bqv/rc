@@ -23,44 +23,27 @@ args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
   boot.extraModulePackages = [ ];
   boot.binfmt.emulatedSystems = [ "armv7l-linux" "aarch64-linux" ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/f46f6fe4-c480-49f0-b3fb-22e61c57069c";
+  fileSystems = let
+    btrfs = {
+      device = "/dev/disk/by-uuid/f46f6fe4-c480-49f0-b3fb-22e61c57069c";
       fsType = "btrfs";
-      options = [ "subvol=nixos" ];
     };
+  in {
+    "/" = btrfs // { options = [ "subvol=nixos" ]; };
+    "/home" = btrfs // { options = [ "subvol=home" ]; };
+    "/nix" = btrfs // { options = [ "subvol=nix" ]; };
+    "/games" = btrfs // { options = [ "subvol=games" ]; };
+    "/var/run/btrfs" = btrfs // { options = [ "subvolid=0" ]; };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/CEF4-EDD1";
+    "/boot" = {
+      device = "/dev/disk/by-uuid/CEF4-EDD1";
       fsType = "vfat";
     };
+  };
 
-  fileSystems."/home" =
-    { device = "/dev/disk/by-uuid/f46f6fe4-c480-49f0-b3fb-22e61c57069c";
-      fsType = "btrfs";
-      options = [ "subvol=home" ];
-    };
-
-  fileSystems."/nix" =
-    { device = "/dev/disk/by-uuid/f46f6fe4-c480-49f0-b3fb-22e61c57069c";
-      fsType = "btrfs";
-      options = [ "subvol=nix" ];
-    };
-
-  fileSystems."/games" =
-    { device = "/dev/disk/by-uuid/f46f6fe4-c480-49f0-b3fb-22e61c57069c";
-      fsType = "btrfs";
-      options = [ "subvol=games" ];
-    };
-
-  fileSystems."/var/run/btrfs" =
-    { device = "/dev/disk/by-uuid/f46f6fe4-c480-49f0-b3fb-22e61c57069c";
-      fsType = "btrfs";
-      options = [ "subvolid=0" ];
-    };
-
-  swapDevices =
-    [ { device = "/dev/disk/by-uuid/86868083-921c-452a-bf78-ae18f26b78bf"; }
-    ];
+  swapDevices = [
+    { device = "/dev/disk/by-uuid/86868083-921c-452a-bf78-ae18f26b78bf"; }
+  ];
 
   virtualisation.libvirtd.enable = true;
   virtualisation.virtualbox.host.enable = true;
