@@ -96,6 +96,11 @@ args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
   # Enable bluetooth modules.
   hardware.bluetooth.enable = true;
 
+  security.mitigations = {
+    disable = true;
+    acceptRisk = true;
+  };
+
   programs.vim.defaultEditor = true;
 
   programs.adb.enable = true;
