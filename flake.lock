@@ -1,5 +1,23 @@
 {
   "inputs": {
+    "emacs": {
+      "info": {
+        "lastModified": 1585124280,
+        "narHash": "sha256-Yk29TWrrdrypCtsZVC+VIyWObcP+6nYMev4QXXrt1SY="
+      },
+      "inputs": {},
+      "locked": {
+        "owner": "nix-community",
+        "repo": "emacs-overlay",
+        "rev": "b85406f1264e00626edb511e0a390211478b004a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "emacs-overlay",
+        "type": "github"
+      }
+    },
     "home": {
       "info": {
         "lastModified": 1585027465,

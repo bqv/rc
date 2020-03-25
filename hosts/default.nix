@@ -1,4 +1,4 @@
-inputs@{ home, nixpkgs, self, pkgs, system, ... }:
+inputs@{ home, nixpkgs, emacs, self, pkgs, system, ... }:
 let
   inherit (nixpkgs) lib;
 
@@ -32,7 +32,10 @@ let
           system.configurationRevision = self.rev;
 
           nixpkgs = { inherit pkgs; };
-          nixpkgs.overlays = [ inputs.nur.overlay ];
+          nixpkgs.overlays = [
+            inputs.nur.overlay
+            (import emacs)
+          ];
         };
 
         local = import "${toString ./.}/${hostName}.nix";

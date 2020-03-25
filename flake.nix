@@ -7,6 +7,12 @@
   inputs.home.url = "github:bqv/home-manager/flakes";
   inputs.nur.url = "github:nix-community/NUR";
 
+  inputs.emacs = {
+    type = "github";
+    owner = "nix-community";
+    repo = "emacs-overlay";
+    flake = false;
+  };
   inputs.vmnix = {
     type = "github";
     owner = "nekroze";
@@ -14,7 +20,7 @@
     flake = false;
   };
 
-  outputs = inputs@{ self, home, nixpkgs, nur, vmnix }:
+  outputs = inputs@{ self, home, nixpkgs, nur, emacs, vmnix }:
     let
       inherit (builtins) listToAttrs baseNameOf attrNames readDir;
       inherit (nixpkgs.lib) removeSuffix;
