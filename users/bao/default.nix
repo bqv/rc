@@ -18,7 +18,7 @@
     home.packages = with pkgs; [
       abduco dvtm git yadm vim htop pstree fortune cowsay coreutils pv # Shell Essential
       nmap wget curl # Networking
-      gnupg pinentry bitwarden-cli protonvpn-cli-ng git-crypt # Security
+      gnupg bitwarden-cli protonvpn-cli-ng git-crypt # Security
       file jq direnv # Utility
       netsurf.browser # Utility
     ];
@@ -34,19 +34,19 @@
       enable = true;
     };
 
-   #services.gpg-agent = {
-   #  enable = true;
-   #  defaultCacheTtl = 600;
-   #  defaultCacheTtlSsh = 0;
-   #  maxCacheTtl = 7200;
-   #  enableSshSupport = true;
-   #  sshKeys = [ "C425D701DBB41091CAC74AB2A7476FC5237EDBC7" ];
-   #  extraConfig = ''
-   #    allow-emacs-pinentry
-   #    allow-preset-passphrase
-   #    pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
-   #  '';
-   #};
+    services.gpg-agent = {
+      enable = true;
+      defaultCacheTtl = 600;
+      defaultCacheTtlSsh = 0;
+      maxCacheTtl = 7200;
+      enableSshSupport = true;
+      sshKeys = [ "C425D701DBB41091CAC74AB2A7476FC5237EDBC7" ];
+      extraConfig = ''
+        allow-emacs-pinentry
+        allow-preset-passphrase
+        pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
+      '';
+    };
 
     programs.fish = {
       enable = true;
