@@ -1,1 +1,4 @@
-[ ./services/torrent/qbittorrent.nix ./security/mitigations.nix ]
+[
+  ./services/git/nixos.nix
+  ./security/mitigations.nix
+]

@@ -6,14 +6,15 @@ in {
 
   nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
-  imports = [ ../local/locale.nix ];
+  imports = [
+    ../local/locale.nix
+  ];
 
   boot = {
-
-    kernelPackages = pkgs.linuxPackages;
-    #kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.linuxPackages_latest;
 
     tmpOnTmpfs = true;
+    cleanTmpDir = true;
 
     kernel.sysctl."kernel.sysrq" = 1;
   };
@@ -22,7 +23,6 @@ in {
   nixpkgs.config.allowUnfree = true;
 
   environment = {
-
     systemPackages = with pkgs; [
       binutils
       coreutils
@@ -85,30 +85,29 @@ in {
         up = ifSudo "s systemctl start";
         dn = ifSudo "s systemctl stop";
         jtl = "journalctl";
-
       };
-
   };
 
   fonts = {
     fonts = with pkgs; [ powerline-fonts dejavu_fonts ];
 
     fontconfig.defaultFonts = {
-
       monospace = [ "DejaVu Sans Mono for Powerline" ];
-
       sansSerif = [ "DejaVu Sans" ];
-
     };
   };
 
   nix = {
 
-    autoOptimiseStore = true;
-
     gc.automatic = true;
+    gc.dates = "12:00";
+    gc.options = "--delete-older-than 8d";
 
+    autoOptimiseStore = false; # Disabled for speed
     optimise.automatic = true;
+    optimise.dates = [ "17:30" "02:00" ];
+
+    maxJobs = lib.mkDefault 4;
 
     useSandbox = true;
 
@@ -119,19 +118,19 @@ in {
     extraOptions = ''
       experimental-features = nix-command flakes ca-references
     '';
-
   };
 
   security = {
+    apparmor = {
+      enable = true;
+    };
 
     hideProcessInformation = true;
 
     protectKernelImage = true;
-
   };
 
   services.earlyoom.enable = true;
 
   users.mutableUsers = false;
-
 }
