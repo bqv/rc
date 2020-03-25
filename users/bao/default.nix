@@ -23,9 +23,16 @@
       netsurf.browser # Utility
     ];
 
-   services.lorri = {
-     enable = true;
-   };
+   #xdg = {
+   #  enable = true;
+   #  mimeApps = {
+   #    enable = true;
+   #  };
+   #};
+
+    services.lorri = {
+      enable = true;
+    };
 
    #services.gpg-agent = {
    #  enable = true;
