@@ -1,12 +1,12 @@
 args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
 
 {
-  imports =
-    [
-      ../legacy/delta/configuration.nix
-      ../users/root
-      ../users/bao
-    ];
+  imports = [
+    ../legacy/delta/configuration.nix
+    ../profiles/misc/disable-mitigations.nix
+    ../users/root
+    ../users/bao
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
@@ -68,14 +68,7 @@ args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
-  # Enable bluetooth modules.
   hardware.bluetooth.enable = true;
-
-  # Allow spectre locally for performance gains.
-  security.mitigations = {
-    disable = true;
-    acceptRisk = true;
-  };
 
   programs.firejail = {
     enable = true;
