@@ -90,6 +90,24 @@
         "repo": "NUR",
         "type": "github"
       }
+    },
+    "vmnix": {
+      "info": {
+        "lastModified": 1567314613,
+        "narHash": "sha256-POhnauiMBZt8hfQ7vQuAF6EZEYIQb8qVc+eXy2kxdgY="
+      },
+      "inputs": {},
+      "locked": {
+        "owner": "nekroze",
+        "repo": "vms.nix",
+        "rev": "2457c391a9934fe18b209cca9dcfabc7b500c88f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nekroze",
+        "repo": "vms.nix",
+        "type": "github"
+      }
     }
   },
   "version": 4
