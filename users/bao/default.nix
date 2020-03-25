@@ -18,10 +18,9 @@
     home.packages = with pkgs; [
       abduco dvtm git yadm vim htop pstree fortune cowsay coreutils pv # Shell Essential
       nmap wget curl # Networking
-      gnupg bitwarden-cli protonvpn-cli-ng # Security
-      file jq # Utility
+      gnupg pinentry bitwarden-cli protonvpn-cli-ng git-crypt # Security
+      file jq direnv # Utility
       netsurf.browser # Utility
-      direnv
     ];
 
    services.lorri = {
