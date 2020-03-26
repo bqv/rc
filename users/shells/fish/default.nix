@@ -118,6 +118,7 @@ in {
       shellAliases = {
         cat = "${pkgs.bat}/bin/bat";
         ls = "${pkgs.exa}/bin/exa";
+        ps = "${pkgs.procs}/bin/procs";
         diff = "${pkgs.colordiff}/bin/diff -s";
         tmux = "tmux -2"; # Force 256 colors
         less = "less -R";
