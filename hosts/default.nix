@@ -33,6 +33,7 @@ let
 
           nixpkgs = { inherit pkgs; };
           nixpkgs.overlays = [
+            (_: _: { configuration = self; })
             inputs.nur.overlay
             (import emacs)
           ];

@@ -41,51 +41,36 @@ in {
       utillinux
     ];
 
-    shellAliases =
-      let ifSudo = string: lib.mkIf config.security.sudo.enable string;
-      in {
-        # quick cd
-        ".." = "cd ..";
-        "..." = "cd ../..";
-        "...." = "cd ../../..";
-        "....." = "cd ../../../..";
-
-        # git
-        g = "git";
-
-        # grep
-        grep = "rg";
-        gi = "grep -i";
-
-        # internet ip
-        myip = "dig +short myip.opendns.com @208.67.222.222 2>&1";
-
-        # nix
-        n = "nix";
-        np = "n profile";
-        ni = "np install";
-        nr = "np remove";
-        ns = "n search";
-        nrb = ifSudo "sudo nixos-rebuild";
-
-        # sudo
-        s = ifSudo "sudo -E ";
-        si = ifSudo "sudo -i";
-        se = ifSudo "sudoedit";
-
-        # top
-        top = "gotop";
-
-        # systemd
-        ctl = "systemctl";
-        stl = ifSudo "s systemctl";
-        utl = "systemctl --user";
-        ut = "systemctl --user start";
-        un = "systemctl --user stop";
-        up = ifSudo "s systemctl start";
-        dn = ifSudo "s systemctl stop";
-        jtl = "journalctl";
-      };
+    etc =
+      let
+        configurationRoot = pkgs.configuration;
+        configurationTree = let
+          traverse = self: path: file: type: let
+            fqdir = "${path}/${file}";
+          in if type == "directory"
+             then (lib.mapAttrs (self self fqdir) (builtins.readDir fqdir))
+             else fqdir;
+          fileTree = lib.mapAttrs (traverse traverse configurationRoot)
+            (builtins.readDir "${configurationRoot}/.");
+        in fileTree // {
+          secrets = {};
+          legacy = let
+            pred = name: val: lib.isAttrs val ||
+                              lib.last (lib.splitString "." name) == "nix";
+          in lib.filterAttrsRecursive pred fileTree.legacy;
+        };
+        configurationFiles = let
+          annotate = lib.mapAttrsRecursive (path: val: super: super // {
+            "nixos-configuration-${lib.concatStringsSep "-" path}" = {
+              target = "nixos/${lib.concatStringsSep "/" path}";
+              source = val;
+            };
+          });
+          traverse = self: lib.mapAttrsToList (_: v: if lib.isAttrs v
+                                                     then (self self) v
+                                                     else v);
+        in lib.flatten ((traverse traverse) (annotate configurationTree));
+      in lib.fold (f: acc: f acc) {} configurationFiles;
   };
 
   fonts = {
