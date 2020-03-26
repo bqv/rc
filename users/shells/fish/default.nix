@@ -145,8 +145,9 @@ in {
       };
 
       functions = {
-        exwm-exec = '' emacsclient --eval '(bqv/exwm-exec "'"$argv"'")' '';
-        exwm-sudo-exec = '' emacsclient --eval '(bqv/exwm-sudo-exec "'"$argv"'")' '';
+        exwm-exec = '' emacsclient --eval '(bqv/exwm-exec "'(which $argv[1])" $argv[2..-1]"'")' '';
+        exwm-sudo-exec = '' emacsclient --eval '(bqv/exwm-sudo-exec "'(which $argv[1])" $argv[2..-1]"'")' '';
+        exwm-nix-exec = '' emacsclient --eval '(bqv/exwm-nix-exec "'(which $argv[1])" $argv[2..-1]"'")' '';
         find-file = '' emacsclient --eval '(find-file "'"$argv"'")' '';
         please = '' eval sudo $history[1] '';
         vterm-printf = ''
