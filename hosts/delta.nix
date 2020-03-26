@@ -4,8 +4,8 @@ args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
   imports = [
     ../legacy/delta/configuration.nix
     ../profiles/misc/disable-mitigations.nix
-    ../users/root
-    ../users/bao
+    ../users/root.nix
+    ../users/bao.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
