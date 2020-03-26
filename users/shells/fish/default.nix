@@ -1,55 +1,11 @@
-{ pkgs, ... }: {
-  imports = [ ../../profiles/develop ];
+{ config ? {}, lib, pkgs, ... }:
+with lib;
 
-  users.users.bao = {
-    uid = 1000;
-    description = "default";
-    shell = pkgs.fish;
-    isNormalUser = true;
-    extraGroups = [ "wheel" "adbusers" ];
-    packages = with pkgs; [
-      texmaker texlive.combined.scheme-full
-    ];
-  } // import ../../secrets/user.password.nix;
-
-  home-manager.users.bao = {
-    programs.home-manager.enable = true;
-
-    home.packages = with pkgs; [
-      abduco dvtm git yadm vim htop pstree fortune cowsay coreutils pv # Shell Essential
-      nmap wget curl # Networking
-      gnupg bitwarden-cli protonvpn-cli-ng git-crypt # Security
-      file jq direnv # Utility
-      netsurf.browser # Utility
-    ];
-
-   #xdg = {
-   #  enable = true;
-   #  mimeApps = {
-   #    enable = true;
-   #  };
-   #};
-
-    services.lorri = {
-      enable = true;
-    };
-
-    services.gpg-agent = {
-      enable = true;
-      defaultCacheTtl = 600;
-      defaultCacheTtlSsh = 0;
-      maxCacheTtl = 7200;
-      enableSshSupport = true;
-      sshKeys = [ "C425D701DBB41091CAC74AB2A7476FC5237EDBC7" ];
-      extraConfig = ''
-        allow-emacs-pinentry
-        allow-preset-passphrase
-        pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
-      '';
-    };
-
+let
+  cfg = config.programs.fish;
+in {
+  config = mkIf cfg.enable {
     programs.fish = {
-      enable = true;
       promptInit = ''
         set fish_prompt_pwd_dir_length 1
         set __fish_git_prompt_show_informative_status 1
