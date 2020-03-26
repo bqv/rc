@@ -40,6 +40,13 @@
     services.lorri.enable = true;
     services.gpg-agent.enable = true;
 
+    services.mpd = let
+      inherit (config.home-manager.users.bao) xdg;
+    in {
+      enable = true;
+      musicDirectory = xdg.userDirs.music;
+    };
+
     home.packages = with pkgs; [
       abduco dvtm git yadm vim htop pstree fortune cowsay coreutils pv # Shell Essential
       nmap wget curl # Networking
