@@ -16,7 +16,10 @@ in {
     tmpOnTmpfs = true;
     cleanTmpDir = true;
 
-    kernel.sysctl."kernel.sysrq" = 1;
+    kernel.sysctl = {
+      "kernel.sysrq" = 1;
+      "kernel.printk" = "3 4 1 3";
+    };
   };
 
   hardware.enableAllFirmware = true;
