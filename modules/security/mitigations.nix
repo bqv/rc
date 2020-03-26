@@ -1,14 +1,26 @@
 { config, lib, options, ... }:
 with lib;
+
 let
   inherit (builtins) readFile fetchurl;
 
   cfg = config.security.mitigations;
 
-  cmdline = readFile (fetchurl {
-    url = "https://make-linux-fast-again.com";
-    sha256 = "sha256:10diw5xn5jjx79nvyjqcpdpcqihnr3y0756fsgiv1nq7w28ph9w6";
-  });
+  cmdline = lib.concatStringsSep " " ((
+    if
+      lib.versionOlder config.boot.kernelPackages.kernel.version "5.1.13"
+    then [
+      "noibrs" # We don't need no restricted indirect branch speculation
+      "noibpb" # We don't need no indirect branch prediction barrier either
+      "nospectre_v1" # Don't care if some program can get data from some other program when it shouldn't
+      "nospectre_v2" # Don't care if some program can get data from some other program when it shouldn't
+      "l1tf=off" # Why would we be flushing the L1 cache, we might need that data. So what if anyone can get at it.
+      "nospec_store_bypass_disable" # Of course we want to use, not bypass, the stored data
+      "no_stf_barrier" # We don't need no barriers between software, they could be friends
+      "mds=off" # Zombieload attacks are fine
+    ] else []) ++ [
+      "mitigations=off" # Of course we don't want no mitigations
+    ]);
 in {
   options = {
     security.mitigations.disable = mkOption {
