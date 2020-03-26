@@ -13,16 +13,26 @@ let
         NIX="nix -vv $1"
         shift
       fi
+
+      INITIAL_SYSTEM="$(readlink -f /run/current-system)"
       if [[ $1 == "iso" ]]; then
         $NIX build ${configs}.niximg.${build}.isoImage
       elif [[ -z $2 ]]; then
-        sudo -E $NIX run ${configs}.${hostname}.${build}.toplevel -c switch-to-configuration $1 && \
-        if [[ $1 == "switch" ]]; then
+        sudo -E $NIX run ${configs}.${hostname}.${build}.toplevel -c switch-to-configuration $1
+        if [[ $INITIAL_SYSTEM != "$(readlink -f /run/current-system)" ]] \
+        && [[ $1 == "switch" ]]; then
           sudo -E nix-env -p /nix/var/nix/profiles/system --set /run/current-system
           sudo -E $NIX run ${configs}.${hostname}.${build}.toplevel -c switch-to-configuration boot
         fi
       else
         sudo -E $NIX run -vv ${configs}.$1.${build}.toplevel -c switch-to-configuration $2
+      fi
+      FINAL_SYSTEM="$(readlink -f /run/current-system)"
+
+      if [[ "$INITIAL_SYSTEM" != "$FINAL_SYSTEM" ]]; then
+        git tag $(basename $FINAL_SYSTEM)
+      else
+        echo Not tagging "$FINAL_SYSTEM", no change from "$INITIAL_SYSTEM"
       fi
     fi
   '';
