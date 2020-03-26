@@ -72,6 +72,48 @@
 
       mimeApps = {
         enable = true;
+        #[Default Applications]
+        #text/html=firefox.desktop
+        #x-scheme-handler/http=firefox.desktop
+        #x-scheme-handler/https=firefox.desktop
+        #x-scheme-handler/about=org.qutebrowser.qutebrowser.desktop
+        #x-scheme-handler/unknown=org.qutebrowser.qutebrowser.desktop
+        #x-scheme-handler/mailto=userapp-Daily-YZ3MH0.desktop
+        #message/rfc822=userapp-Daily-YZ3MH0.desktop
+        #x-scheme-handler/news=userapp-Thunderbird-6VWVYZ.desktop
+        #x-scheme-handler/snews=userapp-Thunderbird-6VWVYZ.desktop
+        #x-scheme-handler/nntp=userapp-Thunderbird-6VWVYZ.desktop
+        #x-scheme-handler/feed=userapp-Thunderbird-EVKWYZ.desktop
+        #application/rss+xml=userapp-Thunderbird-EVKWYZ.desktop
+        #application/x-extension-rss=userapp-Thunderbird-EVKWYZ.desktop
+        #x-scheme-handler/ftp=firefox.desktop
+        #x-scheme-handler/chrome=firefox.desktop
+        #application/x-extension-htm=firefox.desktop
+        #application/x-extension-html=firefox.desktop
+        #application/x-extension-shtml=firefox.desktop
+        #application/xhtml+xml=firefox.desktop
+        #application/x-extension-xhtml=firefox.desktop
+        #application/x-extension-xht=firefox.desktop
+        #[Added Associations]
+        #x-scheme-handler/mailto=userapp-Thunderbird-TYK1YZ.desktop;userapp-Daily-YZ3MH0.desktop;
+        #message/rfc822=userapp-Thunderbird-TYK1YZ.desktop;userapp-Daily-YZ3MH0.desktop;
+        #x-scheme-handler/news=userapp-Thunderbird-6VWVYZ.desktop;
+        #x-scheme-handler/snews=userapp-Thunderbird-6VWVYZ.desktop;
+        #x-scheme-handler/nntp=userapp-Thunderbird-6VWVYZ.desktop;
+        #x-scheme-handler/feed=userapp-Thunderbird-EVKWYZ.desktop;
+        #application/rss+xml=userapp-Thunderbird-EVKWYZ.desktop;
+        #application/x-extension-rss=userapp-Thunderbird-EVKWYZ.desktop;
+        #x-scheme-handler/http=firefox.desktop;
+        #x-scheme-handler/https=firefox.desktop;
+        #x-scheme-handler/ftp=firefox.desktop;
+        #x-scheme-handler/chrome=firefox.desktop;
+        #text/html=firefox.desktop;
+        #application/x-extension-htm=firefox.desktop;
+        #application/x-extension-html=firefox.desktop;
+        #application/x-extension-shtml=firefox.desktop;
+        #application/xhtml+xml=firefox.desktop;
+        #application/x-extension-xhtml=firefox.desktop;
+        #application/x-extension-xht=firefox.desktop;
       };
     };
   };
