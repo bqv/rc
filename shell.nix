@@ -13,6 +13,8 @@ let
         NIX="nix -vv $1"
         shift
       fi
+
+      INITIAL_SYSTEM="$(readlink -f /nix/var/nix/profiles/system)"
       if [[ $1 == "iso" ]]; then
         $NIX build ${configs}.niximg.${build}.isoImage
       elif [[ -z $2 ]]; then
@@ -23,6 +25,11 @@ let
         fi
       else
         sudo -E $NIX run -vv ${configs}.$1.${build}.toplevel -c switch-to-configuration $2
+      fi
+      FINAL_SYSTEM="$(readlink -f /nix/var/nix/profiles/system)"
+
+      if [[ "$INITIAL_SYSTEM" != "$FINAL_SYSTEM" ]]; then
+        git tag $(basename $FINAL_SYSTEM)
       fi
     fi
   '';
