@@ -6,13 +6,12 @@
 
   # Enable the X11 windowing system.
   services.xserver = {
-    windowManager.session = with pkgs; [{
-      manage = "window";
-      name = "xsession";
-      start = ". $HOME/.xsession";
-    }];
+    windowManager.exwm = {
+      enable = true;
+      enableDefaultConfig = false;
+    };
     displayManager = with pkgs; {
-      defaultSession = "none+xsession";
+      defaultSession = "none+exwm";
       sddm = {
         enable = true;
         autoLogin = {

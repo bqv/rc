@@ -45,19 +45,4 @@ in rec {
   };
 
   #fonts.fontconfig.enable = true;
-
-  xsession = {
-    enable = true;
-    windowManager = {
-      command = with pkgs; ''
-        #${systemd}/bin/systemctl --user start emacs || exit 1
-        ${myEmacs}/bin/emacsclient -a "" -c &
-        waitPID=$!
-      '';
-    };
-    initExtra = with pkgs; ''
-      echo Executing: $0 $@
-      ${ibus}/bin/ibus-daemon -drRx
-    '';
-  };
 }
