@@ -18,7 +18,7 @@ args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
   };
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbcore" "sd_mod" "sr_mod" "amdgpu" ];
-  boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.initrd.kernelModules = [ "amdgpu" "snd_hda_intel" ];
   boot.kernelModules = [ "kvm-intel" "amdgpu" "fuse" ];
   boot.extraModulePackages = [ ];
   boot.binfmt.emulatedSystems = [ "armv7l-linux" "aarch64-linux" ];
