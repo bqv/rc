@@ -1,11 +1,13 @@
-{ config ? {}, pkgs, ... }: {
+{ config ? {}, pkgs, ... }:
+
+{
   imports = [
     ../profiles/develop
   ];
 
   users.users.bao = {
     uid = 1000;
-    description = "default";
+    description = "Tony";
     shell = pkgs.fish;
     isNormalUser = true;
     extraGroups = [ "wheel" "adbusers" ];
@@ -14,6 +16,7 @@
   home-manager.users.bao = {
     imports = [
       ./shells/fish
+      ./editors/emacs
       ./services/gnupg.nix
     ];
 
