@@ -54,6 +54,7 @@ args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
   hardware.bluetooth.enable = true;
   hardware.ckb-next.enable = true;
   hardware.opengl.driSupport32Bit = true;
+  hardware.cpu.amd.updateMicrocode = true;
 
   programs.firejail = {
     enable = true;
