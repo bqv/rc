@@ -47,7 +47,7 @@ args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
 
   virtualisation.libvirtd.enable = true;
   virtualisation.virtualbox.host.enable = true;
-  virtualisation.anbox.enable = true;
+  #virtualisation.anbox.enable = true;
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
