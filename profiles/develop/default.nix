@@ -14,11 +14,12 @@
   environment.systemPackages = with pkgs; [
     clang
     file
-    git-crypt
+    git git-crypt
     gnupg
     less
     ncdu
     pass
+    subversion
     tig
     tokei
     vim
