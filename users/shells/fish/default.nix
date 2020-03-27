@@ -142,6 +142,7 @@ in {
         ustatus = "systemctl status --user";
         uenable = "systemctl enable --user";
         udisable = "systemctl disable --user";
+        ureload = "sudo systemctl daemon-reload --user";
       };
 
       functions = {
