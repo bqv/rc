@@ -14,7 +14,7 @@
   environment.systemPackages = with pkgs; [
     clang
     file
-    git git-crypt
+    git git-crypt gitAndTools.hub gitAndTools.lab
     gnupg
     less
     ncdu
