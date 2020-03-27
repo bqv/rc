@@ -51,7 +51,7 @@ in rec {
     windowManager = {
       command = with pkgs; ''
         #${systemd}/bin/systemctl --user start emacs || exit 1
-        ${myEmacs}/bin/emacsclient -a "" -c &
+        ${config.programs.emacs.finalPackage}/bin/emacsclient -a "" -c &
         waitPID=$!
       '';
     };
