@@ -13,6 +13,7 @@
 
   environment.systemPackages = with pkgs; [
     clang
+    dgit
     file
     git git-crypt gitAndTools.hub gitAndTools.lab
     gnupg
