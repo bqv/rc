@@ -1,18 +1,17 @@
 { pkgs ? import <nixpkgs> { } }:
 let
-  configs = "${toString ./.}#nixosConfigurations";
-  hostname = pkgs.lib.fileContents /etc/hostname;
-  build = "config.system.build";
-
   rebuild = pkgs.writeShellScriptBin "rebuild" ''
-    INITIAL_SYSTEM="$(readlink -f /run/current-system)"
-    sudo nixos-rebuild --flake $PWD $@
-    FINAL_SYSTEM="$(readlink -f /run/current-system)"
+    FLAKE=$(git rev-parse --show-toplevel)
+    source $(which nixos-rebuild) --flake $FLAKE --use-remote-sudo $@
 
-    if [[ "$INITIAL_SYSTEM" != "$FINAL_SYSTEM" ]]; then
-      git tag $(basename $FINAL_SYSTEM)
-    else
-      echo Not tagging "$FINAL_SYSTEM", no change from "$INITIAL_SYSTEM"
+    if [ -e "$pathToConfig" ]; then
+      SYSTEMPATH=$(basename $pathToConfig)
+      PROFILES=($(find /nix/var/nix/profiles/ -lname $pathToConfig))
+      echo Tagging $SYSTEMPATH && git tag $SYSTEMPATH
+      for profile in $PROFILES; do
+        SYSTEMNUM=$(hostname)/$(basename $profile)
+        echo Tagging $SYSTEMNUM && git tag $SYSTEMNUM
+      done
     fi
   '';
 in pkgs.mkShell {
