@@ -32,7 +32,7 @@
         right = [ "RightCPUs2" "Tasks" "LoadAverage" "Uptime" ];
       };
 
-      treeView = false;
+      treeView = true;
       showProgramPath = false;
 
       hideThreads = false;
