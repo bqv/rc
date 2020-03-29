@@ -117,11 +117,11 @@ in {
 
       shellAliases = {
         cat = "${pkgs.bat}/bin/bat";
+        less = ''${pkgs.bat}/bin/bat --paging=always --pager "${pkgs.less}/bin/less -RF"'';
         ls = "${pkgs.exa}/bin/exa";
         ps = "${pkgs.procs}/bin/procs";
         diff = "${pkgs.colordiff}/bin/diff -s";
         tmux = "tmux -2"; # Force 256 colors
-        less = "less -R";
         bw = "env (cat ~/.bwrc) bw";
 
         nix-build = "nix-build --no-out-link";
