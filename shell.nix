@@ -1,8 +1,12 @@
 { pkgs ? import <nixpkgs> { } }:
 let
   rebuild = pkgs.writeShellScriptBin "rebuild" ''
-    FLAKE=$(git rev-parse --show-toplevel)
-    source $(which nixos-rebuild) --flake $FLAKE --use-remote-sudo $@
+    if [ $1 == "tag-current" ]; then
+      pathToConfig=$(readlink -f /run/current-system)
+    else
+      FLAKE=$(git rev-parse --show-toplevel)
+      source $(which nixos-rebuild) --flake $FLAKE --use-remote-sudo $@
+    fi
 
     if [ -e "$pathToConfig" ]; then
       SYSTEMPATH=$(basename $pathToConfig)
