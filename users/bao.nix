@@ -17,28 +17,13 @@
     imports = [
       ./shells/fish
       ./editors/emacs
+      ./utilities/htop
       ./services/gnupg.nix
     ];
 
     programs.home-manager.enable = true;
     programs.fish.enable = true;
-
-    programs.htop = {
-      enable = true;
-
-      headerMargin = false;
-      meters = {
-        left = [ "LeftCPUs2" "Memory" "Swap" "Hostname" ];
-        right = [ "RightCPUs2" "Tasks" "LoadAverage" "Uptime" ];
-      };
-
-      treeView = true;
-      showProgramPath = false;
-
-      hideThreads = false;
-      hideKernelThreads = false;
-      hideUserlandThreads = true;
-    };
+    programs.htop.enable = true;
 
     services.lorri.enable = true;
     services.gpg-agent.enable = true;
