@@ -1,7 +1,7 @@
 { config ? {}, lib, pkgs, ... }:
 
 let
-  #pkgs.emacsGit missing?
+  # TODO: pkgs.emacsGit missing?
   myEmacs = pkgs.emacs.overrideAttrs (attrs: {
     withXwidgets = true;
     webkitgtk = pkgs.webkitgtk;
