@@ -1,4 +1,5 @@
 { pkgs ? import <nixpkgs> { } }:
+
 let
   rebuild = pkgs.writeShellScriptBin "rebuild" ''
     if [ $1 == "tag-current" ]; then
@@ -11,10 +12,10 @@ let
     if [ -e "$pathToConfig" ]; then
       SYSTEMPATH=$(basename $pathToConfig)
       PROFILES=($(find /nix/var/nix/profiles/ -lname $pathToConfig))
-      echo Tagging $SYSTEMPATH && git tag $SYSTEMPATH
+      echo Tagging $SYSTEMPATH && git tag $SYSTEMPATH || true
       for profile in $PROFILES; do
         SYSTEMNUM=$(hostname)/$(basename $profile)
-        echo Tagging $SYSTEMNUM && git tag $SYSTEMNUM
+        echo Tagging $SYSTEMNUM && git tag $SYSTEMNUM || true
       done
     fi
   '';
