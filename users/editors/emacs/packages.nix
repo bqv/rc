@@ -67,6 +67,8 @@
     exwm desktop-environment buffer-move exwm-edit pinentry all-the-icons dashboard ivy-exwm ivy-clipmenu #exwm-config map cl exwm-input exwm-manage exwm-randr exwm-systemtray exwm-workspace
     # usr-crit-completion.el
     smex ivy fzf counsel ivy-rich counsel-projectile swiper ivy-hydra which-key
+    # usr-lang-cpp.el
+    meson-mode
     # usr-lang-racket.el
     racket-mode
     # usr-lang-rust.el
