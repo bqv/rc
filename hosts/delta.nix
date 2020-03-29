@@ -14,7 +14,7 @@ args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
     efi.canTouchEfiVariables = true;
     systemd-boot = {
       enable = true;
-      configurationLimit = 4;
+      configurationLimit = 8;
     };
   };
 
