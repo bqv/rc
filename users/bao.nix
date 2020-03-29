@@ -65,52 +65,57 @@
         videos = "${homeDirectory}/var/videos";
       };
 
-      mimeApps = {
+      mimeApps = let
+        firefox = "firefox.desktop";
+        qutebrowser = "org.qutebrowser.qutebrowser.desktop";
+        thunderbird = "thunderbird.desktop";
+      in {
         enable = true;
-        defaultApplications = {
-         "text/html" = "firefox.desktop";
-         "x-scheme-handler/http" = "firefox.desktop";
-         "x-scheme-handler/https" = "firefox.desktop";
-         "x-scheme-handler/about" = "org.qutebrowser.qutebrowser.desktop";
-         "x-scheme-handler/unknown" = "org.qutebrowser.qutebrowser.desktop";
-         "x-scheme-handler/mailto" = "userapp-Daily-YZ3MH0.desktop";
-         "message/rfc822" = "userapp-Daily-YZ3MH0.desktop";
-         "x-scheme-handler/news" = "userapp-Thunderbird-6VWVYZ.desktop";
-         "x-scheme-handler/snews" = "userapp-Thunderbird-6VWVYZ.desktop";
-         "x-scheme-handler/nntp" = "userapp-Thunderbird-6VWVYZ.desktop";
-         "x-scheme-handler/feed" = "userapp-Thunderbird-EVKWYZ.desktop";
-         "application/rss+xml" = "userapp-Thunderbird-EVKWYZ.desktop";
-         "application/x-extension-rss" = "userapp-Thunderbird-EVKWYZ.desktop";
-         "x-scheme-handler/ftp" = "firefox.desktop";
-         "x-scheme-handler/chrome" = "firefox.desktop";
-         "application/x-extension-htm" = "firefox.desktop";
-         "application/x-extension-html" = "firefox.desktop";
-         "application/x-extension-shtml" = "firefox.desktop";
-         "application/xhtml+xml" = "firefox.desktop";
-         "application/x-extension-xhtml" = "firefox.desktop";
-         "application/x-extension-xht" = "firefox.desktop";
-        };
-        associations.added = {
-         "x-scheme-handler/mailto" = "userapp-Thunderbird-TYK1YZ.desktop;userapp-Daily-YZ3MH0.desktop;";
-         "message/rfc822" = "userapp-Thunderbird-TYK1YZ.desktop;userapp-Daily-YZ3MH0.desktop;";
-         "x-scheme-handler/news" = "userapp-Thunderbird-6VWVYZ.desktop;";
-         "x-scheme-handler/snews" = "userapp-Thunderbird-6VWVYZ.desktop;";
-         "x-scheme-handler/nntp" = "userapp-Thunderbird-6VWVYZ.desktop;";
-         "x-scheme-handler/feed" = "userapp-Thunderbird-EVKWYZ.desktop;";
-         "application/rss+xml" = "userapp-Thunderbird-EVKWYZ.desktop;";
-         "application/x-extension-rss" = "userapp-Thunderbird-EVKWYZ.desktop;";
-         "x-scheme-handler/http" = "firefox.desktop;";
-         "x-scheme-handler/https" = "firefox.desktop;";
-         "x-scheme-handler/ftp" = "firefox.desktop;";
-         "x-scheme-handler/chrome" = "firefox.desktop;";
-         "text/html" = "firefox.desktop;";
-         "application/x-extension-htm" = "firefox.desktop;";
-         "application/x-extension-html" = "firefox.desktop;";
-         "application/x-extension-shtml" = "firefox.desktop;";
-         "application/xhtml+xml" = "firefox.desktop;";
-         "application/x-extension-xhtml" = "firefox.desktop;";
-         "application/x-extension-xht" = "firefox.desktop;";
-        };
+
+        defaultApplications."text/html" = firefox;
+        defaultApplications."x-scheme-handler/http" = firefox;
+        defaultApplications."x-scheme-handler/https" = firefox;
+        defaultApplications."x-scheme-handler/ftp" = firefox;
+        defaultApplications."x-scheme-handler/chrome" = firefox;
+        defaultApplications."application/x-extension-htm" = firefox;
+        defaultApplications."application/x-extension-html" = firefox;
+        defaultApplications."application/x-extension-shtml" = firefox;
+        defaultApplications."application/xhtml+xml" = firefox;
+        defaultApplications."application/x-extension-xhtml" = firefox;
+        defaultApplications."application/x-extension-xht" = firefox;
+
+        defaultApplications."x-scheme-handler/about" = qutebrowser;
+        defaultApplications."x-scheme-handler/unknown" = qutebrowser;
+
+        defaultApplications."x-scheme-handler/mailto" = thunderbird;
+        defaultApplications."message/rfc822" = thunderbird;
+        defaultApplications."x-scheme-handler/news" = thunderbird;
+        defaultApplications."x-scheme-handler/snews" = thunderbird;
+        defaultApplications."x-scheme-handler/nntp" = thunderbird;
+        defaultApplications."x-scheme-handler/feed" = thunderbird;
+        defaultApplications."application/rss+xml" = thunderbird;
+        defaultApplications."application/x-extension-rss" = thunderbird;
+
+        associations.added."x-scheme-handler/http" = [ firefox ];
+        associations.added."x-scheme-handler/https" = [ firefox ];
+        associations.added."x-scheme-handler/ftp" = [ firefox ];
+        associations.added."x-scheme-handler/chrome" = [ firefox ];
+        associations.added."text/html" = [ firefox ];
+        associations.added."application/x-extension-htm" = [ firefox ];
+        associations.added."application/x-extension-html" = [ firefox ];
+        associations.added."application/x-extension-shtml" = [ firefox ];
+        associations.added."application/xhtml+xml" = [ firefox ];
+        associations.added."application/x-extension-xhtml" = [ firefox ];
+        associations.added."application/x-extension-xht" = [ firefox ];
+
+        associations.added."x-scheme-handler/mailto" = [ thunderbird ];
+        associations.added."message/rfc822" = [ thunderbird ];
+        associations.added."x-scheme-handler/news" = [ thunderbird ];
+        associations.added."x-scheme-handler/snews" = [ thunderbird ];
+        associations.added."x-scheme-handler/nntp" = [ thunderbird ];
+        associations.added."x-scheme-handler/feed" = [ thunderbird ];
+        associations.added."application/rss+xml" = [ thunderbird ];
+        associations.added."application/x-extension-rss" = [ thunderbird ];
       };
     };
   };
