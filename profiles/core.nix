@@ -121,4 +121,6 @@ in {
   services.earlyoom.enable = true;
 
   users.mutableUsers = false;
+
+  home-manager.useUserPackages = true;
 }
