@@ -26,6 +26,8 @@ in pkgs.mkShell {
     mkdir -p secrets
   '';
 
+  GC_DONT_GC = 1; # Dangerously mitigate GC-based crashes
+
   NIX_CONF_DIR = let
     current = pkgs.lib.optionalString (builtins.pathExists /etc/nix/nix.conf)
       (builtins.readFile /etc/nix/nix.conf);
