@@ -88,11 +88,11 @@
         defaultApplications."x-scheme-handler/unknown" = qutebrowser;
 
         defaultApplications."x-scheme-handler/mailto" = thunderbird;
-        defaultApplications."message/rfc822" = thunderbird;
         defaultApplications."x-scheme-handler/news" = thunderbird;
         defaultApplications."x-scheme-handler/snews" = thunderbird;
         defaultApplications."x-scheme-handler/nntp" = thunderbird;
         defaultApplications."x-scheme-handler/feed" = thunderbird;
+        defaultApplications."message/rfc822" = thunderbird;
         defaultApplications."application/rss+xml" = thunderbird;
         defaultApplications."application/x-extension-rss" = thunderbird;
 
@@ -101,19 +101,19 @@
         associations.added."x-scheme-handler/ftp" = [ firefox ];
         associations.added."x-scheme-handler/chrome" = [ firefox ];
         associations.added."text/html" = [ firefox ];
+        associations.added."application/xhtml+xml" = [ firefox ];
         associations.added."application/x-extension-htm" = [ firefox ];
         associations.added."application/x-extension-html" = [ firefox ];
         associations.added."application/x-extension-shtml" = [ firefox ];
-        associations.added."application/xhtml+xml" = [ firefox ];
         associations.added."application/x-extension-xhtml" = [ firefox ];
         associations.added."application/x-extension-xht" = [ firefox ];
 
         associations.added."x-scheme-handler/mailto" = [ thunderbird ];
-        associations.added."message/rfc822" = [ thunderbird ];
         associations.added."x-scheme-handler/news" = [ thunderbird ];
         associations.added."x-scheme-handler/snews" = [ thunderbird ];
         associations.added."x-scheme-handler/nntp" = [ thunderbird ];
         associations.added."x-scheme-handler/feed" = [ thunderbird ];
+        associations.added."message/rfc822" = [ thunderbird ];
         associations.added."application/rss+xml" = [ thunderbird ];
         associations.added."application/x-extension-rss" = [ thunderbird ];
       };
