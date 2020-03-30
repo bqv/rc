@@ -1,4 +1,4 @@
-inputs@{ home, nixpkgs, emacs, self, pkgs, system, ... }:
+inputs@{ home, nixpkgs, dwarffs, emacs, self, pkgs, system, ... }:
 let
   inherit (nixpkgs) lib;
 
@@ -45,7 +45,8 @@ let
         flakeModules =
           attrValues (removeAttrs self.nixosModules [ "profiles" ]);
 
-      in flakeModules ++ [ core global local home-manager ];
+      in flakeModules ++ [ core global local home-manager
+                           dwarffs.nixosModules.dwarffs ];
 
     };
 

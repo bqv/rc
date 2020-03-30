@@ -4,6 +4,7 @@
   epoch = 201909;
 
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  inputs.dwarffs.url = "github:edolstra/dwarffs/master";
   inputs.home.url = "github:bqv/home-manager/flakes";
   inputs.nur.url = "github:nix-community/NUR";
 
@@ -20,7 +21,7 @@
     flake = false;
   };
 
-  outputs = inputs@{ self, home, nixpkgs, nur, emacs, vmnix }:
+  outputs = inputs@{ self, home, nixpkgs, dwarffs, nur, emacs, vmnix }:
     let
       inherit (builtins) listToAttrs baseNameOf attrNames readDir;
       inherit (nixpkgs.lib) removeSuffix;
