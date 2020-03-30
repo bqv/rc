@@ -1,5 +1,42 @@
 {
   "inputs": {
+    "dwarffs": {
+      "info": {
+        "lastModified": 1577739225,
+        "narHash": "sha256-xsBEEuAhHhZgDz2ARhD8teFTuVgxc1a2x20wSFZMeu0="
+      },
+      "inputs": {
+        "nixpkgs": {
+          "info": {
+            "narHash": "sha256-HKuPcp/pBpKNBOnDlrSzObee5eB0LdzhI0RpRjTVxik="
+          },
+          "inputs": {},
+          "locked": {
+            "owner": "edolstra",
+            "repo": "nixpkgs",
+            "rev": "03f3def66a104a221aac8b751eeb7075374848fd",
+            "type": "github"
+          },
+          "original": {
+            "id": "nixpkgs",
+            "ref": "release-19.09",
+            "type": "indirect"
+          }
+        }
+      },
+      "locked": {
+        "owner": "edolstra",
+        "repo": "dwarffs",
+        "rev": "47218f1b8f971925241b1b307a1e770a7c220b5e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "ref": "master",
+        "repo": "dwarffs",
+        "type": "github"
+      }
+    },
     "emacs": {
       "info": {
         "lastModified": 1585469880,
