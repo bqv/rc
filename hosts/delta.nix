@@ -4,6 +4,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
   imports = [
     ../legacy/delta/configuration.nix
     ../profiles/misc/disable-mitigations.nix
+    ../profiles/networking/ipfs
     ../profiles/graphical/exwm
     ../users/root.nix
     ../users/bao.nix
