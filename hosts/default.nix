@@ -29,7 +29,8 @@ let
             "nixpkgs-overlays=/etc/nixos/overlays"
           ];
 
-          system.configurationRevision = self.rev;
+          system.configurationRevision = self.rev
+            or (throw "Cannot build from an unclean source tree!");
 
           nixpkgs = { inherit pkgs; };
           nixpkgs.overlays = [
