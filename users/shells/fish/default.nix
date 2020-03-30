@@ -78,7 +78,10 @@ in {
                     set suffix '>'
             end
 
-            echo -n -s (fish_nix_prompt) "$USER" @ (prompt_hostname) ' ' (set_color $color_cwd) (prompt_pwd) (set_color normal) "$suffix "
+            echo -n -s (fish_nix_prompt)
+            echo -n -s "$USER" @ (prompt_hostname) ' ' (set_color $color_cwd) (prompt_pwd) (set_color normal)
+            echo -n -s (fish_vcs_prompt)
+            echo -n -s "$suffix "
         end
       '';
       interactiveShellInit = ''
