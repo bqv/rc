@@ -1,0 +1,33 @@
+#+title: NixOS System Configuration
+#+author: Tony O.
+#+email: nixos@***REMOVED***
+#+OPTIONS: toc:nil num:nil
+
+* What's this?
+
+A NixOS configuration repository using the experimental flakes mechanism.
+Its aim is to provide a generic repository which neatly separates concerns
+and allows one to get up and running with NixOS faster than ever.
+
+A configuration.nix is provided for compatibility with nixos-option.
+
+* Build
+
+A rebuild script is provided in the nix shell. If you don't have direnv/lorri,
+you can use it as below.
+
+#+BEGIN_SRC sh
+  nix-shell --run "rebuild [--show-trace] [-vv] {switch|boot|dry-activate|...}"
+#+END_SRC
+
+* Flake Inputs:
+
+  - nixpkgs: github:nixos/nixpkgs
+  - home: github:rycee/home-manager
+   -> no flake support yet - forked at github:bqv/home-manager/flakes
+  - nur: github:nix-community/nur
+  - dwarffs: github:edolstra/dwarffs
+  - emacs: github:nix-community/emacs-overlay
+   -> no flake support yet - imported without flakes
+  - vmnix: github:nekroze/vmx.nix
+   -> no flake support yet - imported without flakes
