@@ -1,4 +1,4 @@
-args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
+args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
 
 {
   imports = [
@@ -76,4 +76,9 @@ args@{ nixpkgs, home, nur, self, lib, pkgs, system, ... }:
       idle_fetch_timeout = 10;
     };
   };
+
+  assertions = builtins.map (w: {
+    assertion = false;
+    message = w;
+  }) config.warnings;
 }
