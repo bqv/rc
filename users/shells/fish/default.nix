@@ -123,7 +123,7 @@ in {
         less = ''${pkgs.bat}/bin/bat --paging=always --pager "${pkgs.less}/bin/less -RF"'';
         ls = "${pkgs.exa}/bin/exa";
         ps = "${pkgs.procs}/bin/procs";
-        diff = "${pkgs.colordiff}/bin/cdiff";
+        diff = "${pkgs.ydiff}/bin/ydiff -s";
         tmux = "tmux -2"; # Force 256 colors
         bw = "env (cat ~/.bwrc) bw";
 
