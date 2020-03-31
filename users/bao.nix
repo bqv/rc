@@ -1,4 +1,4 @@
-{ config ? {}, pkgs, ... }:
+{ config ? {}, pkgs, lib, ... }:
 
 {
   imports = [
@@ -43,6 +43,7 @@
       netsurf.browser # Utility
     ];
 
+    home.file."mimeapps.list".force = lib.mkForce true;
     xdg = let
       inherit (config.home-manager.users.bao.home) homeDirectory;
     in rec {
