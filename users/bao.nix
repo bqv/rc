@@ -1,4 +1,4 @@
-{ config ? {}, pkgs, ... }:
+{ config ? {}, pkgs, lib, ... }:
 
 let
   ipfscat = pkgs.writeShellScriptBin "ipfscat" ''
@@ -53,6 +53,7 @@ in {
       xsel xclip scrot # Utility
     ];
 
+    home.file."mimeapps.list".force = lib.mkForce true;
     xdg = let
       inherit (config.home-manager.users.bao.home) homeDirectory;
     in rec {
