@@ -1,6 +1,21 @@
 { config ? {}, pkgs, lib, ... }:
 
-{
+let
+  ipfscat = pkgs.writeShellScriptBin "ipfscat" ''
+    export IPFS_PATH='/var/lib/ipfs'
+    bold="$(${pkgs.ncurses}/bin/tput bold)"
+    sgr0="$(${pkgs.ncurses}/bin/tput sgr0)"
+    ${pkgs.ipfs}/bin/ipfs add $@ |\
+    ${pkgs.gnugrep}/bin/grep added |\
+    ${pkgs.coreutils}/bin/cut -d' ' -f 2 |\
+    ${pkgs.findutils}/bin/xargs -I{} echo "https://ipfs.io/ipfs/{}" |\
+    ${pkgs.coreutils}/bin/tee >( \
+    ${pkgs.xsel}/bin/xsel -i -p ) >( \
+    ${pkgs.xsel}/bin/xsel -i -s ) >( \
+    ${pkgs.xsel}/bin/xsel -i -b ) |\
+    ${pkgs.findutils}/bin/xargs echo $bold"Copied:"$sgr0
+  '';
+in {
   imports = [
     ../profiles/develop
   ];
@@ -39,8 +54,8 @@
       abduco dvtm git yadm vim htop pstree fortune cowsay coreutils pv # Shell Essential
       nmap wget curl # Networking
       gnupg bitwarden-cli protonvpn-cli-ng git-crypt # Security
-      file jq direnv # Utility
-      netsurf.browser # Utility
+      file jq direnv ipfscat # Utility
+      xsel xclip scrot # Utility
     ];
 
     home.file."mimeapps.list".force = lib.mkForce true;
