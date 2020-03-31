@@ -1,6 +1,15 @@
 { config ? {}, pkgs, ... }:
 
-{
+let
+  ipfscat = pkgs.writeShellScriptBin "ipfscat" ''
+    export IPFS_PATH='/var/lib/ipfs'
+    ${pkgs.ipfs}/bin/ipfs add $@ |\
+    ${pkgs.coreutils}/bin/cut -d' ' -f 2 |\
+    ${pkgs.findutils}/bin/xargs -I{} echo "https://ipfs.io/ipfs/{}" |\
+    ${pkgs.coreutils}/bin/tee /dev/stderr |\
+    ${pkgs.xsel}/bin/xsel -i
+  '';
+in {
   imports = [
     ../profiles/develop
   ];
@@ -39,8 +48,8 @@
       abduco dvtm git yadm vim htop pstree fortune cowsay coreutils pv # Shell Essential
       nmap wget curl # Networking
       gnupg bitwarden-cli protonvpn-cli-ng git-crypt # Security
-      file jq direnv # Utility
-      netsurf.browser # Utility
+      file jq direnv ipfscat # Utility
+      xsel xclip scrot # Utility
     ];
 
     xdg = let
