@@ -5,7 +5,7 @@
 
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
   inputs.dwarffs.url = "github:edolstra/dwarffs/master";
-  inputs.home.url = "github:bqv/home-manager/flakes";
+  inputs.home.url = "github:rycee/home-manager/bqv/flakes";
   inputs.nur.url = "github:nix-community/NUR";
 
   inputs.emacs = {
