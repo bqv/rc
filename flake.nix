@@ -3,9 +3,10 @@
 
   epoch = 201909;
 
-  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+  inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
+  inputs.guixpkgs.url = "github:bqv/nixpkgs/guix";
   inputs.dwarffs.url = "github:edolstra/dwarffs/master";
-  inputs.home.url = "github:rycee/home-manager/bqv/flakes";
+  inputs.home.url = "github:rycee/home-manager/bqv-flakes";
   inputs.nur.url = "github:nix-community/NUR";
 
   inputs.emacs = {
@@ -21,7 +22,7 @@
     flake = false;
   };
 
-  outputs = inputs@{ self, home, nixpkgs, dwarffs, nur, emacs, vmnix }:
+  outputs = inputs@{ self, home, nixpkgs, dwarffs, nur, emacs, vmnix, guixpkgs }:
     let
       inherit (builtins) listToAttrs baseNameOf attrNames readDir;
       inherit (nixpkgs.lib) removeSuffix;
@@ -29,7 +30,8 @@
 
       pkgs = import nixpkgs {
         inherit system;
-        overlays = self.overlays;
+        overlays = self.overlays ++
+          [(self: super: { inherit (import guixpkgs { inherit system; }) guix; })];
         config = { allowUnfree = true; };
       };
 
