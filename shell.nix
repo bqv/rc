@@ -2,6 +2,7 @@
 
 let
   rebuild = pkgs.writeShellScriptBin "rebuild" ''
+    REV=$(git rev-parse HEAD)
     if [ $1 == "tag-current" ]; then
       pathToConfig=$(readlink -f /run/current-system)
     else
@@ -12,10 +13,10 @@ let
     if [ -e "$pathToConfig" ]; then
       SYSTEMPATH=$(basename $pathToConfig)
       PROFILES=($(find /nix/var/nix/profiles/ -lname $pathToConfig))
-      echo Tagging $SYSTEMPATH && git tag $SYSTEMPATH || true
+      echo Tagging $SYSTEMPATH && git tag $SYSTEMPATH $REV || true
       for profile in $PROFILES; do
         SYSTEMNUM=$(hostname)/$(basename $profile)
-        echo Tagging $SYSTEMNUM && git tag $SYSTEMNUM || true
+        echo Tagging $SYSTEMNUM && git tag $SYSTEMNUM $REV || true
       done
     fi
   '';
