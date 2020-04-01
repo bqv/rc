@@ -10,6 +10,8 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
     ../users/bao.nix
   ];
 
+  environment.systemPackages = with pkgs; [ guix ];
+
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
     efi.canTouchEfiVariables = true;
