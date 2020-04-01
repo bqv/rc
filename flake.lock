@@ -55,6 +55,25 @@
         "type": "github"
       }
     },
+    "guixpkgs": {
+      "info": {
+        "lastModified": 1585770165,
+        "narHash": "sha256-2/kneGXpUTTSxzyZ9kdGb0T+ageUjhe3IQKTmwaiDbk="
+      },
+      "inputs": {},
+      "locked": {
+        "owner": "bqv",
+        "repo": "nixpkgs",
+        "rev": "809018a177f1440a582ebc0af0ab2f858608bb45",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bqv",
+        "ref": "guix",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "home": {
       "info": {
         "lastModified": 1585027465,
@@ -80,33 +99,33 @@
         }
       },
       "locked": {
-        "owner": "bqv",
+        "owner": "rycee",
         "repo": "home-manager",
         "rev": "53331f722eb7113921d1762c30dd2b5421c4f746",
         "type": "github"
       },
       "original": {
-        "owner": "bqv",
-        "ref": "flakes",
+        "owner": "rycee",
+        "ref": "bqv-flakes",
         "repo": "home-manager",
         "type": "github"
       }
     },
     "nixpkgs": {
       "info": {
-        "lastModified": 1585356295,
-        "narHash": "sha256-53jWxjDZbDQGTLrCUaq9Zni4TdSlCc7hoK+zoK39UEI="
+        "lastModified": 1585398436,
+        "narHash": "sha256-/pmNxI/t0k1/Bvi3/XxcC77qeLWfkCtVQhYHYwAXDL0="
       },
       "inputs": {},
       "locked": {
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "ae6bdcc53584aaf20211ce1814bea97ece08a248",
+        "rev": "05f0934825c2a0750d4888c4735f9420c906b388",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "nixos-unstable",
+        "ref": "nixos-unstable-small",
         "repo": "nixpkgs",
         "type": "github"
       }
