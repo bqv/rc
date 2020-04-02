@@ -4,6 +4,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
   imports = [
     ../legacy/delta/configuration.nix
     ../profiles/misc/disable-mitigations.nix
+    ../profiles/misc/guix.nix
     ../profiles/networking/ipfs
     ../profiles/graphical/exwm
     ../users/root.nix
@@ -69,6 +70,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
   programs.adb.enable = true;
 
   services.locate.enable = true;
+  services.guix.enable = true;
   services.nixos-git = {
     enable = true;
     github = { owner = "bqv"; repo = "nixos"; };
