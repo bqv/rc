@@ -133,5 +133,26 @@ in {
         associations.added."application/x-extension-rss" = [ thunderbird ];
       };
     };
+
+    gtk = {
+      enable = true;
+      theme = {
+        name = "Adwaita-dark";
+        package = pkgs.gnome-themes-extra;
+      };
+      iconTheme = {
+        name = "Adwaita-dark";
+        package = pkgs.gnome3.adwaita-icon-theme;
+      };
+      font = {
+        name = "Cantarell 11";
+        package = pkgs.cantarell-fonts;
+      };
+    };
+  
+    qt = {
+      enable = true;
+      platformTheme = "gnome";
+    };
   };
 }
