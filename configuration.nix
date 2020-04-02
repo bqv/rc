@@ -6,7 +6,7 @@ let
   inherit (builtins) attrNames readDir;
 
   hostname = lib.fileContents /etc/hostname;
-  host = "/etc/nixos/hosts/${hostname}.nix";
+  host = "/etc/nixos/hosts/${hostname}";
   config = if (builtins.pathExists host) then
     [ host ]
   else
