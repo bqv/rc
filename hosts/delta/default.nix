@@ -3,7 +3,6 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
 {
   imports = [
     ../../legacy/delta/graphical
-    ../../legacy/delta/sound/pulse.nix
     ../../legacy/delta/network/services/openssh.nix
     ../../legacy/delta/network/tinc.nix
     ../../profiles/meta/fatal-warnings.nix
@@ -11,6 +10,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
     ../../profiles/misc/guix.nix
     ../../profiles/networking/ipfs
     ../../profiles/networking/bluetooth
+    ../../profiles/sound/pulse.nix
     ../../profiles/graphical/exwm
     ../../users/root.nix
     ../../users/bao.nix
