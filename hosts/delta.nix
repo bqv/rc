@@ -20,7 +20,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
   };
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbcore" "sd_mod" "sr_mod" "amdgpu" ];
-  boot.initrd.kernelModules = [ "amdgpu" "snd_hda_intel" ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ "kvm-intel" "amdgpu" "fuse" ];
   boot.extraModulePackages = [ ];
   boot.binfmt.emulatedSystems = [ "armv7l-linux" "aarch64-linux" ];
@@ -49,7 +49,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
 
   virtualisation.libvirtd.enable = true;
   virtualisation.virtualbox.host.enable = true;
-  #virtualisation.anbox.enable = true;
+  virtualisation.anbox.enable = true;
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
