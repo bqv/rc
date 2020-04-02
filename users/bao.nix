@@ -53,7 +53,7 @@ in {
       abduco dvtm git yadm vim htop pstree fortune cowsay coreutils pv # Shell Essential
       nmap wget curl # Networking
       gnupg bitwarden-cli protonvpn-cli-ng git-crypt # Security
-      file jq direnv ipfscat # Utility
+      file jq direnv exa bat unrar unzip ncdu pv ipfscat # Utility
       xsel xclip scrot # Utility
     ];
 
