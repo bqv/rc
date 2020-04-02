@@ -2,7 +2,8 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
 
 {
   imports = [
-    ../../legacy/delta/configuration.nix
+    ../../legacy/delta/graphical
+    ../../legacy/delta/sound/pulse.nix
     ../../legacy/delta/network/services/openssh.nix
     ../../legacy/delta/network/tinc.nix
     ../../profiles/meta/fatal-warnings.nix
@@ -13,6 +14,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
     ../../profiles/graphical/exwm
     ../../users/root.nix
     ../../users/bao.nix
+    ./network.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -74,6 +76,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
   };
   programs.vim.defaultEditor = true;
   programs.adb.enable = true;
+  programs.tmux.enable = true;
 
   services.printing.enable = true;
   services.locate.enable = true;
@@ -98,4 +101,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
       idle_fetch_timeout = 10;
     };
   };
+
+  security.sudo.enable = true;
+  security.sudo.wheelNeedsPassword = false;
 }
