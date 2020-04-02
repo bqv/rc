@@ -3,6 +3,8 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
 {
   imports = [
     ../../legacy/delta/configuration.nix
+    ../../legacy/delta/network/services/openssh.nix
+    ../../legacy/delta/network/tinc.nix
     ../../profiles/meta/fatal-warnings.nix
     ../../profiles/misc/disable-mitigations.nix
     ../../profiles/misc/guix.nix
