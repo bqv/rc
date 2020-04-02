@@ -5,6 +5,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
     ../legacy/delta/configuration.nix
     ../profiles/meta/fatal-warnings.nix
     ../profiles/misc/disable-mitigations.nix
+    ../profiles/misc/guix.nix
     ../profiles/networking/ipfs
     ../profiles/networking/bluetooth
     ../profiles/graphical/exwm
@@ -72,6 +73,19 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
 
   services.printing.enable = true;
   services.locate.enable = true;
+  services.guix.enable = true;
+  services.guix.package = pkgs.guix.overrideAttrs (super: {
+    preAutoreconf = ''
+      sed -i '/exec autoreconf/d' ./bootstrap && ./bootstrap
+    '';
+    src = pkgs.fetchFromSavannah {
+      repo = "guix";
+      rev = "b256d136199b6e2a53ee547b9239e689697c017f";
+      sha256 = "1vk3jkbg76plld905d7anggsgpv2x29q6c3avpaaq1hcl0s3knwp";
+    };
+    nativeBuildInputs = with pkgs; super.nativeBuildInputs
+      ++ [ autoreconfHook texinfo ];
+  });
   services.nixos-git = {
     enable = true;
     github = { owner = "bqv"; repo = "nixos"; };
