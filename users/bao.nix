@@ -19,6 +19,8 @@ in {
     ../profiles/develop
   ];
 
+  services.dbus.packages = with pkgs; [ gnome3.dconf ];
+
   users.users.bao = {
     uid = 1000;
     description = "Tony";
