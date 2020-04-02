@@ -32,6 +32,8 @@ let
           system.configurationRevision = self.rev
             or (throw "Cannot build from an unclean source tree!");
 
+          system.extraSystemBuilderCmds = '' ln -s '${../.}' "$out/flake" '';
+
           nixpkgs = { inherit pkgs; };
           nixpkgs.overlays = [
             (_: _: { configuration = self; })
