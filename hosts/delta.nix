@@ -6,6 +6,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
     ../profiles/meta/fatal-warnings.nix
     ../profiles/misc/disable-mitigations.nix
     ../profiles/networking/ipfs
+    ../profiles/networking/bluetooth
     ../profiles/graphical/exwm
     ../users/root.nix
     ../users/bao.nix
@@ -54,7 +55,6 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
-  hardware.bluetooth.enable = true;
   hardware.ckb-next.enable = true;
   hardware.opengl.driSupport32Bit = true;
   hardware.cpu.intel.updateMicrocode = true;
