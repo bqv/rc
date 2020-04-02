@@ -13,6 +13,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
     ../../profiles/graphical/exwm
     ../../users/root.nix
     ../../users/bao.nix
+    ./xserver.nix
     ./network.nix
     ./remote.nix
   ];
