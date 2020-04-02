@@ -71,6 +71,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
   programs.vim.defaultEditor = true;
   programs.adb.enable = true;
 
+  services.printing.enable = true;
   services.locate.enable = true;
   services.guix.enable = true;
   services.nixos-git = {
