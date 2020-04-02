@@ -25,6 +25,11 @@ in {
   hardware.enableAllFirmware = true;
   nixpkgs.config.allowUnfree = true;
 
+  system.extraSystemBuilderCmds = ''
+    ln -s '${../configuration.nix}' \
+      "$out/configuration.nix"
+  '';
+
   environment = {
     systemPackages = with pkgs; [
       binutils
@@ -43,37 +48,6 @@ in {
       stdmanpages
       utillinux
     ];
-
-    etc =
-      let
-        configurationRoot = pkgs.configuration;
-        configurationTree = let
-          traverse = self: path: file: type: let
-            fqdir = "${path}/${file}";
-          in if type == "directory"
-             then (lib.mapAttrs (self self fqdir) (builtins.readDir fqdir))
-             else fqdir;
-          fileTree = lib.mapAttrs (traverse traverse configurationRoot)
-            (builtins.readDir "${configurationRoot}/.");
-        in fileTree // {
-          secrets = {};
-          legacy = let
-            pred = name: val: lib.isAttrs val ||
-                              lib.last (lib.splitString "." name) == "nix";
-          in lib.filterAttrsRecursive pred fileTree.legacy;
-        };
-        configurationFiles = let
-          annotate = lib.mapAttrsRecursive (path: val: super: super // {
-            "nixos-configuration-${lib.concatStringsSep "-" path}" = {
-              target = "nixos/${lib.concatStringsSep "/" path}";
-              source = val;
-            };
-          });
-          traverse = self: lib.mapAttrsToList (_: v: if lib.isAttrs v
-                                                     then (self self) v
-                                                     else v);
-        in lib.flatten ((traverse traverse) (annotate configurationTree));
-      in lib.fold (f: acc: f acc) {} configurationFiles;
   };
 
   fonts = {
