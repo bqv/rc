@@ -2,15 +2,15 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
 
 {
   imports = [
-    ../legacy/delta/configuration.nix
-    ../profiles/meta/fatal-warnings.nix
-    ../profiles/misc/disable-mitigations.nix
-    ../profiles/misc/guix.nix
-    ../profiles/networking/ipfs
-    ../profiles/networking/bluetooth
-    ../profiles/graphical/exwm
-    ../users/root.nix
-    ../users/bao.nix
+    ../../legacy/delta/configuration.nix
+    ../../profiles/meta/fatal-warnings.nix
+    ../../profiles/misc/disable-mitigations.nix
+    ../../profiles/misc/guix.nix
+    ../../profiles/networking/ipfs
+    ../../profiles/networking/bluetooth
+    ../../profiles/graphical/exwm
+    ../../users/root.nix
+    ../../users/bao.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -58,8 +58,10 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
 
   hardware.ckb-next.enable = true;
   hardware.opengl.driSupport32Bit = true;
-  hardware.cpu.intel.updateMicrocode = true;
-  hardware.cpu.amd.updateMicrocode = true;
+  hardware.cpu = {
+    intel.updateMicrocode = true;
+    amd.updateMicrocode = true;
+  };
 
   programs.firejail = {
     enable = true;

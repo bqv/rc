@@ -40,7 +40,7 @@ let
           ];
         };
 
-        local = import "${toString ./.}/${hostName}.nix";
+        local = import "${toString ./.}/${hostName}";
 
         # Everything in `./modules/list.nix`.
         flakeModules =
