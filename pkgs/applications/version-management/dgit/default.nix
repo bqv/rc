@@ -3,14 +3,14 @@
 
 buildGoModule rec {
   pname = "dgit";
-  version = "0.0.11-alpha";
-  modSha256 = "1jafi3sk28pbqgrxcr20gfywrgsq3rv0srl8fa2whxqw945finwf";
+  version = "0.0.13-alpha";
+  modSha256 = "02mam8a26qp2i0i8cni5id8nw6qa18yxywic6p4d0bxg3aycrg89";
 
   src = fetchFromGitHub {
     owner = "quorumcontrol";
     repo = pname;
     rev = "v${version}";
-    hash = "sha256-g3zsIL8t1BVZdXHfbCCmQGDTfOnDagKG8mkLZh9i7/g=";
+    hash = "sha256-wpJkBhZTUhdeoFOZ5nK4vxGsSsXo3NbNQNAMhHPnQnQ=";
   };
 
   nativeBuildInputs = [ makeWrapper ];
