@@ -3,7 +3,6 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
 {
   imports = [
     ../../legacy/delta/graphical
-    ../../legacy/delta/network/services/openssh.nix
     ../../legacy/delta/network/tinc.nix
     ../../profiles/meta/fatal-warnings.nix
     ../../profiles/misc/disable-mitigations.nix
@@ -15,6 +14,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
     ../../users/root.nix
     ../../users/bao.nix
     ./network.nix
+    ./remote.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
