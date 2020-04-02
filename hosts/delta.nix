@@ -3,6 +3,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
 {
   imports = [
     ../legacy/delta/configuration.nix
+    ../profiles/meta/fatal-warnings.nix
     ../profiles/misc/disable-mitigations.nix
     ../profiles/networking/ipfs
     ../profiles/graphical/exwm
@@ -78,9 +79,4 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
       idle_fetch_timeout = 10;
     };
   };
-
-  assertions = builtins.map (w: {
-    assertion = false;
-    message = w;
-  }) config.warnings;
 }
