@@ -44,9 +44,7 @@ let
 
         local = import "${toString ./.}/${hostName}";
 
-        # Everything in `./modules/list.nix`.
-        flakeModules =
-          attrValues (removeAttrs self.nixosModules [ "profiles" ]);
+        flakeModules = import ../modules/list.nix;
 
       in flakeModules ++ [ core global local home-manager
                            dwarffs.nixosModules.dwarffs ];

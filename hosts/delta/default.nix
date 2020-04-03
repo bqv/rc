@@ -80,6 +80,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
   programs.tmux.enable = true;
 
   services.printing.enable = true;
+  services.nix-index.enable = true;
   services.locate.enable = true;
   services.guix.enable = true;
   services.guix.package = pkgs.guix.overrideAttrs (super: {
