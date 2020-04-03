@@ -25,7 +25,8 @@
   outputs = inputs@{ self, home, nixpkgs, dwarffs, nur, emacs, vmnix, guixpkgs }:
     let
       inherit (builtins) listToAttrs baseNameOf attrNames readDir;
-      inherit (nixpkgs.lib) removeSuffix;
+      inherit (nixpkgs.lib) fold recursiveUpdate setAttrByPath;
+      inherit (nixpkgs.lib) removeSuffix removePrefix splitString;
       system = "x86_64-linux";
 
       pkgs = import nixpkgs {
@@ -52,18 +53,20 @@
       };
 
       nixosModules = let
-        prep = map (path: {
-          name = removeSuffix ".nix" (baseNameOf path);
-          value = import path;
-        });
+        mergeAll = fold recursiveUpdate {};
+        pathsToAttrs = map (file:
+          let
+            cleanFile = removeSuffix ".nix" (removePrefix "./" (toString file));
+          in setAttrByPath (splitString "/" cleanFile) (import file)
+        );
 
         # modules
         moduleList = import ./modules/list.nix;
-        modulesAttrs = listToAttrs (prep moduleList);
+        modulesAttrs = mergeAll (pathsToAttrs moduleList);
 
         # profiles
         profilesList = import ./profiles/list.nix;
-        profilesAttrs = { profiles = listToAttrs (prep profilesList); };
+        profilesAttrs = { profiles = mergeAll (pathsToAttrs profilesList); };
 
       in modulesAttrs // profilesAttrs;
     };
