@@ -5,7 +5,7 @@
 
   inputs.nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable-small";
   inputs.guixpkgs.url = "github:bqv/nixpkgs/guix";
-  inputs.dwarffs.url = "github:edolstra/dwarffs/master";
+  inputs.dwarffs.url = "github:edolstra/dwarffs/47218f1b8f971925241b1b307a1e770a7c220b5e";
   inputs.home.url = "github:rycee/home-manager/bqv-flakes";
   inputs.nur.url = "github:nix-community/NUR";
 
