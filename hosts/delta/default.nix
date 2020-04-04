@@ -83,7 +83,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
   services.printing.enable = true;
   services.nix-index.enable = true;
   services.locate.enable = true;
-  services.guix.enable = true;
+  services.guix.enable = false;
   services.guix.package = pkgs.guix.overrideAttrs (super: {
     src = pkgs.fetchFromSavannah {
       repo = "guix";
