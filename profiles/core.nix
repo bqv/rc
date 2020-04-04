@@ -11,7 +11,7 @@ in {
   ];
 
   boot = {
-    kernelPackages = pkgs.linuxPackages_latest;
+    kernelPackages = pkgs.large.linuxPackages_latest;
 
     tmpOnTmpfs = true;
     cleanTmpDir = true;
