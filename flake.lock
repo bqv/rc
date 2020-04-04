@@ -39,14 +39,14 @@
     },
     "emacs": {
       "info": {
-        "lastModified": 1585945211,
-        "narHash": "sha256-yx7XDt6OoMBtCCjGcikQV2FPStuQWBh3HisSYf+rLNU="
+        "lastModified": 1586031475,
+        "narHash": "sha256-0kC4fbKK/3MTKrmDOdfq8WGIA/m94miLMWuEwv85m5E="
       },
       "inputs": {},
       "locked": {
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "541267cbaa3a0b1d04deed52e0b3ae4e018e9576",
+        "rev": "9ea843ab191582a6a0027259711134668faf693b",
         "type": "github"
       },
       "original": {
@@ -82,14 +82,14 @@
       "inputs": {
         "nixpkgs": {
           "info": {
-            "lastModified": 1585949734,
-            "narHash": "sha256-LPz6xf9iM4g020wrMA3V6FRiNt5w1+3VsI4WhveFdVE="
+            "lastModified": 1586034693,
+            "narHash": "sha256-RHWRqVy1agUCJ/HFJGim89rpyFu2YucSt6HRhKf270E="
           },
           "inputs": {},
           "locked": {
             "owner": "NixOS",
             "repo": "nixpkgs",
-            "rev": "c51ba898737b48de8ab9e4459c0227e9e024fff5",
+            "rev": "90e09e1f0f003960f3feb28f67873774df8b0921",
             "type": "github"
           },
           "original": {
@@ -113,14 +113,14 @@
     },
     "nixpkgs": {
       "info": {
-        "lastModified": 1585949734,
-        "narHash": "sha256-LPz6xf9iM4g020wrMA3V6FRiNt5w1+3VsI4WhveFdVE="
+        "lastModified": 1586034693,
+        "narHash": "sha256-RHWRqVy1agUCJ/HFJGim89rpyFu2YucSt6HRhKf270E="
       },
       "inputs": {},
       "locked": {
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "c51ba898737b48de8ab9e4459c0227e9e024fff5",
+        "rev": "90e09e1f0f003960f3feb28f67873774df8b0921",
         "type": "github"
       },
       "original": {
@@ -132,8 +132,8 @@
     },
     "nur": {
       "info": {
-        "lastModified": 1585924481,
-        "narHash": "sha256-jWCFgKmGtMyaKUXQsLcOxAhq4sLbE+/Borr45iq0pUA="
+        "lastModified": 1586032768,
+        "narHash": "sha256-DvjRFx5QXjG2jUwMAps2YCkdE9uMUmu/VjQEXmGYBTs="
       },
       "inputs": {
         "nixpkgs": {
@@ -156,7 +156,7 @@
       "locked": {
         "owner": "nix-community",
         "repo": "NUR",
-        "rev": "8852c77a7cc9fa89d20507d168e02d7902fbea64",
+        "rev": "6e56cbf96719cf7a7495e0bf068562884b25ca79",
         "type": "github"
       },
       "original": {
