@@ -71,7 +71,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
   programs.firejail = {
     enable = true;
     wrappedBinaries = {
-      firefox-safe = "${lib.getBin pkgs.firefox}/bin/firefox";
+      firefox-safe = "${lib.getBin pkgs.large.firefox}/bin/firefox";
       mpv-safe = "${lib.getBin pkgs.mpv}/bin/mpv";
     };
   };
