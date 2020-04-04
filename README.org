@@ -22,7 +22,9 @@ you can use it as below.
 
 * Flake Inputs:
 
-  - nixpkgs: github:nixos/nixpkgs
+  - nixpkgs: github:nixos/nixpkgs (master)
+  - small: github:nixos/nixpkgs (nixos-unstable-small)
+  - large: github:nixos/nixpkgs (nixos-unstable)
   - home: github:rycee/home-manager
    -> no flake support yet - forked at github:bqv/home-manager/flakes
   - nur: github:nix-community/nur
