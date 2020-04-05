@@ -21,10 +21,10 @@ you can use it as below.
 #+END_SRC
 
 If you're on NixOS but your system nix does not support flakes, you can force a
-working version into scope with the following abuse:
+working version into scope, as well as the `rebuild` script with the following:
 
 #+BEGIN_SRC sh
-  nix-shell -E 'with (let pkgs = import <nixpkgs> {}; in import "${pkgs.path}/nixos" { configuration.nix.package = pkgs.nixFlakes; }); pkgs.mkShell { buildInputs = [ config.system.build.nixos-rebuild ]; }'
+  nix-shell --run nixFlakes-shell
 #+END_SRC
 
 * Flake Inputs:

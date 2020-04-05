@@ -1,6 +1,9 @@
 { pkgs ? import <nixpkgs> { } }:
 
 let
+  flake-shell = pkgs.writeShellScriptBin "nixFlakes-shell" ''
+    nix-shell -E 'with import "${pkgs.path}/nixos" { configuration.nix.package = (import <nixpkgs> {}).nixFlakes; }; pkgs.mkShell { buildInputs = with config.system.build; with pkgs; [ nixos-rebuild ]; }' $@
+  '';
   rebuild = pkgs.writeShellScriptBin "rebuild" ''
     REV=$(git rev-parse HEAD)
     if [ $1 == "tag-current" ]; then
@@ -29,7 +32,7 @@ in pkgs.mkShell {
       };
       patches = [ worktreePatch ];
     });
-  in [ git git-crypt nixFlakes rebuild ];
+  in [ git git-crypt nixFlakes rebuild flake-shell ];
 
   shellHook = ''
     mkdir -p secrets
