@@ -37,8 +37,9 @@
   virtualisation.virtualbox.host.enable = true;
 
   nix.gc.automatic = true;
-  nix.gc.dates = "12:00";
-  nix.gc.options = "--delete-older-than 8d";
+  nix.gc.dates = "05:00";
+  nix.gc.options = "";
+  nix.autoOptimiseStore = true;
   nix.optimise.automatic = true;
   nix.optimise.dates = [ "12:30" "00:30" ];
   nix.maxJobs = 8;

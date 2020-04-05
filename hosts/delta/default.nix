@@ -62,6 +62,16 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
+  nix = {
+    gc.automatic = true;
+    gc.dates = "12:00";
+    gc.options = "--delete-older-than 8d";
+
+    autoOptimiseStore = false; # Disabled for speed
+    optimise.automatic = true;
+    optimise.dates = [ "17:30" "02:00" ];
+  };
+
   hardware.ckb-next.enable = true;
   hardware.opengl.driSupport32Bit = true;
   hardware.cpu = {
