@@ -53,4 +53,7 @@
 
   # Set your time zone.
   time.timeZone = "Europe/London";
+
+  # Until further migration.
+  users.mutableUsers = lib.mkForce true;
 }
