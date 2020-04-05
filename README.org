@@ -20,6 +20,13 @@ you can use it as below.
   nix-shell --run "rebuild [--show-trace] [-vv] {switch|boot|dry-activate|...}"
 #+END_SRC
 
+If you're on NixOS but your system nix does not support flakes, you can force a
+working version into scope with the following abuse:
+
+#+BEGIN_SRC sh
+  nix-shell -E 'with (let pkgs = import <nixpkgs> {}; in import "${pkgs.path}/nixos" { configuration.nix.package = pkgs.nixFlakes; }); pkgs.mkShell { buildInputs = [ config.system.build.nixos-rebuild ]; }'
+#+END_SRC
+
 * Flake Inputs:
 
   - nixpkgs: github:nixos/nixpkgs (master)
