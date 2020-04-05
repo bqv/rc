@@ -60,7 +60,7 @@ in {
     gc.dates = "12:00";
     gc.options = "--delete-older-than 8d";
 
-    autoOptimiseStore = false; # Disabled for speed
+    autoOptimiseStore = lib.mkDefault false; # Disabled for speed
     optimise.automatic = true;
     optimise.dates = [ "17:30" "02:00" ];
 
