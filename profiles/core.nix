@@ -56,13 +56,9 @@ in {
 
   nix = {
 
-    gc.automatic = true;
-    gc.dates = "12:00";
-    gc.options = "--delete-older-than 8d";
-
-    autoOptimiseStore = lib.mkDefault false; # Disabled for speed
-    optimise.automatic = true;
-    optimise.dates = [ "17:30" "02:00" ];
+    gc.automatic = lib.mkDefault true;
+    autoOptimiseStore = lib.mkDefault false;
+    optimise.automatic = lib.mkDefault true;
 
     maxJobs = lib.mkDefault 4;
 
