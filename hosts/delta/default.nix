@@ -83,18 +83,39 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
   services.printing.enable = true;
   services.nix-index.enable = true;
   services.locate.enable = true;
-  services.guix.enable = true;
-  services.guix.package = pkgs.guix.overrideAttrs (super: {
+  services.guix.enable = false;
+  services.guix.package = with pkgs.pr 84004 "sha256-JmRN8WydXfoiqcANKjgd/lAQZAtscT1QOc2KcznwFxM="; let
+    guile-gnutls = (gnutls.override {
+      inherit guile;
+      guileBindings = true;
+    }).overrideAttrs (attrs: {
+      configureFlags = [
+        "--with-guile-site-dir=\${out}/share/guile/site"
+        "--with-guile-site-ccache-dir=\${out}/share/guile/site"
+        "--with-guile-extension-dir=\${out}/share/guile/site"
+      ];
+    });
+  in guix.overrideAttrs (super: rec {
     preAutoreconf = ''
       sed -i '/exec autoreconf/d' ./bootstrap && ./bootstrap
     '';
-    src = pkgs.fetchFromSavannah {
+    src = fetchFromSavannah {
       repo = "guix";
       rev = "b256d136199b6e2a53ee547b9239e689697c017f";
       sha256 = "1vk3jkbg76plld905d7anggsgpv2x29q6c3avpaaq1hcl0s3knwp";
     };
-    nativeBuildInputs = with pkgs; super.nativeBuildInputs
+    nativeBuildInputs = super.nativeBuildInputs
       ++ [ autoreconfHook texinfo ];
+    GUILE_LOAD_PATH = lib.concatStringsSep ":" [
+      "${guile-gcrypt}/share/guile/site/2.2"
+      "${guile-git}/share/guile/site/2.2"
+      "${guile-json}/share/guile/site"
+      "${guile-sqlite3}/share/guile/site/2.2"
+      "${guile-ssh}/share/guile/site/2.2"
+      "${guile-gnutls.out}/share/guile/site"
+      "${guile-git.bytestructures}/share/guile/site/2.2"
+    ];
+    GUILE_LOAD_COMPILED_PATH = GUILE_LOAD_PATH;
   });
   services.nixos-git = {
     enable = true;

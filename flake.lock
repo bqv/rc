@@ -55,25 +55,6 @@
         "type": "github"
       }
     },
-    "guixpkgs": {
-      "info": {
-        "lastModified": 1585949845,
-        "narHash": "sha256-Ks6Vxj7wNfgfHi1+RJ1fUryGsXBfwjCmfq756DI4yI8="
-      },
-      "inputs": {},
-      "locked": {
-        "owner": "bqv",
-        "repo": "nixpkgs",
-        "rev": "6a9c758b52a93ea10252aa49157d5587cb689fe1",
-        "type": "github"
-      },
-      "original": {
-        "owner": "bqv",
-        "ref": "guix",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "home": {
       "info": {
         "lastModified": 1585027465,
