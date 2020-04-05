@@ -31,7 +31,45 @@
       fsType = "tmpfs";
     };
 
-  swapDevices = [ ];
+  fileSystems."/boot" =
+    { device = "/dev/sda2";
+      fsType = "ext4";
+      options = [ "rw" "data=ordered" ];
+    };
+
+  boot.tmpOnTmpfs = true;
+  boot.loader = {
+    grub = {
+      efiSupport = false;
+      device = "nodev";
+    };
+  };
+
+  fileSystems."/home" =
+    { device = "/dev/sda3";
+      fsType = "btrfs";
+      options = [ "subvol=home" ];
+    };
+
+  fileSystems."/srv" =
+    { device = "/dev/sda3";
+      fsType = "btrfs";
+      options = [ "subvol=srv" ];
+    };
+
+  fileSystems."/var/run/btrfs" =
+    { device = "/dev/sda3";
+      fsType = "btrfs";
+      options = [ "subvolid=0" ];
+    };
+
+  fileSystems."/var/lib/machines/sandbox" =
+    { device = "/dev/sda3";
+      fsType = "btrfs";
+      options = [ "subvol=arch" ];
+    };
+
+  swapDevices = [ { device = "/dev/sda4"; } ];
 
   virtualisation.libvirtd.enable = true;
   virtualisation.virtualbox.host.enable = true;
