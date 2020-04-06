@@ -4,6 +4,7 @@
   imports =
     [
       ../../legacy/zeta/configuration.nix
+      ../../legacy/zeta/rescue.nix
     ];
 
   # Use the systemd-boot EFI boot loader.
