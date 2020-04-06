@@ -1,9 +1,7 @@
-args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
+{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
 
 {
   imports = [
-    ../../legacy/delta/graphical
-    #../../legacy/delta/network/tinc.nix
     ../../profiles/meta/fatal-warnings.nix
     ../../profiles/misc/disable-mitigations.nix
     ../../profiles/misc/udev-nosettle.nix
@@ -13,6 +11,7 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
     ../../profiles/networking/wireguard
     ../../profiles/sound/pulse.nix
     ../../profiles/graphical/exwm
+    ../../profiles/weechat.nix
     ../../users/root.nix
     ../../users/bao.nix
     ./xserver.nix
@@ -139,4 +138,20 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
 
   security.sudo.enable = true;
   security.sudo.wheelNeedsPassword = false;
+
+  environment.systemPackages = with pkgs.large; [
+    clipmenu bitwarden bitwarden-cli pass protonmail-bridge
+
+    ckb-next riot-desktop nheko discord ripcord
+    qutebrowser next firefox fx_cast_bridge
+    thunderbird mpv
+
+    dunst catt termite rxvt_unicode
+    steam obs-studio
+
+    anbox #pmbootstrap
+
+    (with hunspellDicts; hunspellWithDicts [ en_GB-large ])
+  ];
+  nixpkgs.config.firefox.enableFXCastBridge = true;
 }
