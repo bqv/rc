@@ -9,6 +9,5 @@ final: prev: {
 
   dejavu_nerdfont = prev.callPackage ./data/fonts/dejavu-nerdfont { };
 
-  purs = prev.callPackage ./shells/zsh/purs { };
   pure = prev.callPackage ./shells/zsh/pure { };
 }
