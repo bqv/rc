@@ -1,57 +1,22 @@
 {
-  "inputs": {
+  "nodes": {
     "dwarffs": {
       "info": {
-        "lastModified": 1577739225,
-        "narHash": "sha256-xsBEEuAhHhZgDz2ARhD8teFTuVgxc1a2x20wSFZMeu0="
+        "lastModified": 1585848904,
+        "narHash": "sha256-sTX1/DU4lxaHYFapf1hvTir799effD9mUW7l2+3azqU="
       },
       "inputs": {
-        "nixpkgs": {
-          "info": {
-            "narHash": "sha256-HKuPcp/pBpKNBOnDlrSzObee5eB0LdzhI0RpRjTVxik="
-          },
-          "inputs": {},
-          "locked": {
-            "owner": "edolstra",
-            "repo": "nixpkgs",
-            "rev": "03f3def66a104a221aac8b751eeb7075374848fd",
-            "type": "github"
-          },
-          "original": {
-            "id": "nixpkgs",
-            "ref": "release-19.09",
-            "type": "indirect"
-          }
-        }
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
         "owner": "edolstra",
         "repo": "dwarffs",
-        "rev": "47218f1b8f971925241b1b307a1e770a7c220b5e",
+        "rev": "83c13981993fa54c4cac230f2eec7241ab8fd0a9",
         "type": "github"
       },
       "original": {
         "owner": "edolstra",
         "repo": "dwarffs",
-        "rev": "47218f1b8f971925241b1b307a1e770a7c220b5e",
-        "type": "github"
-      }
-    },
-    "emacs": {
-      "info": {
-        "lastModified": 1586190165,
-        "narHash": "sha256-ZMXUWYB0AjmJx5iMZVdpV/CwOP+7K9Huy+1cxsgdcK4="
-      },
-      "inputs": {},
-      "locked": {
-        "owner": "nix-community",
-        "repo": "emacs-overlay",
-        "rev": "9b16ad3d07f32f7d9ade873c08f0afe93e9bffd1",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nix-community",
-        "repo": "emacs-overlay",
         "type": "github"
       }
     },
@@ -61,23 +26,7 @@
         "narHash": "sha256-sNV22lzsQc37hgXOJeWsRb+XDvn/wpTzajspSIVnGtk="
       },
       "inputs": {
-        "nixpkgs": {
-          "info": {
-            "lastModified": 1586200410,
-            "narHash": "sha256-DUuDwwjQkHHDl6IKR1JXpJz3Z0FY2KjdJT6vOVOe9fo="
-          },
-          "inputs": {},
-          "locked": {
-            "owner": "NixOS",
-            "repo": "nixpkgs",
-            "rev": "24590039f1b7345e8da31157b39df4e4e2d3ab2e",
-            "type": "github"
-          },
-          "original": {
-            "id": "nixpkgs",
-            "type": "indirect"
-          }
-        }
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "owner": "rycee",
@@ -97,7 +46,6 @@
         "lastModified": 1585356295,
         "narHash": "sha256-53jWxjDZbDQGTLrCUaq9Zni4TdSlCc7hoK+zoK39UEI="
       },
-      "inputs": {},
       "locked": {
         "owner": "nixos",
         "repo": "nixpkgs",
@@ -113,10 +61,42 @@
     },
     "nixpkgs": {
       "info": {
+        "lastModified": 1586203992,
+        "narHash": "sha256-tHmZo3AlGRfdTDF2gfzCEmE+eHETGfilXIzNpnd95ys="
+      },
+      "locked": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "0abc66e252ea7f11c18845a79cbfc59335356543",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "release-20.03",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_2": {
+      "info": {
         "lastModified": 1586200410,
         "narHash": "sha256-DUuDwwjQkHHDl6IKR1JXpJz3Z0FY2KjdJT6vOVOe9fo="
       },
-      "inputs": {},
+      "locked": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "24590039f1b7345e8da31157b39df4e4e2d3ab2e",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_3": {
+      "info": {
+        "lastModified": 1586200410,
+        "narHash": "sha256-DUuDwwjQkHHDl6IKR1JXpJz3Z0FY2KjdJT6vOVOe9fo="
+      },
       "locked": {
         "owner": "nixos",
         "repo": "nixpkgs",
@@ -130,28 +110,28 @@
         "type": "github"
       }
     },
+    "nixpkgs_4": {
+      "info": {
+        "narHash": "sha256-OnpEWzNxF/AU4KlqBXM2s5PWvfI5/BS6xQrPvkF5tO8="
+      },
+      "locked": {
+        "owner": "edolstra",
+        "repo": "nixpkgs",
+        "rev": "7f8d4b088e2df7fdb6b513bc2d6941f1d422a013",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
     "nur": {
       "info": {
         "lastModified": 1586195988,
         "narHash": "sha256-6yJgDpq8QLzTpMMQh8NFYEoSLm97V28pK+vaUysfLhc="
       },
       "inputs": {
-        "nixpkgs": {
-          "info": {
-            "narHash": "sha256-OnpEWzNxF/AU4KlqBXM2s5PWvfI5/BS6xQrPvkF5tO8="
-          },
-          "inputs": {},
-          "locked": {
-            "owner": "edolstra",
-            "repo": "nixpkgs",
-            "rev": "7f8d4b088e2df7fdb6b513bc2d6941f1d422a013",
-            "type": "github"
-          },
-          "original": {
-            "id": "nixpkgs",
-            "type": "indirect"
-          }
-        }
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "owner": "nix-community",
@@ -165,12 +145,21 @@
         "type": "github"
       }
     },
+    "root": {
+      "inputs": {
+        "dwarffs": "dwarffs",
+        "home": "home",
+        "large": "large",
+        "nixpkgs": "nixpkgs_3",
+        "nur": "nur",
+        "small": "small"
+      }
+    },
     "small": {
       "info": {
         "lastModified": 1586163215,
         "narHash": "sha256-RyGzWw0iu7EsG8oYfHRzvxvFWKBS72wFcwqHvc/b75Y="
       },
-      "inputs": {},
       "locked": {
         "owner": "nixos",
         "repo": "nixpkgs",
@@ -183,25 +172,8 @@
         "repo": "nixpkgs",
         "type": "github"
       }
-    },
-    "vmnix": {
-      "info": {
-        "lastModified": 1567314613,
-        "narHash": "sha256-POhnauiMBZt8hfQ7vQuAF6EZEYIQb8qVc+eXy2kxdgY="
-      },
-      "inputs": {},
-      "locked": {
-        "owner": "nekroze",
-        "repo": "vms.nix",
-        "rev": "2457c391a9934fe18b209cca9dcfabc7b500c88f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nekroze",
-        "repo": "vms.nix",
-        "type": "github"
-      }
     }
   },
-  "version": 4
+  "root": "root",
+  "version": 5
 }
