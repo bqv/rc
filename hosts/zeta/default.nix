@@ -3,7 +3,6 @@
 {
   imports = [
     ../../legacy/zeta/configuration.nix
-    ../../legacy/zeta/rescue.nix
     ../../profiles/networking/wireguard
   ];
 
