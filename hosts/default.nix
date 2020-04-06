@@ -1,4 +1,5 @@
-inputs@{ home, nixpkgs, dwarffs, emacs, self, pkgs, system, ... }:
+inputs@{ home, nixpkgs, dwarffs, self, pkgs, system, ... }:
+
 let
   inherit (nixpkgs) lib;
 
@@ -38,7 +39,6 @@ let
           nixpkgs.overlays = [
             (_: _: { configuration = self; })
             inputs.nur.overlay
-            (import emacs)
           ];
         };
 

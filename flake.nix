@@ -7,24 +7,11 @@
   inputs.small.url = "github:nixos/nixpkgs/nixos-unstable-small";
   inputs.large.url = "github:nixos/nixpkgs/nixos-unstable";
 
-  inputs.dwarffs.url = "github:edolstra/dwarffs/47218f1b8f971925241b1b307a1e770a7c220b5e";
+  inputs.dwarffs.url = "github:edolstra/dwarffs";
   inputs.home.url = "github:rycee/home-manager/bqv-flakes";
   inputs.nur.url = "github:nix-community/NUR";
 
-  inputs.emacs = {
-    type = "github";
-    owner = "nix-community";
-    repo = "emacs-overlay";
-    flake = false;
-  };
-  inputs.vmnix = {
-    type = "github";
-    owner = "nekroze";
-    repo = "vms.nix";
-    flake = false;
-  };
-
-  outputs = inputs@{ self, home, nixpkgs, small, large, dwarffs, nur, emacs, vmnix }:
+  outputs = inputs@{ self, home, nixpkgs, small, large, dwarffs, nur }:
     let
       inherit (builtins) listToAttrs baseNameOf attrNames readDir;
       inherit (nixpkgs.lib) fold recursiveUpdate setAttrByPath;
@@ -47,16 +34,12 @@
       };
 
     in {
-      nixosConfigurations =
-        let configs = import ./hosts (inputs // { inherit system pkgs; });
-        in configs;
+      nixosConfigurations = import ./hosts (inputs // { inherit system pkgs; });
 
       overlay = import ./pkgs;
 
-      overlays = let
-        overlays = map (name: import (./overlays + "/${name}"))
-          (attrNames (readDir ./overlays));
-      in overlays;
+      overlays = map (name: import (./overlays + "/${name}"))
+        (attrNames (readDir ./overlays));
 
       packages.x86_64-linux = {
         inherit (pkgs) sddm-chili dejavu_nerdfont pure;
