@@ -42,7 +42,7 @@ let
   };
 
   currentHost = hosts."${config.networking.hostName}";
-  peerable = from: to: (from != to) && (to ? "publicKey");
+  peerable = from: to: (from != to) && (hosts."${to}" ? "publicKey");
 in {
   networking.firewall.allowedUDPPorts =
     lib.mkIf (currentHost ? "port") [ currentHost.port ];
@@ -63,7 +63,7 @@ in {
       } // (lib.optionalAttrs (hostcfg ? "endpoint") {
         endpoint = "${hostcfg.endpoint}:${toString hostcfg.port}";
         persistentKeepalive = 60;
-      })) (lib.filterAttrs (hostname: hostcfg:
+      })) (lib.filterAttrs (hostname: _:
         peerable config.networking.hostName hostname
       ) hosts);
     };
