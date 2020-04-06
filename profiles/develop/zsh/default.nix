@@ -81,7 +81,6 @@ in {
     ];
 
     promptInit = ''
-      source ${pkgs.purs}/share/zsh/plugins/purs/purs.zsh
     '';
 
     interactiveShellInit = let
