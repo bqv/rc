@@ -3,13 +3,14 @@ args@{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
 {
   imports = [
     ../../legacy/delta/graphical
-    ../../legacy/delta/network/tinc.nix
+    #../../legacy/delta/network/tinc.nix
     ../../profiles/meta/fatal-warnings.nix
     ../../profiles/misc/disable-mitigations.nix
     ../../profiles/misc/udev-nosettle.nix
     ../../profiles/misc/guix.nix
     ../../profiles/networking/ipfs
     ../../profiles/networking/bluetooth
+    ../../profiles/networking/wireguard
     ../../profiles/sound/pulse.nix
     ../../profiles/graphical/exwm
     ../../users/root.nix

@@ -1,11 +1,11 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports =
-    [
-      ../../legacy/zeta/configuration.nix
-      ../../legacy/zeta/rescue.nix
-    ];
+  imports = [
+    ../../legacy/zeta/configuration.nix
+    ../../legacy/zeta/rescue.nix
+    ../../profiles/networking/wireguard
+  ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot = {
