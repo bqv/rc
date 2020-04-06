@@ -7,12 +7,6 @@
     ../../profiles/networking/wireguard
   ];
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot = {
-    enable = true;
-    configurationLimit = 8;
-  };
-  boot.loader.efi.canTouchEfiVariables = true;
   boot.cleanTmpDir = true;
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "sd_mod" ];
@@ -41,6 +35,7 @@
   boot.tmpOnTmpfs = true;
   boot.loader = {
     grub = {
+      enable = true;
       efiSupport = false;
       device = "nodev";
     };
