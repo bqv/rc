@@ -9,7 +9,7 @@ let
       # Note: Wireguard won't retry DNS resolution if it fails
       endpoint = "163.172.7.233";
       port = 51820;
-      publicKey = "0000000000000000000000000000000000000000000=";
+      publicKey = "WbZqPcgSxWf+mNsWVbS+0JylysN9FKrRG9783wn1JAg=";
     };
 
     theta = {
@@ -23,7 +23,7 @@ let
       ip = "10.0.0.3";
       #endpoint = "46.4.66.184";
       port = 51820;
-      publicKey = "0000000000000000000000000000000000000000000=";
+      publicKey = "Y/SRDGEQfFLUGqx6vMnO1pxHs9zn//NpwdSGQ2Sm+Dg=";
     };
 
     mu = {
