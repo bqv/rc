@@ -90,6 +90,7 @@
   programs.adb.enable = true;
   programs.tmux.enable = true;
 
+  services.disnix.enable = true;
   services.printing.enable = true;
   services.nix-index.enable = true;
   services.locate.enable = true;
