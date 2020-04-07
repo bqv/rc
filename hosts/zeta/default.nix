@@ -3,7 +3,11 @@
 {
   imports = [
     ../../legacy/zeta/configuration.nix
+    ../../profiles/meta/fatal-warnings.nix
     ../../profiles/networking/wireguard
+    ../../users/root.nix
+    ../../users/bao.nix
+    ./network.nix
   ];
 
   boot.cleanTmpDir = true;
@@ -77,15 +81,6 @@
   nix.optimise.dates = [ "12:30" "00:30" ];
   nix.maxJobs = 8;
   #powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-
-  # Enable bluetooth modules.
-  hardware.bluetooth.enable = true;
-
-  # Set your locale.
-  i18n.defaultLocale = "en_GB.UTF-8";
-
-  # Set your time zone.
-  time.timeZone = "Europe/London";
 
   # Until further migration.
   users.mutableUsers = lib.mkForce true;
