@@ -57,9 +57,23 @@ in {
         end
 
         function fish_nix_prompt
+          set_color blue
           if test -n "$IN_NIX_SHELL"
-            echo -n "<nix-shell> "
+            echo -n "env:"
+            set_color -o red
+            set -l git_dir (command git rev-parse --git-dir 2>/dev/null)
+            if test -n "$git_dir"
+              set -l git_desc (command sed -ne 1p "$git_dir/description")
+              if test -n "$git_desc"
+                echo -n "$git_desc "
+              else if test -n "$IN_NIX_SHELL"
+                echo -n "nix-shell "
+              end
+            else if test -n "$IN_NIX_SHELL"
+              echo -n "nix-shell "
+            end
           end
+          set_color normal
         end
 
         function fish_prompt --description 'Write out the prompt'
