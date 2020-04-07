@@ -42,7 +42,7 @@
         (attrNames (readDir ./overlays));
 
       packages.x86_64-linux = {
-        inherit (pkgs) sddm-chili dejavu_nerdfont pure;
+        inherit (pkgs) sddm-chili emacsPackages dgit dejavu_nerdfont matrix-construct pure;
       };
 
       nixosModules = let

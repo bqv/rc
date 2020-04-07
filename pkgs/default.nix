@@ -9,5 +9,7 @@ final: prev: {
 
   dejavu_nerdfont = prev.callPackage ./data/fonts/dejavu-nerdfont { };
 
+  matrix-construct = prev.callPackage ./servers/matrix-construct { };
+
   pure = prev.callPackage ./shells/zsh/pure { };
 }
