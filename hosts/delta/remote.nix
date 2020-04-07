@@ -36,18 +36,11 @@
     '';
   };
 
-  programs.gnupg.agent.enable = true;
-  programs.gnupg.agent.enableSSHSupport = true;
-
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = let
     sshd = 22;
-  in [
-    sshd
-  ];
+  in [ sshd ];
   networking.firewall.allowedUDPPorts = let
     sshd = 22;
-  in [
-    sshd
-  ];
+  in [ sshd ];
 }
