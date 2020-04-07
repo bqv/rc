@@ -30,6 +30,7 @@ in {
       binutils
       coreutils
       curl
+      disnixos
       dosfstools
       dnsutils
       fd
