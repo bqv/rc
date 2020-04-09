@@ -14,10 +14,10 @@ in rec {
   recImport = { dir, _import ? base: import "${dir}/${base}.nix" }:
     mapFilterAttrs (_: v: v != null) (n: v:
       if n != "default.nix"
-        && ((hasSuffix ".nix" n && v == "regular") || v == "directory")
+        && ((hasSuffix ".nix" n && v == "regular" && false) || v == "directory")
 
       then
-        let name = removeSuffix ".nix" n; in nameValuePair (name) (_import name)
+        let name = n; in nameValuePair (name) (_import name)
 
       else
         nameValuePair ("") (null)) (readDir dir);

@@ -17,14 +17,14 @@
 
   outputs = inputs@{ self, home, nixpkgs, small, large, dwarffs, nur }:
     let
-      inherit (builtins) listToAttrs baseNameOf attrNames readDir;
+      inherit (builtins) listToAttrs baseNameOf attrNames attrValues readDir;
       inherit (nixpkgs.lib) fold recursiveUpdate setAttrByPath;
       inherit (nixpkgs.lib) removeSuffix removePrefix splitString;
       system = "x86_64-linux";
 
       pkgs = import nixpkgs rec {
         inherit system;
-        overlays = self.overlays ++ [
+        overlays = (attrValues self.overlays) ++ [
           (self: super: { small = import small { inherit config system; }; })
           (self: super: { large = import large { inherit config system; }; })
           (self: super: { pr = n: hash: import (super.fetchzip {
@@ -41,11 +41,14 @@
 
       overlay = import ./pkgs;
 
-      overlays = map (name: import (./overlays + "/${name}"))
-        (attrNames (readDir ./overlays));
+      overlays = listToAttrs (map (name: {
+        name = removeSuffix ".nix" name;
+        value = import (./overlays + "/${name}");
+      }) (attrNames (readDir ./overlays)));
 
       packages.x86_64-linux = {
-        inherit (pkgs) sddm-chili emacsPackages dgit dejavu_nerdfont matrix-construct pure;
+        inherit (pkgs) sddm-chili dgit dejavu_nerdfont matrix-construct pure;
+        inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color;
       };
 
       nixosModules = let
