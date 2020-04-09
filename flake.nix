@@ -11,6 +11,10 @@
   inputs.home.url = "github:rycee/home-manager/bqv-flakes";
   inputs.nur.url = "github:nix-community/NUR";
 
+  inputs.dwarffs.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.home.inputs.nixpkgs.follows = "nixpkgs";
+  inputs.nur.inputs.nixpkgs.follows = "nixpkgs";
+
   outputs = inputs@{ self, home, nixpkgs, small, large, dwarffs, nur }:
     let
       inherit (builtins) listToAttrs baseNameOf attrNames readDir;
@@ -18,7 +22,6 @@
       inherit (nixpkgs.lib) removeSuffix removePrefix splitString;
       system = "x86_64-linux";
 
-      fakeSri = "sha256-AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
       pkgs = import nixpkgs rec {
         inherit system;
         overlays = self.overlays ++ [
@@ -27,7 +30,7 @@
           (self: super: { pr = n: hash: import (super.fetchzip {
              name = "nixpkgs-pull-request-${toString n}";
              url = "https://github.com/NixOS/nixpkgs/archive/pull/${toString n}/head.zip";
-             hash = if hash == null then fakeSri else hash;
+             hash = if hash == null then nixpkgs.lib.fakeSri else hash;
            }) { inherit config system; }; })
         ];
         config = { allowUnfree = true; };
