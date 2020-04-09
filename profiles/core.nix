@@ -19,6 +19,7 @@ in {
     kernel.sysctl = {
       "kernel.sysrq" = 1;
       "kernel.printk" = "3 4 1 3";
+      "net.ipv4.ip_forward" = "1";
     };
   };
 
