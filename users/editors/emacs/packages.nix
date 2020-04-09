@@ -2,7 +2,8 @@
 
 {
   home.packages = with pkgs; [
-    git w3m findutils fish zsh vim
+    #git fish zsh vim
+    w3m findutils
     cmake gnumake gcc libtool libvterm gtk3 rls age #rust-analyzer
   ] ++ (with emacsPackages; 
     # TODO: pkgs.emacsPackages not overriden properly?

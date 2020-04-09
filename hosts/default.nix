@@ -40,6 +40,8 @@ let
             (_: _: { configuration = self; })
             inputs.nur.overlay
           ];
+
+          home-manager.useGlobalPkgs = true;
         };
 
         local = import "${toString ./.}/${hostName}";

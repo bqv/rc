@@ -32,31 +32,51 @@ in {
   home-manager.users.bao = {
     imports = [
       ./shells/fish
+      ./browsers/firefox
       ./editors/emacs
+      ./editors/neovim
+      ./utilities/git
       ./utilities/htop
-      ./services/gnupg.nix
+      ./services/gnupg
+      ./services/mpd
     ];
 
     programs.home-manager.enable = true;
+    programs.command-not-found.enable = true;
+    programs.qutebrowser.enable = true;
+    programs.firefox.enable = true;
     programs.fish.enable = true;
     programs.htop.enable = true;
+    programs.bat.enable = true;
+    programs.tmux.enable = true;
+    programs.emacs.enable = true;
+    programs.neovim.enable = true;
+    programs.jq.enable = true;
+    programs.direnv.enable = true;
+    programs.texlive.enable = true;
+    programs.neomutt.enable = true;
+    programs.obs-studio.enable = true;
+    programs.mpv.enable = true;
+    #programs.git.enable = true;
+    #programs.ssh.enable = true;
 
     services.lorri.enable = true;
     services.gpg-agent.enable = true;
-
-    services.mpd = let
-      inherit (config.home-manager.users.bao) xdg;
-    in {
-      enable = true;
-      musicDirectory = xdg.userDirs.music;
-    };
+    services.mpd.enable = true;
+    #services.dunst.enable = true;
+    #services.emacs.enable = true;
+    #services.syncthing.enable = true;
+    #services.unclutter.enable = true;
 
     home.packages = with pkgs; [
-      abduco dvtm git yadm vim htop pstree fortune cowsay coreutils pv # Shell Essential
-      nmap wget curl # Networking
-      gnupg bitwarden-cli protonvpn-cli-ng git-crypt # Security
-      file jq direnv exa bat unrar unzip ncdu pv ipfscat # Utility
-      xsel xclip scrot # Utility
+      abduco dvtm # Terminal Multiplexing
+      yadm # Dotfile Management
+      pstree # Process Monitoring
+      pv # Pipe Management
+      nmap wget curl ipfscat # Network Utilities
+      bitwarden-cli protonvpn-cli-ng # Password Management
+      file exa unrar unzip ncdu # File Management
+      xsel xclip scrot # X11 Utilities
     ];
 
     home.file."mimeapps.list".force = lib.mkForce true;

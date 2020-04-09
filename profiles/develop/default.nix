@@ -11,20 +11,12 @@
     VISUAL = "vim";
   };
 
-  environment.systemPackages = with pkgs; let
-    git-crypt = pkgs.git-crypt.overrideAttrs (attrs: rec {
-      worktreePatch = fetchurl {
-        url = "https://github.com/AGWA/git-crypt/files/2771938/git-crypt-support-worktree-simple-version-patch.txt";
-        sha256 = "1k477m6g3zjdarjr38lndh0kpgkp0yi8lg2iqdispfd4c85krrax";
-      };
-      patches = [ worktreePatch ];
-    });
-  in [
+  environment.systemPackages = with pkgs; [
+    bat
     clang
-    dgit
+    exa
     file
-    git git-crypt gitAndTools.hub gitAndTools.lab
-    gnupg
+    git
     less
     ncdu
     pass
