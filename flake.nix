@@ -37,7 +37,9 @@
       };
 
     in {
-      nixosConfigurations = import ./hosts (inputs // { inherit system pkgs; });
+      nixosConfigurations = import ./hosts (inputs // {
+        inherit system pkgs;
+      });
 
       overlay = import ./pkgs;
 

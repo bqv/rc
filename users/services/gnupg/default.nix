@@ -4,6 +4,12 @@ with lib; let
   cfg = config.services.gpg-agent;
 in {
   config = mkIf cfg.enable {
+    home.packages = with pkgs; [
+      gnupg 
+    ];
+
+    programs.gpg.enable = true;
+
     services.gpg-agent = {
       defaultCacheTtl = 600;
       defaultCacheTtlSsh = 0;

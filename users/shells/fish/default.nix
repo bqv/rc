@@ -126,18 +126,19 @@ in {
 
         date
 
-        eval (direnv hook fish)
-
-        fortune -as linux linuxcookie paradoxum computers science definitions | tee -a /tmp/fortune.log | cowsay
+        ${pkgs.fortune}/bin/fortune -as linux linuxcookie paradoxum computers science definitions |\
+          tee -a /tmp/fortune.log |\
+          ${pkgs.cowsay}/bin/cowsay
         echo -e '\n' >> /tmp/fortune.log
       '';
 
-      shellAliases = {
-        cat = "${pkgs.bat}/bin/bat";
-        less = ''${pkgs.bat}/bin/bat --paging=always --pager "${pkgs.less}/bin/less -RF"'';
+      shellAliases = rec {
+        bat = "${pkgs.bat}/bin/bat --terminal-width -5";
+        cat = "${bat}";
+        less = ''${bat} --paging=always --pager "${pkgs.less}/bin/less -RF"'';
         ls = "${pkgs.exa}/bin/exa";
         ps = "${pkgs.procs}/bin/procs";
-        diff = "${pkgs.ydiff}/bin/ydiff -s";
+        diff = "${pkgs.colordiff}/bin/colordiff";
         tmux = "tmux -2"; # Force 256 colors
         bw = "env (cat ~/.bwrc) bw";
 

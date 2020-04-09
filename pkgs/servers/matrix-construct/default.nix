@@ -1,10 +1,10 @@
-{ stdenv, lib, fetchFromGitHub, autoreconfHook, pkg-config, llvmPackages_9,
-  libsodium, openssl, file, boost, rocksdb, gmp, llvm,
-  mkDerivation ? llvmPackages_9.stdenv.mkDerivation, # Build Chain
-  zlib, lz4, snappy, # Database Compression
-  graphicsMacick ? null, # Media Thumbnails
-  jemalloc, # Dynamic Memory
-  ... }:
+{ stdenv, lib, fetchFromGitHub, autoreconfHook, pkg-config, llvmPackages_9
+, libsodium, openssl, file, boost, rocksdb, gmp, llvm
+, mkDerivation ? llvmPackages_9.stdenv.mkDerivation # Build Chain
+, zlib, lz4, snappy # Database Compression
+, graphicsmagick # Media Thumbnails
+, jemalloc # Dynamic Memory
+, ... }:
 
 mkDerivation rec {
   pname = "matrix-construct";
@@ -21,7 +21,9 @@ mkDerivation rec {
     "--enable-generic"
     "--with-boost-libdir=${boost.out}/lib"
     "--with-boost=${boost.dev}"
-  ] ++ lib.optional (isNull jemalloc) "--enable-jemalloc";
+    "--with-imagemagick-includes=${graphicsmagick}/include/GraphicsMagick"
+    "--with-imagemagick-libs=${graphicsmagick}/lib"
+  ] ++ lib.optional (!isNull jemalloc) "--enable-jemalloc";
 
   postConfigure = ''
     sed -i '/RB_CONF_DIR/s%^.*$%#define RB_CONF_DIR "/etc"%' include/ircd/config.h
@@ -56,7 +58,7 @@ mkDerivation rec {
     }))
     zlib
     lz4
-    graphicsMacick
+    graphicsmagick
     jemalloc
     gmp
     snappy
