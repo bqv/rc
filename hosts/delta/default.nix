@@ -141,6 +141,22 @@
   security.sudo.enable = true;
   security.sudo.wheelNeedsPassword = false;
 
+  nix.buildMachines = [
+    {
+      hostName = "zeta";
+      #system = "x86_64-linux";
+      systems = ["x86_64-linux" "i686-linux" "armv6l-linux" "armv7l-linux"];
+      maxJobs = 4;
+      speedFactor = 4;
+      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+      mandatoryFeatures = [ ];
+    }
+  ];
+  nix.distributedBuilds = true;
+  nix.extraOptions = ''
+    builders-use-substitutes = true
+  '';
+
   environment.systemPackages = with pkgs.large; [
     clipmenu bitwarden bitwarden-cli pass protonmail-bridge
 
