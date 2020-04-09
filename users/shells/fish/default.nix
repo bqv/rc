@@ -61,7 +61,7 @@ in {
           if test -n "$IN_NIX_SHELL"
             echo -n "env:"
             set_color -o red
-            set -l git_dir (command git rev-parse --git-dir 2>/dev/null)
+            set -l git_dir (command git rev-parse --git-common-dir 2>/dev/null)
             if test -n "$git_dir"
               set -l git_desc (command sed -ne 1p "$git_dir/description")
               if test -n "$git_desc"
