@@ -14,14 +14,14 @@ let
 
     theta = {
       ip = "10.0.0.2";
-      #endpoint = "46.4.66.184";
+      #endpoint = "0.0.0.0";
       port = 51820;
-      publicKey = "0000000000000000000000000000000000000000000=";
+      publicKey = "Itld9S83/URY8CR1ZsIfYRGK74/T0O5YbsHWcNpn2gE=";
     };
 
     delta = {
       ip = "10.0.0.3";
-      #endpoint = "46.4.66.184";
+      #endpoint = "0.0.0.0";
       port = 51820;
       publicKey = "Y/SRDGEQfFLUGqx6vMnO1pxHs9zn//NpwdSGQ2Sm+Dg=";
     };
@@ -35,7 +35,7 @@ let
 
     nu = {
       ip = "10.0.0.5";
-      endpoint = "192.168.0.19";
+      endpoint = "192.168.0.15";
       port = 51820;
       publicKey = "0000000000000000000000000000000000000000000=";
     };
