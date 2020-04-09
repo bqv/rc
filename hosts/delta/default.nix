@@ -141,6 +141,24 @@
   security.sudo.enable = true;
   security.sudo.wheelNeedsPassword = false;
 
+  nix.buildMachines = [
+    {
+      hostName = "10.0.0.1";
+      sshUser = "nix-ssh";
+      sshKey = "/root/.ssh/nix_remote";
+      #system = "x86_64-linux";
+      systems = ["x86_64-linux" "i686-linux" "armv6l-linux" "armv7l-linux"];
+      maxJobs = 4;
+      speedFactor = 4;
+      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+      mandatoryFeatures = [ ];
+    }
+  ];
+  nix.distributedBuilds = true;
+  nix.extraOptions = ''
+    builders-use-substitutes = true
+  '';
+
   environment.systemPackages = with pkgs.large; [
     clipmenu bitwarden bitwarden-cli pass protonmail-bridge
 
