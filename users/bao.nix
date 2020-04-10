@@ -34,7 +34,7 @@ in {
       ./shells/fish
       ./browsers/firefox
       ./editors/emacs
-      ./editors/neovim
+      ./editors/vim
       ./utilities/git
       ./utilities/htop
       ./services/gnupg
