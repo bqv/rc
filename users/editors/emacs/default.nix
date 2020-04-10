@@ -2,10 +2,10 @@
 
 with lib; let
   cfg = config.programs.emacs;
-  # TODO: pkgs.emacsGit missing?
-  myEmacs = pkgs.emacs.overrideAttrs (attrs: {
+
+  myEmacs = pkgs.emacsGit.overrideAttrs (attrs: {
     withXwidgets = true;
-    webkitgtk = pkgs.webkitgtk;
+    webkitgtk = pkgs.large.webkitgtk;
   });
 in {
   imports = [
