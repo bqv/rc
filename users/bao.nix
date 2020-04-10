@@ -48,6 +48,7 @@ in {
     programs.fish.enable = true;
     programs.htop.enable = true;
     programs.bat.enable = true;
+    programs.fzf.enable = true;
     programs.tmux.enable = true;
     programs.emacs.enable = true;
     programs.neovim.enable = true;
@@ -57,6 +58,7 @@ in {
     programs.neomutt.enable = true;
     programs.obs-studio.enable = true;
     programs.mpv.enable = true;
+    programs.feh.enable = true;
     #programs.git.enable = true;
     #programs.ssh.enable = true;
 
