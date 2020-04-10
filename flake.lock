@@ -20,6 +20,24 @@
         "type": "github"
       }
     },
+    "emacs": {
+      "flake": false,
+      "info": {
+        "lastModified": 1586477872,
+        "narHash": "sha256-+paAwpiPYiAQ3ZMfLXp/1QDUVT1PRBU+iH3DUnHT6QA="
+      },
+      "locked": {
+        "owner": "nix-community",
+        "repo": "emacs-overlay",
+        "rev": "ff6f289ad70549129065b6c30dd742d4ef3aaffe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "emacs-overlay",
+        "type": "github"
+      }
+    },
     "home": {
       "info": {
         "lastModified": 1586388922,
@@ -100,6 +118,7 @@
     "root": {
       "inputs": {
         "dwarffs": "dwarffs",
+        "emacs": "emacs",
         "home": "home",
         "large": "large",
         "nixpkgs": "nixpkgs",
