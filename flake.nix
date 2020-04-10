@@ -15,7 +15,9 @@
   inputs.home.inputs.nixpkgs.follows = "nixpkgs";
   inputs.nur.inputs.nixpkgs.follows = "nixpkgs";
 
-  outputs = inputs@{ self, home, nixpkgs, small, large, dwarffs, nur }:
+  inputs.emacs = { url = "github:nix-community/emacs-overlay"; flake = false; };
+
+  outputs = inputs@{ self, home, nixpkgs, small, large, dwarffs, nur, emacs }:
     let
       inherit (builtins) listToAttrs baseNameOf attrNames attrValues readDir;
       inherit (nixpkgs.lib) fold recursiveUpdate setAttrByPath;
@@ -32,6 +34,7 @@
              url = "https://github.com/NixOS/nixpkgs/archive/pull/${toString n}/head.zip";
              hash = if hash == null then nixpkgs.lib.fakeSri else hash;
            }) { inherit config system; }; })
+          (import emacs)
         ];
         config = { allowUnfree = true; };
       };

@@ -36,6 +36,7 @@ working version into scope, as well as the `rebuild` script with the following:
    -> no flake support yet - forked at github:bqv/home-manager/flakes
   - nur: github:nix-community/nur
   - dwarffs: github:edolstra/dwarffs
+  - emacs: github:nix-community/emacs-overlay
 
 * Flake Structure:
 
