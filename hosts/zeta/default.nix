@@ -70,8 +70,8 @@
 
   swapDevices = [ { device = "/dev/sda4"; } ];
 
-  virtualisation.libvirtd.enable = true;
-  virtualisation.virtualbox.host.enable = true;
+  virtualisation.libvirtd.enable = false;
+  virtualisation.virtualbox.host.enable = false;
 
   nix.gc.automatic = true;
   nix.gc.dates = "05:00";
