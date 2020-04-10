@@ -7,7 +7,12 @@ in {
     programs.neovim = {
       viAlias = true;
       vimAlias = true;
+      withPython3 = true;
+      withRuby = true;
       withNodeJs = true;
+      plugins = with pkgs.vimPlugins; [
+        vim-nix # nix language
+      ];
     };
   };
 }
