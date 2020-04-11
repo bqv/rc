@@ -25,6 +25,7 @@ in {
 
   hardware.enableAllFirmware = true;
   nixpkgs.config.allowUnfree = true;
+  zramSwap.enable = true;
 
   environment = {
     systemPackages = with pkgs; [
