@@ -4,7 +4,9 @@
 , graphicsmagick ? if withGraphicsMagick then graphicsmagick else null
 , jemalloc ? if useJemalloc then jemalloc else null
 
-, stdenv ? if useClang then llvmPackages_latest.stdenv else gcc.stdenv # Build Chain
+, stdenv ? if useClang # Build Chain
+           then (if stdenv.cc.isClang then stdenv else llvmPackages_latest.stdenv)
+           else (if stdenv.cc.isGNU then stdenv else gcc.stdenv)
 , debug ? false # Debug Build
 , useClang ? false # Use Clang over GCC
 , useJemalloc ? true # Use the Dynamic Memory Allocator
@@ -18,8 +20,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "jevolk";
     repo = "charybdis";
-    rev = "e26b14c10a1b05bac9a8671a2367367770059455";
-    hash = "sha256-CPK8rWeRU/a7CO82o7XpQnQJDAnLBM+Kk6RZ0fMTmq4=";
+    rev = "21d9f4792bb59f5657ae5c94e1bf52a8288b247d";
+    hash = "sha256-t3b5LdCCgEXnUr9gdAeqIoRqzKLbSqXtThhDIBg76aw=";
   };
 
   configureFlags = [
