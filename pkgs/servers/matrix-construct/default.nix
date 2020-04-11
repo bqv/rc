@@ -4,6 +4,7 @@
 , zlib, lz4, snappy # Database Compression
 , graphicsmagick # Media Thumbnails
 , jemalloc # Dynamic Memory
+, debug ? false # Debug Build
 , ... }:
 
 mkDerivation rec {
@@ -13,8 +14,8 @@ mkDerivation rec {
   src = fetchFromGitHub {
     owner = "jevolk";
     repo = "charybdis";
-    rev = "eeac3c1eaa60e7430e9a4c603b7bce0520a06ff3";
-    hash = "sha256-l4SBWINVkc5WANKZ2biibex+i24KAOUnsmLHxhO5Ym0=";
+    rev = "7b1ca4964680e46141ed81fed07f7de5425a4754";
+    hash = "sha256-/w4osy16w1VKgL6aZrgQBQmm5iQ+6V61bC4yCgqY5/0=";
   };
 
   configureFlags = [
@@ -23,7 +24,8 @@ mkDerivation rec {
     "--with-boost=${boost.dev}"
     "--with-imagemagick-includes=${graphicsmagick}/include/GraphicsMagick"
     "--with-imagemagick-libs=${graphicsmagick}/lib"
-  ] ++ lib.optional (!isNull jemalloc) "--enable-jemalloc";
+  ] ++ lib.optional (!isNull jemalloc) "--enable-jemalloc"
+    ++ lib.optional debug "--with-log-level=DEBUG";
 
   postConfigure = ''
     sed -i '/RB_CONF_DIR/s%^.*$%#define RB_CONF_DIR "/etc"%' include/ircd/config.h
