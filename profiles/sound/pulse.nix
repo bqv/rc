@@ -89,6 +89,9 @@ in {
     enable = true;
     package = pkgs.pulseaudioFull;
     extraModules = with pkgs; [ pulseaudio-modules-bt ];
+    zeroconf.discovery.enable = true;
+    zeroconf.publish.enable = true;
+    tcp.enable = true;
    #package = with pkgs; pulseaudioFull.override {
    #  jackaudioSupport = false;
    #};
@@ -111,6 +114,8 @@ in {
           load-module module-ladspa-sink ${sinkValue} ${masterValue} ${pluginValue} ${labelValue} ${controlValue}
         ''))}
       '' ))}
+
+      set-default-sink 0
     '';
   };
 
