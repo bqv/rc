@@ -11,13 +11,13 @@ in {
   imports = [
     ./packages.nix
   ];
-  
+
   config = mkIf cfg.enable rec {
     home.packages = with pkgs; [
       pkgs.emacs-all-the-icons-fonts
       nixfmt
     ];
-  
+
     programs.emacs.package = let
       daemonScript = pkgs.writeScript "emacs-wrapper" ''
         #!${pkgs.runtimeShell}
@@ -33,6 +33,7 @@ in {
       '';
     in pkgs.stdenv.mkDerivation {
       name = "${myEmacs.name}-wrapped";
+      passthru = { unwrapped = myEmacs; };
       buildInputs = with pkgs; [ makeWrapper ];
       phases = [ "installPhase" ];
       installPhase = ''
@@ -43,7 +44,7 @@ in {
         rm -f $out/bin/emacs-w64
       '';
     };
-  
+
     #fonts.fontconfig.enable = true;
   };
 }
