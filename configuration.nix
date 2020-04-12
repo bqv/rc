@@ -27,9 +27,7 @@ in {
   nixpkgs.overlays = let
     overlays = map (name: import (./overlays + "/${name}"))
       (attrNames (readDir ./overlays));
-    commonArgs = pkgs: { 
-      inherit config pkgs;
-    }
+    commonArgs = pkgs: { inherit config pkgs; };
   in overlays ++ [
     (final: prev: { master = import (builtins.fetchTarball
       "https://github.com/nixos/nixpkgs/archive/master.tar.gz") (commonArgs prev);

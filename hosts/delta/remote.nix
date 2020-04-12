@@ -29,11 +29,12 @@
       HostCertificate /etc/ssh/ssh_host_ed25519_key-cert.pub
       TrustedUserCAKeys /etc/ssh/ssh_user-ca.pub
       RevokedKeys /etc/ssh/ssh_revoked_keys
-     #PubkeyAuthentication yes
       ClientAliveInterval 120
       ClientAliveCountMax 15
-     #HostKeyAlgorithms +ssh-dss
     '';
+   #  PubkeyAuthentication yes
+   #  HostKeyAlgorithms +ssh-dss
+   #'';
   };
 
   # Open ports in the firewall.
