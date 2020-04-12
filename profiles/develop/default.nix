@@ -1,5 +1,5 @@
 { pkgs, ... }: {
-  imports = [ ./zsh ./tmux ];
+  imports = [ ./fish ./tmux ];
 
   environment.shellAliases = { v = "$EDITOR"; };
 
