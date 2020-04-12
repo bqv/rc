@@ -1,6 +1,6 @@
 { config, lib, pkgs, ... }:
-let inherit (lib) fileContents;
 
+let inherit (lib) fileContents;
 in {
   nix.package = pkgs.nixFlakes;
 
@@ -76,7 +76,7 @@ in {
     '';
 
     binaryCaches = [
-      "https://cache.nixos.org"
+      "https://hydra.nixos.org"
       "https://r-ryantm.cachix.org"
       "https://arm.cachix.org"
     ];
@@ -87,6 +87,8 @@ in {
       "arm.cachix.org-1:fGqEJIhp5zM7hxe/Dzt9l9Ene9SY27PUyx3hT9Vvei0="
     ];
   };
+
+  virtualisation.virtualbox.host.package = pkgs.large.virtualbox;
 
   security = {
     apparmor = {
