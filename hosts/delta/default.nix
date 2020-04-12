@@ -57,7 +57,7 @@
   ];
 
   virtualisation.libvirtd.enable = true;
-  virtualisation.virtualbox.host.enable = true;
+  virtualisation.virtualbox.host.enable = false;
   virtualisation.anbox.enable = true;
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
