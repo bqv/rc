@@ -15,7 +15,7 @@ in {
   imports = (import ./modules/list.nix) ++ [
     "${
       builtins.fetchTarball
-      "https://github.com/rycee/home-manager/archive/master.tar.gz"
+      "https://github.com/rycee/home-manager/archive/bqv-flakes.tar.gz"
     }/nixos"
     /etc/nixos/profiles/core.nix
   ] ++ config;
@@ -31,11 +31,20 @@ in {
     overlays = map (name: import (./overlays + "/${name}"))
       (attrNames (readDir ./overlays));
   in overlays ++ [
-    (final: prev: {
-      nur = import (builtins.fetchTarball
-        "https://github.com/nix-community/NUR/archive/master.tar.gz") {
-          inherit pkgs;
-        };
+    (final: prev: { master = import (builtins.fetchTarball
+      "https://github.com/nixos/nixpkgs/archive/master.tar.gz") { inherit pkgs; };
+    })
+    (final: prev: { staged = import (builtins.fetchTarball
+      "https://github.com/nixos/nixpkgs/archive/staged.tar.gz") { inherit pkgs; };
+    })
+    (final: prev: { small = import (builtins.fetchTarball
+      "https://github.com/nixos/nixpkgs/archive/small.tar.gz") { inherit pkgs; };
+    })
+    (final: prev: { large = import (builtins.fetchTarball
+      "https://github.com/nixos/nixpkgs/archive/large.tar.gz") { inherit pkgs; };
+    })
+    (final: prev: { nur = import (builtins.fetchTarball
+      "https://github.com/nix-community/nur/archive/master.tar.gz") { inherit pkgs; };
     })
   ];
 }
