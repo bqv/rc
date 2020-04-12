@@ -31,9 +31,9 @@
       RevokedKeys /etc/ssh/ssh_revoked_keys
       ClientAliveInterval 120
       ClientAliveCountMax 15
+      HostKeyAlgorithms Any
     '';
    #  PubkeyAuthentication yes
-   #  HostKeyAlgorithms +ssh-dss
    #'';
   };
 
