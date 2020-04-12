@@ -14,7 +14,7 @@ let
 in {
   imports = (import ./modules/list.nix) ++ [
     "${builtins.fetchTarball "https://github.com/rycee/home-manager/archive/bqv-flakes.tar.gz"}/nixos"
-    /etc/nixos/profiles/core.nix
+    ./profiles/core.nix
   ] ++ config;
 
   networking.hostName = hostname;

@@ -76,8 +76,10 @@ in {
           set_color normal
         end
 
-        function fish_emacs_prompt
-          vterm-printf "51;A"(whoami)"@"(hostname)":"(pwd)
+        function fish_emacs_vterm_prompt_hook
+          if test -n "$INSIDE_EMACS"
+            printf "\e]51;A"(whoami)"@"(hostname)":"(pwd)"\e\\"
+          end
         end
 
         function fish_prompt --description 'Write out the prompt'
@@ -96,11 +98,11 @@ in {
                     set suffix '>'
             end
 
+            echo -n -s (fish_emacs_vterm_prompt_hook)
             echo -n -s (fish_nix_prompt)
             echo -n -s "$USER" @ (prompt_hostname) ' ' (set_color $color_cwd) (prompt_pwd) (set_color normal)
             echo -n -s (fish_vcs_prompt)
             echo -n -s "$suffix "
-            echo -n -s (fish_emacs_prompt)
         end
       '';
       interactiveShellInit = ''
