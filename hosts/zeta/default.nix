@@ -8,6 +8,7 @@
     ../../users/root.nix
     ../../users/bao.nix
     ./network.nix
+    ./certificate.nix
   ];
 
   boot.cleanTmpDir = true;
