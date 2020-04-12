@@ -32,16 +32,51 @@
       ClientAliveInterval 120
       ClientAliveCountMax 15
     '';
-   #  PubkeyAuthentication yes
-   #  HostKeyAlgorithms +ssh-dss
-   #'';
   };
 
-  # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = let
-    sshd = 22;
-  in [ sshd ];
-  networking.firewall.allowedUDPPorts = let
-    sshd = 22;
-  in [ sshd ];
+  # Allow all Key Algorithms
+  programs.ssh.pubkeyAcceptedKeyTypes = [
+    "ssh-ed25519"
+    "ssh-ed25519-cert-v01@openssh.com"
+    "sk-ssh-ed25519@openssh.com"
+    "sk-ssh-ed25519-cert-v01@openssh.com"
+    "ssh-rsa"
+    "rsa-sha2-256"
+    "rsa-sha2-512"
+    "ssh-dss"
+    "ecdsa-sha2-nistp256"
+    "ecdsa-sha2-nistp384"
+    "ecdsa-sha2-nistp521"
+    "sk-ecdsa-sha2-nistp256@openssh.com"
+    "ssh-rsa-cert-v01@openssh.com"
+    "rsa-sha2-256-cert-v01@openssh.com"
+    "rsa-sha2-512-cert-v01@openssh.com"
+    "ssh-dss-cert-v01@openssh.com"
+    "ecdsa-sha2-nistp256-cert-v01@openssh.com"
+    "ecdsa-sha2-nistp384-cert-v01@openssh.com"
+    "ecdsa-sha2-nistp521-cert-v01@openssh.com"
+    "sk-ecdsa-sha2-nistp256-cert-v01@openssh.com"
+  ];
+  programs.ssh.hostKeyAlgorithms = [
+    "ssh-ed25519"
+    "ssh-ed25519-cert-v01@openssh.com"
+    "sk-ssh-ed25519@openssh.com"
+    "sk-ssh-ed25519-cert-v01@openssh.com"
+    "ssh-rsa"
+    "rsa-sha2-256"
+    "rsa-sha2-512"
+    "ssh-dss"
+    "ecdsa-sha2-nistp256"
+    "ecdsa-sha2-nistp384"
+    "ecdsa-sha2-nistp521"
+    "sk-ecdsa-sha2-nistp256@openssh.com"
+    "ssh-rsa-cert-v01@openssh.com"
+    "rsa-sha2-256-cert-v01@openssh.com"
+    "rsa-sha2-512-cert-v01@openssh.com"
+    "ssh-dss-cert-v01@openssh.com"
+    "ecdsa-sha2-nistp256-cert-v01@openssh.com"
+    "ecdsa-sha2-nistp384-cert-v01@openssh.com"
+    "ecdsa-sha2-nistp521-cert-v01@openssh.com"
+    "sk-ecdsa-sha2-nistp256-cert-v01@openssh.com"
+  ];
 }
