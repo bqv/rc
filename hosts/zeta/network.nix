@@ -79,6 +79,7 @@ in {
           # accept SSL connections
           tcp dport 80 accept
           tcp dport 443 accept
+          tcp dport 4004 accept
           tcp dport 5432 accept
           tcp dport 8090 accept
           tcp dport 8448 accept
