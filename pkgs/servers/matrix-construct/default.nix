@@ -1,15 +1,16 @@
 { lib, fetchFromGitHub, autoreconfHook, pkg-config, llvmPackages_latest, gcc
 , libsodium, openssl, file, boost, gmp, rocksdb
-, llvm ? if useClang then llvmPackages_latest.llvm else null
-, graphicsmagick ? if withGraphicsMagick then graphicsmagick else null
-, jemalloc ? if useJemalloc then jemalloc else null
 
-, stdenv ? if useClang # Build Chain
-           then (if stdenv.cc.isClang then stdenv else llvmPackages_latest.stdenv)
-           else (if stdenv.cc.isGNU then stdenv else gcc.stdenv)
-, debug ? false # Debug Build
-, useClang ? false # Use Clang over GCC
-, useJemalloc ? true # Use the Dynamic Memory Allocator
+, llvm           ? if useClang then llvmPackages_latest.llvm else null
+, graphicsmagick ? if withGraphicsMagick then graphicsmagick else null
+, jemalloc       ? if useJemalloc then jemalloc else null
+, stdenv         ? if useClang # Build Chain
+                   then (if stdenv.cc.isClang then stdenv else llvmPackages_latest.stdenv)
+                   else (if stdenv.cc.isGNU then stdenv else gcc.stdenv)
+
+, debug              ? false # Debug Build
+, useClang           ? false # Use Clang over GCC
+, useJemalloc        ? true # Use the Dynamic Memory Allocator
 , withGraphicsMagick ? true # Allow Media Thumbnails
 , ... }:
 
@@ -20,8 +21,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "jevolk";
     repo = "charybdis";
-    rev = "21d9f4792bb59f5657ae5c94e1bf52a8288b247d";
-    hash = "sha256-t3b5LdCCgEXnUr9gdAeqIoRqzKLbSqXtThhDIBg76aw=";
+    rev = "52fed0774939b4f48f47a549d1f3f3dfc29e261e";
+    hash = "sha256-0mAnupiNTK04O/wSkIzvMX41EtpZKTuTFREQbmNT+UQ=";
   };
 
   configureFlags = [
