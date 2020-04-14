@@ -13,7 +13,7 @@ let
     [ /etc/nixos/hosts/NixOS.nix ];
 in {
   imports = (import ./modules/list.nix) ++ [
-    "${builtins.fetchTarball "https://github.com/rycee/home-manager/archive/bqv-flakes.tar.gz"}/nixos"
+    (import "${builtins.fetchTarball "https://github.com/rycee/home-manager/archive/bqv-flakes.tar.gz"}/nixos" pkgs.path)
     ./profiles/core.nix
   ] ++ config;
 
