@@ -16,17 +16,31 @@
 
 stdenv.mkDerivation rec {
   pname = "matrix-construct";
-  version = "2020.04.11";
+  version = lib.substring 0 9 src.rev;
 
   src = fetchFromGitHub {
     owner = "jevolk";
     repo = "charybdis";
-    rev = "52fed0774939b4f48f47a549d1f3f3dfc29e261e";
-    hash = "sha256-0mAnupiNTK04O/wSkIzvMX41EtpZKTuTFREQbmNT+UQ=";
+    rev = "868b515c6794d0f5f8aa2d307a169b12ed960a13";
+    hash = "sha256-m0H+shmOY1/lcGV+3kkkv4pR7B2Z+jr4NIQSdsw4v0k=";
   };
+
+  preAutoreconf = let
+    VERSION_COMMIT_CMD="git rev-parse --short HEAD";
+    VERSION_BRANCH_CMD="git rev-parse --abbrev-ref HEAD";
+    VERSION_TAG_CMD="git describe --tags --abbrev=0 --dirty --always";
+    VERSION_CMD="git describe --tags --always";
+  in ''
+    substituteInPlace configure.ac --replace "${VERSION_COMMIT_CMD}" "echo ${src.rev}"
+    substituteInPlace configure.ac --replace "${VERSION_BRANCH_CMD}" "echo master"
+    substituteInPlace configure.ac --replace "${VERSION_TAG_CMD}" "echo ${src.rev}"
+    substituteInPlace configure.ac --replace "${VERSION_CMD}" "echo ${lib.substring 0 9 src.rev}"
+  '';
 
   configureFlags = [
     "--enable-generic"
+    "--with-custom-branding=nix"
+    "--with-custom-version=${src.nixpkgsVersion}"
     "--with-boost-libdir=${boost.out}/lib"
     "--with-boost=${boost.dev}"
   ] ++ lib.optional useJemalloc "--enable-jemalloc"
