@@ -76,13 +76,11 @@ in {
     '';
 
     binaryCaches = [
-      "https://hydra.nixos.org"
       "https://r-ryantm.cachix.org"
       "https://arm.cachix.org"
     ];
 
     binaryCachePublicKeys = [
-      "hydra.nixos.org-1:CNHJZBh9K4tP3EKF6FkkgeVYsS3ohTl+oS0Qa8bezVs="
       "r-ryantm.cachix.org-1:gkUbLkouDAyvBdpBX0JOdIiD2/DP1ldF3Z3Y6Gqcc4c="
       "arm.cachix.org-1:fGqEJIhp5zM7hxe/Dzt9l9Ene9SY27PUyx3hT9Vvei0="
     ];
