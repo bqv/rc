@@ -14,19 +14,23 @@
 , withGraphicsMagick ? true # Allow Media Thumbnails
 , ... }:
 
-stdenv.mkDerivation rec {
+let
+  rev = "868b515c6794d0f5f8aa2d307a169b12ed960a13";
+in stdenv.mkDerivation rec {
   pname = "matrix-construct";
-  version = "2020.04.11";
+  version = lib.substring 0 8 rev;
 
   src = fetchFromGitHub {
     owner = "jevolk";
     repo = "charybdis";
-    rev = "52fed0774939b4f48f47a549d1f3f3dfc29e261e";
-    hash = "sha256-0mAnupiNTK04O/wSkIzvMX41EtpZKTuTFREQbmNT+UQ=";
+    inherit rev;
+    hash = "sha256-m0H+shmOY1/lcGV+3kkkv4pR7B2Z+jr4NIQSdsw4v0k=";
   };
 
   configureFlags = [
     "--enable-generic"
+    "--with-custom-branding=nix"
+    "--with-custom-version=${rev}"
     "--with-boost-libdir=${boost.out}/lib"
     "--with-boost=${boost.dev}"
   ] ++ lib.optional useJemalloc "--enable-jemalloc"
