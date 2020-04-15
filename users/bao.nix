@@ -55,6 +55,7 @@ in {
     programs.jq.enable = true;
     programs.direnv.enable = true;
     programs.texlive.enable = true;
+    programs.taskwarrior.enable = true;
     programs.neomutt.enable = true;
     programs.obs-studio.enable = true;
     programs.mpv.enable = true;
@@ -65,6 +66,7 @@ in {
     services.lorri.enable = true;
     services.gpg-agent.enable = true;
     services.mpd.enable = true;
+    services.taskwarrior-sync.enable = true;
     #services.dunst.enable = true;
     #services.emacs.enable = true;
     #services.syncthing.enable = true;
