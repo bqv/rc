@@ -19,6 +19,7 @@
     git
     less
     ncdu
+    nix-diff
     pass
     subversion
     tig
