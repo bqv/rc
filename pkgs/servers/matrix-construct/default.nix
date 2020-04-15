@@ -21,8 +21,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "jevolk";
     repo = "charybdis";
-    rev = "1edc00d6e505557c8efe45ff220394cd1f4e2309";
-    hash = "sha256-rAGs/vh4JkxCOsZdiJkspOvy5dpKejqYFkoDxQe8d9M=";
+    rev = "a7cc30b046b7cfb26af013c0d493e6122ae4c7c2";
+    hash = "sha256-VTDoXf5Uxp8+uIDuoY1EmK3bQTlAWzyv6Z66Fhw8dhs=";
   };
 
   preAutoreconf = let
