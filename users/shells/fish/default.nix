@@ -113,14 +113,14 @@ in {
             if test "$TERM" = "dumb"
                 exec bash
             else if test -n "$DISPLAY"                # If we're in X11
-                test -z "$TMUX"; and exec tmux new -A -s (echo X$DISPLAY | sed 's/X:/X/;s/:/-/')
+                test -z "$TMUX"; and exec ${pkgs.tmux}/bin/tmux new -A -s (echo X$DISPLAY | sed 's/X:/X/;s/:/-/')
             else if contains (tty) /dev/tty*          # If we're in TTY
-                test -z "$WINDOW"; and exec screen -xRR
+                test -z "$WINDOW"; and exec ${pkgs.screen}/bin/screen -xRR
             else if test -n "$SSH_CONNECTION"         # If we're in SSH
                 if test -n "$MOBILE"                  # If we're on mobile
-                    test -z "$DVTM"; and exec env -u MOBILE TERM=dvtm-256color abduco -A  main dvtm -m '^q'
+                    test -z "$DVTM"; and exec env -u MOBILE TERM=dvtm-256color ${pkgs.abduco}/bin/abduco -A  main ${pkgs.dvtm}/bin/dvtm -m '^q'
                 else
-                    test -z "$DVTM"; and exec env           TERM=dvtm-256color abduco -Al main dvtm -m '^q'
+                    test -z "$DVTM"; and exec env           TERM=dvtm-256color ${pkgs.abduco}/bin/abduco -Al main ${pkgs.dvtm}/bin/dvtm -m '^q'
                 end
             else
                 abduco -l
