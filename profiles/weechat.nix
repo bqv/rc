@@ -1,12 +1,13 @@
 { config, lib, pkgs, ... }:
 
 let
+  weechat-matrix = pkgs.weechatScripts.weechat-matrix;
   systemWeechat = pkgs.weechat.override {
     configure = { availablePlugins, ... }: {
-      scripts = with pkgs.weechatScripts; [ weechat-matrix ];
+      scripts = [ weechat-matrix ];
       plugins = builtins.attrValues (availablePlugins // {
         python = availablePlugins.python.withPackages (ps: with ps; [
-          pkgs.weechatScripts.weechat-matrix
+          weechat-matrix
           websocket_client
         ]);
       });
