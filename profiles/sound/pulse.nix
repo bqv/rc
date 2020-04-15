@@ -134,6 +134,7 @@ in {
 
     # PulseAudio control
     # ------------------
+    ncpamixer
     pavucontrol
     pulseeffects
     lxqt.pavucontrol-qt
