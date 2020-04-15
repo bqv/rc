@@ -5,6 +5,9 @@ let
   cfg = config.programs.fish;
 in {
   config = mkIf cfg.enable {
+    home.file.".colordiffrc" = {
+      source = "${pkgs.colordiff}/etc/colordiffrc";
+    };
     programs.fish = {
       promptInit = ''
         set fish_prompt_pwd_dir_length 1
