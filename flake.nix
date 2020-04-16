@@ -56,7 +56,7 @@
 
     in {
       nixosConfigurations = import ./hosts (inputs // {
-        inherit system pkgs;
+        inherit inputs system pkgs;
         nixpkgs = master;
       });
 
