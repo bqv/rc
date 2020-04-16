@@ -118,8 +118,6 @@ in {
           ${cfg.package}/share/guix/ci.guix.gnu.org.pub
         ${guixWrapped}/bin/guix archive --authorize < \
           ${cfg.package}/share/guix/ci.guix.info.pub
-        ${guixWrapped}/bin/guix archive --authorize < \
-          ${cfg.package}/share/guix/hydra.gnu.org.pub
       fi
     '';
   };
