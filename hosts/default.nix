@@ -1,4 +1,4 @@
-inputs@{ home, nixpkgs, dwarffs, self, pkgs, system, ... }:
+{ home, nixpkgs, nur, dwarffs, inputs, pkgs, system, ... }:
 
 let
   inherit (nixpkgs) lib;
@@ -14,8 +14,8 @@ let
       inherit system;
 
       specialArgs.usr = { inherit utils; };
-      specialArgs.nurModules = inputs.nur.nixosModules;
-      specialArgs.nurOverlays = inputs.nur.overlays;
+      specialArgs.nurModules = nur.nixosModules;
+      specialArgs.nurOverlays = nur.overlays;
 
       modules = let
         inherit (home.nixosModules) home-manager;
@@ -23,22 +23,27 @@ let
         core = ../profiles/core.nix;
 
         global = {
+
           networking.hostName = hostName;
+          nix.registry = lib.mapAttrs (id: flake: {
+            inherit flake;
+            from = { inherit id; type = "indirect"; };
+          }) inputs;
           nix.nixPath = [
             "nixpkgs=${nixpkgs}"
             "nixos-config=/etc/nixos/configuration.nix"
             "nixpkgs-overlays=/etc/nixos/overlays"
           ];
 
-          system.configurationRevision = self.rev
+          system.configurationRevision = inputs.self.rev
             or (throw "Cannot build from an unclean source tree!");
 
           system.extraSystemBuilderCmds = '' ln -s '${../.}' "$out/flake" '';
 
           nixpkgs = { inherit pkgs; };
           nixpkgs.overlays = [
-            (_: _: { configuration = self; })
-            inputs.nur.overlay
+            (_: _: { configuration = inputs.self; })
+            nur.overlay
           ];
 
           home-manager.useGlobalPkgs = true;
