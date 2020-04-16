@@ -9,6 +9,12 @@ let
       rev = "98f0c244065ea59c2e5105bc0aab5811aea748cf";
       hash = "sha256-GQPTnGxazR3WW8WGrC4X1oXvDXPMqQ5AZxdJns87C/Q=";
     };
+    patches = [
+      (pkgs.fetchpatch {
+        url = "https://github.com/poljar/matrix-nio/commit/dfb2f9d12d557aff5bb07f01ac9691d8908bbf67.patch";
+        sha256 = "0x378cq71y15ri6g3fznfcg8ws4nrcfpaxcv38dzmlbizg08gwzg";
+      })
+    ];
   });
   weechat-matrix = (pkgs.weechatScripts.weechat-matrix.override {
     inherit matrix-nio;
