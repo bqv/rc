@@ -32,17 +32,31 @@ let
       });
     };
   };
-in {
+in { # TODO: https://github.com/rycee/home-manager/pull/953
   environment.systemPackages = [ systemWeechat ];
 
-  # Weechat
-  systemd.user.services.weechat = {
+  systemd.services.weechat = {
     serviceConfig = {
       Type = "simple";
       Restart = "always";
+      RestartSec = "30";
+      User = "weechat";
+      Group = "users";
+      StandardInput = "tty";
+      StandardOutput = "tty";
+      StandardError = "journal";
+      TTYPath = "/dev/tty8";
+      LogsDirectory = "weechat";
+      StateDirectory = "weechat";
     };
     path = [ "/run/current-system/sw" ];
-    script = "exec ${systemWeechat}/bin/weechat-headless";
-    wantedBy = [ "default.target" ];
+    script = "exec ${systemWeechat}/bin/weechat -d $STATE_DIRECTORY -r '/set logger.file.path '$LOGS_DIRECTORY";
+    wantedBy = [ "multi-user.target" ];
+  };
+
+  users.users.weechat = {
+    home = "/var/lib/weechat";
+    group = "users";
+    isSystemUser = true;
   };
 }
