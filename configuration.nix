@@ -27,25 +27,24 @@ in {
   nixpkgs.overlays = let
     overlays = map (name: import (./overlays + "/${name}"))
       (attrNames (readDir ./overlays));
-    commonArgs = pkgs: { inherit config pkgs; };
   in overlays ++ [
     (final: prev: { master = import (builtins.fetchTarball
-      "https://github.com/nixos/nixpkgs/archive/master.tar.gz") (commonArgs prev);
+      "https://github.com/nixos/nixpkgs/archive/master.tar.gz") { inherit config; };
     })
     (final: prev: { staged = import (builtins.fetchTarball
-      "https://github.com/nixos/nixpkgs/archive/staging.tar.gz") (commonArgs prev);
+      "https://github.com/nixos/nixpkgs/archive/staging.tar.gz") { inherit config; };
     })
     (final: prev: { small = import (builtins.fetchTarball
-      "https://github.com/nixos/nixpkgs/archive/nixos-unstable-small.tar.gz") (commonArgs prev);
+      "https://github.com/nixos/nixpkgs/archive/nixos-unstable-small.tar.gz") { inherit config; };
     })
     (final: prev: { large = import (builtins.fetchTarball
-      "https://github.com/nixos/nixpkgs/archive/nixos-unstable.tar.gz") (commonArgs prev);
+      "https://github.com/nixos/nixpkgs/archive/nixos-unstable.tar.gz") { inherit config; };
     })
     (final: prev: { pr = n: hash: import (builtins.fetchTarball
-      "https://github.com/NixOS/nixpkgs/archive/pull/${toString n}/head.tar.gz") (commonArgs prev);
+      "https://github.com/NixOS/nixpkgs/archive/pull/${toString n}/head.tar.gz") { inherit config; };
     })
     (final: prev: { nur = import (builtins.fetchTarball
-      "https://github.com/nix-community/nur/archive/master.tar.gz") (commonArgs prev);
+      "https://github.com/nix-community/nur/archive/master.tar.gz") { inherit config; };
     })
   ];
 }

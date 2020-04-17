@@ -29,14 +29,18 @@ working version into scope, as well as the `rebuild` script with the following:
 
 * Flake Inputs:
 
-  - nixpkgs: github:nixos/nixpkgs (master)
+  - master: github:nixos/nixpkgs (master)
+  - staged: github:nixos/nixpkgs (staging)
   - small: github:nixos/nixpkgs (nixos-unstable-small)
   - large: github:nixos/nixpkgs (nixos-unstable)
-  - home: github:rycee/home-manager
-   -> no flake support yet - forked at github:bqv/home-manager/flakes
+  - home: github:rycee/home-manager (bqv-flakes)
   - nur: github:nix-community/nur
   - dwarffs: github:edolstra/dwarffs
-  - emacs: github:nix-community/emacs-overlay
+  - naersk: github:nmattia/naersk
+  - emacs: github:nix-community/emacs-overlay [ non-flake! ]
+  - mozilla: github:mozilla/nixpkgs-mozilla [ non-flake! ]
+  - snack: github:nmattia/snack [ non-flake! ]
+  - napalm: github:nmattia/napalm [ non-flake! ]
 
 * Flake Structure:
 

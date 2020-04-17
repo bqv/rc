@@ -1,4 +1,4 @@
-{ home, nixpkgs, nur, dwarffs, inputs, pkgs, system, ... }:
+{ inputs, nixpkgs, pkgs, system, ... }:
 
 let
   inherit (nixpkgs) lib;
@@ -14,17 +14,20 @@ let
       inherit system;
 
       specialArgs.usr = { inherit utils; };
-      specialArgs.nurModules = nur.nixosModules;
-      specialArgs.nurOverlays = nur.overlays;
+      specialArgs.nurModules = inputs.nur.nixosModules;
+      specialArgs.nurOverlays = inputs.nur.overlays;
+      specialArgs.naersk = inputs.naersk.lib;
+      specialArgs.snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
+      specialArgs.napalm = pkgs.callPackage inputs.napalm;
 
       modules = let
-        inherit (home.nixosModules) home-manager;
+        inherit (inputs.home.nixosModules) home-manager;
 
         core = ../profiles/core.nix;
 
         global = {
-
           networking.hostName = hostName;
+
           nix.registry = lib.mapAttrs (id: flake: {
             inherit flake;
             from = { inherit id; type = "indirect"; };
@@ -40,11 +43,9 @@ let
 
           system.extraSystemBuilderCmds = '' ln -s '${../.}' "$out/flake" '';
 
-          nixpkgs = { inherit pkgs; };
-          nixpkgs.overlays = [
-            (_: _: { configuration = inputs.self; })
-            nur.overlay
-          ];
+          nixpkgs = {
+            inherit pkgs;
+          };
 
           home-manager.useGlobalPkgs = true;
         };
@@ -54,8 +55,7 @@ let
         flakeModules = import ../modules/list.nix;
 
       in flakeModules ++ [ core global local home-manager
-                           dwarffs.nixosModules.dwarffs ];
-
+                           inputs.dwarffs.nixosModules.dwarffs ];
     };
 
   hosts = recImport {
