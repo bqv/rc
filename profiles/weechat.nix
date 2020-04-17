@@ -39,7 +39,7 @@ let
     };
   };
 in { # TODO: https://github.com/rycee/home-manager/pull/953
-  environment.systemPackages = [ systemWeechat ];
+  environment.systemPackages = with pkgs; [ systemWeechat dtach ];
 
   systemd.services.weechat = {
     serviceConfig = {
@@ -54,9 +54,14 @@ in { # TODO: https://github.com/rycee/home-manager/pull/953
       TTYPath = "/dev/tty8";
       LogsDirectory = "weechat";
       StateDirectory = "weechat";
+      RuntimeDirectory = "weechat";
     };
     path = [ "/run/current-system/sw" ];
-    script = "exec ${systemWeechat}/bin/weechat -d $STATE_DIRECTORY -r '/set logger.file.path '$LOGS_DIRECTORY";
+    script = with pkgs; ''
+      cd $RUNTIME_DIRECTORY
+      exec ${dtach}/bin/dtach -A weechat -e '^z' \
+        ${systemWeechat}/bin/weechat -d $STATE_DIRECTORY -r '/set logger.file.path '$LOGS_DIRECTORY
+    '';
     wantedBy = [ "multi-user.target" ];
   };
 
