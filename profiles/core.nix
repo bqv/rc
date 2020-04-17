@@ -58,7 +58,6 @@ in {
   };
 
   nix = {
-
     gc.automatic = lib.mkDefault true;
     autoOptimiseStore = lib.mkDefault false;
     optimise.automatic = lib.mkDefault true;
@@ -76,11 +75,13 @@ in {
     '';
 
     binaryCaches = [
+      "https://nix-community.cachix.org"
       "https://r-ryantm.cachix.org"
       "https://arm.cachix.org"
     ];
 
     binaryCachePublicKeys = [
+      "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "r-ryantm.cachix.org-1:gkUbLkouDAyvBdpBX0JOdIiD2/DP1ldF3Z3Y6Gqcc4c="
       "arm.cachix.org-1:fGqEJIhp5zM7hxe/Dzt9l9Ene9SY27PUyx3hT9Vvei0="
     ];
