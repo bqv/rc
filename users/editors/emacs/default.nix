@@ -5,7 +5,7 @@ with lib; let
 
   myEmacs = pkgs.emacsUnstable.overrideAttrs (attrs: {
     withXwidgets = true;
-    webkitgtk = pkgs.large.webkitgtk;
+    webkitgtk = pkgs.large.webkitgtk.override { inherit (pkgs.large) stdenv; };
   });
 in {
   imports = [
