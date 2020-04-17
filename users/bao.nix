@@ -8,7 +8,7 @@ let
     ${pkgs.ipfs}/bin/ipfs add $@ |\
     ${pkgs.gnugrep}/bin/grep added |\
     ${pkgs.coreutils}/bin/cut -d' ' -f 2 |\
-    ${pkgs.findutils}/bin/xargs -I{} echo "https://ipfs.io/ipfs/{}" |\
+    ${pkgs.findutils}/bin/xargs -I{} echo "https://gateway.ipfs.io/ipfs/{}" |\
     ${pkgs.xclip}/bin/xclip -i -r -f -selection primary |\
     ${pkgs.xclip}/bin/xclip -i -r -f -selection secondary |\
     ${pkgs.xclip}/bin/xclip -i -r -f -selection clipboard |\
