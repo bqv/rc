@@ -11,5 +11,7 @@ final: prev: {
 
   matrix-construct = prev.callPackage ./servers/matrix-construct { };
 
+  mx-puppet-discord = prev.callPackage ./servers/mx-puppet-discord { };
+
   pure = prev.callPackage ./shells/zsh/pure { };
 }
