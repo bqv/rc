@@ -65,12 +65,13 @@
            })
           (import emacs)
           (import mozilla)
-          nur.overlay
           (pkgs: const {
             naersk = naersk.lib.x86_64-linux;
             snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
             napalm = pkgs.callPackage inputs.napalm;
           })
+          nur.overlay
+          self.overlay
         ];
         config = { allowUnfree = true; };
       };
@@ -93,7 +94,7 @@
       packages = forAllSystems (system: let
         pkgs = pkgsForSystem system;
       in {
-        inherit (pkgs) sddm-chili dgit dejavu_nerdfont matrix-construct pure;
+        inherit (pkgs) sddm-chili dgit dejavu_nerdfont matrix-construct mx-puppet-discord pure;
         inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color;
       });
 
