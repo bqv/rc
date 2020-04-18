@@ -25,6 +25,7 @@ final: prev: let
   });
 in {
   nheko = nheko.override {
+    inherit boost;
     mtxclient = mtxclient.override { inherit boost; };
   };
 }
