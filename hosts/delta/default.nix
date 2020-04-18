@@ -96,8 +96,8 @@
   services.nix-index.enable = true;
   services.locate.enable = true;
   services.guix.enable = true;
-  services.guix.package = with pkgs.pr 84004
-    "sha256-HoV0uvrR0ZcP9JVATE8pErtiPkv1sMgQP8C4pWCljGQ="; guix;
+  services.guix.package = with pkgs.pr 85463
+    "sha256-M9sLLTph9Pmahitp3VUt7OPECyLG5OtoGeTmqhhA6tI="; guix;
   services.nixos-git = {
     enable = true;
     github = { owner = "bqv"; repo = "nixos"; };
