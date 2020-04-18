@@ -36,7 +36,6 @@ in stdenv.mkDerivation rec {
       powered by the cloudflare module. '';
     homepage = https://nodejs.org;
     license = licenses.bsd2;
-    maintainers = [ ];
     platforms = platforms.linux;
   };
 }

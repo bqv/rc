@@ -1,4 +1,4 @@
-{ lib, fetchFromGitHub, runCommand, yarn2nix, nodejs, nodePackages, python2, libiconv }: let
+{ lib, fetchFromGitHub, runCommand, yarn2nix-moretea, nodejs, nodePackages, python2, libiconv }: let
   version = "0.12.0";
   pname = "matrix-appservice-irc";
   src = fetchFromGitHub {
@@ -16,7 +16,7 @@
     tar --no-same-owner --no-same-permissions -xf ${nodejs.src}
     mv node-* $out
   '';
-  drv = yarn2nix.mkYarnPackage {
+  drv = yarn2nix-moretea.mkYarnPackage {
     inherit version pname src packageJSON;
     name = "${pname}-${version}";
     yarnLock = ./yarn.lock;
@@ -40,7 +40,7 @@
     inherit nodejs;
 
     meta = {
-      broken = !(builtins.tryEval yarn2nix).success;
+      broken = !(builtins.tryEval yarn2nix-moretea).success;
       skip.ci = true; # derivation name depends on the package json...
     };
   };

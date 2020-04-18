@@ -31,9 +31,9 @@
   }:
     let
       inherit (builtins) listToAttrs baseNameOf attrNames attrValues readDir trace;
-      inherit (master.lib) fold recursiveUpdate setAttrByPath mapAttrs genAttrs;
+      inherit (master.lib) fold recursiveUpdate setAttrByPath mapAttrs genAttrs filterAttrs;
       inherit (master.lib) removeSuffix removePrefix splitString const;
-      forAllSystems = genAttrs [ "x86_64-linux" "x86_64-darwin" "i686-linux" "aarch64-linux" ];
+      forAllSystems = genAttrs [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
       diffTrace = left: right: string: value: if left != right then trace string value else value;
 
       pkgsForSystem = system: import large rec {
@@ -93,9 +93,12 @@
 
       packages = forAllSystems (system: let
         pkgs = pkgsForSystem system;
-      in {
-        inherit (pkgs) sddm-chili dgit dejavu_nerdfont matrix-construct mx-puppet-discord pure;
+      in filterAttrs (_: p: (p.meta.broken or null) != true) {
         inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color;
+        inherit (pkgs) dgit dejavu_nerdfont flarectl mastodon;
+        inherit (pkgs) matrix-appservice-irc matrix-construct mx-puppet-discord;
+        inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
+        inherit (pkgs) pure sddm-chili yacy;
       });
 
       nixosModules = let
