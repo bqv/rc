@@ -6,6 +6,7 @@
     ../../profiles/misc/disable-mitigations.nix
     ../../profiles/misc/udev-nosettle.nix
     ../../profiles/misc/guix.nix
+    ../../profiles/security/sudo.nix
     ../../profiles/networking/ipfs
     ../../profiles/networking/bluetooth
     ../../profiles/networking/wireguard
@@ -106,9 +107,6 @@
       idle_fetch_timeout = 10;
     };
   };
-
-  security.sudo.enable = true;
-  security.sudo.wheelNeedsPassword = false;
 
   nix.buildMachines = lib.optional false [
     {
