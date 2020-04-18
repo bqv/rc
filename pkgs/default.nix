@@ -18,4 +18,6 @@ final: prev: {
   pleroma = prev.callPackage ./servers/pleroma { };
 
   pure = prev.callPackage ./shells/zsh/pure { };
+
+  yacy = prev.callPackage ./servers/yacy { };
 }
