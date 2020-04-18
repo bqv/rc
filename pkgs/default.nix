@@ -9,6 +9,8 @@ final: prev: {
 
   dejavu_nerdfont = prev.callPackage ./data/fonts/dejavu-nerdfont { };
 
+  flarectl = prev.callPackage ./applications/misc/flarectl { };
+
   matrix-appservice-irc = prev.callPackage ./servers/matrix-appservice-irc { };
 
   matrix-construct = prev.callPackage ./servers/matrix-construct { };
