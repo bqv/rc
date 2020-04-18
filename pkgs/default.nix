@@ -1,7 +1,4 @@
 final: prev: {
-  sddm-chili =
-    prev.callPackage ./applications/display-managers/sddm/themes/chili { };
-
   emacsPackages =
     prev.emacsPackages // (prev.callPackage ./applications/editors/emacs-modes { });
 
@@ -10,6 +7,8 @@ final: prev: {
   dejavu_nerdfont = prev.callPackage ./data/fonts/dejavu-nerdfont { };
 
   flarectl = prev.callPackage ./applications/misc/flarectl { };
+
+  mastodon = prev.callPackage ./servers/mastodon { };
 
   matrix-appservice-irc = prev.callPackage ./servers/matrix-appservice-irc { };
 
@@ -20,6 +19,9 @@ final: prev: {
   pleroma = prev.callPackage ./servers/pleroma { };
 
   pure = prev.callPackage ./shells/zsh/pure { };
+
+  sddm-chili =
+    prev.callPackage ./applications/display-managers/sddm/themes/chili { };
 
   yacy = prev.callPackage ./servers/yacy { };
 }

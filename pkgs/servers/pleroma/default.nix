@@ -698,6 +698,8 @@ let
       mkdir -p $out/bin
       ln -s ${fakeGit}/bin/git $out/bin/
     '';
+
+    meta.broken = true;
   };
 
   mastoNodeDeps = let
@@ -735,6 +737,8 @@ let
     installPhase = ''
       cp -r . $out
     '';
+
+    meta.broken = true;
   };
 in {
   inherit pleroma_be;
