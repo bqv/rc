@@ -12,4 +12,6 @@ final: prev: {
   matrix-construct = prev.callPackage ./servers/matrix-construct { };
 
   pure = prev.callPackage ./shells/zsh/pure { };
+
+  weechat-matrix = prev.callPackage ./applications/networking/irc/weechat/plugins/matrix.nix { };
 }
