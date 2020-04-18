@@ -22,7 +22,6 @@ let
     GUIX_STATE_DIRECTORY = "/gnu/var";
     GUIX_LOG_DIRECTORY = "/gnu/var/log";
     GUIX_DATABASE_DIRECTORY = "/gnu/var/db";
-    GUIX_CONFIGURATION_DIRECTORY = "$HOME/.config/guix";
     NIX_STORE_DIR = "/gnu/store";
   };
 
@@ -82,19 +81,28 @@ in {
 
     systemd.services.guix-daemon = {
       script = ''
+        export GUIX_CONFIGURATION_DIRECTORY=$RUNTIME_DIRECTORY
+        ${guixWrapped}/bin/guix archive --authorize < \
+          ${cfg.package}/share/guix/berlin.guixsd.org.pub
+        ${guixWrapped}/bin/guix archive --authorize < \
+          ${cfg.package}/share/guix/ci.guix.gnu.org.pub
+        ${guixWrapped}/bin/guix archive --authorize < \
+          ${cfg.package}/share/guix/ci.guix.info.pub
+
         ${lib.concatStringsSep "\n"
           (lib.mapAttrsToList (k: v: "export ${k}=${v}") guixEnv)}
-        GUIX="/var/guix/profiles/per-user/root/current-guix/bin/guix-daemon"
-        if [ ! -x "$GUIX" ]; then
-          GUIX="${cfg.package}/bin/guix-daemon"
+        DAEMON="/var/guix/profiles/per-user/root/current-guix/bin/guix-daemon"
+        if [ ! -x "$DAEMON" ]; then
+          DAEMON="${cfg.package}/bin/guix-daemon"
           export GUIX_LOCPATH="${pkgs.glibcLocales}/lib/locale"
         fi
-        exec $GUIX --build-users-group=${cfg.group} ${lib.concatStringsSep " " cfg.extraArgs}
+
+        exec $DAEMON --build-users-group=${cfg.group} ${lib.concatStringsSep " " cfg.extraArgs}
       '';
+      environment.GUIX_LOCPATH = "/var/guix/profiles/per-user/root/guix-profix/lib/locale";
       serviceConfig = {
-        Environment = "GUIX_LOCPATH=/var/guix/profiles/per-user/root/guix-profix/lib/locale";
         ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /gnu/store";
-        RemainAfterExit = true;
+        RuntimeDirectory = "guix";
         StandardOutput = "syslog";
         StandardError = "syslog";
         TasksMax = 8192;
@@ -107,18 +115,6 @@ in {
       [ -f "$GUIX_PROFILE/etc/profile" ] && source $GUIX_PROFILE/etc/profile
       export GUIX_LOCPATH="${pkgs.glibcLocales}/lib/locale"
       export INFOPATH="$GUIX_PROFILE/share/info:$INFOPATH"
-
-      if [ -f "$HOME/.config/guix/current/share/guix/ci.guix.info.pub" ]; then
-        ${guixWrapped}/bin/guix archive --authorize < \
-          $HOME/.config/guix/current/share/guix/ci.guix.info.pub
-      else
-        ${guixWrapped}/bin/guix archive --authorize < \
-          ${cfg.package}/share/guix/berlin.guixsd.org.pub
-        ${guixWrapped}/bin/guix archive --authorize < \
-          ${cfg.package}/share/guix/ci.guix.gnu.org.pub
-        ${guixWrapped}/bin/guix archive --authorize < \
-          ${cfg.package}/share/guix/ci.guix.info.pub
-      fi
     '';
   };
 }
