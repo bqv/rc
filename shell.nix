@@ -4,14 +4,10 @@ let
   flake-shell = pkgs.writeShellScriptBin "nixFlakes-shell" ''
     nix-shell -E 'with import "${pkgs.path}/nixos" { configuration.nix.package = (import <nixpkgs> {}).nixFlakes; }; pkgs.mkShell { buildInputs = with config.system.build; with pkgs; [ nixos-rebuild ]; }' $@
   '';
-  rebuild = pkgs.writeShellScriptBin "rebuild" ''
+  switch = pkgs.writeShellScriptBin "switch" ''
     REV=$(git rev-parse HEAD)
-    if [ $1 == "tag-current" ]; then
-      pathToConfig=$(readlink -f /run/current-system)
-    else
-      FLAKE=$(git rev-parse --show-toplevel)
-      source $(which nixos-rebuild) --flake $FLAKE --use-remote-sudo $@
-    fi
+    FLAKE=$(git rev-parse --show-toplevel)
+    source $(which nixos-rebuild) --flake $FLAKE --use-remote-sudo switch $@
 
     if [ -e "$pathToConfig" ]; then
       SYSTEMPATH=$(basename $pathToConfig)
@@ -23,6 +19,42 @@ let
       done
     fi
   '';
+  test = pkgs.writeShellScriptBin "test" ''
+    REV=$(git rev-parse HEAD)
+    FLAKE=$(git rev-parse --show-toplevel)
+    source $(which nixos-rebuild) --flake $FLAKE --use-remote-sudo test $@
+
+    if [ -e "$pathToConfig" ]; then
+      SYSTEMPATH=$(basename $pathToConfig)
+      echo Tagging $SYSTEMPATH && git tag $SYSTEMPATH $REV || true
+    fi
+  '';
+  tag-current = pkgs.writeShellScriptBin "tag-current" ''
+    REV=$(git rev-parse HEAD)
+    pathToConfig=$(readlink -f /run/current-system)
+    SYSTEMPATH=$(basename $pathToConfig)
+    PROFILES=($(find /nix/var/nix/profiles/ -lname $pathToConfig))
+    echo Tagging $SYSTEMPATH && git tag $SYSTEMPATH $REV || true
+    for profile in $PROFILES; do
+      SYSTEMNUM=$(hostname)/$(basename $profile)
+      echo Tagging $SYSTEMNUM && git tag $SYSTEMNUM $REV || true
+    done
+  '';
+  boot = pkgs.writeShellScriptBin "boot" ''
+    REV=$(git rev-parse HEAD)
+    FLAKE=$(git rev-parse --show-toplevel)
+    source $(which nixos-rebuild) --flake $FLAKE --use-remote-sudo boot $@
+  '';
+  dry-activate = pkgs.writeShellScriptBin "dry-activate" ''
+    REV=$(git rev-parse HEAD)
+    FLAKE=$(git rev-parse --show-toplevel)
+    source $(which nixos-rebuild) --flake $FLAKE --use-remote-sudo dry-activate $@
+  '';
+  dry-build = pkgs.writeShellScriptBin "dry-build" ''
+    REV=$(git rev-parse HEAD)
+    FLAKE=$(git rev-parse --show-toplevel)
+    source $(which nixos-rebuild) --flake $FLAKE --use-remote-sudo dry-build $@
+  '';
 in pkgs.mkShell {
   nativeBuildInputs = with pkgs; let
     git-crypt = pkgs.git-crypt.overrideAttrs (attrs: rec {
@@ -32,7 +64,8 @@ in pkgs.mkShell {
       };
       patches = [ worktreePatch ];
     });
-  in [ git git-crypt nixFlakes rebuild flake-shell ];
+  in [ git git-crypt nixFlakes flake-shell
+       switch test tag-current boot dry-activate dry-build ];
 
   shellHook = ''
     mkdir -p secrets
