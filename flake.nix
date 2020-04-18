@@ -93,7 +93,7 @@
       packages = forAllSystems (system: let
         pkgs = pkgsForSystem system;
       in {
-        inherit (pkgs) sddm-chili dgit dejavu_nerdfont matrix-construct pure;
+        inherit (pkgs) sddm-chili dgit dejavu_nerdfont matrix-construct pure weechat-matrix;
         inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color;
       });
 
