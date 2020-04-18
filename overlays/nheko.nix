@@ -2,7 +2,7 @@ final: prev: let
   lib = final.lib;
   boost = final.symlinkJoin {
     name = "boost-combined";
-    paths = with final.boost171; [ out dev ];
+    paths = with final.boost170; [ out dev ];
   };
   mtxclient = prev.mtxclient.overrideAttrs (super: rec {
     version = lib.substring 0 9 src.rev;
@@ -21,6 +21,7 @@ final: prev: let
       rev = "076a1c3607556e2d6f21309e18945480c6637438";
       hash = "sha256-VVzpRn4zMuVeRamOtVtQ4AFR1nLGW3KYYnqR8kBYFe0=";
     };
+    buildInputs = super.buildInputs ++ [ final.qt5.qtquickcontrols2 ];
   });
 in {
   nheko = nheko.override {
