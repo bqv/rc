@@ -3,9 +3,7 @@
 {
   imports = [
     ../../legacy/services/http.nix
-    ../../legacy/services/sync.nix
     ../../legacy/services/mastodon.nix
-    ../../legacy/services/minecraft.nix
     ../../legacy/containers/secure.nix
     ../../legacy/containers/sandbox.nix
    #../../legacy/containers/certmon.nix
@@ -18,6 +16,7 @@
     ../../profiles/security/sudo.nix
     ../../profiles/networking/wireguard
     ../../profiles/networking/tor
+    ../../profiles/services/minecraft
     ../../profiles/services/syncthing
     ../../users/root.nix
     ../../users/bao.nix
