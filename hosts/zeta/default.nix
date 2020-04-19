@@ -3,7 +3,6 @@
 {
   imports = [
     ../../legacy/services/qemu.nix
-    ../../legacy/services/tor.nix
     ../../legacy/services/http.nix
     ../../legacy/services/sync.nix
     ../../legacy/services/mastodon.nix
@@ -18,6 +17,7 @@
     ../../profiles/meta/fatal-warnings.nix
     ../../profiles/security/sudo.nix
     ../../profiles/networking/wireguard
+    ../../profiles/networking/tor
     ../../users/root.nix
     ../../users/bao.nix
     ./network.nix
