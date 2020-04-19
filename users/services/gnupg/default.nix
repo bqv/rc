@@ -8,6 +8,13 @@ in {
       gnupg 
     ];
 
+    home.extraProfileCommands = ''
+      export GPG_TTY=$(tty)
+      if [[ -n "$SSH_CONNECTION" ]] ;then
+        export PINENTRY_USER_DATA="USE_CURSES=1"
+      fi
+    '';
+
     programs.gpg.enable = true;
 
     services.gpg-agent = {
