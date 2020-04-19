@@ -21,8 +21,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "jevolk";
     repo = "charybdis";
-    rev = "96896ce89ed92bf74e885c87dd55b708cfc9e941";
-    hash = "sha256-RT5smj9wB6JN5YNUoIJWgrZ0CrGsZ/wb9xNweMBENEA=";
+    rev = "0050e0f7d9b31656abd9cbf281de0f0b05256fab";
+    hash = "sha256-qsxokCUisjrao/hYPtO3wVtfCY60eh7gXgPQq/fxnZM=";
   };
 
   preAutoreconf = let
@@ -48,10 +48,7 @@ stdenv.mkDerivation rec {
     "--with-imagemagick-includes=${graphicsmagick}/include/GraphicsMagick"
   ] ++ lib.optional debug "--with-log-level=DEBUG";
 
-  postConfigure = ''
-    sed -i '/RB_CONF_DIR/s%^.*$%#define RB_CONF_DIR "/etc"%' include/ircd/config.h
-    sed -i '/RB_DB_DIR/s%^.*$%#define RB_DB_DIR "/var/db/${pname}"%' include/ircd/config.h
-    sed -i '/RB_LOG_DIR/s%^.*$%#define RB_LOG_DIR "/var/log/${pname}"%' include/ircd/config.h
+  preBuild = ''
     substituteInPlace ircd/magic.cc --replace "/usr/local/share/misc/magic.mgc" "${file}/share/misc/magic.mgc"
   '';
 
