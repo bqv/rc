@@ -69,29 +69,49 @@ in {
         Guix package to use.
       '';
     };
+
+    publish = {
+      enable = mkEnableOption "publishing the guix store";
+
+      port = mkOption {
+        type = types.int;
+        default = 8181;
+        description = ''
+          Port to publish the guix store on.
+        '';
+      };
+
+      user = mkOption {
+        type = types.str;
+        default = "nobody";
+        description = ''
+          User to publish the guix store with.
+        '';
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [
-      guixWrapped
+      guixWrapped (lib.lowPrio guixWrapped)
     ];
 
     users.users = guixBuildUsers 10;
     users.groups = { "${cfg.group}" = {}; };
 
     systemd.services.guix-daemon = {
+      description = "Build daemon for GNU Guix";
       script = ''
         export GUIX_CONFIGURATION_DIRECTORY=$RUNTIME_DIRECTORY
         ${guixWrapped}/bin/guix archive --authorize < \
-          ${cfg.package}/share/guix/berlin.guixsd.org.pub
-        ${guixWrapped}/bin/guix archive --authorize < \
           ${cfg.package}/share/guix/ci.guix.gnu.org.pub
-        ${guixWrapped}/bin/guix archive --authorize < \
-          ${cfg.package}/share/guix/ci.guix.info.pub
 
         ${lib.concatStringsSep "\n"
           (lib.mapAttrsToList (k: v: "export ${k}=${v}") guixEnv)}
-        DAEMON="/var/guix/profiles/per-user/root/current-guix/bin/guix-daemon"
+        ROOT_PROFILE=$GUIX_STATE_DIRECTORY"/profiles/per-user/root/current-guix"
+
+        DAEMON=$ROOT_PROFILE"/bin/guix-daemon"
+        export GUIX_LOCPATH=$ROOT_PROFILE"/lib/locale";
         if [ ! -x "$DAEMON" ]; then
           DAEMON="${cfg.package}/bin/guix-daemon"
           export GUIX_LOCPATH="${pkgs.glibcLocales}/lib/locale"
@@ -99,13 +119,44 @@ in {
 
         exec $DAEMON --build-users-group=${cfg.group} ${lib.concatStringsSep " " cfg.extraArgs}
       '';
-      environment.GUIX_LOCPATH = "/var/guix/profiles/per-user/root/guix-profix/lib/locale";
       serviceConfig = {
         ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /gnu/store";
         RuntimeDirectory = "guix";
+        RemainAfterExit = "yes";
         StandardOutput = "syslog";
         StandardError = "syslog";
-        TasksMax = 8192;
+        TasksMax = 8192; # See <https://lists.gnu.org/archive/html/guix-devel/2016-04/msg00608.html>.
+      };
+      wantedBy = [ "multi-user.target" ];
+    };
+
+    systemd.services.guix-publish = lib.mkIf cfg.publish.enable {
+      description = "Publish the GNU Guix store";
+      script = ''
+        export GUIX_CONFIGURATION_DIRECTORY=$RUNTIME_DIRECTORY
+        ${guixWrapped}/bin/guix archive --authorize < \
+          ${cfg.package}/share/guix/ci.guix.gnu.org.pub
+
+        ${lib.concatStringsSep "\n"
+          (lib.mapAttrsToList (k: v: "export ${k}=${v}") guixEnv)}
+        ROOT_PROFILE=$GUIX_STATE_DIRECTORY"/profiles/per-user/root/current-guix"
+
+        DAEMON=$ROOT_PROFILE"/bin/guix"
+        export GUIX_LOCPATH=$ROOT_PROFILE"/lib/locale";
+        if [ ! -x "$DAEMON" ]; then
+          DAEMON="${cfg.package}/bin/guix"
+          export GUIX_LOCPATH="${pkgs.glibcLocales}/lib/locale"
+        fi
+
+        exec $DAEMON publish --user=${cfg.publish.user} --port=${cfg.publish.port}
+      '';
+      serviceConfig = {
+        ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /gnu/store";
+        RuntimeDirectory = "guix";
+        RemainAfterExit = "yes";
+        StandardOutput = "syslog";
+        StandardError = "syslog";
+        TasksMax = 1024; # See <https://lists.gnu.org/archive/html/guix-devel/2016-04/msg00608.html>.
       };
       wantedBy = [ "multi-user.target" ];
     };
