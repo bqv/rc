@@ -96,6 +96,7 @@
   services.printing.enable = true;
   services.nix-index.enable = true;
   services.locate.enable = true;
+  services.pcscd.enable = true;
   services.guix.enable = true;
   services.guix.package = with pkgs.pr 85463
     "sha256-M9sLLTph9Pmahitp3VUt7OPECyLG5OtoGeTmqhhA6tI="; guix;
