@@ -2,7 +2,6 @@
 
 {
   imports = [
-    ../../legacy/services/qemu.nix
     ../../legacy/services/http.nix
     ../../legacy/services/sync.nix
     ../../legacy/services/mastodon.nix
@@ -15,6 +14,7 @@
     ../../legacy/containers/mastodon.nix
     ../../legacy/containers/matrix.nix
     ../../profiles/meta/fatal-warnings.nix
+    ../../profiles/misc/qemu.nix
     ../../profiles/security/sudo.nix
     ../../profiles/networking/wireguard
     ../../profiles/networking/tor
