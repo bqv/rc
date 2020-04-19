@@ -14,6 +14,7 @@
     ../../profiles/misc/qemu.nix
     ../../profiles/security/sudo.nix
     ../../profiles/networking/wireguard
+    ../../profiles/networking/ipfs
     ../../profiles/networking/tor
     ../../profiles/services/mastodon
     ../../profiles/services/minecraft
