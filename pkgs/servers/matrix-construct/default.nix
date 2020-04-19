@@ -21,8 +21,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "jevolk";
     repo = "charybdis";
-    rev = "96896ce89ed92bf74e885c87dd55b708cfc9e941";
-    hash = "sha256-RT5smj9wB6JN5YNUoIJWgrZ0CrGsZ/wb9xNweMBENEA=";
+    rev = "6026bd1842b68f7637e506f42e8963f0fa2f2727";
+    hash = "sha256-fUrUOEY1MDm/qEIi+BYELqP4ucTGXgU/0uyMNOfQn5A=";
   };
 
   preAutoreconf = let
@@ -43,17 +43,11 @@ stdenv.mkDerivation rec {
     "--with-custom-version=${src.nixpkgsVersion}"
     "--with-boost-libdir=${boost.out}/lib"
     "--with-boost=${boost.dev}"
+    "--with-magic-file=${file}/share/misc/magic.mgc"
   ] ++ lib.optional useJemalloc "--enable-jemalloc"
     ++ lib.optional withGraphicsMagick [
     "--with-imagemagick-includes=${graphicsmagick}/include/GraphicsMagick"
   ] ++ lib.optional debug "--with-log-level=DEBUG";
-
-  postConfigure = ''
-    sed -i '/RB_CONF_DIR/s%^.*$%#define RB_CONF_DIR "/etc"%' include/ircd/config.h
-    sed -i '/RB_DB_DIR/s%^.*$%#define RB_DB_DIR "/var/db/${pname}"%' include/ircd/config.h
-    sed -i '/RB_LOG_DIR/s%^.*$%#define RB_LOG_DIR "/var/log/${pname}"%' include/ircd/config.h
-    substituteInPlace ircd/magic.cc --replace "/usr/local/share/misc/magic.mgc" "${file}/share/misc/magic.mgc"
-  '';
 
   enableParallelBuilding = true;
 
