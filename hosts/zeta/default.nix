@@ -18,6 +18,7 @@
     ../../profiles/security/sudo.nix
     ../../profiles/networking/wireguard
     ../../profiles/networking/tor
+    ../../profiles/services/syncthing
     ../../users/root.nix
     ../../users/bao.nix
     ./network.nix
