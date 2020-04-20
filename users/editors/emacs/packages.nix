@@ -4,7 +4,7 @@
   home.packages = with pkgs; [
     #git fish zsh vim
     w3m findutils
-    cmake gnumake gcc libtool libvterm gtk3 rls age master.rust-analyzer
+    cmake gnumake gcc libtool libvterm gtk3 rls age rust-analyzer
   ] ++ (with emacsPackagesFor config.programs.emacs.package.unwrapped;
     # TODO: pkgs.emacsPackages not overriden properly?
     with (import ../../../pkgs/applications/editors/emacs-modes { inherit (pkgs) stdenv fetchFromGitHub; });
