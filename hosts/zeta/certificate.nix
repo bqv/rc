@@ -1,15 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, domains, ... }:
 
 let
   inherit (lib) genAttrs const nameValuePair;
 
-  email = "ssl+${config.networking.hostName}@***REMOVED***";
-  domains = [
-    "***REMOVED***"
-    "***REMOVED***"
-    "***REMOVED***"
-    "***REMOVED***"
-  ];
+  email = "ssl+${config.networking.hostName}@${domains.home}";
   mkCertFor = domain: rec {
     inherit email;
     allowKeysForGroup = true;
@@ -26,7 +20,7 @@ let
   };
 in {
   security.acme = {
-    certs = genAttrs domains mkCertFor;
+    certs = genAttrs (builtins.attrValues domains) mkCertFor;
   };
 
   systemd.services.haproxy.serviceConfig = {

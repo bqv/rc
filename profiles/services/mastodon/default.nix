@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, domains, ... }:
 
 let
   cfg = config.services.mastodon;
@@ -140,7 +140,7 @@ in {
 
       localDomain = lib.mkOption {
         description = "The domain serving your Mastodon instance.";
-        default = "***REMOVED***";
+        default = domains.srvc;
         type = lib.types.str;
       };
 
@@ -270,7 +270,7 @@ in {
         fromAddress = lib.mkOption {
           description = ''"From" address used when sending Emails to users.'';
           type = lib.types.str;
-          default = "mastodon@***REMOVED***";
+          default = "mastodon@${domains.srvc}";
         };
 
         user = lib.mkOption {

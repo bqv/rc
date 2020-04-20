@@ -1,6 +1,6 @@
-{ config, pkgs, ... }:
+{ config, pkgs, domains, ... }:
 
-with config; {
+{
   services.tor.client.dns.enable = true;
   services.tor.client.dns.listenAddress = "0.0.0.0:9053";
   services.tor.client.enable = true;
@@ -11,10 +11,10 @@ with config; {
   services.tor.controlPort = "9051";
   services.tor.controlSocket.enable = true;
   services.tor.enable = true;
-  services.tor.relay.address = "***REMOVED***";
-  services.tor.relay.contactInfo = "xa0@***REMOVED***";
+  services.tor.relay.address = domains.srvc;
+  services.tor.relay.contactInfo = "tor+${domains.srvc}@${domains.home}";
   services.tor.relay.enable = true;
-  services.tor.relay.nickname = "zeta";
+  services.tor.relay.nickname = config.networking.hostName;
   services.tor.relay.port = 143;
   services.tor.relay.role = "relay";
 }

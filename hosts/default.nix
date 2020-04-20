@@ -20,6 +20,8 @@ let
       specialArgs.snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
       specialArgs.napalm = pkgs.callPackage inputs.napalm;
 
+      specialArgs.domains = import ../secrets/domains.nix;
+
       modules = let
         inherit (inputs.home.nixosModules) home-manager;
 
