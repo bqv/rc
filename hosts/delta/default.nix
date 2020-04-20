@@ -141,5 +141,5 @@
 
     (with hunspellDicts; hunspellWithDicts [ en_GB-large ])
   ];
-  nixpkgs.config.firefox.enableFXCastBridge = true;
+  #nixpkgs.config.firefox.enableFXCastBridge = true;
 }
