@@ -30,7 +30,7 @@
     emacs, mozilla, snack, napalm
   }:
     let
-      inherit (builtins) listToAttrs baseNameOf attrNames attrValues readDir trace;
+      inherit (builtins) listToAttrs baseNameOf attrNames attrValues readDir trace concatStringsSep;
       inherit (master.lib) fold recursiveUpdate setAttrByPath mapAttrs genAttrs filterAttrs;
       inherit (master.lib) removeSuffix removePrefix splitString const;
       forAllSystems = genAttrs [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
@@ -116,7 +116,10 @@
         # profiles
         profilesList = import ./profiles/list.nix;
         profilesAttrs = { profiles = mergeAll (pathsToAttrs profilesList); };
-
       in modulesAttrs // profilesAttrs;
+
+      secrets = concatStringsSep "\n" ([]
+        ++ (attrValues (import ./secrets/domains.nix))
+      );
     };
 }

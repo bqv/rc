@@ -1,6 +1,6 @@
 #+title: NixOS System Configuration
 #+author: Tony O.
-#+email: nixos@***REMOVED***
+#+email: nixos@fron.io
 #+OPTIONS: toc:nil num:nil
 
 * What's this?

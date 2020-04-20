@@ -4,7 +4,7 @@ let
   flake-shell = pkgs.writeShellScriptBin "nixFlakes-shell" ''
     nix-shell -E 'with import "${pkgs.path}/nixos" { configuration.nix.package = (import <nixpkgs> {}).nixFlakes; }; pkgs.mkShell { buildInputs = with config.system.build; with pkgs; [ nixos-rebuild ]; }' $@
   '';
-  switch = pkgs.writeShellScriptBin "switch" ''
+  activate = pkgs.writeShellScriptBin "activate" ''
     REV=$(git rev-parse HEAD)
     FLAKE=$(git rev-parse --show-toplevel)
     source $(which nixos-rebuild) --flake $FLAKE --use-remote-sudo switch $@
@@ -19,7 +19,7 @@ let
       done
     fi
   '';
-  test = pkgs.writeShellScriptBin "test" ''
+  dry-boot = pkgs.writeShellScriptBin "dry-boot" ''
     REV=$(git rev-parse HEAD)
     FLAKE=$(git rev-parse --show-toplevel)
     source $(which nixos-rebuild) --flake $FLAKE --use-remote-sudo test $@
@@ -64,8 +64,8 @@ in pkgs.mkShell {
       };
       patches = [ worktreePatch ];
     });
-  in [ git git-crypt nixFlakes flake-shell
-       switch test tag-current boot dry-activate dry-build ];
+  in [ git git-crypt git-secrets nixFlakes flake-shell
+       activate dry-boot tag-current boot dry-activate dry-build ];
 
   shellHook = ''
     mkdir -p secrets
