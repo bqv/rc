@@ -60,9 +60,23 @@ stdenv.mkDerivation rec {
         owner = "facebook"; repo = "rocksdb"; rev = "v${version}";
         sha256 = "0yy09myzbi99qdmh2c2mxlddr12pwxzh66ym1y6raaqglrsmax66";
       };
+      nativeBuildInputs = super.nativeBuildInputs ++ [ jemalloc ];
+      cmakeFlags = builtins.map (f: if f == "-DWITH_JEMALLOC=0" then "-DWITH_JEMALLOC=1" else
+                                    if f == "-DWITH_TOOLS=0" then "-DWITH_TOOLS=1" else f) super.cmakeFlags;
       NIX_CFLAGS_COMPILE = "${super.NIX_CFLAGS_COMPILE} -Wno-error=redundant-move";
     }))
     graphicsmagick
     jemalloc llvm
   ];
+
+  doInstallCheck = true;
+  installCheckPhase = ''
+    chmod -R a-w $out
+    mkdir -p /tmp/cache/construct
+    export RUNTIME_DIRECTORY=/tmp/run/construct
+    export STATE_DIRECTORY=/tmp/lib/construct
+    export LOGS_DIRECTORY=/tmp/log/construct
+    cd /tmp/cache/construct
+    $out/bin/construct -smoketest localhost
+  '';
 }
