@@ -1,6 +1,7 @@
 { config ? {}, pkgs, lib, ... }:
 
 let
+  # TODO: Check for DISPLAY
   ipfscat = pkgs.writeShellScriptBin "ipfscat" ''
     export IPFS_PATH='/var/lib/ipfs'
     bold="$(${pkgs.ncurses}/bin/tput bold)"
@@ -77,10 +78,11 @@ in {
       yadm # Dotfile Management
       pstree # Process Monitoring
       pv # Pipe Management
-      nmap wget curl ipfscat # Network Utilities
+      nmap wget curl ipfscat mitmproxy # Network Utilities
       bitwarden-cli protonvpn-cli-ng # Password Management
       file exa unrar unzip ncdu # File Management
       xsel xclip scrot # X11 Utilities
+      gdb lldb radare2 radare2-cutter # Debug Utilities
     ];
 
     home.file."mimeapps.list".force = lib.mkForce true;
