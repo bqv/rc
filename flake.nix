@@ -12,8 +12,7 @@
   inputs.dwarffs.url = "github:edolstra/dwarffs/83c13981993fa54c4cac230f2eec7241ab8fd0a9";
   inputs.dwarffs.inputs.nixpkgs.follows = "master";
 
-  #inputs.home.url = "github:rycee/home-manager/bqv-flakes";
-  inputs.home.url = "github:rycee/home-manager/e13bd1e79372c58cc1e86e45bdf304f4b6770fe3";
+  inputs.home.url = "github:rycee/home-manager/bqv-flakes";
   inputs.home.inputs.nixpkgs.follows = "large";
 
   inputs.nur.url = "github:nix-community/NUR";
