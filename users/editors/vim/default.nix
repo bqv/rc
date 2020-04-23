@@ -13,6 +13,9 @@ in {
       plugins = with pkgs.vimPlugins; [
         vim-nix # nix language
       ];
+      extraConfig = ''
+        set inccommand=nosplit
+      '';
     };
   };
 }
