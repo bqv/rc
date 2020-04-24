@@ -12,7 +12,7 @@
   dbPass ? "hunter2",
   dbUseRumIndices ? true,
   listenPort ? 4000,
-  listenIP ? "127.0.0.1",
+  listenIP ? "0.0.0.0",
   uploadsDir ? "/var/lib/pleroma/upload/",
   publicDir ? "/var/lib/pleroma/public/" }:
 
@@ -573,7 +573,7 @@ let
     "--indexable ${if searchEngineAllowIndex then "Y" else "N"}"
     "--uploads-dir ${lib.escapeShellArg uploadsDir}"
     "--static-dir ${lib.escapeShellArg "instances/static"}"
-    "--listen-ip ${lib.escapeShellArg "uploads"}"
+    "--listen-ip ${lib.escapeShellArg listenIP}"
     "--listen-port ${lib.escapeShellArg listenPort}"
   ];
 
