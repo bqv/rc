@@ -10,8 +10,8 @@ final: prev: let
     };
     patches = [
       (final.fetchpatch {
-        url = "https://github.com/bqv/matrix-nio/commit/dfb2f9d12d557aff5bb07f01ac9691d8908bbf67.patch";
-        sha256 = "0x378cq71y15ri6g3fznfcg8ws4nrcfpaxcv38dzmlbizg08gwzg";
+        url = "https://github.com/bqv/matrix-nio/commit/fd66d5d5e2c33120b27c2af44022b18521ee8b43.patch";
+        sha256 = "170q7apgxhj9wzaqw23ax7apc8sjrnq27689zi5yvwyg3ic3x99w";
       })
     ];
   });
