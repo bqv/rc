@@ -21,8 +21,8 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "jevolk";
     repo = "charybdis";
-    rev = "912bcd3a3c7ebce5b2fb0562ca229c8245b5a59e";
-    hash = "sha256-vyCpIQfvAtC0HkCL4CI66/jMiY/6JpZRwJrERHodpv8=";
+    rev = "37335a68d774e42b8156b644637aa8302c153128";
+    hash = "sha256-OfqxddgzdGtJiZy1SzykGE2Mx7NL7NLppE8+lz4+clM=";
   };
 
   preAutoreconf = let
@@ -39,8 +39,6 @@ stdenv.mkDerivation rec {
 
   configureFlags = [
     "--enable-generic"
-    "--with-custom-branding=nix"
-    "--with-custom-version=${src.nixpkgsVersion}"
     "--with-boost-libdir=${boost.out}/lib"
     "--with-boost=${boost.dev}"
     "--with-magic-file=${file}/share/misc/magic.mgc"
