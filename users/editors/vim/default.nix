@@ -16,6 +16,7 @@ in {
       extraConfig = ''
         set inccommand=nosplit
         set nohlsearch
+        colorscheme slate
       '';
     };
   };
