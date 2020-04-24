@@ -29,10 +29,11 @@ final: prev: let
     src = final.fetchFromGitHub {
       owner = "nheko-reborn";
       repo = "nheko";
-      rev = "076a1c3607556e2d6f21309e18945480c6637438";
-      hash = "sha256-VVzpRn4zMuVeRamOtVtQ4AFR1nLGW3KYYnqR8kBYFe0=";
+      rev = "d94ac86816f9f325cba11f71344a3ca99591130d";
+      hash = "sha256-PPYK/0BP/zoSwuyo4OAkYdZL8gNXHwdmPBJs7lTnr2M=";
     };
     buildInputs = super.buildInputs ++ [
+      final.qt5.qtgraphicaleffects
       final.qt5.qtquickcontrols2
       final.lmdbxx
       tweeny
