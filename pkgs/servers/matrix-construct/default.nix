@@ -67,7 +67,7 @@ stdenv.mkDerivation rec {
     jemalloc llvm
   ];
 
-  doInstallCheck = true;
+  doInstallCheck = false;
   installCheckPhase = ''
     chmod -R a-w $out
     mkdir -p /tmp/cache/construct
