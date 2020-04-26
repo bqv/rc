@@ -17,6 +17,8 @@
     exa
     file
     git
+    htop
+    iotop
     less
     ncdu
     nix-diff
