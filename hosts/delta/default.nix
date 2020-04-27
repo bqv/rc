@@ -137,7 +137,7 @@
     dunst catt termite rxvt_unicode
     steam obs-studio
 
-    fsnoop anbox #pmbootstrap
+    anbox #pmbootstrap
 
     (with hunspellDicts; hunspellWithDicts [ en_GB-large ])
   ];
