@@ -137,9 +137,9 @@
     dunst catt termite rxvt_unicode
     steam obs-studio
 
-    anbox #pmbootstrap
+    fsnoop anbox #pmbootstrap
 
     (with hunspellDicts; hunspellWithDicts [ en_GB-large ])
   ];
-  #nixpkgs.config.firefox.enableFXCastBridge = true;
+  nixpkgs.config.firefox.enableFXCastBridge = true;
 }

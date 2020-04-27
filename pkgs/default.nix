@@ -8,6 +8,8 @@ final: prev: {
 
   flarectl = prev.callPackage ./applications/misc/flarectl { };
 
+  fsnoop = prev.callPackage ./tools/misc/fsnoop { };
+
   mastodon = prev.callPackage ./servers/mastodon { };
 
   matrix-appservice-irc = prev.callPackage ./servers/matrix-appservice-irc { };

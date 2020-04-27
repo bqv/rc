@@ -96,7 +96,7 @@
         pkgs = pkgsForSystem system;
       in filterAttrs (_: p: (p.meta.broken or null) != true) {
         inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color;
-        inherit (pkgs) dgit dejavu_nerdfont flarectl mastodon;
+        inherit (pkgs) dgit dejavu_nerdfont flarectl fsnoop mastodon;
         inherit (pkgs) matrix-appservice-irc matrix-construct mx-puppet-discord;
         inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
         inherit (pkgs) pure sddm-chili yacy;
