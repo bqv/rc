@@ -6,14 +6,22 @@ let
     export IPFS_PATH='/var/lib/ipfs'
     bold="$(${pkgs.ncurses}/bin/tput bold)"
     sgr0="$(${pkgs.ncurses}/bin/tput sgr0)"
-    ${pkgs.ipfs}/bin/ipfs add $@ |\
-    ${pkgs.gnugrep}/bin/grep added |\
-    ${pkgs.coreutils}/bin/cut -d' ' -f 2 |\
-    ${pkgs.findutils}/bin/xargs -I{} echo "https://gateway.ipfs.io/ipfs/{}" |\
-    ${pkgs.xclip}/bin/xclip -i -r -f -selection primary |\
-    ${pkgs.xclip}/bin/xclip -i -r -f -selection secondary |\
-    ${pkgs.xclip}/bin/xclip -i -r -f -selection clipboard |\
-    ${pkgs.findutils}/bin/xargs echo $bold"Copied:"$sgr0
+    if [ -z "$DISPLAY" ]; then
+      ${pkgs.ipfs}/bin/ipfs add $@ |\
+      ${pkgs.gnugrep}/bin/grep added |\
+      ${pkgs.coreutils}/bin/cut -d' ' -f 2 |\
+      ${pkgs.findutils}/bin/xargs -I{} echo "https://gateway.ipfs.io/ipfs/{}" |\
+      ${pkgs.findutils}/bin/xargs echo $bold"Copy:"$sgr0
+    else
+      ${pkgs.ipfs}/bin/ipfs add $@ |\
+      ${pkgs.gnugrep}/bin/grep added |\
+      ${pkgs.coreutils}/bin/cut -d' ' -f 2 |\
+      ${pkgs.findutils}/bin/xargs -I{} echo "https://gateway.ipfs.io/ipfs/{}" |\
+      ${pkgs.xclip}/bin/xclip -i -r -f -selection primary |\
+      ${pkgs.xclip}/bin/xclip -i -r -f -selection secondary |\
+      ${pkgs.xclip}/bin/xclip -i -r -f -selection clipboard |\
+      ${pkgs.findutils}/bin/xargs echo $bold"Copied:"$sgr0
+    fi
   '';
 in {
   imports = [
@@ -36,6 +44,7 @@ in {
       ./browsers/firefox
       ./editors/emacs
       ./editors/vim
+      ./media/gpodder
       ./utilities/git
       ./utilities/htop
       ./services/gnupg
@@ -59,6 +68,7 @@ in {
     programs.taskwarrior.enable = true;
     programs.neomutt.enable = true;
     programs.obs-studio.enable = true;
+    programs.gpodder.enable = true;
     programs.mpv.enable = true;
     programs.feh.enable = true;
     #programs.git.enable = true;
