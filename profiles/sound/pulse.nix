@@ -115,7 +115,7 @@ in {
         ''))}
       '' ))}
 
-      set-default-sink 0
+      set-default-sink combined
     '';
   };
 
