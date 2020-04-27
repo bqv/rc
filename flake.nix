@@ -100,6 +100,9 @@
         inherit (pkgs) matrix-appservice-irc matrix-construct mx-puppet-discord;
         inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
         inherit (pkgs) pure sddm-chili yacy;
+
+        inherit (pkgs) nheko;
+        inherit (pkgs.weechatScripts) weechat-matrix;
       });
 
       nixosModules = let

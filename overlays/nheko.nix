@@ -29,8 +29,8 @@ final: prev: let
     src = final.fetchFromGitHub {
       owner = "nheko-reborn";
       repo = "nheko";
-      rev = "d94ac86816f9f325cba11f71344a3ca99591130d";
-      hash = "sha256-PPYK/0BP/zoSwuyo4OAkYdZL8gNXHwdmPBJs7lTnr2M=";
+      rev = "34a50aaf41c0ee9de7f212c0317c1db358e635b2";
+      hash = "sha256-8/kJhAkF/l0ZhqfZIkouph+VU4yR4tx6ZT+mg48BD6o=";
     };
     buildInputs = super.buildInputs ++ [
       final.qt5.qtgraphicaleffects
