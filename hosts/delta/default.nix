@@ -5,6 +5,7 @@
     ../../profiles/meta/fatal-warnings.nix
     ../../profiles/misc/disable-mitigations.nix
     ../../profiles/misc/udev-nosettle.nix
+    ../../profiles/misc/adblocking.nix
     ../../profiles/misc/guix.nix
     ../../profiles/security/sudo.nix
     ../../profiles/networking/ipfs

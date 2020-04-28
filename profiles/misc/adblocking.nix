@@ -8,10 +8,10 @@ let
     name = "hosts";
 
     src = fetchFromGitHub {
-      owner = "StevenBlack";
-      repo = "hosts";
-      rev = "d072586d5e34ee11beef17a58fcca2ad4e319953";
-      sha256 = "0yq71w7ycm35fyjxhax22cmyn3b6lakw0n1d8rkwzkraa7f6w4pp";
+      owner = "x0uid";
+      repo = "SpotifyAdBlock";
+      rev = "1776d1a2b8ff0b73229196f37e3164b9049cc090";
+      hash = "sha256-6iWUSoxvcyM/+BLCIab5ixH2UIyzGo8CtLsFElvtU44=";
     };
 
     nativeBuildInputs = [ gnugrep ];
@@ -36,7 +36,6 @@ let
     0.0.0.0 '' [
       "# auto-generated: must be first"
 
-      # starts here
     ];
 
 in { networking.extraHosts = readFile "${hosts}/etc/hosts"; }
