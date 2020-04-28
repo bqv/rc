@@ -45,6 +45,7 @@ in {
       ./editors/emacs
       ./editors/vim
       ./media/gpodder
+      ./media/spotify
       ./utilities/git
       ./utilities/htop
       ./services/gnupg
@@ -76,6 +77,7 @@ in {
 
     services.lorri.enable = true;
     services.gpg-agent.enable = true;
+    services.spotifyd.enable = true;
     services.mpd.enable = true;
     services.taskwarrior-sync.enable = true;
     #services.dunst.enable = true;
