@@ -17,7 +17,7 @@ echo "Hash: ${HASH}" >&2
 DATE=$(curl -Ls api.github.com/repos/$REPO/commits/$REV | jq '.commit.committer.date|fromdate|strftime("%Y.%m.%d")' -r)
 echo "On: ${DATE}" >&2
 
-sed -i '/^    rev = /s%".*"%"'$REV'"%' default.nix
-sed -i '/^    hash = /s%".*"%"'$HASH'"%' default.nix
+sed -i '/^  rev = /s%".*"%"'$REV'"%' default.nix
+sed -i '/^  hash = /s%".*"%"'$HASH'"%' default.nix
 
 echo 'git commit -am "construct: bump to '$REV' ('$DATE')"'
