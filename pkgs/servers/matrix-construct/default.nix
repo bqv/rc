@@ -16,8 +16,8 @@
 
 let
   pname = "matrix-construct";
-  rev = "434916bb7ee236e1ee216e06a14eeb4f9710f661";
-  hash = "sha256-WWLH/9f9vNy02HhAaonUaQkqQWeU0a96ywLJ4l+oX5E=";
+  rev = "175c1d817d2aa155ec7faeaee8462d632ffbdeb9";
+  hash = "sha256-QSP+ALwrpPuuEkOznaTtl6uSU17jMnCN+mSQ5M59Itw=";
   version = lib.substring 0 9 rev;
 
   source = let
