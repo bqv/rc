@@ -64,7 +64,7 @@ in pkgs.mkShell {
       };
       patches = [ worktreePatch ];
     });
-  in [ git git-crypt git-secrets nixFlakes flake-shell
+  in [ git git-crypt git-secrets nixFlakes nixfmt flake-shell
        activate dry-boot tag-current boot dry-activate dry-build ];
 
   shellHook = ''
