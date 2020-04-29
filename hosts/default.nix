@@ -59,9 +59,7 @@ let
       in flakeModules ++ [ core global local home-manager
                            inputs.dwarffs.nixosModules.dwarffs ];
     };
-
-  hosts = recImport {
-    dir = ./.;
-    _import = config;
-  };
-in hosts
+in recImport {
+  dir = ./.;
+  _import = config;
+}
