@@ -1,9 +1,9 @@
 { modulesPath, ... }: {
   imports = [
     # passwd is nixos by default
-    ../users/nixos.nix
+    ../../users/nixos.nix
     # passwd is empty by default
-    ../users/root.nix
+    ../../users/root.nix
     "${modulesPath}/installer/cd-dvd/iso-image.nix"
   ];
 

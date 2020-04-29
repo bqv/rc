@@ -1,5 +1,5 @@
 {
-  imports = [ ../../profiles/develop ];
+  imports = [ ../profiles/develop ];
 
   users.users.nixos = {
     uid = 1000;
