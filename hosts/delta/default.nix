@@ -1,4 +1,4 @@
-{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
+{ nixpkgs, home, nur, self, config, lib, pkgs, system, hosts, ... }:
 
 {
   imports = [
@@ -114,7 +114,7 @@
 
   nix.buildMachines = lib.optional false [
     {
-      hostName = "10.0.0.1";
+      hostName = hosts.wireguard.zeta;
       sshUser = "nix-ssh";
       sshKey = "/root/.ssh/nix_remote";
       #system = "x86_64-linux";

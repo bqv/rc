@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, hosts, ... }:
 
 let
   wanInterface = "eno1";
@@ -23,7 +23,7 @@ let
 in {
   networking.interfaces.${wanInterface} = {
     ipv4.addresses = [
-      { address = "163.172.7.233"; prefixLength = 24; }
+      { address = hosts.ipv4.zeta; prefixLength = 24; }
     ];
     ipv6.addresses = let
       morph = block: { address = block.addr; prefixLength = block.prefix; };
@@ -118,7 +118,7 @@ in {
       proto = proto: "-p ${proto} -m ${proto}";
       icmp-echo = "--icmp-type 8";
       from-failover = "-d 195.154.56.65";
-      to-delta = "--to-destination 10.0.0.3";
+      to-delta = "--to-destination ${hosts.wireguard.delta}";
       lanInterface = "wg0";
     in ''
       # Enable packet forwarding to/from the target for established/related connections
@@ -126,7 +126,7 @@ in {
      #iptables -A FORWARD -i ${lanInterface} -o ${wanInterface} -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
       # Enable masquerade on the target
-     #${nat} -A nixos-nat-post -o ${lanInterface} -s 10.0.0.3 -j MASQUERADE
+     #${nat} -A nixos-nat-post -o ${lanInterface} -s ${hosts.wireguard.delta} -j MASQUERADE
 
       # Forward from source to target
      #${nat} -A nixos-nat-pre  -i ${wanInterface} ${proto "tcp" } ${from-failover} -j DNAT ${to-delta}

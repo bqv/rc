@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, hosts, ... }:
 
 {
   imports = [
@@ -146,7 +146,7 @@
       host  ${mastodon.name} ${mastodon.user} 10.6.0.0/24 trust
       host  matrix-synapse matrix-synapse 10.7.0.0/24 trust
       host  mx-puppet-discord mx-puppet-discord 10.7.0.0/24 trust
-      host  lemmy lemmy 10.0.0.3/32 trust
+      host  lemmy lemmy ${hosts.wireguard.delta}/32 trust
      '');
   services.postgresql.ensureUsers = [
     {
@@ -162,7 +162,7 @@
   services.openssh.permitRootLogin = "without-password";
   services.openssh.listenAddresses = [
     { addr = "127.0.0.1"; port = 22; }
-    { addr = "10.0.0.1"; port = 22; }
+    { addr = hosts.wireguard.zeta; port = 22; }
     { addr = "10.1.0.1"; port = 22; }
   ];
   services.openssh.passwordAuthentication = false;

@@ -37,7 +37,7 @@
     let
       inherit (builtins) listToAttrs baseNameOf attrNames attrValues readDir trace concatStringsSep;
       inherit (master.lib) fold recursiveUpdate setAttrByPath mapAttrs genAttrs filterAttrs;
-      inherit (master.lib) removeSuffix removePrefix splitString const;
+      inherit (master.lib) removeSuffix removePrefix splitString const flatten;
       forAllSystems = genAttrs [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
       diffTrace = left: right: string: value: if left != right then trace string value else value;
 
@@ -107,6 +107,7 @@
           napalm = pkgs.callPackage inputs.napalm;
 
           domains = import ./secrets/domains.nix;
+          hosts = import ./secrets/hosts.nix;
           fetchPullRequest = fetchPullRequestForSystem system;
         };
       };
@@ -152,6 +153,7 @@
 
       secrets = concatStringsSep "\n" ([]
         ++ (attrValues (import ./secrets/domains.nix))
+        ++ (flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
       );
     };
 }
