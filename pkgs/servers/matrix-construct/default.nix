@@ -16,8 +16,8 @@
 
 let
   pname = "matrix-construct";
-  rev = "5e9701b6c9f9f71a73c78c7467d6a30fe4d9503a";
-  hash = "sha256-z4Waka9U87ZyUKZU7ktzqa4q+8GMzrEjAXl4fHlrTTQ=";
+  rev = "a8870908a5735f5f5349bc24d2feaf9e902af7ed";
+  hash = "sha256-rqU5KdIgoPXixWXmr4GBnjR7ljPFG8zbE5zrlv9pwsg=";
   version = lib.substring 0 9 rev;
 
   source = let
@@ -38,10 +38,10 @@ let
   in buildFarmFrom "construct" src;
 
   rocksdb-pinned = rocksdb.overrideAttrs (super: rec {
-    version = "5.17.2";
+    version = "5.16.6";
     src = fetchFromGitHub {
       owner = "facebook"; repo = "rocksdb"; rev = "v${version}";
-      sha256 = "01ivp78y65irb5m7b733yd1bzcdp1i92khpaaa2040yy7hdy48f3";
+      sha256 = "0yy09myzbi99qdmh2c2mxlddr12pwxzh66ym1y6raaqglrsmax66";
     };
     NIX_CFLAGS_COMPILE = "${super.NIX_CFLAGS_COMPILE} -Wno-error=redundant-move";
   });
@@ -622,7 +622,8 @@ in stdenv.mkDerivation rec {
       "${ircdUnitCXX "fs_iou.cc"           "fs_iou.lo"           "-I${boost.dev}/include -include ircd/asio.h"}"
       "${ircdUnitCXX "mods.cc"             "mods.lo"             "-I${boost.dev}/include -include ircd/asio.h"}"
       "${ircdUnitCXX "mods_ldso.cc"     "mods_ldso.lo"     ""}"
-      "${ircdUnitCXX "db_fixes.cc"        "db_fixes.lo"        "-I${rocksdb-pinned.out} -I${rocksdb-pinned.out}/include"}"
+      "${ircdUnitCXX "db_write_thread.cc"        "db_write_thread.lo"        "-I${rocksdb-pinned.out} -I${rocksdb-pinned.out}/include"}"
+      "${ircdUnitCXX "db_crc32.cc"        "db_crc32.lo"        "-I${rocksdb-pinned.out} -I${rocksdb-pinned.out}/include"}"
       "${ircdUnitCXX "db_port.cc"       "db_port.lo"       ""}"
       "${ircdUnitCXX "db_env.cc"        "db_env.lo"        ""}"
       "${ircdUnitCXX "db.cc"            "db.lo"            ""}"
