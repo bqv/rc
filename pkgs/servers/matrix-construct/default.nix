@@ -16,8 +16,8 @@
 
 let
   pname = "matrix-construct";
-  rev = "175c1d817d2aa155ec7faeaee8462d632ffbdeb9";
-  hash = "sha256-QSP+ALwrpPuuEkOznaTtl6uSU17jMnCN+mSQ5M59Itw=";
+  rev = "50a67b1ae36d284c507ed9171eca0619bbf338ce";
+  hash = "sha256-6ztRdEy7gkqCw/wRRdNTTlsriJCvwzUPh5nkbmsnsvo=";
   version = lib.substring 0 9 rev;
 
   source = let
@@ -37,17 +37,26 @@ let
     buildFarmFrom = basename: root: linkFarm (lib.strings.sanitizeDerivationName basename) (buildFarm root);
   in buildFarmFrom "construct" src;
 
-  rocksdb-pinned = rocksdb.overrideAttrs (super: rec {
-    version = "5.16.6";
+  rocksdb-but-pinned = rocksdb.overrideAttrs (super: rec {
+    version = "5.17.2";
     src = fetchFromGitHub {
       owner = "facebook"; repo = "rocksdb"; rev = "v${version}";
-      sha256 = "0yy09myzbi99qdmh2c2mxlddr12pwxzh66ym1y6raaqglrsmax66";
+      sha256 = "01ivp78y65irb5m7b733yd1bzcdp1i92khpaaa2040yy7hdy48f3";
     };
     NIX_CFLAGS_COMPILE = "${super.NIX_CFLAGS_COMPILE} -Wno-error=redundant-move";
   });
+
+  buildArgs = buildInputs: nativeBuildInputs: {
+    inherit buildInputs nativeBuildInputs;
+    preferLocalBuild = true;
+    allowSubstitutes = false;
+  };
 in stdenv.mkDerivation rec {
   inherit pname version;
   src = source;
+
+  # Fragile override
+  rocksdb = rocksdb-but-pinned;
 
   buildPhase = ''
   '';
@@ -59,7 +68,7 @@ in stdenv.mkDerivation rec {
     libtool makeWrapper
   ] ++ lib.optional useClang llvmPackages_latest.llvm;
   buildInputs = [
-    libsodium openssl file boost gmp zlib jemalloc rocksdb-pinned
+    libsodium openssl file boost gmp zlib jemalloc rocksdb
   ] ++ lib.optional withGraphicsMagick graphicsmagick;
 
   includes = stdenv.mkDerivation rec {
@@ -510,51 +519,51 @@ in stdenv.mkDerivation rec {
   };
 
   installPhase = let
-    ircdUnitCXX = ccFile: loFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName loFile) { inherit buildInputs nativeBuildInputs; } ''
+    ircdUnitCXX = ccFile: loFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName loFile) (buildArgs buildInputs nativeBuildInputs) ''
       libtool --tag=CXX --mode=compile $CXX -std=gnu++17 -DHAVE_CONFIG_H -DIRCD_UNIT                    ${extraArgs} \
         -I${includes} -include ircd/ircd.pic.h -DPCH -DNDEBUG ${WARNOPTS} -ftls-model=initial-exec -pthread ${CXXOPTS} \
         -c -o $out/${loFile} ${source}/ircd/${ccFile}
     ''}/${loFile}";
-    ircdUnitCC  = asFile: loFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName loFile) { inherit buildInputs nativeBuildInputs; } ''
+    ircdUnitCC  = asFile: loFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName loFile) (buildArgs buildInputs nativeBuildInputs) ''
       libtool --tag=CC  --mode=compile $CC               -DHAVE_CONFIG_H -DIRCD_UNIT                    ${extraArgs} \
         -I${includes}                          -DPCH -DNDEBUG ${WARNOPTS}                                              \
         -c -o $out/${loFile} ${source}/ircd/${asFile}
     ''}/${loFile}";
-    ircdLD = loFiles: laFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName laFile) { inherit buildInputs nativeBuildInputs; } ''
+    ircdLD = loFiles: laFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName laFile) (buildArgs buildInputs nativeBuildInputs) ''
       libtool --tag=CXX --mode=link g++ -std=gnu++17 -ftls-model=initial-exec -pthread ${CXXOPTS} -version-info 3:2:0 \
         -Wl,--no-undefined-version -Wl,--weak-unresolved-symbols -Wl,--unresolved-symbols=ignore-in-shared-libs -Wl,-z,nodelete -Wl,-z,nodlopen -Wl,-z,lazy -L${boost.out}/lib \
         -Wl,-fuse-ld=gold -Wl,--gdb-index -Wl,--warn-common -Wl,--warn-execstack -Wl,--detect-odr-violations -Wl,--rosegment -Wl,-z,noexecstack -Wl,-z,combreloc -Wl,-z,text-unlikely-segment \
         -o $out/${laFile} ${lib.concatStringsSep " " loFiles} ${extraArgs} \
         -lrocksdb -lboost_coroutine -lboost_context -lboost_thread -lboost_filesystem -lboost_chrono -lboost_system -lssl -lcrypto -L${libsodium.out}/lib -lsodium -lmagic -lz -lpthread -latomic -lrocksdb -ldl 
     ''}/${laFile}";
-    matrixUnitCXX = ccFile: loFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName loFile) { inherit buildInputs nativeBuildInputs; } ''
+    matrixUnitCXX = ccFile: loFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName loFile) (buildArgs buildInputs nativeBuildInputs) ''
       libtool --tag=CXX --mode=compile $CXX -std=gnu++17 -DHAVE_CONFIG_H -DIRCD_UNIT -DIRCD_MATRIX_UNIT ${extraArgs} \
         -I${includes} -include ircd/matrix.pic.h -include ircd/mods/mapi.h -DPCH -DNDEBUG ${WARNOPTS} -ftls-model=local-dynamic -pthread ${CXXOPTS} \
         -c -o $out/${loFile} ${source}/matrix/${ccFile}
     ''}/${loFile}";
-    matrixLD = loFiles: laFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName laFile) { inherit buildInputs nativeBuildInputs; } ''
+    matrixLD = loFiles: laFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName laFile) (buildArgs buildInputs nativeBuildInputs) ''
       libtool --tag=CXX --mode=link g++ -std=gnu++17 -pthread -ftls-model=local-dynamic ${CXXOPTS} -version-info 0:1:0 \
         -Wl,--no-undefined-version -Wl,--allow-shlib-undefined -Wl,--unresolved-symbols=ignore-in-shared-libs -Wl,-z,lazy -L${dirOf ircd}/ \
         -Wl,-fuse-ld=gold -Wl,--gdb-index -Wl,--warn-common -Wl,--warn-execstack -Wl,--detect-odr-violations -Wl,--rosegment -Wl,-z,noexecstack -Wl,-z,combreloc -Wl,-z,text-unlikely-segment \
         -o $out/${laFile} ${lib.concatStringsSep " " loFiles} ${extraArgs} -lrocksdb -ldl ${if useJemalloc then "-ljemalloc" else ""}
     ''}/${laFile}";
-    moduleUnitCXX = subdir: ccFile: loFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName loFile) { inherit buildInputs nativeBuildInputs; } ''
+    moduleUnitCXX = subdir: ccFile: loFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName loFile) (buildArgs buildInputs nativeBuildInputs) ''
       libtool --tag=CXX --mode=compile $CXX -std=gnu++17 -DHAVE_CONFIG_H -DIRCD_UNIT -DIRCD_UNIT_MODULE ${extraArgs} \
         -I${includes} -include ${includes}/ircd/matrix.pic.h -include ${includes}/ircd/mods/mapi.h -DPCH -DNDEBUG ${WARNOPTS} -ftls-model=global-dynamic -pthread ${CXXOPTS} \
         -I ${source}/modules/${lib.concatStringsSep "/" subdir} -c -o $out/${loFile} ${source}/modules/${lib.concatStringsSep "/" subdir}/${ccFile}
     ''}/${loFile}";
-    moduleLD = loFiles: laFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName laFile) { inherit buildInputs nativeBuildInputs; } ''
+    moduleLD = loFiles: laFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName laFile) (buildArgs buildInputs nativeBuildInputs) ''
       libtool --tag=CXX --mode=link    $CXX -std=gnu++17 -ftls-model=global-dynamic -pthread ${CXXOPTS} -module -avoid-version \
         -Wl,--allow-shlib-undefined -Wl,-z,lazy -L${dirOf ircd}/ -L${dirOf matrix}/ \
         -Wl,-fuse-ld=gold -Wl,--gdb-index -Wl,--warn-common -Wl,--warn-execstack -Wl,--detect-odr-violations -Wl,--rosegment -Wl,-z,noexecstack -Wl,-z,combreloc -Wl,-z,text-unlikely-segment \
         -o $out/${laFile} ${lib.concatStringsSep " " loFiles} -lrocksdb -ldl ${extraArgs}
     ''}/${laFile}";
-    constructUnitCXX = ccFile: obFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName obFile) { inherit buildInputs nativeBuildInputs; } ''
+    constructUnitCXX = ccFile: obFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName obFile) (buildArgs buildInputs nativeBuildInputs) ''
       mkdir -p $out
       $CXX -std=gnu++17 -DHAVE_CONFIG_H -I${includes} -I${boost.dev}/include -DPCH -DNDEBUG ${WARNOPTS} -ftls-model=initial-exec -pthread ${CXXOPTS} \
         -c -o $out/${obFile} ${source}/construct/${ccFile} ${extraArgs}
     ''}/${obFile}";
-    constructLD = obFiles: exFile: "${runCommandCC (lib.strings.sanitizeDerivationName exFile) { inherit buildInputs nativeBuildInputs; } ''
+    constructLD = obFiles: exFile: "${runCommandCC (lib.strings.sanitizeDerivationName exFile) (buildArgs buildInputs nativeBuildInputs) ''
       libtool --tag=CXX --mode=link g++ -std=gnu++17 -ftls-model=initial-exec -pthread ${CXXOPTS} -dlopen self \
         -Wl,--warn-execstack -Wl,--warn-common -Wl,--detect-odr-violations -Wl,--unresolved-symbols=report-all -Wl,--allow-shlib-undefined -Wl,--dynamic-list-data -Wl,--dynamic-list-cpp-new -Wl,--dynamic-list-cpp-typeinfo -Wl,--rosegment -Wl,-z,noexecstack \
         -L${dirOf ircd}/ ${lib.concatMapStringsSep " " (mod: "-L${dirOf mod}/") modules} -L${boost.out}/lib \
@@ -622,8 +631,7 @@ in stdenv.mkDerivation rec {
       "${ircdUnitCXX "fs_iou.cc"           "fs_iou.lo"           "-I${boost.dev}/include -include ircd/asio.h"}"
       "${ircdUnitCXX "mods.cc"             "mods.lo"             "-I${boost.dev}/include -include ircd/asio.h"}"
       "${ircdUnitCXX "mods_ldso.cc"     "mods_ldso.lo"     ""}"
-      "${ircdUnitCXX "db_write_thread.cc" "db_write_thread.lo" "-I${rocksdb-pinned.out}/include"}"
-      "${ircdUnitCXX "db_crc32.cc"        "db_crc32.lo"        "-I${rocksdb-pinned.out}/include"}"
+      "${ircdUnitCXX "db_fixes.cc"        "db_fixes.lo"        "-I${rocksdb.src} -I${rocksdb.out}/include"}"
       "${ircdUnitCXX "db_port.cc"       "db_port.lo"       ""}"
       "${ircdUnitCXX "db_env.cc"        "db_env.lo"        ""}"
       "${ircdUnitCXX "db.cc"            "db.lo"            ""}"
@@ -638,7 +646,6 @@ in stdenv.mkDerivation rec {
       "${ircdUnitCXX "server.cc"           "server.lo"           "-I${boost.dev}/include -include ircd/asio.h"}"
       "${ircdUnitCXX "client.cc"           "client.lo"           "-I${boost.dev}/include -include ircd/asio.h"}"
       "${ircdUnitCXX "resource.cc"      "resource.lo"      ""}"
-       # js.cc would go here
       "${ircdUnitCXX "ircd.cc"          "ircd.lo"          "${versionDefs}"}"
     ] "libircd.la" "-rpath $out/lib";
 
