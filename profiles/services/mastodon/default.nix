@@ -321,6 +321,16 @@ in {
           Do automatic database migrations.
         '';
       };
+
+      package = lib.mkOption {
+        type = lib.types.package;
+        default = with pkgs.pr 78810
+          "sha256-vKBsXvWE/TQh6CSADH+3j7qUAPz+PTKclIC86ksrX6Q="; mastodon;
+        defaultText = "pkgs.mastodon";
+        description = ''
+          Package to use.
+        '';
+      };
     };
   };
 
@@ -366,7 +376,7 @@ in {
         Type = "oneshot";
         User = cfg.user;
         Group = cfg.group;
-        WorkingDirectory = pkgs.mastodon;
+        WorkingDirectory = cfg.package;
         LogsDirectory = "mastodon";
         StateDirectory = "mastodon";
       };
@@ -387,7 +397,7 @@ in {
           rake db:migrate
         fi
       '';
-      path = [ pkgs.mastodon pkgs.postgresql ];
+      path = [ cfg.package pkgs.postgresql ];
       environment = env;
       serviceConfig = {
         Type = "oneshot";
@@ -397,7 +407,7 @@ in {
         PrivateTmp = true;
         LogsDirectory = "mastodon";
         StateDirectory = "mastodon";
-        WorkingDirectory = pkgs.mastodon;
+        WorkingDirectory = cfg.package;
       };
       after = [ "mastodon-init-dirs.service" "network.target" ] ++ (if databaseActuallyCreateLocally then [ "postgresql.service" ] else []);
       wantedBy = [ "multi-user.target" ];
@@ -418,7 +428,7 @@ in {
         RestartSec = 20;
         User = cfg.user;
         Group = cfg.group;
-        WorkingDirectory = pkgs.mastodon;
+        WorkingDirectory = cfg.package;
         EnvironmentFile = "/var/lib/mastodon/.secrets_env";
         PrivateTmp = true;
         LogsDirectory = "mastodon";
@@ -437,12 +447,12 @@ in {
         PORT = toString(cfg.webPort);
       };
       serviceConfig = {
-        ExecStart = "${pkgs.mastodon}/bin/puma -C config/puma.rb";
+        ExecStart = "${cfg.package}/bin/puma -C config/puma.rb";
         Restart = "always";
         RestartSec = 20;
         User = cfg.user;
         Group = cfg.group;
-        WorkingDirectory = pkgs.mastodon;
+        WorkingDirectory = cfg.package;
         EnvironmentFile = "/var/lib/mastodon/.secrets_env";
         PrivateTmp = true;
         LogsDirectory = "mastodon";
@@ -462,12 +472,12 @@ in {
         PORT = toString(cfg.sidekiqPort);
       };
       serviceConfig = {
-        ExecStart = "${pkgs.mastodon}/bin/sidekiq -c 25 -r ${pkgs.mastodon}";
+        ExecStart = "${cfg.package}/bin/sidekiq -c 25 -r ${cfg.package}";
         Restart = "always";
         RestartSec = 20;
         User = cfg.user;
         Group = cfg.group;
-        WorkingDirectory = pkgs.mastodon;
+        WorkingDirectory = cfg.package;
         EnvironmentFile = "/var/lib/mastodon/.secrets_env";
         PrivateTmp = true;
         LogsDirectory = "mastodon";
@@ -480,7 +490,7 @@ in {
       enable = true;
       recommendedProxySettings = true; # required for redirections to work
       virtualHosts."${cfg.localDomain}" = {
-        root = "${pkgs.mastodon}/public/";
+        root = "${cfg.package}/public/";
         forceSSL = true; # mastodon only supports https
         enableACME = true;
 
@@ -526,7 +536,7 @@ in {
           inherit (cfg) group;
         };
       })
-      (lib.attrsets.setAttrByPath [ cfg.user "packages" ] [ pkgs.mastodon mastodonEnv ])
+      (lib.attrsets.setAttrByPath [ cfg.user "packages" ] [ cfg.package mastodonEnv ])
     ];
 
     users.groups.mastodon = lib.mkIf (cfg.group == "mastodon") { };
