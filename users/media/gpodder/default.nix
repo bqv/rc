@@ -11,6 +11,10 @@ in {
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
+      (pkgs.hiPrio (pkgs.writeShellScriptBin "gpodder" ''
+        export GPODDER_HOME=${config.home.homeDirectory}/var/pod
+        exec ${gpodder}/bin/gpodder
+      ''))
       gpodder mutagen normalize
     ];
 
