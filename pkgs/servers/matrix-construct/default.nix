@@ -16,8 +16,8 @@
 
 let
   pname = "matrix-construct";
-  rev = "50a67b1ae36d284c507ed9171eca0619bbf338ce";
-  hash = "sha256-6ztRdEy7gkqCw/wRRdNTTlsriJCvwzUPh5nkbmsnsvo=";
+  rev = "7d949427e31c4643f768b25a448c4b257b99a6b7";
+  hash = "sha256-KnTjUdK9H2mJsE6ONCrb33xiqJ5MlmYh+aFKaB7a0H0=";
   version = lib.substring 0 9 rev;
 
   source = let
@@ -631,8 +631,8 @@ in stdenv.mkDerivation rec {
       "${ircdUnitCXX "fs_iou.cc"           "fs_iou.lo"           "-I${boost.dev}/include -include ircd/asio.h"}"
       "${ircdUnitCXX "mods.cc"             "mods.lo"             "-I${boost.dev}/include -include ircd/asio.h"}"
       "${ircdUnitCXX "mods_ldso.cc"     "mods_ldso.lo"     ""}"
-      "${ircdUnitCXX "db_fixes.cc"        "db_fixes.lo"        "-I${rocksdb.src} -I${rocksdb.out}/include"}"
       "${ircdUnitCXX "db_port.cc"       "db_port.lo"       ""}"
+      "${ircdUnitCXX "db_fixes.cc"        "db_fixes.lo"        "-I${rocksdb.src} -I${rocksdb.out}/include"}"
       "${ircdUnitCXX "db_env.cc"        "db_env.lo"        ""}"
       "${ircdUnitCXX "db.cc"            "db.lo"            ""}"
       "${ircdUnitCXX "net.cc"              "net.lo"              "-I${boost.dev}/include -include ircd/asio.h"}"
@@ -860,77 +860,83 @@ in stdenv.mkDerivation rec {
         "${moduleUnitCXX [] "well_known.cc"                             "well_known.lo"                             ""}"
       ] "well_known.la" "-rpath $out/lib/modules") 
       (moduleLD [
+        "${moduleUnitCXX [ "admin" ] "users.cc"                         "users.lo"                              ""}"
+      ] "admin_users.la" "-rpath $out/lib/modules") 
+      (moduleLD [
+        "${moduleUnitCXX [ "admin" ] "deactivate.cc"                    "deactivate.lo"                         ""}"
+      ] "admin_deactivate.la" "-rpath $out/lib/modules") 
+      (moduleLD [
         "${moduleUnitCXX [ "client" ] "versions.cc"                        "versions.lo"                        ""}"
-      ] "client/client_versions.la" "-rpath $out/lib/modules") 
+      ] "client_versions.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "events.cc"                          "events.lo"                          ""}"
-      ] "client/client_events.la" "-rpath $out/lib/modules") 
+      ] "client_events.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "login.cc"                           "login.lo"                           ""}"
-      ] "client/client_login.la" "-rpath $out/lib/modules") 
+      ] "client_login.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "logout.cc"                          "logout.lo"                          ""}"
-      ] "client/client_logout.la" "-rpath $out/lib/modules") 
+      ] "client_logout.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "sync.cc"                            "sync.lo"                            ""}"
-      ] "client/client_sync.la" "-rpath $out/lib/modules") 
+      ] "client_sync.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "presence.cc"                        "presence.lo"                        ""}"
-      ] "client/client_presence.la" "-rpath $out/lib/modules") 
+      ] "client_presence.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "profile.cc"                         "profile.lo"                         ""}"
-      ] "client/client_profile.la" "-rpath $out/lib/modules") 
+      ] "client_profile.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "devices.cc"                         "devices.lo"                         ""}"
-      ] "client/client_devices.la" "-rpath $out/lib/modules") 
+      ] "client_devices.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "pushers.cc"                         "pushers.lo"                         ""}"
-      ] "client/client_pushers.la" "-rpath $out/lib/modules") 
+      ] "client_pushers.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "publicrooms.cc"                     "publicrooms.lo"                     ""}"
-      ] "client/client_publicrooms.la" "-rpath $out/lib/modules") 
+      ] "client_publicrooms.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "createroom.cc"                      "createroom.lo"                      ""}"
-      ] "client/client_createroom.la" "-rpath $out/lib/modules") 
+      ] "client_createroom.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "pushrules.cc"                       "pushrules.lo"                       ""}"
-      ] "client/client_pushrules.la" "-rpath $out/lib/modules") 
+      ] "client_pushrules.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "join.cc"                            "join.lo"                            ""}"
-      ] "client/client_join.la" "-rpath $out/lib/modules") 
+      ] "client_join.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "publicised_groups.cc"               "publicised_groups.lo"               ""}"
-      ] "client/client_publicised_groups.la" "-rpath $out/lib/modules") 
+      ] "client_publicised_groups.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "initialsync.cc"                     "initialsync.lo"                     ""}"
-      ] "client/client_initialsync.la" "-rpath $out/lib/modules") 
+      ] "client_initialsync.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "search.cc"                          "search.lo"                          ""}"
-      ] "client/client_search.la" "-rpath $out/lib/modules") 
+      ] "client_search.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "joined_groups.cc"                   "joined_groups.lo"                   ""}"
-      ] "client/client_joined_groups.la" "-rpath $out/lib/modules") 
+      ] "client_joined_groups.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "register_available.cc"              "register_available.lo"              ""}"
-      ] "client/client_register_available.la" "-rpath $out/lib/modules") 
+      ] "client_register_available.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "capabilities.cc"                    "capabilities.lo"                    ""}"
-      ] "client/client_capabilities.la" "-rpath $out/lib/modules") 
+      ] "client_capabilities.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "send_to_device.cc"                  "send_to_device.lo"                  ""}"
-      ] "client/client_send_to_device.la" "-rpath $out/lib/modules") 
+      ] "client_send_to_device.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "delete_devices.cc"                  "delete_devices.lo"                  ""}"
-      ] "client/client_delete_devices.la" "-rpath $out/lib/modules") 
+      ] "client_delete_devices.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "notifications.cc"                   "notifications.lo"                   ""}"
-      ] "client/client_notifications.la" "-rpath $out/lib/modules") 
+      ] "client_notifications.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "register_email.cc"                  "register_email.lo"                  ""}"
-      ] "client/client_register_email.la" "-rpath $out/lib/modules") 
+      ] "client_register_email.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "register.cc"                        "register.lo"                        ""}"
-      ] "client/client_register.la" "-rpath $out/lib/modules") 
+      ] "client_register.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "rooms" ] "messages.cc"                  "messages.lo"                   ""}"
         "${moduleUnitCXX [ "client" "rooms" ] "state.cc"                     "state.lo"                      ""}"
@@ -954,189 +960,189 @@ in stdenv.mkDerivation rec {
         "${moduleUnitCXX [ "client" "rooms" ] "relations.cc"                 "relations.lo"                  ""}"
         "${moduleUnitCXX [ "client" "rooms" ] "upgrade.cc"                   "upgrade.lo"                    ""}"
         "${moduleUnitCXX [ "client" "rooms" ] "rooms.cc"                     "rooms.lo"                      ""}"
-      ] "client/client_rooms.la" "-rpath $out/lib/modules") 
+      ] "client_rooms.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "user" ] "openid.cc"                     "openid.lo"                     ""}"
         "${moduleUnitCXX [ "client" "user" ] "filter.cc"                     "filter.lo"                     ""}"
         "${moduleUnitCXX [ "client" "user" ] "account_data.cc"               "account_data.lo"               ""}"
         "${moduleUnitCXX [ "client" "user" ] "rooms.cc"                      "rooms.lo"                      ""}"
         "${moduleUnitCXX [ "client" "user" ] "user.cc"                       "user.lo"                       ""}"
-      ] "client/client_user.la" "-rpath $out/lib/modules") 
+      ] "client_user.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "directory" ] "room.cc"                  "room.lo"                       ""}"
-      ] "client/client_directory_room.la" "-rpath $out/lib/modules")                                                          
+      ] "client_directory_room.la" "-rpath $out/lib/modules")                                                          
       (moduleLD [                                                                                       
         "${moduleUnitCXX [ "client" "directory" ] "user.cc"                  "user.lo"                       ""}"
-      ] "client/client_directory_user.la" "-rpath $out/lib/modules")                                                          
+      ] "client_directory_user.la" "-rpath $out/lib/modules")                                                          
       (moduleLD [                                                                                       
         "${moduleUnitCXX [ "client" "directory" "list" ] "room.cc"           "room.lo"                       ""}"
-      ] "client/client_directory_list_room.la" "-rpath $out/lib/modules")                                                     
+      ] "client_directory_list_room.la" "-rpath $out/lib/modules")                                                     
       (moduleLD [                                                                                       
         "${moduleUnitCXX [ "client" "directory" "list" ] "appservice.cc"     "appservice.lo"                 ""}"
-      ] "client/client_directory_list_appservice.la" "-rpath $out/lib/modules")                                               
+      ] "client_directory_list_appservice.la" "-rpath $out/lib/modules")                                               
       (moduleLD [                                                                                       
         "${moduleUnitCXX [ "client" "voip" ] "turnserver.cc"                 "turnserver.lo"                 ""}"
-      ] "client/client_voip_turnserver.la" "-rpath $out/lib/modules")                                                         
+      ] "client_voip_turnserver.la" "-rpath $out/lib/modules")                                                         
       (moduleLD [                                                                                       
         "${moduleUnitCXX [ "client" "thirdparty" ] "protocols.cc"            "protocols.lo"                  ""}"
-      ] "client/client_thirdparty_protocols.la" "-rpath $out/lib/modules")                                                    
+      ] "client_thirdparty_protocols.la" "-rpath $out/lib/modules")                                                    
       (moduleLD [                                                                                       
         "${moduleUnitCXX [ "client" "sync" ] "account_data.cc"               "account_data.lo"               ""}"
-      ] "client/client_sync_account_data.la" "-rpath $out/lib/modules")                                                       
+      ] "client_sync_account_data.la" "-rpath $out/lib/modules")                                                       
       (moduleLD [                                                                                       
         "${moduleUnitCXX [ "client" "sync" ] "presence.cc"                   "presence.lo"                   ""}"
-      ] "client/client_sync_presence.la" "-rpath $out/lib/modules") 
+      ] "client_sync_presence.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "sync" ] "rooms.cc"                      "rooms.lo"                      ""}"
-      ] "client/client_sync_rooms.la" "-rpath $out/lib/modules") 
+      ] "client_sync_rooms.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "sync" ] "to_device.cc"                  "to_device.lo"                  ""}"
-      ] "client/client_sync_to_device.la" "-rpath $out/lib/modules") 
+      ] "client_sync_to_device.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "sync" ] "device_lists.cc"               "device_lists.lo"               ""}"
-      ] "client/client_sync_device_lists.la" "-rpath $out/lib/modules") 
+      ] "client_sync_device_lists.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "sync" ] "device_one_time_keys_count.cc" "device_one_time_keys_count.lo" ""}"
-      ] "client/client_sync_device_one_time_keys_count.la" "-rpath $out/lib/modules") 
+      ] "client_sync_device_one_time_keys_count.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "sync" "rooms" ] "account_data.cc"         "account_data.lo"         ""}"
-      ] "client/client_sync_rooms_account_data.la" "-rpath $out/lib/modules") 
+      ] "client_sync_rooms_account_data.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "sync" "rooms" ] "ephemeral.cc"            "ephemeral.lo"            ""}"
-      ] "client/client_sync_rooms_ephemeral.la" "-rpath $out/lib/modules") 
+      ] "client_sync_rooms_ephemeral.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "sync" "rooms" ] "state.cc"                "state.lo"                ""}"
-      ] "client/client_sync_rooms_state.la" "-rpath $out/lib/modules") 
+      ] "client_sync_rooms_state.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "sync" "rooms" ] "timeline.cc"             "timeline.lo"             ""}"
-      ] "client/client_sync_rooms_timeline.la" "-rpath $out/lib/modules") 
+      ] "client_sync_rooms_timeline.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "sync" "rooms" ] "unread_notifications.cc" "unread_notifications.lo" ""}"
-      ] "client/client_sync_rooms_unread_notifications.la" "-rpath $out/lib/modules") 
+      ] "client_sync_rooms_unread_notifications.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "sync" "rooms" ] "summary.cc"              "summary.lo"              ""}"
-      ] "client/client_sync_rooms_summary.la" "-rpath $out/lib/modules") 
+      ] "client_sync_rooms_summary.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "sync" "rooms" ] "ephemeral/receipt.cc"    "ephemeral/receipt.lo"    ""}"
-      ] "client/client_sync_rooms_ephemeral_receipt.la" "-rpath $out/lib/modules") 
+      ] "client_sync_rooms_ephemeral_receipt.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "sync" "rooms" ] "ephemeral/typing.cc"     "ephemeral/typing.lo"     ""}"
-      ] "client/client_sync_rooms_ephemeral_typing.la" "-rpath $out/lib/modules") 
+      ] "client_sync_rooms_ephemeral_typing.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "keys" ] "upload.cc"                     "upload.lo"                     ""}"
-      ] "client/client_keys_upload.la" "-rpath $out/lib/modules") 
+      ] "client_keys_upload.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "keys" ] "query.cc"                      "query.lo"                      ""}"
-      ] "client/client_keys_query.la" "-rpath $out/lib/modules") 
+      ] "client_keys_query.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "keys" ] "claim.cc"                      "claim.lo"                      ""}"
-      ] "client/client_keys_claim.la" "-rpath $out/lib/modules") 
+      ] "client_keys_claim.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "keys" ] "changes.cc"                    "changes.lo"                    ""}"
-      ] "client/client_keys_changes.la" "-rpath $out/lib/modules") 
+      ] "client_keys_changes.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "keys" ] "signatures/upload.cc"          "signatures/upload.lo"          ""}"
-      ] "client/client_keys_signatures_upload.la" "-rpath $out/lib/modules") 
+      ] "client_keys_signatures_upload.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "keys" ] "device_signing/upload.cc"      "device_signing/upload.lo"      ""}"
-      ] "client/client_keys_device_signing_upload.la" "-rpath $out/lib/modules") 
+      ] "client_keys_device_signing_upload.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "room_keys" ] "version.cc"               "version.lo"                    ""}"
-      ] "client/client_room_keys_version.la" "-rpath $out/lib/modules") 
+      ] "client_room_keys_version.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "room_keys" ] "keys.cc"                  "keys.lo"                       ""}"
-      ] "client/client_room_keys_keys.la" "-rpath $out/lib/modules") 
+      ] "client_room_keys_keys.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" "account" ] "3pid.cc"                    "3pid.lo"                       ""}"
         "${moduleUnitCXX [ "client" "account" ] "whoami.cc"                  "whoami.lo"                     ""}"
         "${moduleUnitCXX [ "client" "account" ] "password.cc"                "password.lo"                   ""}"
         "${moduleUnitCXX [ "client" "account" ] "deactivate.cc"              "deactivate.lo"                 ""}"
         "${moduleUnitCXX [ "client" "account" ] "account.cc"                 "account.lo"                    ""}"
-      ] "client/client_account.la" "-rpath $out/lib/modules") 
+      ] "client_account.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "send.cc"                        "send.lo"                        ""}"
-      ] "federation/federation_send.la" "-rpath $out/lib/modules") 
+      ] "federation_send.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "event.cc"                       "event.lo"                       ""}"
-      ] "federation/federation_event.la" "-rpath $out/lib/modules") 
+      ] "federation_event.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "get_missing_events.cc"          "get_missing_events.lo"          ""}"
-      ] "federation/federation_get_missing_events.la" "-rpath $out/lib/modules") 
+      ] "federation_get_missing_events.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "get_groups_publicised.cc"       "get_groups_publicised.lo"       ""}"
-      ] "federation/federation_get_groups_publicised.la" "-rpath $out/lib/modules") 
+      ] "federation_get_groups_publicised.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "version.cc"                     "version.lo"                     ""}"
-      ] "federation/federation_version.la" "-rpath $out/lib/modules") 
+      ] "federation_version.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "sender.cc"                      "sender.lo"                      ""}"
-      ] "federation/federation_sender.la" "-rpath $out/lib/modules") 
+      ] "federation_sender.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "query.cc"                       "query.lo"                       ""}"
-      ] "federation/federation_query.la" "-rpath $out/lib/modules") 
+      ] "federation_query.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "invite.cc"                      "invite.lo"                      ""}"
-      ] "federation/federation_invite.la" "-rpath $out/lib/modules") 
+      ] "federation_invite.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "invite2.cc"                     "invite2.lo"                     ""}"
-      ] "federation/federation_invite2.la" "-rpath $out/lib/modules") 
+      ] "federation_invite2.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "make_join.cc"                   "make_join.lo"                   ""}"
-      ] "federation/federation_make_join.la" "-rpath $out/lib/modules") 
+      ] "federation_make_join.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "send_join.cc"                   "send_join.lo"                   ""}"
-      ] "federation/federation_send_join.la" "-rpath $out/lib/modules") 
+      ] "federation_send_join.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "state_ids.cc"                   "state_ids.lo"                   ""}"
-      ] "federation/federation_state_ids.la" "-rpath $out/lib/modules") 
+      ] "federation_state_ids.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "state.cc"                       "state.lo"                       ""}"
-      ] "federation/federation_state.la" "-rpath $out/lib/modules") 
+      ] "federation_state.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "make_leave.cc"                  "make_leave.lo"                  ""}"
-      ] "federation/federation_make_leave.la" "-rpath $out/lib/modules") 
+      ] "federation_make_leave.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "send_leave.cc"                  "send_leave.lo"                  ""}"
-      ] "federation/federation_send_leave.la" "-rpath $out/lib/modules") 
+      ] "federation_send_leave.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "backfill.cc"                    "backfill.lo"                    ""}"
-      ] "federation/federation_backfill.la" "-rpath $out/lib/modules") 
+      ] "federation_backfill.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "backfill_ids.cc"                "backfill_ids.lo"                ""}"
-      ] "federation/federation_backfill_ids.la" "-rpath $out/lib/modules") 
+      ] "federation_backfill_ids.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "event_auth.cc"                  "event_auth.lo"                  ""}"
-      ] "federation/federation_event_auth.la" "-rpath $out/lib/modules") 
+      ] "federation_event_auth.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "query_auth.cc"                  "query_auth.lo"                  ""}"
-      ] "federation/federation_query_auth.la" "-rpath $out/lib/modules") 
+      ] "federation_query_auth.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "publicrooms.cc"                 "publicrooms.lo"                 ""}"
-      ] "federation/federation_publicrooms.la" "-rpath $out/lib/modules") 
+      ] "federation_publicrooms.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "user_devices.cc"                "user_devices.lo"                ""}"
-      ] "federation/federation_user_devices.la" "-rpath $out/lib/modules") 
+      ] "federation_user_devices.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "user_keys_query.cc"             "user_keys_query.lo"             ""}"
-      ] "federation/federation_user_keys_query.la" "-rpath $out/lib/modules") 
+      ] "federation_user_keys_query.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "user_keys_claim.cc"             "user_keys_claim.lo"             ""}"
-      ] "federation/federation_user_keys_claim.la" "-rpath $out/lib/modules") 
+      ] "federation_user_keys_claim.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "federation" ] "rooms.cc"                       "rooms.lo"                       ""}"
-      ] "federation/federation_rooms.la" "-rpath $out/lib/modules") 
+      ] "federation_rooms.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "identity" ] "v1.cc"                            "v1.lo"                          ""}"
-      ] "identity/identity_v1.la" "-rpath $out/lib/modules") 
+      ] "identity_v1.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "identity" ] "pubkey.cc"                        "pubkey.lo"                      ""}"
-      ] "identity/identity_pubkey.la" "-rpath $out/lib/modules") 
+      ] "identity_pubkey.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "key" ] "server.cc"                             "server.lo"                      ""}"
-      ] "key/key_server.la" "-rpath $out/lib/modules") 
+      ] "key_server.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "key" ] "query.cc"                              "query.lo"                       ""}"
-      ] "key/key_query.la" "-rpath $out/lib/modules") 
+      ] "key_query.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "media" ] "download.cc"                         "download.lo"                    ""}"
         "${moduleUnitCXX [ "media" ] "upload.cc"                           "upload.lo"                      ""}"
@@ -1144,7 +1150,7 @@ in stdenv.mkDerivation rec {
         "${moduleUnitCXX [ "media" ] "preview_url.cc"                      "preview_url.lo"                 ""}"
         "${moduleUnitCXX [ "media" ] "config.cc"                           "config.lo"                      ""}"
         "${moduleUnitCXX [ "media" ] "media.cc"                            "media.lo"                       ""}"
-      ] "media/media_media.la" "-rpath $out/lib/modules") 
+      ] "media_media.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [] "magick.cc" "magick_la-magick.lo" "-I${graphicsmagick.out}/include/GraphicsMagick"}"
       ] "magick.la" "-rpath $out/lib/modules -lGraphicsMagick++ -lGraphicsMagickWand -lGraphicsMagick")
