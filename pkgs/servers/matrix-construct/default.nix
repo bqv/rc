@@ -16,8 +16,8 @@
 
 let
   pname = "matrix-construct";
-  rev = "50a67b1ae36d284c507ed9171eca0619bbf338ce";
-  hash = "sha256-6ztRdEy7gkqCw/wRRdNTTlsriJCvwzUPh5nkbmsnsvo=";
+  rev = "2f5ceb21d3c37917cd27408ef573905c6cb740df";
+  hash = "sha256-hxJiww8R5L/VfqHcAj/SBO6KF7uvXt9x2aYZe12W2Ic=";
   version = lib.substring 0 9 rev;
 
   source = let
@@ -631,8 +631,8 @@ in stdenv.mkDerivation rec {
       "${ircdUnitCXX "fs_iou.cc"           "fs_iou.lo"           "-I${boost.dev}/include -include ircd/asio.h"}"
       "${ircdUnitCXX "mods.cc"             "mods.lo"             "-I${boost.dev}/include -include ircd/asio.h"}"
       "${ircdUnitCXX "mods_ldso.cc"     "mods_ldso.lo"     ""}"
-      "${ircdUnitCXX "db_fixes.cc"        "db_fixes.lo"        "-I${rocksdb.src} -I${rocksdb.out}/include"}"
       "${ircdUnitCXX "db_port.cc"       "db_port.lo"       ""}"
+      "${ircdUnitCXX "db_fixes.cc"        "db_fixes.lo"        "-I${rocksdb.src} -I${rocksdb.out}/include"}"
       "${ircdUnitCXX "db_env.cc"        "db_env.lo"        ""}"
       "${ircdUnitCXX "db.cc"            "db.lo"            ""}"
       "${ircdUnitCXX "net.cc"              "net.lo"              "-I${boost.dev}/include -include ircd/asio.h"}"
@@ -859,6 +859,12 @@ in stdenv.mkDerivation rec {
       (moduleLD [
         "${moduleUnitCXX [] "well_known.cc"                             "well_known.lo"                             ""}"
       ] "well_known.la" "-rpath $out/lib/modules") 
+      (moduleLD [
+        "${moduleUnitCXX [ "admin" ] "users.cc"                         "users.lo"                              ""}"
+      ] "admin_users.la" "-rpath $out/lib/modules") 
+      (moduleLD [
+        "${moduleUnitCXX [ "admin" ] "deactivate.cc"                    "deactivate.lo"                         ""}"
+      ] "admin_deactivate.la" "-rpath $out/lib/modules") 
       (moduleLD [
         "${moduleUnitCXX [ "client" ] "versions.cc"                        "versions.lo"                        ""}"
       ] "client/client_versions.la" "-rpath $out/lib/modules") 
@@ -1190,7 +1196,7 @@ in stdenv.mkDerivation rec {
       --add-flags "$out/bin/.construct-wrapped"
   '';
 
-  doInstallCheck = true;
+  doInstallCheck = false;
   installCheckPhase = ''
     chmod -R a-w $out
     mkdir -p /tmp/cache/construct
