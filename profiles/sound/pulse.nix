@@ -138,6 +138,8 @@ in {
     pavucontrol
     pulseeffects
     lxqt.pavucontrol-qt
+    pulseaudio-ctl
+    pasystray
   ];
 
 }
