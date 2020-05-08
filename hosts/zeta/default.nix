@@ -16,6 +16,7 @@
     ../../profiles/networking/wireguard
     ../../profiles/networking/ipfs
     ../../profiles/networking/tor
+    ../../profiles/networking/mdns.nix
     ../../profiles/services/mastodon
     ../../profiles/services/minecraft
     ../../profiles/services/syncthing
@@ -129,11 +130,6 @@
   users.mutableUsers = lib.mkForce true;
 
   ## Migrated
-  services.avahi.enable = true;
-  services.avahi.nssmdns = true;
-  services.avahi.allowPointToPoint = true;
-  services.avahi.publish.enable = true;
-  services.avahi.publish.addresses = true;
   services.postgresql.enable = true;
   services.postgresql.enableTCPIP = true;
   services.postgresql.extraConfig = ''

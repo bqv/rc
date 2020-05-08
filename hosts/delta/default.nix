@@ -11,6 +11,7 @@
     ../../profiles/networking/ipfs
     ../../profiles/networking/bluetooth
     ../../profiles/networking/wireguard
+    ../../profiles/networking/mdns.nix
     ../../profiles/sound/pulse.nix
     ../../profiles/graphical/exwm
     ../../profiles/weechat.nix
