@@ -15,6 +15,21 @@ in {
       treeView = true;
       showProgramPath = false;
 
+
+      fields = [
+        "PID"
+        "USER"   
+        "NICE"   
+        "STATE"   
+        "PRIORITY"
+        "PERCENT_CPU"  
+        "M_RESIDENT"
+        "PERCENT_MEM" 
+        "IO_RATE"
+        "STARTTIME"
+        "COMM"
+      ];
+
       hideThreads = false;
       hideKernelThreads = false;
       hideUserlandThreads = true;
