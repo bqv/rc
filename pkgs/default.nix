@@ -10,8 +10,6 @@ final: prev: {
 
   fsnoop = prev.callPackage ./tools/misc/fsnoop { };
 
-  mastodon = prev.callPackage ./servers/mastodon { };
-
   matrix-appservice-irc = prev.callPackage ./servers/matrix-appservice-irc { };
 
   matrix-construct = prev.callPackage ./servers/matrix-construct { };

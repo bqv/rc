@@ -324,8 +324,8 @@ in {
 
       package = lib.mkOption {
         type = lib.types.package;
-        default = pkgs.mastodon;
-        defaultText = "pkgs.mastodon";
+        default = null;
+        example = "pkgs.mastodon";
         description = ''
           Package to use.
         '';
