@@ -100,7 +100,7 @@
   services.pcscd.enable = true;
   services.guix.enable = true;
   services.guix.package = with pkgs.pr 85463
-    "sha256-M9sLLTph9Pmahitp3VUt7OPECyLG5OtoGeTmqhhA6tI="; guix;
+    "sha256-hTXOWB1jN9Naqc7JkC3iNPNaBUFXRuBUOvKz5+boupc="; guix;
   services.nixos-git = {
     enable = true;
     github = { owner = "bqv"; repo = "nixos"; };
