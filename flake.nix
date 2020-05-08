@@ -115,7 +115,7 @@
         inherit (pkgs) dgit dejavu_nerdfont flarectl fsnoop mastodon;
         inherit (pkgs) matrix-appservice-irc matrix-construct mx-puppet-discord;
         inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
-        inherit (pkgs) pure sddm-chili yacy;
+        inherit (pkgs) pure sddm-chili shflags yacy;
 
         inherit (pkgs) nheko;
         inherit (pkgs.weechatScripts) weechat-matrix;

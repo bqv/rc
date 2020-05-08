@@ -25,5 +25,7 @@ final: prev: {
   sddm-chili =
     prev.callPackage ./applications/display-managers/sddm/themes/chili { };
 
+  shflags = prev.callPackage ./tools/misc/shflags { };
+
   yacy = prev.callPackage ./servers/yacy { };
 }
