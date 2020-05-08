@@ -3,6 +3,12 @@
 let
   ladspaPath = "${pkgs.ladspaPlugins}/lib/ladspa";
 
+  sinks = {
+    #hdmi = "alsa_output.pci-0000_01_00.1.hdmi-stereo-extra3";
+    stereo = "alsa_output.pci-0000_00_1b.0.analog-stereo";
+    nc-25 = "bluez_sink.11_11_22_33_33_98.a2dp_sink";
+  };
+
   # ladspa sink queues
   # ------------------
   # generates a chain of effects. Usefull for limiting the output of movies
@@ -24,9 +30,9 @@ let
   # have a look at : http://plugin.org.uk/ladspa-swh/docs/ladspa-swh.html
   ladspaSinkQueues = [
     {
-      name = "movieLimiterSink";
+      name = "mediaLimiterSink";
       queue = [
-        # compress all sounds
+        #3 compress all sounds
         {
           plugin  = "dyson_compress_1403";
           label   = "dysonCompress";
@@ -37,7 +43,7 @@ let
             "0.8"  # compression ratio
           ];
         }
-        # limit sound
+        #2 limit sound (normalize)
         {
           plugin  = "fast_lookahead_limiter_1913";
           label   = "fastLookaheadLimiter";
@@ -47,7 +53,7 @@ let
             "1.1"  # release time (s)
           ];
         }
-        # avoid deep sounds
+        #1 avoid deep sounds
         {
           plugin  = "dj_eq_1901";
           label   = "dj_eq";
@@ -95,27 +101,28 @@ in {
    #package = with pkgs; pulseaudioFull.override {
    #  jackaudioSupport = false;
    #};
-    extraConfig = ''
+    extraConfig = let
+      inherit (builtins) toString;
+    in ''
       # automatically switch to newly-connected devices
       load-module module-switch-on-connect
 
-      ${builtins.toString (lib.flip map ladspaSinkQueues ( queue : ''
-        # ladspa queue : ${queue.name}
-        ${builtins.toString (lib.flip lib.imap0 (lib.reverseList queue.queue) ( index : config:
-        let
-          sinkName     = suffix : "${queue.name}${builtins.toString suffix}";
+      ${lib.concatMapStrings (queue: ''
+        # ladspa queue - ${queue.name}
+        ${lib.concatImapStrings (index: config: let
+          sinkName     = suffix: "${queue.name}${toString suffix}";
           sinkValue    = "sink_name=${sinkName index}";
-          masterValue  = if (index == 0) then "" else "master=${sinkName (index - 1)}";
+          masterValue  = if (index == 1) then "" else "master=${sinkName (index - 1)}";
           pluginValue  = "plugin=${ladspaPath}/${config.plugin}";
           labelValue   = "label=${config.label}";
-          controlValue = "control=${builtins.toString (lib.foldl (a: b: "${a},${b}") (lib.head config.control) (lib.tail config.control))}";
+          controlValue = "control=${toString (lib.foldl (a: b: "${a},${b}") (lib.head config.control) (lib.tail config.control))}";
         in ''
-          # ${sinkName index} : ${config.label}
+          # ${sinkName index} (${toString index}) - ${config.label}
           load-module module-ladspa-sink ${sinkValue} ${masterValue} ${pluginValue} ${labelValue} ${controlValue}
-        ''))}
-      '' ))}
+        '') (lib.reverseList queue.queue)}
+      '' ) ladspaSinkQueues}
 
-      set-default-sink combined
+      set-default-sink mediaLimiterSink3
     '';
   };
 
