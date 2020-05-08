@@ -1,11 +1,9 @@
-{ inputs, nixpkgs, pkgs, system, ... }:
+{ inputs, nixpkgs, pkgs, system, specialArgs, ... }:
 
 let
   inherit (nixpkgs) lib;
 
-  utils = import ../lib/utils.nix { inherit lib; };
-
-  inherit (utils) recImport;
+  inherit (specialArgs.usr) recImport;
 
   inherit (builtins) attrValues removeAttrs;
 
@@ -13,14 +11,7 @@ let
     lib.nixosSystem {
       inherit system;
 
-      specialArgs.usr = { inherit utils; };
-      specialArgs.nurModules = inputs.nur.nixosModules;
-      specialArgs.nurOverlays = inputs.nur.overlays;
-      specialArgs.naersk = inputs.naersk.lib;
-      specialArgs.snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
-      specialArgs.napalm = pkgs.callPackage inputs.napalm;
-
-      specialArgs.domains = import ../secrets/domains.nix;
+      inherit specialArgs;
 
       modules = let
         inherit (inputs.home.nixosModules) home-manager;

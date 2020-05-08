@@ -324,8 +324,7 @@ in {
 
       package = lib.mkOption {
         type = lib.types.package;
-        default = with pkgs.pr 78810
-          "sha256-vKBsXvWE/TQh6CSADH+3j7qUAPz+PTKclIC86ksrX6Q="; mastodon;
+        default = pkgs.mastodon;
         defaultText = "pkgs.mastodon";
         description = ''
           Package to use.

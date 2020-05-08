@@ -37,8 +37,22 @@
       forAllSystems = genAttrs [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
       diffTrace = left: right: string: value: if left != right then trace string value else value;
 
+      config = { allowUnfree = true; };
+
+      fetchPullRequestForSystem = system: args@{ id, rev ? null, sha256 ? master.lib.fakeSha256, ... }: 
+        mapAttrs (k: v: trace "pkgs.${k} pinned to nixpks/pull/${toString id}" v)
+          (import (builtins.fetchTarball {
+            name = "nixpkgs-pull-request-${toString id}"; inherit sha256;
+            url = if ! builtins.isNull rev
+                  then "https://github.com/NixOS/nixpkgs/archive/${rev}.zip"
+                  else "https://github.com/NixOS/nixpkgs/archive/pull/${toString id}/head.zip";
+          }) {
+            inherit system config;
+            overlays = attrValues self.overlays;
+          } // (removeAttrs args [ "id" "rev" "hash" ]));
+
       pkgsForSystem = system: import large rec {
-        inherit system;
+        inherit system config;
         overlays = (attrValues self.overlays) ++ [
           (self: super: { master =
              mapAttrs (k: v: diffTrace (baseNameOf master) (baseNameOf super.path) "pkgs.${k} pinned to nixpkgs/master" v)
@@ -56,14 +70,6 @@
              mapAttrs (k: v: diffTrace (baseNameOf large) (baseNameOf super.path) "pkgs.${k} pinned to nixpkgs/nixos-unstable" v)
              (import large { inherit config system overlays; });
            })
-          (self: super: { pr = n: hash: 
-             mapAttrs (k: v: trace "pkgs.${k} pinned to nixpks/pull/${toString n}" v)
-             (import (super.fetchzip {
-               name = "nixpkgs-pull-request-${toString n}";
-               url = "https://github.com/NixOS/nixpkgs/archive/pull/${toString n}/head.zip";
-               hash = if hash == null then master.lib.fakeSri else hash;
-             }) { inherit config system overlays; });
-           })
           (import emacs)
           (import mozilla)
           (pkgs: const {
@@ -74,7 +80,6 @@
           nur.overlay
           self.overlay
         ];
-        config = { allowUnfree = true; };
       };
 
     in {
@@ -83,6 +88,17 @@
         system = "x86_64-linux";
         pkgs = pkgsForSystem system;
         nixpkgs = master;
+        specialArgs = {
+          usr = import ./lib/utils.nix { inherit (nixpkgs) lib; };
+          nurModules = inputs.nur.nixosModules;
+          nurOverlays = inputs.nur.overlays;
+          naersk = inputs.naersk.lib;
+          snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
+          napalm = pkgs.callPackage inputs.napalm;
+
+          domains = import ./secrets/domains.nix;
+          fetchPullRequest = fetchPullRequestForSystem system;
+        };
       };
 
       overlay = import ./pkgs;

@@ -1,4 +1,4 @@
-{ nixpkgs, home, nur, self, config, lib, pkgs, system, ... }:
+{ nixpkgs, home, nur, self, config, lib, pkgs, system, fetchPullRequest, ... }:
 
 {
   imports = [
@@ -99,8 +99,10 @@
   services.locate.enable = true;
   services.pcscd.enable = true;
   services.guix.enable = true;
-  services.guix.package = with pkgs.pr 85463
-    "sha256-hTXOWB1jN9Naqc7JkC3iNPNaBUFXRuBUOvKz5+boupc="; guix;
+  services.guix.package = with fetchPullRequest {
+    id = 85463;
+    sha256 = "15xsx3kfgczj79af0ijp842mmwrlw8nr1jffm5dd6dv33mccwdc5";
+  }; guix;
   services.nixos-git = {
     enable = true;
     github = { owner = "bqv"; repo = "nixos"; };
