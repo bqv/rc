@@ -109,6 +109,8 @@
       idle_fetch_timeout = 10;
     };
   };
+  services.flatpak.enable = true;
+  xdg.portal.enable = true;
 
   nix.buildMachines = lib.optional false [
     {
