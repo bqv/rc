@@ -1,28 +1,57 @@
-{ pkgs ? import <nixpkgs> { } }:
+{ pkgs ? import <nixpkgs> { }, my ? import ./pkgs pkgs pkgs }:
 
 let
-  flake-shell = pkgs.writeShellScriptBin "nixFlakes-shell" ''
-    nix-shell -E 'with import "${pkgs.path}/nixos" { configuration.nix.package = (import <nixpkgs> {}).nixFlakes; }; pkgs.mkShell { buildInputs = with config.system.build; with pkgs; [ nixos-rebuild ]; }' $@
+  shFlagsRules = rules: ''
+    . ${my.shflags}
+    ${rules}
+    FLAGS "$@" || exit $?
+    eval set -- "''${FLAGS_ARGV}"
   '';
-  activate = pkgs.writeShellScriptBin "activate" ''
+  rebuild = operation: ''
     REV=$(git rev-parse HEAD)
     FLAKE=$(git rev-parse --show-toplevel)
-    source $(which nixos-rebuild) --flake $FLAKE --use-remote-sudo switch $@
+
+    ARGS="--use-remote-sudo"
+
+    if [ -z "$FLAGS_host" ]; then
+      ARGS="$ARGS --flake $FLAKE"
+    else
+      ARGS="$ARGS --flake $FLAKE#$FLAGS_host"
+    fi
+
+    if [ $FLAGS_showtrace -eq $FLAGS_TRUE ]; then
+      ARGS="$ARGS --show-trace"
+    fi
+
+    echo '> nixos-rebuild' $ARGS ${operation}
+    source $(which nixos-rebuild) $ARGS ${operation}
+  '';
+  tag = ''
+    SYSTEMPATH=$(basename $pathToConfig)
+    PROFILES=($(find /nix/var/nix/profiles/ -lname $pathToConfig))
+    echo Tagging $SYSTEMPATH && git tag $SYSTEMPATH $REV || true
+    for profile in $PROFILES; do
+      SYSTEMNUM=$(hostname)/$(basename $profile)
+      echo Tagging $SYSTEMNUM && git tag $SYSTEMNUM $REV || true
+    done
+  '';
+  activate = pkgs.writeShellScriptBin "activate" ''
+    ${shFlagsRules ''
+      DEFINE_string 'host' "" 'Host to build' 'H'
+      DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
+    ''}
+    ${rebuild "switch"}
 
     if [ -e "$pathToConfig" ]; then
-      SYSTEMPATH=$(basename $pathToConfig)
-      PROFILES=($(find /nix/var/nix/profiles/ -lname $pathToConfig))
-      echo Tagging $SYSTEMPATH && git tag $SYSTEMPATH $REV || true
-      for profile in $PROFILES; do
-        SYSTEMNUM=$(hostname)/$(basename $profile)
-        echo Tagging $SYSTEMNUM && git tag $SYSTEMNUM $REV || true
-      done
+      ${tag}
     fi
   '';
   dry-boot = pkgs.writeShellScriptBin "dry-boot" ''
-    REV=$(git rev-parse HEAD)
-    FLAKE=$(git rev-parse --show-toplevel)
-    source $(which nixos-rebuild) --flake $FLAKE --use-remote-sudo test $@
+    ${shFlagsRules ''
+      DEFINE_string 'host' "" 'Host to build' 'H'
+      DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
+    ''}
+    ${rebuild "test"}
 
     if [ -e "$pathToConfig" ]; then
       SYSTEMPATH=$(basename $pathToConfig)
@@ -32,28 +61,31 @@ let
   tag-current = pkgs.writeShellScriptBin "tag-current" ''
     REV=$(git rev-parse HEAD)
     pathToConfig=$(readlink -f /run/current-system)
-    SYSTEMPATH=$(basename $pathToConfig)
-    PROFILES=($(find /nix/var/nix/profiles/ -lname $pathToConfig))
-    echo Tagging $SYSTEMPATH && git tag $SYSTEMPATH $REV || true
-    for profile in $PROFILES; do
-      SYSTEMNUM=$(hostname)/$(basename $profile)
-      echo Tagging $SYSTEMNUM && git tag $SYSTEMNUM $REV || true
-    done
+    ${tag}
   '';
   boot = pkgs.writeShellScriptBin "boot" ''
-    REV=$(git rev-parse HEAD)
-    FLAKE=$(git rev-parse --show-toplevel)
-    source $(which nixos-rebuild) --flake $FLAKE --use-remote-sudo boot $@
+    ${shFlagsRules ''
+      DEFINE_string 'host' "" 'Host to build' 'H'
+      DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
+    ''}
+    ${rebuild "boot"}
   '';
   dry-activate = pkgs.writeShellScriptBin "dry-activate" ''
-    REV=$(git rev-parse HEAD)
-    FLAKE=$(git rev-parse --show-toplevel)
-    source $(which nixos-rebuild) --flake $FLAKE --use-remote-sudo dry-activate $@
+    ${shFlagsRules ''
+      DEFINE_string 'host' "" 'Host to build' 'H'
+      DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
+    ''}
+    ${rebuild "dry-activate"}
   '';
   dry-build = pkgs.writeShellScriptBin "dry-build" ''
-    REV=$(git rev-parse HEAD)
-    FLAKE=$(git rev-parse --show-toplevel)
-    source $(which nixos-rebuild) --flake $FLAKE --use-remote-sudo dry-build $@
+    ${shFlagsRules ''
+      DEFINE_string 'host' "" 'Host to build' 'H'
+      DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
+    ''}
+    ${rebuild "dry-build"}
+  '';
+  flake-shell = pkgs.writeShellScriptBin "nixFlakes-shell" ''
+    nix-shell -E 'with import "${pkgs.path}/nixos" { configuration.nix.package = (import <nixpkgs> {}).nixFlakes; }; pkgs.mkShell { buildInputs = with config.system.build; with pkgs; [ nixos-rebuild ]; }' $@
   '';
 in pkgs.mkShell {
   nativeBuildInputs = with pkgs; let
