@@ -25,10 +25,12 @@
   inputs.mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
   inputs.snack = { url = "github:nmattia/snack"; flake = false; };
   inputs.napalm = { url = "github:nmattia/napalm"; flake = false; };
+  inputs.bhipple = { url = "github:bhipple/nur-packages"; flake = false; };
+  inputs.epkgs = { url = "github:bqv/nixpkgs/emacs-native-pkgs"; };
 
   outputs = inputs@{ self, master, staged, small, large,
     dwarffs, home, nur, naersk,
-    emacs, mozilla, snack, napalm
+    emacs, mozilla, snack, napalm, bhipple, epkgs
   }:
     let
       inherit (builtins) listToAttrs baseNameOf attrNames attrValues readDir trace concatStringsSep;
@@ -70,7 +72,10 @@
              mapAttrs (k: v: diffTrace (baseNameOf large) (baseNameOf super.path) "pkgs.${k} pinned to nixpkgs/nixos-unstable" v)
              (import large { inherit config system overlays; });
            })
-          (import emacs)
+          (self: super: let
+            pkgs = import epkgs { inherit config system; };
+          in import emacs pkgs pkgs)
+          #(import emacs)
           (import mozilla)
           (pkgs: const {
             naersk = naersk.lib.x86_64-linux;
@@ -81,6 +86,8 @@
               rev = "ea1769e05bb716135fb35ecf1af83a253888a053";
               sha256 = "1p6m055b5pixrnz1ldd839h1knb798cmrcv4cjrhsb6vszh8h6bq";
             }; guix;
+            inherit (import staged { inherit config system; }) libgccjit;
+            inherit (import bhipple { inherit pkgs; }) gccemacs;
           })
           nur.overlay
           self.overlay

@@ -3,7 +3,7 @@
 with lib; let
   cfg = config.programs.emacs;
 
-  myEmacs = pkgs.emacsUnstable.overrideAttrs (attrs: {
+  myEmacs = pkgs.gccemacs.overrideAttrs (attrs: {
     withXwidgets = true;
     webkitgtk = pkgs.large.webkitgtk;
   });

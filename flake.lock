@@ -1,5 +1,23 @@
 {
   "nodes": {
+    "bhipple": {
+      "flake": false,
+      "info": {
+        "lastModified": 1588980568,
+        "narHash": "sha256-VhdtKNEfxZy5aZ0qV4zvpocu0hgP6LiyRkhozPRAf7E="
+      },
+      "locked": {
+        "owner": "bhipple",
+        "repo": "nur-packages",
+        "rev": "21b57141cef21dd87235f16a0ed6aac522f1472f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bhipple",
+        "repo": "nur-packages",
+        "type": "github"
+      }
+    },
     "dwarffs": {
       "info": {
         "lastModified": 1585848904,
@@ -36,6 +54,24 @@
       "original": {
         "owner": "nix-community",
         "repo": "emacs-overlay",
+        "type": "github"
+      }
+    },
+    "epkgs": {
+      "info": {
+        "lastModified": 1589083644,
+        "narHash": "sha256-jz3HBwXOI81RN/FNSEpuQTxGOyos8AX32n8x/ygBeEI="
+      },
+      "locked": {
+        "owner": "bqv",
+        "repo": "nixpkgs",
+        "rev": "214554fa91a2930a11ccf1f73b4cb85f6dedfd9a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bqv",
+        "ref": "emacs-native-pkgs",
+        "repo": "nixpkgs",
         "type": "github"
       }
     },
@@ -192,8 +228,10 @@
     },
     "root": {
       "inputs": {
+        "bhipple": "bhipple",
         "dwarffs": "dwarffs",
         "emacs": "emacs",
+        "epkgs": "epkgs",
         "home": "home",
         "large": "nixpkgs_2",
         "master": "nixpkgs",
@@ -226,13 +264,13 @@
     },
     "staged": {
       "info": {
-        "lastModified": 1587402193,
-        "narHash": "sha256-WcMB/kb2PGTmdEd9B2hP1XTQ+8AJw9iu7PUS+s0WZKQ="
+        "lastModified": 1589048224,
+        "narHash": "sha256-+xNHoMqqq/d/d6RZgUZKsnmn5eq336UQ22rF0PstmvA="
       },
       "locked": {
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "e18bb6fa835d1e3e919739e41f40653b9fa064d5",
+        "rev": "b57016c8c88bdf46883062272baa9bba58b42f94",
         "type": "github"
       },
       "original": {
