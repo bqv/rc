@@ -76,6 +76,11 @@
             naersk = naersk.lib.x86_64-linux;
             snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
             napalm = pkgs.callPackage inputs.napalm;
+            guix = with fetchPullRequestForSystem system {
+              id = 85463;
+              rev = "ea1769e05bb716135fb35ecf1af83a253888a053";
+              sha256 = "1p6m055b5pixrnz1ldd839h1knb798cmrcv4cjrhsb6vszh8h6bq";
+            }; guix;
           })
           nur.overlay
           self.overlay
