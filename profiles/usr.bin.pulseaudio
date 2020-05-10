@@ -35,9 +35,7 @@
 	/sys/class/ r,
 	/sys/class/sound/ r,
 	/sys/devices/virtual/dmi/id/*_vendor r,
-	/sys/devices/virtual/sound/** r,
-	/sys/devices/*/*/sound/** r,
-	/sys/devices/*/*/*/sound/** r,
+	/sys/devices/**/sound/** r,
 	/dev/input/event* r, # module-mmkbd-evdev
 
 	network tcp,
