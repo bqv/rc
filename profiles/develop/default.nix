@@ -24,6 +24,7 @@
     ncdu
     nix-diff
     pass
+    socat
     subversion
     tig
     tokei
