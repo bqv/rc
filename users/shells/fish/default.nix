@@ -109,7 +109,7 @@ in {
         end
       '';
       interactiveShellInit = ''
-        if test "$INSIDE_EMACS" == "vterm"
+        if test "$INSIDE_EMACS" = "vterm"
             test -z "$DVTM"; and exec env TERM=dvtm-256color ${pkgs.abduco}/bin/abduco -Al emacs ${pkgs.dvtm}/bin/dvtm -m '^q'
         else if test -z "$EMACS"
             if test "$TERM" = "dumb"
@@ -134,6 +134,10 @@ in {
             set -x LC_CTYPE C
             set -x SHELL "emacs $EMACS"
             set -x TERM "emacs $EMACS"
+        end
+
+        if test -z "$DISPLAY"
+            export GPG_TTY=(tty)
         end
 
         date
