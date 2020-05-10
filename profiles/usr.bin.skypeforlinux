@@ -57,6 +57,7 @@
 	deny /sys/devices/pci[0-9:.]*/**/descriptors r, # block any further android-debug checks
 	deny /dev/video* r,
 
+	/dev/shm/shm-* rwkm, # required for screen sharing
 	/tmp/.org.chromium.Chromium.*/ rw,
 	/tmp/.org.chromium.Chromium.*/** rwmk,
 	/{run,dev}/shm/.org.chromium.Chromium.* rwkm,
