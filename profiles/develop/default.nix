@@ -15,6 +15,7 @@
     bat
     clang
     exa
+    execline
     file
     git
     htop

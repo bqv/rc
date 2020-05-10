@@ -75,15 +75,15 @@
              (import large { inherit config system overlays; });
            })
           (self: super: let
-            pkgs = import epkgs { inherit config system; };
+            pkgs = epkgs.legacyPackages.${system};
           in import emacs pkgs pkgs)
           #(import emacs)
           (import mozilla)
           (pkgs: const {
-            naersk = naersk.lib.x86_64-linux;
+            naersk = naersk.lib.${system};
             snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
             napalm = pkgs.callPackage inputs.napalm;
-            inherit (import staged { inherit config system; }) libgccjit;
+            inherit (staged.legacyPackages.${system}) libgccjit;
             inherit (import bhipple { inherit pkgs; }) gccemacs;
           })
           nix.overlay
@@ -102,15 +102,13 @@
           usr = import ./lib/utils.nix { inherit (nixpkgs) lib; };
           nurModules = inputs.nur.nixosModules;
           nurOverlays = inputs.nur.overlays;
-          naersk = inputs.naersk.lib;
-          snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
-          napalm = pkgs.callPackage inputs.napalm;
 
           domains = import ./secrets/domains.nix;
           hosts = import ./secrets/hosts.nix;
-          fetchPullRequest = fetchPullRequestForSystem system;
         };
       };
+
+      legacyPackages = forAllSystems pkgsForSystem;
 
       overlay = import ./pkgs;
 
