@@ -1,7 +1,7 @@
 {
-  description = "A highly structured configuration database.";
+  edition = 201909;
 
-  epoch = 201909;
+  description = "A highly structured configuration database.";
 
   inputs.master.url = "github:nixos/nixpkgs/master";
   inputs.staged.url = "github:nixos/nixpkgs/staging";
@@ -86,7 +86,7 @@
             naersk = naersk.lib.${system};
             snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
             napalm = pkgs.callPackage inputs.napalm;
-            inherit (staged.legacyPackages.${system}) libgccjit;
+            inherit (staged.legacyPackages.${system}) libgccjit sof-firmware;
             inherit (import bhipple { inherit pkgs; }) gccemacs;
           })
           nix.overlay
