@@ -31,6 +31,10 @@ let
       ARGS="$ARGS -vv"
     fi
 
+    if [ $FLAGS_noisy -eq $FLAGS_TRUE ]; then
+      ARGS="$ARGS -vvvvv"
+    fi
+
     echo '> nixos-rebuild' $ARGS ${operation}
     source $(which nixos-rebuild) $ARGS ${operation}
   '';
@@ -48,6 +52,7 @@ let
       DEFINE_string 'host' "" 'Host to build' 'H'
       DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
       DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
+      DEFINE_boolean 'noisy' false 'Show noisy logs' 'V'
     ''}
     ${rebuild "switch"}
 
@@ -86,6 +91,7 @@ let
       DEFINE_string 'host' "" 'Host to build' 'H'
       DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
       DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
+      DEFINE_boolean 'noisy' false 'Show noisy logs' 'V'
     ''}
     ${rebuild "dry-activate"}
   '';
@@ -116,7 +122,7 @@ in pkgs.mkShell {
     mkdir -p secrets
   '';
 
-  GC_DONT_GC = 1; # Dangerously mitigate GC-based crashes
+  #GC_DONT_GC = 1; # Dangerously mitigate GC-based crashes
 
   NIX_CONF_DIR = let
     current = pkgs.lib.optionalString (builtins.pathExists /etc/nix/nix.conf)
