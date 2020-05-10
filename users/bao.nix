@@ -53,7 +53,6 @@ in {
     ];
 
     programs.home-manager.enable = true;
-    programs.command-not-found.enable = true;
     programs.qutebrowser.enable = true;
     programs.firefox.enable = true;
     programs.fish.enable = true;

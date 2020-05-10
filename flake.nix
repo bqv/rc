@@ -23,15 +23,18 @@
   inputs.naersk.url = "github:nmattia/naersk";
   inputs.naersk.inputs.nixpkgs.follows = "large";
 
+  inputs.nixexprs = { url = "https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz"; flake = false; };
+
   inputs.emacs = { url = "github:nix-community/emacs-overlay"; flake = false; };
   inputs.mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
   inputs.snack = { url = "github:nmattia/snack"; flake = false; };
   inputs.napalm = { url = "github:nmattia/napalm"; flake = false; };
+
   inputs.bhipple = { url = "github:bhipple/nur-packages"; flake = false; };
   inputs.epkgs = { url = "github:bqv/nixpkgs/emacs-native-pkgs"; };
 
   outputs = inputs@{ self, master, staged, small, large,
-    nix, dwarffs, home, nur, naersk,
+    nix, dwarffs, home, nur, naersk, nixexprs,
     emacs, mozilla, snack, napalm, bhipple, epkgs
   }:
     let
@@ -102,6 +105,7 @@
           usr = import ./lib/utils.nix { inherit (nixpkgs) lib; };
           nurModules = inputs.nur.nixosModules;
           nurOverlays = inputs.nur.overlays;
+          nixexprs = inputs.nixexprs;
 
           domains = import ./secrets/domains.nix;
           hosts = import ./secrets/hosts.nix;
