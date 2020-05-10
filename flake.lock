@@ -20,22 +20,22 @@
     },
     "dwarffs": {
       "info": {
-        "lastModified": 1585848904,
-        "narHash": "sha256-sTX1/DU4lxaHYFapf1hvTir799effD9mUW7l2+3azqU="
+        "lastModified": 1587561848,
+        "narHash": "sha256-MrQTWYibE+4Ajax1L/1IFvEuwnzrXdUwSIXkuBjRv/s="
       },
       "inputs": {
+        "nix": "nix",
         "nixpkgs": "nixpkgs"
       },
       "locked": {
         "owner": "edolstra",
         "repo": "dwarffs",
-        "rev": "83c13981993fa54c4cac230f2eec7241ab8fd0a9",
+        "rev": "e7cf5acb5ad04e308e680aa7ede11957038c89d9",
         "type": "github"
       },
       "original": {
         "owner": "edolstra",
         "repo": "dwarffs",
-        "rev": "83c13981993fa54c4cac230f2eec7241ab8fd0a9",
         "type": "github"
       }
     },
@@ -152,6 +152,46 @@
         "type": "github"
       }
     },
+    "nix": {
+      "info": {
+        "lastModified": 1588846396,
+        "narHash": "sha256-hUaWny0R5mBgHkP8Z+NBR7uBR7zp2FyxhcDi5LK4qxI="
+      },
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "owner": "NixOS",
+        "repo": "nix",
+        "rev": "14a3a62bfca6c572b9a415cfa80cdbd7ad4326b3",
+        "type": "github"
+      },
+      "original": {
+        "id": "nix",
+        "type": "indirect"
+      }
+    },
+    "nix_2": {
+      "info": {
+        "lastModified": 1588846396,
+        "narHash": "sha256-hUaWny0R5mBgHkP8Z+NBR7uBR7zp2FyxhcDi5LK4qxI="
+      },
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "owner": "nixos",
+        "repo": "nix",
+        "rev": "14a3a62bfca6c572b9a415cfa80cdbd7ad4326b3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "flakes",
+        "repo": "nix",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "info": {
         "lastModified": 1587417015,
@@ -238,6 +278,7 @@
         "mozilla": "mozilla",
         "naersk": "naersk",
         "napalm": "napalm",
+        "nix": "nix_2",
         "nur": "nur",
         "small": "nixpkgs_3",
         "snack": "snack",

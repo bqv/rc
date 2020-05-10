@@ -32,7 +32,7 @@ let
           ];
 
           system.configurationRevision = inputs.self.rev
-            or (throw "Cannot build from an unclean source tree!");
+            or (throw "Refusing to build from an unclean source tree!");
 
           system.extraSystemBuilderCmds = '' ln -s '${../.}' "$out/flake" '';
 

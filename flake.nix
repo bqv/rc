@@ -8,8 +8,10 @@
   inputs.small.url = "github:nixos/nixpkgs/nixos-unstable-small";
   inputs.large.url = "github:nixos/nixpkgs/nixos-unstable";
 
-  #inputs.dwarffs.url = "github:edolstra/dwarffs";
-  inputs.dwarffs.url = "github:edolstra/dwarffs/83c13981993fa54c4cac230f2eec7241ab8fd0a9";
+  inputs.nix.url = "github:nixos/nix/flakes";
+  inputs.nix.inputs.nixpkgs.follows = "master";
+
+  inputs.dwarffs.url = "github:edolstra/dwarffs";
   inputs.dwarffs.inputs.nixpkgs.follows = "master";
 
   inputs.home.url = "github:rycee/home-manager/bqv-flakes";
@@ -29,7 +31,7 @@
   inputs.epkgs = { url = "github:bqv/nixpkgs/emacs-native-pkgs"; };
 
   outputs = inputs@{ self, master, staged, small, large,
-    dwarffs, home, nur, naersk,
+    nix, dwarffs, home, nur, naersk,
     emacs, mozilla, snack, napalm, bhipple, epkgs
   }:
     let
@@ -84,6 +86,7 @@
             inherit (import staged { inherit config system; }) libgccjit;
             inherit (import bhipple { inherit pkgs; }) gccemacs;
           })
+          nix.overlay
           nur.overlay
           self.overlay
         ];
