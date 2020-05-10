@@ -63,19 +63,19 @@
         overlays = (attrValues self.overlays) ++ [
           (self: super: { master =
              mapAttrs (k: v: diffTrace (baseNameOf master) (baseNameOf super.path) "pkgs.${k} pinned to nixpkgs/master" v)
-             (import master { inherit config system overlays; });
+             (import master { inherit config system; overlays = []; });
            })
           (self: super: { staged =
              mapAttrs (k: v: diffTrace (baseNameOf staged) (baseNameOf super.path) "pkgs.${k} pinned to nixpkgs/staging" v)
-             (import staged { inherit config system overlays; });
+             (import staged { inherit config system; overlays = []; });
            })
           (self: super: { small =
              mapAttrs (k: v: diffTrace (baseNameOf small) (baseNameOf super.path) "pkgs.${k} pinned to nixpkgs/nixos-unstable-small" v)
-             (import small { inherit config system overlays; });
+             (import small { inherit config system; overlays = []; });
            })
           (self: super: { large =
              mapAttrs (k: v: diffTrace (baseNameOf large) (baseNameOf super.path) "pkgs.${k} pinned to nixpkgs/nixos-unstable" v)
-             (import large { inherit config system overlays; });
+             (import large { inherit config system; overlays = []; });
            })
           (self: super: let
             pkgs = epkgs.legacyPackages.${system};
@@ -86,6 +86,7 @@
             naersk = naersk.lib.${system};
             snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
             napalm = pkgs.callPackage inputs.napalm;
+            inherit (master.legacyPackages.${system}) pulseeffects;
             inherit (staged.legacyPackages.${system}) libgccjit sof-firmware;
             inherit (import bhipple { inherit pkgs; }) gccemacs;
           })

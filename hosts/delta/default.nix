@@ -130,12 +130,12 @@
     builders-use-substitutes = true
   '';
 
-  environment.systemPackages = with pkgs.large; [
+  environment.systemPackages = with pkgs; [
     clipmenu bitwarden bitwarden-cli pass protonmail-bridge
 
     ckb-next riot-desktop nheko discord ripcord
     qutebrowser next firefox fx_cast_bridge
-    thunderbird mpv
+    thunderbird mpv 
 
     dunst catt termite rxvt_unicode
     steam obs-studio
