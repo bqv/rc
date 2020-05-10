@@ -109,7 +109,9 @@ in {
         end
       '';
       interactiveShellInit = ''
-        if test -z "$EMACS"
+        if test "$INSIDE_EMACS" == "vterm"
+            test -z "$DVTM"; and exec env TERM=dvtm-256color ${pkgs.abduco}/bin/abduco -Al emacs ${pkgs.dvtm}/bin/dvtm -m '^q'
+        else if test -z "$EMACS"
             if test "$TERM" = "dumb"
                 exec bash
             else if test -n "$DISPLAY"                # If we're in X11
