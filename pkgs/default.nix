@@ -10,6 +10,10 @@ final: prev: {
 
   fsnoop = prev.callPackage ./tools/misc/fsnoop { };
 
+  guilePackages = prev.callPackages ./development/guile-modules { };
+
+  guix = final.callPackage ./tools/package-management/guix { };
+
   matrix-appservice-irc = prev.callPackage ./servers/matrix-appservice-irc { };
 
   matrix-construct = prev.callPackage ./servers/matrix-construct { };

@@ -81,11 +81,6 @@
             naersk = naersk.lib.x86_64-linux;
             snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
             napalm = pkgs.callPackage inputs.napalm;
-            guix = with fetchPullRequestForSystem system {
-              id = 85463;
-              rev = "ea1769e05bb716135fb35ecf1af83a253888a053";
-              sha256 = "1p6m055b5pixrnz1ldd839h1knb798cmrcv4cjrhsb6vszh8h6bq";
-            }; guix;
             inherit (import staged { inherit config system; }) libgccjit;
             inherit (import bhipple { inherit pkgs; }) gccemacs;
           })
@@ -125,7 +120,9 @@
       in filterAttrs (_: p: (p.meta.broken or null) != true) {
         inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color;
         inherit (pkgs) dgit dejavu_nerdfont flarectl fsnoop;
-        inherit (pkgs) matrix-appservice-irc matrix-construct mx-puppet-discord;
+        inherit (pkgs.guilePackages) guile-gcrypt guile-git guile-json guile-sqlite3;
+        inherit (pkgs.guilePackages) guile-ssh guile-gnutls bytestructures;
+        inherit (pkgs) guix matrix-appservice-irc matrix-construct mx-puppet-discord;
         inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
         inherit (pkgs) pure sddm-chili shflags yacy;
 
