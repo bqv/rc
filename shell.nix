@@ -1,4 +1,8 @@
-{ pkgs ? import <nixpkgs> { }, my ? import ./pkgs pkgs pkgs }:
+{ nixpkgs ? if isNull (builtins.getFlake or null)
+            then <nixpkgs> else builtins.getFlake "nixpkgs"
+, pkgs ? import nixpkgs { }
+, my ? import ./pkgs pkgs pkgs
+}:
 
 let
   shFlagsRules = rules: ''
@@ -23,6 +27,10 @@ let
       ARGS="$ARGS --show-trace"
     fi
 
+    if [ $FLAGS_verbose -eq $FLAGS_TRUE ]; then
+      ARGS="$ARGS -vv"
+    fi
+
     echo '> nixos-rebuild' $ARGS ${operation}
     source $(which nixos-rebuild) $ARGS ${operation}
   '';
@@ -39,6 +47,7 @@ let
     ${shFlagsRules ''
       DEFINE_string 'host' "" 'Host to build' 'H'
       DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
+      DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
     ''}
     ${rebuild "switch"}
 
@@ -50,6 +59,7 @@ let
     ${shFlagsRules ''
       DEFINE_string 'host' "" 'Host to build' 'H'
       DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
+      DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
     ''}
     ${rebuild "test"}
 
@@ -67,6 +77,7 @@ let
     ${shFlagsRules ''
       DEFINE_string 'host' "" 'Host to build' 'H'
       DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
+      DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
     ''}
     ${rebuild "boot"}
   '';
@@ -74,6 +85,7 @@ let
     ${shFlagsRules ''
       DEFINE_string 'host' "" 'Host to build' 'H'
       DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
+      DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
     ''}
     ${rebuild "dry-activate"}
   '';
@@ -81,6 +93,7 @@ let
     ${shFlagsRules ''
       DEFINE_string 'host' "" 'Host to build' 'H'
       DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
+      DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
     ''}
     ${rebuild "dry-build"}
   '';
