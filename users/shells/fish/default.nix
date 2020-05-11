@@ -156,6 +156,7 @@ in {
         ps = "${pkgs.procs}/bin/procs";
         diff = "${pkgs.colordiff}/bin/colordiff";
         tmux = "tmux -2"; # Force 256 colors
+        jq = "jq -C"; # Force 256 colors
         bw = "env (cat ~/.bwrc) bw";
 
         nix-build = "nix-build --no-out-link";
