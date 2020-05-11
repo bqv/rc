@@ -51,17 +51,14 @@ profile /usr/bin/chromium {
 		owner @{HOME}/.inoxunpack/** r,
 		owner @{HOME}/.inoxunpack/*/Cached*.pak rwk,
 
-		/etc/chromium/** rk,
+		/etc/chromium/** rk, # policies/managed and such
 		owner @{HOME}/.pki/nssdb/** rwk,
 		owner @{HOME}/.cache/thumbnails/** rw,
-		owner @{HOME}/.config/chromium/ rwk,
-		owner @{HOME}/.config/chromium/** rwk,
-		owner @{HOME}/.cache/chromium/ rwk,
-		owner @{HOME}/.cache/chromium/** rwk,
+		owner @{HOME}/.{config,cache}/chromium/ rwk,
+		owner @{HOME}/.{config,cache}/chromium/** rwk,
 		owner @{HOME}/.cache/mesa_shader_cache/** rwk,
 		/{run,dev}/shm/.org.chromium.Chromium.* rwkm,
 		/{run,dev}/shm/org.chromium.Chromium.shmem.* rwkm,
-		owner @{HOME}/.local/share/.org.chromium.Chromium.* rwkm,
 
 		# Fills these paths with gigs of trash fast otherwise
 		deny @{HOME}/.config/chromium/BrowserMetrics/ rw,
