@@ -1,4 +1,4 @@
-{ pkgs, nixexprs, ... }: {
+{ pkgs, ... }: {
   imports = [ ./fish ./tmux ];
 
   environment.shellAliases = { v = "$EDITOR"; };
@@ -43,10 +43,4 @@
   programs.thefuck.enable = true;
   programs.firejail.enable = true;
   programs.mtr.enable = true;
-  programs.command-not-found = {
-    enable = true;
-    dbPath = pkgs.runCommandNoCC "programs.sqlite" { inherit nixexprs; } ''
-      cat $nixexprs/nixos*/programs.sqlite > $out
-    '';
-  };
 }

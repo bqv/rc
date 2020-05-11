@@ -86,6 +86,7 @@
             naersk = naersk.lib.${system};
             snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
             napalm = pkgs.callPackage inputs.napalm;
+            nixexprs = inputs.nixexprs;
             inherit (master.legacyPackages.${system}) pulseeffects;
             inherit (staged.legacyPackages.${system}) libgccjit sof-firmware;
             inherit (import bhipple { inherit pkgs; }) gccemacs;
@@ -106,7 +107,6 @@
           usr = import ./lib/utils.nix { inherit (nixpkgs) lib; };
           nurModules = inputs.nur.nixosModules;
           nurOverlays = inputs.nur.overlays;
-          nixexprs = inputs.nixexprs;
 
           domains = import ./secrets/domains.nix;
           hosts = import ./secrets/hosts.nix;

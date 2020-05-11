@@ -51,9 +51,11 @@ in {
       ./utilities/htop
       ./services/gnupg
       ./services/mpd
+      ./misc/command-not-found.nix
     ];
 
     programs.home-manager.enable = true;
+    programs.command-not-found.enable = true;
     programs.qutebrowser.enable = true;
     programs.firefox.enable = true;
     programs.fish.enable = true;
