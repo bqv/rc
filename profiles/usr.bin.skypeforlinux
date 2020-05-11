@@ -19,15 +19,6 @@
 	owner @{HOME}/.config/skypeforlinux/ rw,
 	owner @{HOME}/.config/skypeforlinux/** krwm,
 	owner @{HOME}/[dD]ownload{,s}/** k,
-	/tmp/skype-*/ rwkm, # locks?
-	/tmp/skype-*/** rwkm,
-
-	deny /etc/passwd rm,
-	deny /proc/sys/kernel/yama/ptrace_scope r, # no clue
-	deny @{HOME}/.config/autostart/** w, # autostart
-	deny @{HOME}/.pki/** rw,
-	deny @{HOME}/.rnd r,
-	deny /tmp/skypeforlinux*/ rwkm, # crash dumps
 
 	capability sys_admin sys_chroot sys_ptrace,
 	signal (receive) peer=unconfined,
@@ -47,24 +38,29 @@
 	owner @{PROC}/@{pid}/task/@{pids}/stat r,
 	owner @{PROC}/@{pid}/task/@{pids}/status r,
 
-	# Audio access + basic chromium stuff
-	/dev/ r,
-	/etc/udev/udev.conf r,
-	/sys/{bus,class}/ r,
-	/sys/bus/pci/devices/ r,
-	/sys/devices/pci[0-9:.]*/**/{uevent,resource,irq,vendor,device,class,speed} r,
-	/sys/devices/pci[0-9:.]*/**/{subsystem_vendor,subsystem_device,config} r,
-	deny /sys/devices/pci[0-9:.]*/**/descriptors r, # block any further android-debug checks
-	deny /dev/video* r,
-
 	/dev/shm/shm-* rwkm, # required for screen sharing
 	/tmp/.org.chromium.Chromium.*/ rw,
 	/tmp/.org.chromium.Chromium.*/** rwmk,
 	/{run,dev}/shm/.org.chromium.Chromium.* rwkm,
 	/{run,dev}/shm/org.chromium.Chromium.shmem.* rwkm,
 
+	/dev/ r,
+	/sys/bus/pci/devices/ r,
+	/sys/devices/pci[0-9:.]*/**//net/*/speed r,
+
+	deny /dev/video* r,
+
+	deny /etc/passwd rm,
+	deny /proc/sys/kernel/yama/ptrace_scope r,
+	deny @{HOME}/.config/autostart/** w, # autostart
+	deny @{HOME}/.pki/** rw,
+	deny @{HOME}/.rnd r,
+	deny /tmp/skypeforlinux*/ rwkm, # crash dumps
+	deny /tmp/skype-*/ rwkm, # probably locks, doesn't clean these up
+
 	# Platform stats and fingerprinting on startup
 	# None of these seem to be necessary in any way
+	deny /dev/pts/* rw,
 	deny /sys/devices/virtual/tty/tty*/active r,
 	deny /etc/os-release r,
 	deny /proc/sys/kernel/random/boot_id r,
@@ -72,6 +68,7 @@
 	deny /proc/sys/kernel/ostype r,
 	deny /proc/sys/kernel/osrelease r,
 	deny /proc/version r,
+	deny /sys/devices/pci[0-9:.]*/**/{resource,irq} r,
 	deny /sys/devices/virtual/dmi/id/board_vendor r,
 	deny /sys/devices/virtual/dmi/id/product_name r,
 	deny /etc/issue r,
