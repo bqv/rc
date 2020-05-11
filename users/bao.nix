@@ -51,6 +51,7 @@ in {
       ./utilities/htop
       ./services/gnupg
       ./services/mpd
+      ./misc/command-not-found.nix
     ];
 
     programs.home-manager.enable = true;
