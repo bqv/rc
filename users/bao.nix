@@ -32,6 +32,7 @@ in {
 
   users.users.bao = {
     uid = 1000;
+    group = "users";
     description = "Tony";
     shell = pkgs.fish;
     isNormalUser = true;

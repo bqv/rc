@@ -10,6 +10,7 @@
   };
 
   networking.useNetworkd = true;
+  users.users.resolved.uid = 57; # unused: was network-manager
   networking.useDHCP = false;
   networking.enableIPv6 = true;
   networking.defaultGateway = "192.168.0.1";
