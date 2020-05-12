@@ -1,4 +1,4 @@
-{ config, lib, pkgs, hosts, ... }:
+{ config, lib, pkgs, inputs, hosts, ... }:
 
 {
   imports = [
@@ -24,6 +24,10 @@
     ../../users/bao.nix
     ./network.nix
     ./certificate.nix
+  ];
+
+  nesting.children = with inputs.self.nixosConfigurations; [
+    delta.config
   ];
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "sd_mod" ];
