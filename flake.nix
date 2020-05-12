@@ -13,6 +13,7 @@
     nix.inputs.nixpkgs.follows = "master";
 
     dwarffs.url = "github:edolstra/dwarffs";
+    dwarffs.inputs.nix.follows = "nix";
     dwarffs.inputs.nixpkgs.follows = "master";
 
     home.url = "github:rycee/home-manager/bqv-flakes";
