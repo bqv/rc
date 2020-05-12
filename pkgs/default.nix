@@ -2,6 +2,8 @@ final: prev: {
   emacsPackages =
     prev.emacsPackages // (prev.callPackage ./applications/editors/emacs-modes { });
 
+  arm-adb = prev.callPackage ./applications/misc/arm-adb { };
+
   dgit = prev.callPackage ./applications/version-management/dgit { };
 
   dejavu_nerdfont = prev.callPackage ./data/fonts/dejavu-nerdfont { };
