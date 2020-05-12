@@ -98,19 +98,65 @@
       };
 
     in {
-      nixosConfigurations = import ./hosts rec {
-        inherit inputs;
+      nixosConfigurations = let
         system = "x86_64-linux";
         pkgs = pkgsForSystem system;
         nixpkgs = master;
         specialArgs = {
           usr = import ./lib/utils.nix { inherit (nixpkgs) lib; };
-          nurModules = inputs.nur.nixosModules;
-          nurOverlays = inputs.nur.overlays;
+          nurModules = nur.nixosModules;
+          nurOverlays = nur.overlays;
 
           domains = import ./secrets/domains.nix;
           hosts = import ./secrets/hosts.nix;
         };
+
+        inherit (specialArgs) usr;
+        config = hostName: nixpkgs.lib.nixosSystem {
+          inherit system;
+
+          inherit specialArgs;
+
+          modules = let
+            inherit (home.nixosModules) home-manager;
+
+            core = ./profiles/core.nix;
+
+            global = {
+              networking.hostName = hostName;
+
+              nix.registry = nixpkgs.lib.mapAttrs (id: flake: {
+                inherit flake;
+                from = { inherit id; type = "indirect"; };
+              }) inputs;
+              nix.nixPath = [
+                "nixpkgs=${nixpkgs}"
+                "nixos-config=/etc/nixos/configuration.nix"
+                "nixpkgs-overlays=/etc/nixos/overlays"
+                ];
+
+                system.configurationRevision = self.rev
+                or (throw "Refusing to build from an unclean source tree!");
+
+                system.extraSystemBuilderCmds = '' ln -s '${./.}' "$out/flake" '';
+
+                nixpkgs = {
+                  inherit pkgs;
+                };
+
+                home-manager.useGlobalPkgs = true;
+              };
+
+              local = import "${toString ./hosts}/${hostName}";
+
+              flakeModules = import ./modules/list.nix;
+
+          in flakeModules ++ [ core global local home-manager
+                               dwarffs.nixosModules.dwarffs ];
+        };
+      in usr.recImport {
+        dir = ./hosts;
+        _import = config;
       };
 
       legacyPackages = forAllSystems pkgsForSystem;
