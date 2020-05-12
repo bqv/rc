@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
 
-let inherit (lib) fileContents;
+let
+  inherit (lib) fileContents;
 in {
   nix.package = pkgs.nix;
 

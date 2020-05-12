@@ -17,6 +17,11 @@ with lib; let
       sha256 = "1f22bxwq53hhdjlakmqz66y63vix5ybpnc1pk9fpy18wjh871scq";
     };
     patches = [];
+    postPatch = ''
+      substituteInPlace lisp/loadup.el \
+        --replace '(emacs-repository-get-version)' '"${src.rev}"' \
+        --replace '(emacs-repository-get-branch)' '"feature/native-comp"'
+    '';
 
     # When this is enabled, emacs does native compilation lazily after starting
     # up, resulting in quicker package builds up-front, at the cost of slower

@@ -3,206 +3,198 @@
 
   description = "A highly structured configuration database.";
 
-  inputs.master.url = "github:nixos/nixpkgs/master";
-  inputs.staged.url = "github:nixos/nixpkgs/staging";
-  inputs.small.url = "github:nixos/nixpkgs/nixos-unstable-small";
-  inputs.large.url = "github:nixos/nixpkgs/nixos-unstable";
+  inputs = {
+    master.url = "github:nixos/nixpkgs/master";
+    staged.url = "github:nixos/nixpkgs/staging";
+    small.url = "github:nixos/nixpkgs/nixos-unstable-small";
+    large.url = "github:nixos/nixpkgs/nixos-unstable";
 
-  inputs.nix.url = "github:nixos/nix/flakes";
-  inputs.nix.inputs.nixpkgs.follows = "master";
+    nix.url = "github:nixos/nix/flakes";
+    nix.inputs.nixpkgs.follows = "master";
 
-  inputs.dwarffs.url = "github:edolstra/dwarffs";
-  inputs.dwarffs.inputs.nixpkgs.follows = "master";
+    dwarffs.url = "github:edolstra/dwarffs";
+    dwarffs.inputs.nixpkgs.follows = "master";
 
-  inputs.home.url = "github:rycee/home-manager/bqv-flakes";
-  inputs.home.inputs.nixpkgs.follows = "large";
+    home.url = "github:rycee/home-manager/bqv-flakes";
+    home.inputs.nixpkgs.follows = "large";
 
-  inputs.nur.url = "github:nix-community/NUR";
-  inputs.nur.inputs.nixpkgs.follows = "small";
+    nur.url = "github:nix-community/NUR";
+    nur.inputs.nixpkgs.follows = "small";
 
-  inputs.naersk.url = "github:nmattia/naersk";
-  inputs.naersk.inputs.nixpkgs.follows = "large";
+    naersk.url = "github:nmattia/naersk";
+    naersk.inputs.nixpkgs.follows = "large";
 
-  inputs.nixexprs = { url = "https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz"; flake = false; };
+    emacs.url = "github:nix-community/emacs-overlay";
 
-  inputs.emacs = { url = "github:nix-community/emacs-overlay"; flake = false; };
-  inputs.mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
-  inputs.snack = { url = "github:nmattia/snack"; flake = false; };
-  inputs.napalm = { url = "github:nmattia/napalm"; flake = false; };
+    mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
+    snack = { url = "github:nmattia/snack"; flake = false; };
+    napalm = { url = "github:nmattia/napalm"; flake = false; };
 
-  inputs.bhipple = { url = "github:bhipple/nur-packages"; flake = false; };
-  inputs.epkgs = { url = "github:bqv/nixpkgs/emacs-native-pkgs"; };
+    nixexprs = { url = "https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz"; flake = false; };
+  };
 
-  outputs = inputs@{ self, master, staged, small, large,
-    nix, dwarffs, home, nur, naersk, nixexprs,
-    emacs, mozilla, snack, napalm, bhipple, epkgs
-  }:
-    let
-      inherit (builtins) listToAttrs baseNameOf attrNames attrValues readDir trace concatStringsSep;
-      inherit (master.lib) fold recursiveUpdate setAttrByPath mapAttrs genAttrs filterAttrs;
-      inherit (master.lib) removeSuffix removePrefix splitString const flatten;
-      forAllSystems = genAttrs [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
-      diffTrace = left: right: string: value: if left != right then trace string value else value;
-
-      config = { allowUnfree = true; };
-
-      fetchPullRequestForSystem = system: args@{ id, rev ? null, sha256 ? master.lib.fakeSha256, ... }: 
-        mapAttrs (k: v: trace "pkgs.${k} pinned to nixpks/pull/${toString id}" v)
-          (import (builtins.fetchTarball {
-            name = "nixpkgs-pull-request-${toString id}"; inherit sha256;
-            url = if ! builtins.isNull rev
-                  then "https://github.com/NixOS/nixpkgs/archive/${rev}.zip"
-                  else "https://github.com/NixOS/nixpkgs/archive/pull/${toString id}/head.zip";
-          }) {
-            inherit system config;
-            overlays = attrValues self.overlays;
-          } // (removeAttrs args [ "id" "rev" "hash" ]));
-
-      pkgsForSystem = system: import large rec {
-        inherit system config;
-        overlays = (attrValues self.overlays) ++ [
-          (self: super: { master =
-             mapAttrs (k: v: diffTrace (baseNameOf master) (baseNameOf super.path) "pkgs.${k} pinned to nixpkgs/master" v)
-             (import master { inherit config system; overlays = []; });
-           })
-          (self: super: { staged =
-             mapAttrs (k: v: diffTrace (baseNameOf staged) (baseNameOf super.path) "pkgs.${k} pinned to nixpkgs/staging" v)
-             (import staged { inherit config system; overlays = []; });
-           })
-          (self: super: { small =
-             mapAttrs (k: v: diffTrace (baseNameOf small) (baseNameOf super.path) "pkgs.${k} pinned to nixpkgs/nixos-unstable-small" v)
-             (import small { inherit config system; overlays = []; });
-           })
-          (self: super: { large =
-             mapAttrs (k: v: diffTrace (baseNameOf large) (baseNameOf super.path) "pkgs.${k} pinned to nixpkgs/nixos-unstable" v)
-             (import large { inherit config system; overlays = []; });
-           })
-          (self: super: let
-            pkgs = epkgs.legacyPackages.${system};
-          in import emacs pkgs pkgs)
-          #(import emacs)
-          (import mozilla)
-          (pkgs: const {
-            naersk = naersk.lib.${system};
-            snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
-            napalm = pkgs.callPackage inputs.napalm;
-            nixexprs = inputs.nixexprs;
-            inherit (master.legacyPackages.${system}) pulseeffects;
-            inherit (staged.legacyPackages.${system}) libgccjit sof-firmware;
-            inherit (import bhipple { inherit pkgs; }) gccemacs;
-          })
-          nix.overlay
-          nur.overlay
-          self.overlay
-        ];
-      };
-
-    in {
-      nixosConfigurations = let
-        system = "x86_64-linux";
-        pkgs = pkgsForSystem system;
-        nixpkgs = master;
-        specialArgs = {
-          usr = import ./lib/utils.nix { inherit (nixpkgs) lib; };
-          nurModules = nur.nixosModules;
-          nurOverlays = nur.overlays;
-
-          domains = import ./secrets/domains.nix;
-          hosts = import ./secrets/hosts.nix;
-        };
-
-        inherit (specialArgs) usr;
-        config = hostName: nixpkgs.lib.nixosSystem {
-          inherit system;
-
-          inherit specialArgs;
-
-          modules = let
-            inherit (home.nixosModules) home-manager;
-
-            core = ./profiles/core.nix;
-
-            global = {
-              networking.hostName = hostName;
-
-              nix.registry = nixpkgs.lib.mapAttrs (id: flake: {
-                inherit flake;
-                from = { inherit id; type = "indirect"; };
-              }) inputs;
-              nix.nixPath = [
-                "nixpkgs=${nixpkgs}"
-                "nixos-config=/etc/nixos/configuration.nix"
-                "nixpkgs-overlays=/etc/nixos/overlays"
-                ];
-
-                system.configurationRevision = self.rev
-                or (throw "Refusing to build from an unclean source tree!");
-
-                system.extraSystemBuilderCmds = '' ln -s '${./.}' "$out/flake" '';
-
-                nixpkgs = {
-                  inherit pkgs;
-                };
-
-                home-manager.useGlobalPkgs = true;
-              };
-
-              local = import "${toString ./hosts}/${hostName}";
-
-              flakeModules = import ./modules/list.nix;
-
-          in flakeModules ++ [ core global local home-manager
-                               dwarffs.nixosModules.dwarffs ];
-        };
-      in usr.recImport {
-        dir = ./hosts;
-        _import = config;
-      };
-
-      legacyPackages = forAllSystems pkgsForSystem;
-
-      overlay = import ./pkgs;
-
-      overlays = listToAttrs (map (name: {
-        name = removeSuffix ".nix" name;
-        value = import (./overlays + "/${name}");
-      }) (attrNames (readDir ./overlays)));
-
-      packages = forAllSystems (system: let
-        pkgs = pkgsForSystem system;
-      in filterAttrs (_: p: (p.meta.broken or null) != true) {
-        inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color;
-        inherit (pkgs) dgit dejavu_nerdfont electronmail flarectl fsnoop;
-        inherit (pkgs.guilePackages) guile-gcrypt guile-git guile-json guile-sqlite3;
-        inherit (pkgs.guilePackages) guile-ssh guile-gnutls bytestructures;
-        inherit (pkgs) guix matrix-appservice-irc matrix-construct mx-puppet-discord;
-        inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
-        inherit (pkgs) pure sddm-chili shflags yacy;
-
-        inherit (pkgs) nheko;
-        inherit (pkgs.weechatScripts) weechat-matrix;
-      });
-
-      nixosModules = let
-        mergeAll = fold recursiveUpdate {};
-        pathsToAttrs = map (file:
-          let
-            cleanFile = removeSuffix ".nix" (removePrefix "./" (toString file));
-          in setAttrByPath (splitString "/" cleanFile) (import file)
-        );
-
-        # modules
-        moduleList = import ./modules/list.nix;
-        modulesAttrs = mergeAll (pathsToAttrs moduleList);
-
-        # profiles
-        profilesList = import ./profiles/list.nix;
-        profilesAttrs = { profiles = mergeAll (pathsToAttrs profilesList); };
-      in modulesAttrs // profilesAttrs;
-
-      secrets = concatStringsSep "\n" ([]
-        ++ (attrValues (import ./secrets/domains.nix))
-        ++ (flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
-      );
+  outputs = inputs: with builtins; let
+    channels = with inputs; {
+      pkgs = large;
+      modules = master;
+      lib = master;
     };
+    inherit (channels.lib) lib;
+
+    forAllSystems = lib.genAttrs [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
+    diffTrace = left: right: string: value: if left != right then trace string value else value;
+
+    config = { allowUnfree = true; };
+
+    fetchPullRequestForSystem = system: args@{ id, rev ? null, sha256 ? lib.fakeSha256, ... }: 
+      mapAttrs (k: v: trace "pkgs.${k} pinned to nixpks/pull/${toString id}" v)
+        (import (builtins.fetchTarball {
+          name = "nixpkgs-pull-request-${toString id}"; inherit sha256;
+          url = if ! builtins.isNull rev
+                then "https://github.com/NixOS/nixpkgs/archive/${rev}.zip"
+                else "https://github.com/NixOS/nixpkgs/archive/pull/${toString id}/head.zip";
+        }) {
+          inherit system config;
+          overlays = attrValues self.overlays;
+        } // (removeAttrs args [ "id" "rev" "hash" ]));
+
+    channelToOverlay = { system, config, flake, branch }: (final: prev: { ${flake} =
+      mapAttrs (k: v: diffTrace (baseNameOf inputs.${flake}) (baseNameOf prev.path) "pkgs.${k} pinned to nixpkgs/${branch}" v)
+      (import inputs.${flake} { inherit config system; overlays = []; });
+    });
+
+    pkgsForSystem = system: import channels.pkgs rec {
+      inherit system config;
+      overlays = (attrValues inputs.self.overlays) ++ [
+        (channelToOverlay { inherit system config; flake = "master"; branch = "master"; })
+        (channelToOverlay { inherit system config; flake = "staged"; branch = "staging"; })
+        (channelToOverlay { inherit system config; flake = "small"; branch = "nixos-unstable-small"; })
+        (channelToOverlay { inherit system config; flake = "large"; branch = "nixos-unstable"; })
+        (import inputs.mozilla)
+        (pkgs: lib.const {
+          naersk = inputs.naersk.lib.${system};
+          snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
+          napalm = pkgs.callPackage inputs.napalm;
+          nixexprs = inputs.nixexprs;
+          inherit (inputs.small.legacyPackages.${system}) pulseeffects;
+          inherit (inputs.staged.legacyPackages.${system}) libgccjit sof-firmware;
+        })
+        inputs.nix.overlay
+        inputs.emacs.overlay
+        inputs.nur.overlay
+        inputs.self.overlay
+      ];
+    };
+
+  in {
+    nixosConfigurations = let
+      system = "x86_64-linux";
+      pkgs = pkgsForSystem system;
+      specialArgs = {
+        usr = import ./lib/utils.nix { inherit lib; };
+        nurModules = nur.nixosModules;
+        nurOverlays = nur.overlays;
+
+        domains = import ./secrets/domains.nix;
+        hosts = import ./secrets/hosts.nix;
+      };
+
+      inherit (specialArgs) usr;
+      config = hostName: lib.nixosSystem {
+        inherit system;
+
+        inherit specialArgs;
+
+        modules = let
+          inherit (inputs.home.nixosModules) home-manager;
+          inherit (inputs.dwarffs.nixosModules) dwarffs;
+
+          core = ./profiles/core.nix;
+
+          global = {
+            networking.hostName = hostName;
+
+            nix.registry = lib.mapAttrs (id: flake: {
+              inherit flake;
+              from = { inherit id; type = "indirect"; };
+            }) inputs;
+            nix.nixPath = [
+              "nixpkgs=${channels.pkgs}"
+              "nixos-config=/etc/nixos/configuration.nix"
+              "nixpkgs-overlays=/etc/nixos/overlays"
+            ];
+
+            system.configurationRevision = if (inputs.self ? rev) then inputs.self.rev else "dirty";
+
+            system.extraSystemBuilderCmds = ''
+              ln -s '${./.}' "$out/flake"
+            '' + (if ! (inputs.self ? rev) then ''
+              echo "Cannot switch to a dirty configuration"
+              exit 1
+            '' else "");
+
+            nixpkgs = {
+              inherit pkgs;
+            };
+
+            home-manager.useGlobalPkgs = true;
+          };
+
+          local = import "${toString ./hosts}/${hostName}";
+
+          flakeModules = import ./modules/list.nix;
+
+        in flakeModules ++ [ core global local home-manager dwarffs ];
+      };
+    in usr.recImport {
+      dir = ./hosts;
+      _import = config;
+    };
+
+    legacyPackages = forAllSystems pkgsForSystem;
+
+    overlay = import ./pkgs;
+
+    overlays = listToAttrs (map (name: {
+      name = lib.removeSuffix ".nix" name;
+      value = import (./overlays + "/${name}");
+    }) (attrNames (readDir ./overlays)));
+
+    packages = forAllSystems (system: let
+      pkgs = pkgsForSystem system;
+    in lib.filterAttrs (_: p: (p.meta.broken or null) != true) {
+      inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color;
+      inherit (pkgs) dgit dejavu_nerdfont electronmail flarectl fsnoop;
+      inherit (pkgs.guilePackages) guile-gcrypt guile-git guile-json guile-sqlite3;
+      inherit (pkgs.guilePackages) guile-ssh guile-gnutls bytestructures;
+      inherit (pkgs) guix matrix-appservice-irc matrix-construct mx-puppet-discord;
+      inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
+      inherit (pkgs) pure sddm-chili shflags yacy;
+
+      inherit (pkgs) nheko;
+      inherit (pkgs.weechatScripts) weechat-matrix;
+    });
+
+    nixosModules = let
+      mergeAll = fold recursiveUpdate {};
+      pathsToAttrs = map (file:
+        let
+          cleanFile = removeSuffix ".nix" (removePrefix "./" (toString file));
+        in setAttrByPath (splitString "/" cleanFile) (import file)
+      );
+
+      # modules
+      moduleList = import ./modules/list.nix;
+      modulesAttrs = mergeAll (pathsToAttrs moduleList);
+
+      # profiles
+      profilesList = import ./profiles/list.nix;
+      profilesAttrs = { profiles = mergeAll (pathsToAttrs profilesList); };
+    in modulesAttrs // profilesAttrs;
+
+    secrets = concatStringsSep "\n" ([]
+      ++ (attrValues (import ./secrets/domains.nix))
+      ++ (lib.flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
+    );
+  };
 }
