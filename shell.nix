@@ -1,5 +1,4 @@
-{ nixpkgs ? if isNull (builtins.getFlake or null)
-            then <nixpkgs> else builtins.getFlake "nixpkgs"
+{ nixpkgs ? if (builtins ? getFlake) then builtins.getFlake "nixpkgs" else <nixpkgs>
 , pkgs ? import nixpkgs { }
 , my ? import ./pkgs pkgs pkgs
 }:
@@ -115,7 +114,7 @@ in pkgs.mkShell {
       };
       patches = [ worktreePatch ];
     });
-  in [ git git-crypt git-secrets nixFlakes nixfmt flake-shell
+  in [ git git-crypt git-secrets nixfmt flake-shell
        activate dry-boot tag-current boot dry-activate dry-build ];
 
   shellHook = ''
