@@ -37,6 +37,8 @@
     yaml-mode haskell-mode company-cabal flycheck-haskell
     # usr-lang-purescript.el
     purescript-mode flycheck-purescript
+    # usr-lang-typescript.el
+    typescript-mode flycheck-jest
     # usr-lang-kotlin.el
     kotlin-mode flycheck-kotlin
     # usr-lang-android.el
