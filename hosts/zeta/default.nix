@@ -1,4 +1,4 @@
-{ config, lib, pkgs, hosts, ... }:
+{ config, lib, pkgs, inputs, hosts, ... }:
 
 {
   imports = [
@@ -25,6 +25,11 @@
     ./network.nix
     ./certificate.nix
   ];
+
+  specialisation.delta = with inputs.self.nixosConfigurations; {
+    configuration = delta.config;
+    inheritParentConfig = false;
+  };
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ "btrfs" "ext4" ];

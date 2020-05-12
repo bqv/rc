@@ -92,7 +92,9 @@
       system = "x86_64-linux";
       pkgs = pkgsForSystem system;
       specialArgs = {
+        inherit inputs;
         usr = import ./lib/utils.nix { inherit lib; };
+
         nurModules = nur.nixosModules;
         nurOverlays = nur.overlays;
 
