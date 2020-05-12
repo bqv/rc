@@ -135,7 +135,7 @@
 
     ckb-next riot-desktop nheko discord ripcord
     qutebrowser next firefox fx_cast_bridge
-    thunderbird mpv 
+    thunderbird electronmail mpv 
 
     dunst catt termite rxvt_unicode
     steam obs-studio

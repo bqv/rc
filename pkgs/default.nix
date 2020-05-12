@@ -6,6 +6,8 @@ final: prev: {
 
   dejavu_nerdfont = prev.callPackage ./data/fonts/dejavu-nerdfont { };
 
+  electronmail = prev.callPackage ./applications/networking/mailreaders/electronmail { };
+
   flarectl = prev.callPackage ./applications/misc/flarectl { };
 
   fsnoop = prev.callPackage ./tools/misc/fsnoop { };

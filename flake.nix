@@ -172,7 +172,7 @@
         pkgs = pkgsForSystem system;
       in filterAttrs (_: p: (p.meta.broken or null) != true) {
         inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color;
-        inherit (pkgs) dgit dejavu_nerdfont flarectl fsnoop;
+        inherit (pkgs) dgit dejavu_nerdfont electronmail flarectl fsnoop;
         inherit (pkgs.guilePackages) guile-gcrypt guile-git guile-json guile-sqlite3;
         inherit (pkgs.guilePackages) guile-ssh guile-gnutls bytestructures;
         inherit (pkgs) guix matrix-appservice-irc matrix-construct mx-puppet-discord;
