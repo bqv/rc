@@ -6,7 +6,7 @@ IFS=$'\n\t'
 
 # set -x
 
-REPO=jevolk/charybdis
+REPO=matrix-construct/construct
 
 REV=$(curl -Ls api.github.com/repos/$REPO/git/ref/heads/master | jq .object.sha -r)
 echo "Revision: ${REV}" >&2

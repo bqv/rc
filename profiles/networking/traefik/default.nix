@@ -31,27 +31,67 @@
               options = "foobar";
             };
           };
-          Router1 = {
-            entryPoints = [ "foobar" "foobar" ];
-            middlewares = [ "foobar" "foobar" ];
-            priority = 42;
-            rule = "foobar";
-            service = "foobar";
-            tls = {
-              certResolver = "foobar";
-              domains = [
-                {
-                  main = "foobar";
-                  sans = [ "foobar" "foobar" ];
-                }
-                {
-                  main = "foobar";
-                  sans = [ "foobar" "foobar" ];
-                }
-              ];
-              options = "foobar";
-            };
+          auth-request = {
+            entryPoints = [ "http" "https" ];
+            rule = "Host(`sso.${domains.home}`)";
+            service = "auth";
           };
+          torrent = {
+            entryPoints = [ "http" "https" ];
+            rule = "Host(`torrent.${domains.home}`)";
+            service = "torrent";
+          };
+          sync = {
+            entryPoints = [ "http" "https" ];
+            rule = "Host(`sync.${domains.home}`)";
+            service = "sync";
+          };
+          search = {
+            entryPoints = [ "http" "https" ];
+            rule = "Host(`search.${domains.home}`)";
+            service = "search";
+          };
+          gpx = {
+            entryPoints = [ "http" "https" ];
+            rule = "Host(`gpx.${domains.home}`)";
+            service = "gpx";
+          };
+          mastodon = {
+            entryPoints = [ "http" "https" ];
+            rule = "Host(`mastodon.${domains.home}`)";
+            service = "mastodon";
+          };
+          construct = {
+            entryPoints = [ "http" "https" ];
+            rule = "Host(`construct.${domains.home}`)";
+            service = "construct";
+          };
+          certauth = {
+            entryPoints = [ "http" "https" ];
+            rule = "Host(`ca.${domains.home}`)";
+            service = "certauth";
+          };
+         #Router1 = {
+         #  entryPoints = [ "foobar" "foobar" ];
+         #  middlewares = [ "foobar" "foobar" ];
+         #  priority = 42;
+         #  rule = "foobar";
+         #  service = "foobar";
+         #  tls = {
+         #    certResolver = "foobar";
+         #    domains = [
+         #      {
+         #        main = "foobar";
+         #        sans = [ "foobar" "foobar" ];
+         #      }
+         #      {
+         #        main = "foobar";
+         #        sans = [ "foobar" "foobar" ];
+         #      }
+         #    ];
+         #    options = "foobar";
+         #  };
+         #};
         };
 
         middlewares = {
@@ -257,26 +297,26 @@
 
         services = {
           auth-request.loadBalancer = {
+            healthCheck = {
+             #followRedirects = true;
+             #headers = {
+             #  name0 = "foobar";
+             #  name1 = "foobar";
+             #};
+             #hostname = "foobar";
+             #interval = "foobar";
+             #path = "foobar";
+             #port = 42;
+             #scheme = "foobar";
+             #timeout = "foobar";
+            };
+            passHostHeader = true;
+            responseForwarding = { flushInterval = 100; };
             servers = [
               { url = "http://10.1.0.2:4010/auth"; }
             ];
           };
           torrent.loadBalancer = {
-            healthCheck = {
-              followRedirects = true;
-              headers = {
-                name0 = "foobar";
-                name1 = "foobar";
-              };
-              hostname = "foobar";
-              interval = "foobar";
-              path = "foobar";
-              port = 42;
-              scheme = "foobar";
-              timeout = "foobar";
-            };
-            passHostHeader = true;
-            responseForwarding = { flushInterval = "foobar"; };
             servers = [
               { url = "http://10.1.0.2:3000"; }
             ];
@@ -304,11 +344,6 @@
           construct.loadBalancer = {
             servers = [
               { url = "http://10.7.0.2:4004"; }
-            ];
-          };
-          acme.loadBalancer = {
-            servers = [
-              { url = "http://10.3.0.2:80"; }
             ];
           };
           certauth.loadBalancer = {
@@ -339,23 +374,17 @@
 
       tcp = {
         routers = {
-          TCPRouter0 = {
-            entryPoints = [ "foobar" "foobar" ];
-            rule = "foobar";
-            service = "foobar";
+          ssh = {
+            entryPoints = [ "ssh" ];
+            service = "ssh";
             tls = {
-              certResolver = "foobar";
-              domains = [
-                {
-                  main = "foobar";
-                  sans = [ "foobar" "foobar" ];
-                }
-                {
-                  main = "foobar";
-                  sans = [ "foobar" "foobar" ];
-                }
-              ];
-              options = "foobar";
+              passthrough = true;
+            };
+          };
+          irc = {
+            entryPoints = [ "ircs" ];
+            service = "irc";
+            tls = {
               passthrough = true;
             };
           };
@@ -365,13 +394,13 @@
             servers = [
               { address = "${hosts.ipv4.zeta}:22"; }
             ];
-            terminationDelay = 42;
+            terminationDelay = 100;
           };
           irc.loadBalancer = {
             servers = [
               { address = "${hosts.wireguard.delta}:6697"; }
             ];
-            terminationDelay = 42;
+            terminationDelay = 100;
           };
          #weighted-sample.weighted = {
          #  services = [
@@ -380,6 +409,40 @@
          #      weight = 42;
          #    }
          #  ];
+         #};
+        };
+      };
+
+      udp = {
+        routers = {
+         #UDPRouter0 = {
+         #  entryPoints = [ "foobar" "foobar" ];
+         #  service = "foobar";
+         #};
+         #UDPRouter1 = {
+         #  entryPoints = [ "foobar" "foobar" ];
+         #  service = "foobar";
+         #};
+        };
+        services = {
+         #UDPService01 = {
+         #  loadBalancer = {
+         #    servers = [ { address = "foobar"; } { address = "foobar"; } ];
+         #  };
+         #};
+         #UDPService02 = {
+         #  weighted = {
+         #    services = [
+         #      {
+         #        name = "foobar";
+         #        weight = 42;
+         #      }
+         #      {
+         #        name = "foobar";
+         #        weight = 42;
+         #      }
+         #    ];
+         #  };
          #};
         };
       };
@@ -434,40 +497,6 @@
             defaultCertificate = {
               certFile = "foobar";
               keyFile = "foobar";
-            };
-          };
-        };
-      };
-
-      udp = {
-        routers = {
-          UDPRouter0 = {
-            entryPoints = [ "foobar" "foobar" ];
-            service = "foobar";
-          };
-          UDPRouter1 = {
-            entryPoints = [ "foobar" "foobar" ];
-            service = "foobar";
-          };
-        };
-        services = {
-          UDPService01 = {
-            loadBalancer = {
-              servers = [ { address = "foobar"; } { address = "foobar"; } ];
-            };
-          };
-          UDPService02 = {
-            weighted = {
-              services = [
-                {
-                  name = "foobar";
-                  weight = 42;
-                }
-                {
-                  name = "foobar";
-                  weight = 42;
-                }
-              ];
             };
           };
         };
@@ -534,8 +563,14 @@
             };
           };
         };
-        streaming = {
-          address = ":1704/udp";
+        ssh = {
+          address = ":22/tcp";
+        };
+        irc = {
+          address = ":6667/tcp";
+        };
+        ircs = {
+          address = ":6697/tcp";
         };
       };
 

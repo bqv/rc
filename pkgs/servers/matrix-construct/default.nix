@@ -16,13 +16,13 @@
 
 let
   pname = "matrix-construct";
-  rev = "b4df449068fa2b56a534f6cd5fae09ce3dc538a9";
-  hash = "sha256-4lyB5duR0G+aqtYSIkI4AlOitZIc5ifPI1LEB9aBah4=";
+  rev = "a2f6acd73f4c38e918a342c283ead79f517aca65";
+  hash = "sha256-zeBcDCREZrRRNmUE49L3obkaJeVsroh0piYFqkTqYO8=";
   version = lib.substring 0 9 rev;
 
   source = let
     src = fetchFromGitHub {
-      owner = "jevolk"; repo = "charybdis";
+      owner = "matrix-construct"; repo = "construct";
       inherit rev hash;
     };
     srcFilter = n: t: (lib.hasSuffix ".cc" n || lib.hasSuffix ".h" n || lib.hasSuffix ".S" n
@@ -56,7 +56,7 @@ in stdenv.mkDerivation rec {
   src = source;
 
   # Fragile override
-  rocksdb = rocksdb-but-pinned;
+  #rocksdb = rocksdb-but-pinned;
 
   buildPhase = ''
   '';
