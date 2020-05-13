@@ -133,7 +133,7 @@
     clipmenu bitwarden bitwarden-cli pass protonmail-bridge
 
     ckb-next riot-desktop nheko discord ripcord
-    qutebrowser next firefox fx_cast_bridge
+    qutebrowser master.next firefox fx_cast_bridge
     thunderbird electronmail mpv apvlv
 
     dunst catt termite rxvt_unicode
