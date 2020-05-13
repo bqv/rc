@@ -16,8 +16,8 @@
 
 let
   pname = "matrix-construct";
-  rev = "7d949427e31c4643f768b25a448c4b257b99a6b7";
-  hash = "sha256-KnTjUdK9H2mJsE6ONCrb33xiqJ5MlmYh+aFKaB7a0H0=";
+  rev = "b4df449068fa2b56a534f6cd5fae09ce3dc538a9";
+  hash = "sha256-4lyB5duR0G+aqtYSIkI4AlOitZIc5ifPI1LEB9aBah4=";
   version = lib.substring 0 9 rev;
 
   source = let
@@ -531,7 +531,9 @@ in stdenv.mkDerivation rec {
     ''}/${loFile}";
     ircdLD = loFiles: laFile: extraArgs: "${runCommandCC (lib.strings.sanitizeDerivationName laFile) (buildArgs buildInputs nativeBuildInputs) ''
       libtool --tag=CXX --mode=link g++ -std=gnu++17 -ftls-model=initial-exec -pthread ${CXXOPTS} -version-info 3:2:0 \
-        -Wl,--no-undefined-version -Wl,--weak-unresolved-symbols -Wl,--unresolved-symbols=ignore-in-shared-libs -Wl,-z,nodelete -Wl,-z,nodlopen -Wl,-z,lazy -L${boost.out}/lib \
+        -Wl,--no-undefined-version -Wl,--weak-unresolved-symbols -Wl,--unresolved-symbols=ignore-in-shared-libs \
+        -Wl,--wrap=pthread_create -Wl,--wrap=pthread_join -Wl,--wrap=pthread_timedjoin_np -Wl,--wrap=pthread_self -Wl,--wrap=pthread_setname_np \
+        -Wl,-z,nodelete -Wl,-z,nodlopen -Wl,-z,lazy -L${boost.out}/lib \
         -Wl,-fuse-ld=gold -Wl,--gdb-index -Wl,--warn-common -Wl,--warn-execstack -Wl,--detect-odr-violations -Wl,--rosegment -Wl,-z,noexecstack -Wl,-z,combreloc -Wl,-z,text-unlikely-segment \
         -o $out/${laFile} ${lib.concatStringsSep " " loFiles} ${extraArgs} \
         -lrocksdb -lboost_coroutine -lboost_context -lboost_thread -lboost_filesystem -lboost_chrono -lboost_system -lssl -lcrypto -L${libsodium.out}/lib -lsodium -lmagic -lz -lpthread -latomic -lrocksdb -ldl 
@@ -627,6 +629,7 @@ in stdenv.mkDerivation rec {
       "${ircdUnitCXX "ctx.cc"              "ctx.lo"              "-I${boost.dev}/include -include ircd/asio.h"}"
       "${ircdUnitCXX "ctx_eh.cc"           "ctx_eh.lo"           "-I${boost.dev}/include -include ircd/asio.h"}"
       "${ircdUnitCXX "ctx_ole.cc"          "ctx_ole.lo"          "-I${boost.dev}/include -include ircd/asio.h"}"
+      "${ircdUnitCXX "ctx_posix.cc"        "ctx_posix.lo"        "-I${boost.dev}/include -include ircd/asio.h"}"
       "${ircdUnitCXX "fs_aio.cc"           "fs_aio.lo"           "-I${boost.dev}/include -include ircd/asio.h"}"
       "${ircdUnitCXX "fs_iou.cc"           "fs_iou.lo"           "-I${boost.dev}/include -include ircd/asio.h"}"
       "${ircdUnitCXX "mods.cc"             "mods.lo"             "-I${boost.dev}/include -include ircd/asio.h"}"
