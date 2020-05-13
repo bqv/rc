@@ -24,6 +24,7 @@
     naersk.inputs.nixpkgs.follows = "large";
 
     guix.url = "github:bqv/guix";
+    construct.url = "github:bqv/charybdis";
     emacs.url = "github:nix-community/emacs-overlay";
 
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
@@ -81,6 +82,7 @@
         })
         inputs.nix.overlay
         inputs.guix.overlay
+        inputs.construct.overlay
         inputs.emacs.overlay
         inputs.nur.overlay
         inputs.self.overlay
@@ -113,6 +115,7 @@
           inherit (inputs.home.nixosModules) home-manager;
           inherit (inputs.dwarffs.nixosModules) dwarffs;
           inherit (inputs.guix.nixosModules) guix;
+          inherit (inputs.construct.nixosModules) matrix-construct;
 
           core = ./profiles/core.nix;
 
@@ -151,7 +154,7 @@
 
         in flakeModules ++ [
           core global local
-          home-manager dwarffs guix
+          home-manager dwarffs guix matrix-construct
         ];
       };
     in usr.recImport {
@@ -173,7 +176,7 @@
     in lib.filterAttrs (_: p: (p.meta.broken or null) != true) {
       inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color;
       inherit (pkgs) dgit dejavu_nerdfont electronmail flarectl fsnoop;
-      inherit (pkgs) matrix-appservice-irc matrix-construct mx-puppet-discord;
+      inherit (pkgs) matrix-appservice-irc mx-puppet-discord;
       inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
       inherit (pkgs) next pure sddm-chili shflags yacy;
 
