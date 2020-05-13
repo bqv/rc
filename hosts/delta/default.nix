@@ -111,7 +111,7 @@
   services.flatpak.enable = true;
   xdg.portal.enable = true;
 
-  nix.buildMachines = lib.optional false [
+  nix.buildMachines = lib.optionals true [
     {
       hostName = hosts.wireguard.zeta;
       sshUser = "nix-ssh";
