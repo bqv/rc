@@ -114,8 +114,8 @@
   nix.buildMachines = lib.optionals true [
     {
       hostName = hosts.wireguard.zeta;
-      sshUser = "nix-ssh";
-      sshKey = "/root/.ssh/nix_remote";
+      #sshUser = "nix-ssh";
+      sshKey = "/etc/nix/id_zeta.ed25519";
       #system = "x86_64-linux";
       systems = ["x86_64-linux" "i686-linux" "armv6l-linux" "armv7l-linux"];
       maxJobs = 4;
