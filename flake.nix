@@ -55,7 +55,7 @@
                 else "https://github.com/NixOS/nixpkgs/archive/pull/${toString id}/head.zip";
         }) {
           inherit system config;
-          overlays = attrValues self.overlays;
+          overlays = attrValues inputs.self.overlays;
         } // (removeAttrs args [ "id" "rev" "hash" ]));
 
     channelToOverlay = { system, config, flake, branch }: (final: prev: { ${flake} =
@@ -94,6 +94,7 @@
       specialArgs = {
         inherit inputs;
         usr = import ./lib/utils.nix { inherit lib; };
+        fetchPullRequest = fetchPullRequestForSystem system;
 
         nurModules = nur.nixosModules;
         nurOverlays = nur.overlays;
