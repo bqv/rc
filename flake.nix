@@ -1,6 +1,4 @@
 {
-  edition = 201909;
-
   description = "A highly structured configuration database.";
 
   inputs = {
@@ -25,6 +23,7 @@
     naersk.url = "github:nmattia/naersk";
     naersk.inputs.nixpkgs.follows = "large";
 
+    guix.url = "github:bqv/guix";
     emacs.url = "github:nix-community/emacs-overlay";
 
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
@@ -81,6 +80,7 @@
           inherit (inputs.staged.legacyPackages.${system}) libgccjit sof-firmware;
         })
         inputs.nix.overlay
+        inputs.guix.overlay
         inputs.emacs.overlay
         inputs.nur.overlay
         inputs.self.overlay
@@ -111,6 +111,7 @@
         modules = let
           inherit (inputs.home.nixosModules) home-manager;
           inherit (inputs.dwarffs.nixosModules) dwarffs;
+          inherit (inputs.guix.nixosModules) guix;
 
           core = ./profiles/core.nix;
 
@@ -147,7 +148,10 @@
 
           flakeModules = import ./modules/list.nix;
 
-        in flakeModules ++ [ core global local home-manager dwarffs ];
+        in flakeModules ++ [
+          core global local
+          home-manager dwarffs guix
+        ];
       };
     in usr.recImport {
       dir = ./hosts;
@@ -168,22 +172,20 @@
     in lib.filterAttrs (_: p: (p.meta.broken or null) != true) {
       inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color;
       inherit (pkgs) dgit dejavu_nerdfont electronmail flarectl fsnoop;
-      inherit (pkgs.guilePackages) guile-gcrypt guile-git guile-json guile-sqlite3;
-      inherit (pkgs.guilePackages) guile-ssh guile-gnutls bytestructures;
-      inherit (pkgs) guix matrix-appservice-irc matrix-construct mx-puppet-discord;
+      inherit (pkgs) matrix-appservice-irc matrix-construct mx-puppet-discord;
       inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
-      inherit (pkgs) pure sddm-chili shflags yacy;
+      inherit (pkgs) next pure sddm-chili shflags yacy;
 
       inherit (pkgs) nheko;
       inherit (pkgs.weechatScripts) weechat-matrix;
     });
 
     nixosModules = let
-      mergeAll = fold recursiveUpdate {};
+      mergeAll = lib.fold lib.recursiveUpdate {};
       pathsToAttrs = map (file:
         let
-          cleanFile = removeSuffix ".nix" (removePrefix "./" (toString file));
-        in setAttrByPath (splitString "/" cleanFile) (import file)
+          cleanFile = lib.removeSuffix ".nix" (lib.removePrefix "./" (toString file));
+        in lib.setAttrByPath (lib.splitString "/" cleanFile) (import file)
       );
 
       # modules

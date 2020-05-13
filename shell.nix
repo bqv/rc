@@ -64,6 +64,7 @@ let
       DEFINE_string 'host' "" 'Host to build' 'H'
       DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
       DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
+      DEFINE_boolean 'noisy' false 'Show noisy logs' 'V'
     ''}
     ${rebuild "test"}
 
@@ -82,6 +83,7 @@ let
       DEFINE_string 'host' "" 'Host to build' 'H'
       DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
       DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
+      DEFINE_boolean 'noisy' false 'Show noisy logs' 'V'
     ''}
     ${rebuild "boot"}
   '';
@@ -99,8 +101,31 @@ let
       DEFINE_string 'host' "" 'Host to build' 'H'
       DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
       DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
+      DEFINE_boolean 'noisy' false 'Show noisy logs' 'V'
     ''}
     ${rebuild "dry-build"}
+  '';
+  check = pkgs.writeShellScriptBin "check" ''
+    ${shFlagsRules ''
+      DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
+      DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
+      DEFINE_boolean 'noisy' false 'Show noisy logs' 'V'
+    ''}
+
+    if [ $FLAGS_showtrace -eq $FLAGS_TRUE ]; then
+      ARGS="$ARGS --show-trace"
+    fi
+
+    if [ $FLAGS_verbose -eq $FLAGS_TRUE ]; then
+      ARGS="$ARGS -vv"
+    fi
+
+    if [ $FLAGS_noisy -eq $FLAGS_TRUE ]; then
+      ARGS="$ARGS -vvvvv"
+    fi
+
+    echo '> nix flake check' $ARGS
+    nix flake check $ARGS
   '';
   flake-shell = pkgs.writeShellScriptBin "nixFlakes-shell" ''
     nix-shell -E 'with import "${pkgs.path}/nixos" { configuration.nix.package = (import <nixpkgs> {}).nixFlakes; }; pkgs.mkShell { buildInputs = with config.system.build; with pkgs; [ nixos-rebuild ]; }' $@
@@ -114,7 +139,7 @@ in pkgs.mkShell {
       };
       patches = [ worktreePatch ];
     });
-  in [ git git-crypt git-secrets nixfmt flake-shell
+  in [ git git-crypt git-secrets nixfmt flake-shell check
        activate dry-boot tag-current boot dry-activate dry-build ];
 
   shellHook = ''

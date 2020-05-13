@@ -38,13 +38,33 @@
         "type": "github"
       }
     },
+    "guix": {
+      "info": {
+        "lastModified": 1589350842,
+        "narHash": "sha256-94cSMVPii8Rkts2MZaJ0URtnzlTjCSPIm5L1+bp2ra4="
+      },
+      "inputs": {
+        "nixpkgs": "nixpkgs_2"
+      },
+      "locked": {
+        "owner": "bqv",
+        "repo": "guix",
+        "rev": "96bc72dca574425b43d182705e42e772c6982de0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "bqv",
+        "repo": "guix",
+        "type": "github"
+      }
+    },
     "home": {
       "info": {
         "lastModified": 1587442074,
         "narHash": "sha256-SmC1aP9TJImzHlNIWOTa+uwePeHoEcfGJEewXXWAtfc="
       },
       "inputs": {
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "owner": "rycee",
@@ -83,7 +103,7 @@
         "narHash": "sha256-j6+ZeL3vh1w9THce5sosg1eVO04eC7GAW9J4UXLkcgE="
       },
       "inputs": {
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "owner": "nmattia",
@@ -172,6 +192,22 @@
     },
     "nixpkgs_2": {
       "info": {
+        "lastModified": 1589349539,
+        "narHash": "sha256-xMUcyl9vI6c8mJzl+M+6JIZmWQknXkSbu1jrgxtoHlo="
+      },
+      "locked": {
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "6a16787d263c96a772bbc74d527e71415811fd3a",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_3": {
+      "info": {
         "lastModified": 1587961704,
         "narHash": "sha256-/aqrj8zYfwz8Wd0qu7jgNvddXj7Bro3QHz2YKJOJO5M="
       },
@@ -188,7 +224,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_4": {
       "info": {
         "lastModified": 1589225516,
         "narHash": "sha256-Fnz4my3H3543J6ywc57nf7FkQINJG7JkZlLONQs1Wys="
@@ -212,7 +248,7 @@
         "narHash": "sha256-fc2o4V2p5KyEzOLQK0Q915ZShJ1i2Gr3e2+0Ox7TTHg="
       },
       "inputs": {
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "owner": "nix-community",
@@ -230,8 +266,9 @@
       "inputs": {
         "dwarffs": "dwarffs",
         "emacs": "emacs",
+        "guix": "guix",
         "home": "home",
-        "large": "nixpkgs_2",
+        "large": "nixpkgs_3",
         "master": "nixpkgs",
         "mozilla": "mozilla",
         "naersk": "naersk",
@@ -239,7 +276,7 @@
         "nix": "nix",
         "nixexprs": "nixexprs",
         "nur": "nur",
-        "small": "nixpkgs_3",
+        "small": "nixpkgs_4",
         "snack": "snack",
         "staged": "staged"
       }
