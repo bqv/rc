@@ -14,15 +14,13 @@ final: prev: {
 
   fsnoop = prev.callPackage ./tools/misc/fsnoop { };
 
-  guilePackages = prev.callPackages ./development/guile-modules { };
-
-  guix = final.callPackage ./tools/package-management/guix { };
-
   matrix-appservice-irc = prev.callPackage ./servers/matrix-appservice-irc { };
 
   matrix-construct = prev.callPackage ./servers/matrix-construct { };
 
   mx-puppet-discord = prev.callPackage ./servers/mx-puppet-discord { };
+
+  next = prev.callPackage ./applications/networking/browsers/next { };
 
   pleroma = prev.callPackage ./servers/pleroma { };
 

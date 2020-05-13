@@ -1,4 +1,4 @@
-{ appimageTools, fetchurl, lib, gsettings-desktop-schemas, gtk3, makeDesktopItem }:
+{ appimageTools, fetchurl, lib, gsettings-desktop-schemas, gtk3, makeDesktopItem, system }:
 
 let
   pname = "electronmail";
@@ -35,5 +35,6 @@ in appimageTools.wrapType2 rec {
     license = licenses.mit;
     maintainers = with maintainers; [ ];
     platforms = [ "x86_64-linux" ];
+    broken = system != "x86_64-linux";
   };
 }
