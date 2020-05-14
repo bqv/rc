@@ -99,7 +99,7 @@ profile /usr/bin/chromium {
 		deny /sys/bus/{clockevents,dax,platform,pci_express,serio,event_source}/devices/ r,
 		deny /sys/bus/{machinecheck,cpu,hdaudio,scsi,clocksource,hid,edac}/devices/ r,
 		deny /sys/bus/{pnp,usb,workqueue,virtio,container,acpi,i2c,snd_seq,mipi-dsi}/devices/ r,
-		deny /sys/bus/{mdio_bus,nvmem,wmi}/devices/ r,
+		deny /sys/bus/{mdio_bus,nvmem,wmi,usb-serial}/devices/ r,
 
 		# Site-local stuff
 		@{SYS_GIT}/app/X/vdpau_wrapper.cfg r,
