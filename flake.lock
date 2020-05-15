@@ -179,11 +179,11 @@
     "nixexprs": {
       "flake": false,
       "info": {
-        "lastModified": 1589285897,
-        "narHash": "sha256-ZxX7XLFb32ZmS9rlFnPevOSjBBGRGjhdg9Mu6oNfa3s="
+        "lastModified": 1589452582,
+        "narHash": "sha256-op0TUG32VUeIPL5N82wnIZmgLh11qrQLQVw9CqKf0hQ="
       },
       "locked": {
-        "narHash": "sha256-ZxX7XLFb32ZmS9rlFnPevOSjBBGRGjhdg9Mu6oNfa3s=",
+        "narHash": "sha256-op0TUG32VUeIPL5N82wnIZmgLh11qrQLQVw9CqKf0hQ=",
         "type": "tarball",
         "url": "https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz"
       },

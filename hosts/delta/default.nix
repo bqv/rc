@@ -12,7 +12,7 @@
     ../../profiles/networking/wireguard
     ../../profiles/networking/mdns.nix
     ../../profiles/sound/pulse.nix
-    ../../profiles/graphical/exwm
+    ../../profiles/graphical
     ../../profiles/weechat.nix
     ../../users/root.nix
     ../../users/bao.nix

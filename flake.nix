@@ -136,7 +136,7 @@
 
             system.extraSystemBuilderCmds = ''
               ln -s '${./.}' "$out/flake"
-            '' ++ (if ! (inputs.self ? rev) then ''
+            '' + (if ! (inputs.self ? rev) then ''
               echo "Cannot switch to a dirty configuration"
               exit 1
             '' else "");
