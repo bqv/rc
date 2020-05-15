@@ -10,7 +10,7 @@ in {
 
     directory = mkOption {
       type = types.path;
-      default = "/etc/nixos.git";
+      default = "/run/git/nixos";
       description = ''
         The directory where nixos.git will be mounted.
       '';
