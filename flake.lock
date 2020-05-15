@@ -78,6 +78,24 @@
         "type": "github"
       }
     },
+    "hardware": {
+      "flake": false,
+      "info": {
+        "lastModified": 1589525030,
+        "narHash": "sha256-0Z6se0chXkhBKo/P61KOL8SzETo35yi9O5p6+seVU2k="
+      },
+      "locked": {
+        "owner": "nixos",
+        "repo": "nixos-hardware",
+        "rev": "a36f34322235f447f297f091252046e3d2f471d8",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixos-hardware",
+        "type": "github"
+      }
+    },
     "home": {
       "info": {
         "lastModified": 1587442074,
@@ -288,13 +306,13 @@
       },
       "locked": {
         "owner": "nix-community",
-        "repo": "NUR",
+        "repo": "nur",
         "rev": "e26c97be74ede1ce3f2a401b9e74b8c00f59b73c",
         "type": "github"
       },
       "original": {
         "owner": "nix-community",
-        "repo": "NUR",
+        "repo": "nur",
         "type": "github"
       }
     },
@@ -304,6 +322,7 @@
         "dwarffs": "dwarffs",
         "emacs": "emacs",
         "guix": "guix",
+        "hardware": "hardware",
         "home": "home",
         "large": "nixpkgs_4",
         "master": "nixpkgs_2",
