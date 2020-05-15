@@ -139,7 +139,7 @@ in pkgs.mkShell {
       };
       patches = [ worktreePatch ];
     });
-  in [ git git-crypt git-secrets nixfmt flake-shell check
+  in [ git git-crypt git-secrets age rage nixfmt flake-shell check
        activate dry-boot tag-current boot dry-activate dry-build ];
 
   shellHook = ''
@@ -148,13 +148,20 @@ in pkgs.mkShell {
 
   #GC_DONT_GC = 1; # Dangerously mitigate GC-based crashes
 
-  NIX_CONF_DIR = let
-    current = pkgs.lib.optionalString (builtins.pathExists /etc/nix/nix.conf)
-      (builtins.readFile /etc/nix/nix.conf);
-
-    nixConf = pkgs.writeTextDir "opt/nix.conf" ''
-      ${current}
+  NIX_CONF_DIR = with pkgs; let
+    nixConf = ''
+      ${lib.optionalString (builtins.pathExists /etc/nix/nix.conf)
+        (builtins.readFile /etc/nix/nix.conf)}
       experimental-features = nix-command flakes ca-references
     '';
-  in "${nixConf}/opt";
+  in linkFarm "nix-conf-dir" ( [ {
+    name = "nix.conf";
+    path = writeText "flakes-nix.conf" nixConf;
+  } ] ++ ( lib.optional (builtins.pathExists /etc/nix/registry.json) {
+    name = "registry.json";
+    path = /etc/nix/registry.json;
+  } ) ++ ( lib.optional (builtins.pathExists /etc/nix/machines) {
+    name = "machines";
+    path = /etc/nix/machines;
+  } ) );
 }
