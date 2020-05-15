@@ -17,7 +17,7 @@
     home.url = "github:rycee/home-manager/bqv-flakes";
     home.inputs.nixpkgs.follows = "large";
 
-    nur.url = "github:nix-community/NUR";
+    nur.url = "github:nix-community/nur";
     nur.inputs.nixpkgs.follows = "small";
 
     naersk.url = "github:nmattia/naersk";
@@ -31,6 +31,7 @@
     snack = { url = "github:nmattia/snack"; flake = false; };
     napalm = { url = "github:nmattia/napalm"; flake = false; };
 
+    hardware = { url = "github:nixos/nixos-hardware"; flake = false; };
     nixexprs = { url = "https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz"; flake = false; };
   };
 

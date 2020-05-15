@@ -37,95 +37,68 @@ let
     echo '> nixos-rebuild' $ARGS ${operation}
     source $(which nixos-rebuild) $ARGS ${operation}
   '';
-  tag = ''
-    SYSTEMPATH=$(basename $pathToConfig)
-    PROFILES=($(find /nix/var/nix/profiles/ -lname $pathToConfig))
-    echo Tagging $SYSTEMPATH && git tag $SYSTEMPATH $REV || true
-    for profile in $PROFILES; do
-      SYSTEMNUM=$(hostname)/$(basename $profile)
-      echo Tagging $SYSTEMNUM && git tag $SYSTEMNUM $REV || true
-    done
-  '';
-  activate = pkgs.writeShellScriptBin "activate" ''
+  nixos = pkgs.writeShellScriptBin "nixos" ''
     ${shFlagsRules ''
       DEFINE_string 'host' "" 'Host to build' 'H'
-      DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
+      DEFINE_boolean 'showtrace' false 'Show verbose traces' 'T'
       DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
-      DEFINE_boolean 'noisy' false 'Show noisy logs' 'V'
-    ''}
-    ${rebuild "switch"}
+      DEFINE_boolean 'verynoisy' false 'Show noisy logs' 'V'
 
-    if [ -e "$pathToConfig" ]; then
-      ${tag}
-    fi
-  '';
-  dry-boot = pkgs.writeShellScriptBin "dry-boot" ''
-    ${shFlagsRules ''
-      DEFINE_string 'host' "" 'Host to build' 'H'
-      DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
-      DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
-      DEFINE_boolean 'noisy' false 'Show noisy logs' 'V'
-    ''}
-    ${rebuild "test"}
-
-    if [ -e "$pathToConfig" ]; then
-      SYSTEMPATH=$(basename $pathToConfig)
-      echo Tagging $SYSTEMPATH && git tag $SYSTEMPATH $REV || true
-    fi
-  '';
-  tag-current = pkgs.writeShellScriptBin "tag-current" ''
-    REV=$(git rev-parse HEAD)
-    pathToConfig=$(readlink -f /run/current-system)
-    ${tag}
-  '';
-  boot = pkgs.writeShellScriptBin "boot" ''
-    ${shFlagsRules ''
-      DEFINE_string 'host' "" 'Host to build' 'H'
-      DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
-      DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
-      DEFINE_boolean 'noisy' false 'Show noisy logs' 'V'
-    ''}
-    ${rebuild "boot"}
-  '';
-  dry-activate = pkgs.writeShellScriptBin "dry-activate" ''
-    ${shFlagsRules ''
-      DEFINE_string 'host' "" 'Host to build' 'H'
-      DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
-      DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
-      DEFINE_boolean 'noisy' false 'Show noisy logs' 'V'
-    ''}
-    ${rebuild "dry-activate"}
-  '';
-  dry-build = pkgs.writeShellScriptBin "dry-build" ''
-    ${shFlagsRules ''
-      DEFINE_string 'host' "" 'Host to build' 'H'
-      DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
-      DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
-      DEFINE_boolean 'noisy' false 'Show noisy logs' 'V'
-    ''}
-    ${rebuild "dry-build"}
-  '';
-  check = pkgs.writeShellScriptBin "check" ''
-    ${shFlagsRules ''
-      DEFINE_boolean 'showtrace' false 'Show verbose traces' 't'
-      DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
-      DEFINE_boolean 'noisy' false 'Show noisy logs' 'V'
+      DEFINE_boolean 'check' false 'Run flake checks only' 'c'
+      DEFINE_boolean 'build' false 'Attempt to build the system' 'b'
+      DEFINE_boolean 'activate' false 'Activate the system now' 'a'
+      DEFINE_boolean 'setdefault' false 'Set default boot configuration' 's'
+      DEFINE_boolean 'tagactive' false 'Force tag current configuration only' 't'
     ''}
 
-    if [ $FLAGS_showtrace -eq $FLAGS_TRUE ]; then
-      ARGS="$ARGS --show-trace"
+    DATE=$(date -d @$(git log --pretty=format:"%cd" --date=unix $REV -1) +%Y%m%D.%H%M%S)
+    export NIXOS_LABEL="$DATE-''${REV:0:7}"
+
+    if [ $FLAGS_check -eq $FLAGS_TRUE ]; then
+      echo '> nix flake check' $ARGS
+      exec nix flake check $ARGS
     fi
 
-    if [ $FLAGS_verbose -eq $FLAGS_TRUE ]; then
-      ARGS="$ARGS -vv"
+    if [ $FLAGS_tag -eq $FLAGS_FALSE ]; then
+      if [ $FLAGS_build -eq $FLAGS_FALSE ]; then
+        ${rebuild "dry-build"}
+      else
+        if [ $FLAGS_activate -eq $FLAGS_FALSE ]; then
+          if [ $FLAGS_setdefault -eq $FLAGS_FALSE ]; then
+            ${rebuild "dry-activate"}
+          else
+            ${rebuild "boot"}
+          fi
+        else
+          if [ $FLAGS_setdefault -eq $FLAGS_FALSE ]; then
+            ${rebuild "test"}
+          else
+            ${rebuild "switch"}
+          fi
+        fi
+      fi
+    else
+      REV=$(git rev-parse HEAD)
+      pathToConfig=$(readlink -f /run/current-system)
     fi
 
-    if [ $FLAGS_noisy -eq $FLAGS_TRUE ]; then
-      ARGS="$ARGS -vvvvv"
+    if [ $FLAGS_activate -eq $FLAGS_TRUE ] ||
+       [ $FLAGS_tag -eq $FLAGS_TRUE ]; then
+      if [ -e "$pathToConfig" ]; then
+        SYSTEMPATH=$(basename $pathToConfig)
+        PROFILES=($(find /nix/var/nix/profiles/ -lname $pathToConfig))
+        echo Tagging $SYSTEMPATH && git tag $SYSTEMPATH $REV || true
+        for profile in $PROFILES; do
+          SYSTEMNUM=$(hostname)/$(basename $profile)
+          echo Tagging $SYSTEMNUM && git tag $SYSTEMNUM $REV || true
+        done
+      fi
+    elif [ $FLAGS_build -eq $FLAGS_TRUE ]; then
+      if [ -e "$pathToConfig" ]; then
+        SYSTEMPATH=$(basename $pathToConfig)
+        echo Tagging $SYSTEMPATH && git tag $SYSTEMPATH $REV || true
+      fi
     fi
-
-    echo '> nix flake check' $ARGS
-    nix flake check $ARGS
   '';
   flake-shell = pkgs.writeShellScriptBin "nixFlakes-shell" ''
     nix-shell -E 'with import "${pkgs.path}/nixos" { configuration.nix.package = (import <nixpkgs> {}).nixFlakes; }; pkgs.mkShell { buildInputs = with config.system.build; with pkgs; [ nixos-rebuild ]; }' $@
@@ -139,8 +112,7 @@ in pkgs.mkShell {
       };
       patches = [ worktreePatch ];
     });
-  in [ git git-crypt git-secrets age rage nixfmt flake-shell check
-       activate dry-boot tag-current boot dry-activate dry-build ];
+  in [ git git-crypt git-secrets age rage nixfmt flake-shell nixos ];
 
   shellHook = ''
     mkdir -p secrets
