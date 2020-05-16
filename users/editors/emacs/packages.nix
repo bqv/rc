@@ -7,7 +7,7 @@
     cmake gnumake gcc libtool libvterm gtk3 rls age rust-analyzer
   ] ++ (with emacsPackagesFor config.programs.emacs.package.unwrapped;
     # TODO: pkgs.emacsPackages not overriden properly?
-    with (import ../../../pkgs/applications/editors/emacs-modes { inherit (pkgs) stdenv fetchFromGitHub; });
+    with (pkgs.callPackage ../../../pkgs/applications/editors/emacs-modes { });
   [
     # usr-init
     use-package auto-compile gcmh diminish epkg
