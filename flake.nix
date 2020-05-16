@@ -147,8 +147,21 @@
             nixpkgs = {
               inherit pkgs;
             };
+          };
 
-            home-manager.useGlobalPkgs = true;
+          home = {
+            options.home-manager.users = lib.mkOption {
+              type = with lib.types; attrsOf (submoduleWith {
+                inherit specialArgs;
+                modules = [
+                 #({ ... }: { options = { }; })
+                ];
+              });
+            };
+
+            config = {
+              home-manager.useGlobalPkgs = true;
+            };
           };
 
           local = import "${toString ./hosts}/${hostName}";
@@ -156,7 +169,7 @@
           flakeModules = import ./modules/list.nix;
 
         in flakeModules ++ [
-          core global local
+          core global home local
           home-manager dwarffs guix matrix-construct
         ];
       };
