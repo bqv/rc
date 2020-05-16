@@ -44,7 +44,12 @@
     forAllSystems = lib.genAttrs [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
     diffTrace = left: right: string: value: if left != right then trace string value else value;
 
-    config = { allowUnfree = true; };
+    config = {
+      allowUnfree = true;
+      permittedInsecurePackages = [
+        "p7zip-16.02"
+      ];
+    };
 
     fetchPullRequestForSystem = system: args@{ id, rev ? null, sha256 ? lib.fakeSha256, ... }: 
       mapAttrs (k: v: trace "pkgs.${k} pinned to nixpks/pull/${toString id}" v)
