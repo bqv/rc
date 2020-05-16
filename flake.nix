@@ -123,7 +123,7 @@
             nix.registry = lib.mapAttrs (id: flake: {
               inherit flake;
               from = { inherit id; type = "indirect"; };
-            }) inputs;
+            }) (inputs // { nixpkgs = inputs.master; });
             nix.nixPath = [
               "nixpkgs=${channels.pkgs}"
               "nixos-config=/etc/nixos/configuration.nix"
