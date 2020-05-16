@@ -2,20 +2,20 @@
   "nodes": {
     "construct": {
       "info": {
-        "lastModified": 1589397471,
-        "narHash": "sha256-6vCL1onWAVveVCpd+iFG9hbczwo7w5tSJJO1Z/Xm+fE="
+        "lastModified": 1589579558,
+        "narHash": "sha256-/HG3bQCNSHR+7IfEisqJqHUoSCGIHDiIVFzxyZXgfAM="
       },
       "inputs": {
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "owner": "bqv",
+        "owner": "jevolk",
         "repo": "charybdis",
-        "rev": "9428f4b68146adb835bd58e3acf0e6b1b4a7748a",
+        "rev": "3ebad48c4ffdd189cccacf839fe07be9caca3832",
         "type": "github"
       },
       "original": {
-        "owner": "bqv",
+        "owner": "jevolk",
         "repo": "charybdis",
         "type": "github"
       }
