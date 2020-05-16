@@ -183,7 +183,6 @@
       inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
       inherit (pkgs) next pure sddm-chili shflags yacy;
 
-      inherit (pkgs) nheko;
       inherit (pkgs.weechatScripts) weechat-matrix;
     });
 

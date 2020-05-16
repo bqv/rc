@@ -4,7 +4,7 @@
 buildGoModule rec {
   pname = "dgit";
   version = "0.0.14-alpha";
-  modSha256 = "02mam8a26qp2i0i8cni5id8nw6qa18yxywic6p4d0bxg3aycrg89";
+  vendorSha256 = "0wg3wl6aws0wl02czzzlss7ffhl8h2zxchws2dlph0mk3c3vgppq";
 
   src = fetchFromGitHub {
     owner = "quorumcontrol";
