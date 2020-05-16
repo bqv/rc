@@ -5,44 +5,42 @@ let
   peers = {
     zeta = {
       ip = hosts.wireguard.zeta;
-
-      # Note: Wireguard won't retry DNS resolution if it fails
-      endpoint = hosts.ipv4.zeta;
-      port = 51820;
+      wideArea = [ hosts.ipv4.zeta ]; # Note: Wireguard won't retry DNS resolution if it fails
       publicKey = "WbZqPcgSxWf+mNsWVbS+0JylysN9FKrRG9783wn1JAg=";
     };
 
     theta = {
       ip = hosts.wireguard.theta;
-      #endpoint = "0.0.0.0";
-      port = 51820;
+      routes.zeta = [ "10.0.0.0/24" ];
       publicKey = "Itld9S83/URY8CR1ZsIfYRGK74/T0O5YbsHWcNpn2gE=";
     };
 
     delta = {
       ip = hosts.wireguard.delta;
-      #endpoint = "0.0.0.0";
-      port = 51820;
+      localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
       publicKey = "Y/SRDGEQfFLUGqx6vMnO1pxHs9zn//NpwdSGQ2Sm+Dg=";
-    };
-
-    mu = {
-      ip = hosts.wireguard.mu;
-      endpoint = "192.168.0.19";
-      port = 51820;
-      publicKey = "0000000000000000000000000000000000000000000=";
     };
 
     nu = {
       ip = hosts.wireguard.nu;
-      endpoint = "192.168.0.15";
-      port = 51820;
-      publicKey = "0000000000000000000000000000000000000000000=";
+      localArea = [ hosts.lan.nu ];
+      publicKey = "kccZA+GAc0VStb28A+Kr0z8iPCWsiuRMfwHW391Qrko=";
+    };
+
+    mu = {
+      ip = hosts.wireguard.mu;
+      localArea = [ hosts.lan.mu ];
     };
   };
 
   currentPeer = peers."${config.networking.hostName}";
-  peerable = from: to: (from != to) && (peers."${to}" ? "publicKey");
+  isLan = peer: builtins.length (peers.${peer}.localArea or []) > 0;
+  isWan = peer: builtins.length (peers.${peer}.wideArea or []) > 0;
+  endpointsOf = peer: (peer.wideArea or []) ++ (peer.lanArea or []);
+  peerable = from: to: builtins.all lib.id [
+    (from != to)
+    (peers.${to} ? publicKey)
+  ];
 in {
   networking.firewall.allowedUDPPorts =
     lib.mkIf (currentPeer ? "port") [ currentPeer.port ];
@@ -54,14 +52,15 @@ in {
     interfaces.wg0 = {
       ips = [ "${currentPeer.ip}/${toString network}" ];
       privateKeyFile = "/etc/wireguard/private.key";
-      generatePrivateKeyFile = true;
-      listenPort = currentPeer.port or null;
+      generatePrivateKeyFile = false;
+      listenPort = currentPeer.port or 51820;
   
       peers = lib.mapAttrsToList (hostname: hostcfg: {
         inherit (hostcfg) publicKey;
-        allowedIPs = [ "${hostcfg.ip}/32" ];
-      } // (lib.optionalAttrs (hostcfg ? "endpoint") {
-        endpoint = "${hostcfg.endpoint}:${toString hostcfg.port}";
+        allowedIPs = [ "${hostcfg.ip}/32" ]
+          ++ (hostcfg.routes.${config.networking.hostName} or []);
+      } // (lib.optionalAttrs (builtins.length (endpointsOf hostcfg) > 0) {
+        endpoint = "${builtins.head (endpointsOf hostcfg)}:${toString hostcfg.port or "51820"}";
         persistentKeepalive = 60;
       })) (lib.filterAttrs (hostname: _:
         peerable config.networking.hostName hostname
