@@ -185,21 +185,24 @@
     nixosModules = let
       mergeAll = lib.fold lib.recursiveUpdate {};
       pathsToAttrs = map (file:
-        let
-          cleanFile = lib.removeSuffix ".nix" (lib.removePrefix "./" (toString file));
+        let cleanFile = lib.removeSuffix ".nix" (lib.removePrefix "./" (toString file));
         in lib.setAttrByPath (lib.splitString "/" cleanFile) (import file)
       );
 
-      # modules
       moduleList = import ./modules/list.nix;
       modulesAttrs = mergeAll (pathsToAttrs moduleList);
 
-      # profiles
       profilesList = import ./profiles/list.nix;
       profilesAttrs = { profiles = mergeAll (pathsToAttrs profilesList); };
     in modulesAttrs // profilesAttrs;
 
-    secrets = concatStringsSep "\n" ([]
+    secrets = with lib.strings; concatMapStringsSep "\n" (replaceStrings [" "] ["\\s"]) ([
+    ] ++ (attrNames (import ./secrets/wifi.networks.nix))
+      ++ (map (n: n.psk) (attrValues (import ./secrets/wifi.networks.nix)))
+      ++ (attrValues (import ./secrets/root.password.nix))
+      ++ (attrValues (import ./secrets/user.password.nix))
+      ++ (attrValues (import ./secrets/user.description.nix))
+      ++ (attrValues (import ./secrets/git.user.nix))
       ++ (attrValues (import ./secrets/domains.nix))
       ++ (lib.flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
     );
