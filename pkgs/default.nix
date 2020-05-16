@@ -1,6 +1,5 @@
 final: prev: {
-  emacsPackages =
-    prev.emacsPackages // (prev.callPackage ./applications/editors/emacs-modes { });
+  emacsPackages = with prev; emacsPackages // (callPackage ./applications/editors/emacs-modes { });
 
   arm-adb = prev.callPackage ./applications/misc/arm-adb { };
 
