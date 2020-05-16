@@ -30,9 +30,7 @@
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
     snack = { url = "github:nmattia/snack"; flake = false; };
     napalm = { url = "github:nmattia/napalm"; flake = false; };
-
     hardware = { url = "github:nixos/nixos-hardware"; flake = false; };
-    nixexprs = { url = "https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz"; flake = false; };
   };
 
   outputs = inputs: with builtins; let
@@ -77,7 +75,6 @@
           naersk = inputs.naersk.lib.${system};
           snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
           napalm = pkgs.callPackage inputs.napalm;
-          nixexprs = inputs.nixexprs;
           inherit (inputs.small.legacyPackages.${system}) pulseeffects;
           inherit (inputs.staged.legacyPackages.${system}) libgccjit sof-firmware;
         })

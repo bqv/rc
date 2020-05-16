@@ -30,11 +30,10 @@
       ./utilities/htop
       ./services/gnupg
       ./services/mpd
-      ./misc/command-not-found.nix
     ];
 
     programs.home-manager.enable = true;
-    programs.command-not-found.enable = true;
+    programs.command-not-found.enable = false; # Needs flake-safe version
     programs.qutebrowser.enable = true;
     programs.firefox.enable = true;
     programs.fish.enable = true;
@@ -53,18 +52,18 @@
     programs.gpodder.enable = true;
     programs.mpv.enable = true;
     programs.feh.enable = true;
-    #programs.git.enable = true;
-    #programs.ssh.enable = true;
+    programs.git.enable = false; # TODO
+    programs.ssh.enable = false; # TODO
 
     services.lorri.enable = true;
     services.gpg-agent.enable = true;
     services.spotifyd.enable = true;
     services.mpd.enable = true;
     services.taskwarrior-sync.enable = true;
-    #services.dunst.enable = true;
-    #services.emacs.enable = true;
-    #services.syncthing.enable = true;
-    #services.unclutter.enable = true;
+    services.dunst.enable = false; # TODO
+    services.emacs.enable = false; # TODO
+    services.syncthing.enable = false; # TODO
+    services.unclutter.enable = false; # TODO
 
     home.packages = with pkgs; let
       ipfscat = pkgs.writeShellScriptBin "ipfscat" ''
