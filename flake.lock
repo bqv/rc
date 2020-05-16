@@ -98,8 +98,8 @@
     },
     "home": {
       "info": {
-        "lastModified": 1587442074,
-        "narHash": "sha256-SmC1aP9TJImzHlNIWOTa+uwePeHoEcfGJEewXXWAtfc="
+        "lastModified": 1589641437,
+        "narHash": "sha256-ZLRpt5SpOKAZzBbxpCl2UpUyr17dFwF1SjW0n7XQxyw="
       },
       "inputs": {
         "nixpkgs": "nixpkgs_4"
@@ -107,7 +107,7 @@
       "locked": {
         "owner": "rycee",
         "repo": "home-manager",
-        "rev": "e13bd1e79372c58cc1e86e45bdf304f4b6770fe3",
+        "rev": "4f4783bc029cfd6fabec4e418061af6228c7baeb",
         "type": "github"
       },
       "original": {
