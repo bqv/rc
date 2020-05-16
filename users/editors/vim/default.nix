@@ -1,4 +1,4 @@
-{ config ? {}, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib; let
   cfg = config.programs.neovim;
@@ -14,10 +14,11 @@ in {
         vim-nix # nix language
       ];
       extraConfig = ''
-        set inccommand=nosplit
-        set nohlsearch
-        set number
         colorscheme slate
+
+        set inccommand=nosplit " previews
+        set nohlsearch " unpersist highlights
+        set number " line numbering
       '';
     };
   };

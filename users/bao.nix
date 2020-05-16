@@ -10,11 +10,11 @@
   users.users.bao = {
     uid = 1000;
     group = "users";
-    description = "Tony";
     shell = pkgs.fish;
     isNormalUser = true;
     extraGroups = [ "wheel" "adbusers" ];
-  } // import ../secrets/user.password.nix;
+  } // import ../secrets/user.password.nix
+    // import ../secrets/user.description.nix;
 
   home-manager.users.bao = let
     home-config = config.home-manager.users.bao;
@@ -52,7 +52,7 @@
     programs.gpodder.enable = true;
     programs.mpv.enable = true;
     programs.feh.enable = true;
-    programs.git.enable = false; # TODO
+    programs.git.enable = true;
     programs.ssh.enable = false; # TODO
 
     services.lorri.enable = true;
