@@ -21,9 +21,11 @@
     htop
     iotop
     less
+    ltrace
     ncdu
     nix-diff
     pass
+    strace
     socat
     subversion
     tig
