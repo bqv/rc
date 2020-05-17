@@ -34,6 +34,10 @@ let
       ARGS="$ARGS -vvvvv"
     fi
 
+    if [ $FLAGS_remote -eq $FLAGS_TRUE ]; then
+      ARGS="$ARGS -j0"
+    fi
+
     echo '> nixos-rebuild' $ARGS ${operation}
     source $(which nixos-rebuild) $ARGS ${operation}
   '';
@@ -43,6 +47,7 @@ let
       DEFINE_boolean 'showtrace' false 'Show verbose traces' 'T'
       DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
       DEFINE_boolean 'verynoisy' false 'Show noisy logs' 'V'
+      DEFINE_boolean 'remote' false 'Force disable local building' 'R'
 
       DEFINE_boolean 'check' false 'Run flake checks only' 'c'
       DEFINE_boolean 'build' false 'Attempt to build the system' 'b'
