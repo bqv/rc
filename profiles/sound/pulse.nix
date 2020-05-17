@@ -129,6 +129,7 @@ in {
   # Packages needed
   # ---------------
   environment.systemPackages = with pkgs; [
+    qpaeq
 
     # ALSA Tools
     # ------
