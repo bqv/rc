@@ -191,6 +191,7 @@
       revokedkeys = "RevokedKeys /etc/ssh/ssh_revoked_keys";
     in builtins.concatStringsSep "\n" (certificates ++ [ userkeys revokedkeys ]);
 
+  programs.xonsh.enable = true;
   programs.mosh.enable = true;
   environment.variables.MOSH_SERVER_NETWORK_TMOUT = "86400";
   programs.ssh = let
