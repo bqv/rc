@@ -92,6 +92,7 @@
   programs.vim.defaultEditor = true;
   programs.adb.enable = true;
   programs.tmux.enable = true;
+  programs.xonsh.enable = true;
 
   services.disnix.enable = true;
   services.printing.enable = true;

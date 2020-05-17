@@ -213,6 +213,11 @@
       profilesAttrs = { profiles = mergeAll (pathsToAttrs profilesList); };
     in modulesAttrs // profilesAttrs;
 
+    devShell = forAllSystems (system: (import ./shell.nix rec {
+      nixpkgs = channels.pkgs;
+      pkgs = import nixpkgs { inherit system; };
+    }));
+
     secrets = with lib.strings; concatMapStringsSep "\n" (replaceStrings [" "] ["\\s"]) ([
     ] ++ (attrNames (import ./secrets/wifi.networks.nix))
       ++ (map (n: n.psk) (attrValues (import ./secrets/wifi.networks.nix)))

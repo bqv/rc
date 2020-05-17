@@ -72,7 +72,7 @@
     # usr-util-games.el
     steam
     # usr-util-shell.el
-    vterm emacs-libvterm fish-completion xterm-color eterm-256color multi-vterm
+    vterm emacs-libvterm fish-completion xterm-color eterm-256color multi-vterm xonsh-mode
     # rest
   ]);
 }
