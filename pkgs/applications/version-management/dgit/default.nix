@@ -25,6 +25,7 @@ buildGoModule rec {
     homepage = https://dgit.dev/;
     license = licenses.mit;
     platforms = platforms.unix;
+    broken = true; # I don't even understand how this went so wrong
   };
 }
 
