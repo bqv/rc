@@ -26,6 +26,7 @@
     guix.url = "github:bqv/guix";
     construct.url = "github:jevolk/charybdis";
     emacs.url = "github:nix-community/emacs-overlay";
+    xontribs.url = "github:bqv/xontribs";
 
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
     snack = { url = "github:nmattia/snack"; flake = false; };
@@ -87,6 +88,7 @@
         inputs.guix.overlay
         inputs.construct.overlay
         inputs.emacs.overlay
+        inputs.xontribs.overlay
         inputs.nur.overlay
         inputs.self.overlay
       ];
