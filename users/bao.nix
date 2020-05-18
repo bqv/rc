@@ -5,6 +5,10 @@
     ../profiles/develop
   ];
 
+  environment.variables = {
+    GITHUB_TOKEN = (import ../secrets/git.github.nix).oauth-token;
+  };
+
   services.dbus.packages = with pkgs; [ gnome3.dconf ];
 
   users.users.bao = {
