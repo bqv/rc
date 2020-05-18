@@ -14,7 +14,7 @@
     # usr-main
     #server
     # usr-crit-bufmgmt.el
-    persp-mode neotree persp-projectile window-purpose ivy-purpose
+    persp-mode neotree persp-projectile window-purpose ivy-purpose treemacs treemacs-evil treemacs-magit treemacs-persp treemacs-projectile lsp-treemacs treemacs-icons-dired
     # usr-crit-evil.el
     evil
     # usr-crit-syntax.el
