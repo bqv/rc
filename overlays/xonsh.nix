@@ -1,6 +1,7 @@
 final: prev: with final.xontribs; rec {
   xonsh = prev.xonsh.overridePythonAttrs(o: rec {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [
+      final.python3Packages.nixpkgs
       final.python3Packages.pip
       apt-tabcomplete
       autoxsh

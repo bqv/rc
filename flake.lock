@@ -572,18 +572,18 @@
     "powerline": {
       "flake": false,
       "info": {
-        "lastModified": 1540997529,
-        "narHash": "sha256-qsfjPZleeOtawW+9OpfjuX0cRYsq9OogfXmI5vV+0cY="
+        "lastModified": 1589045238,
+        "narHash": "sha256-8/vqda1DvEplZJSozLmEZc5vLKeVWC3VzSgc80Agea8="
       },
       "locked": {
-        "owner": "santagada",
-        "repo": "xontrib-powerline",
-        "rev": "7307f7c35e3e163e66f6c57adf66b99c81da3306",
+        "owner": "vaaaaanquish",
+        "repo": "xontrib-powerline2",
+        "rev": "f4d966a502e5eb62d2f0150c41d54c9e85b1cfae",
         "type": "github"
       },
       "original": {
-        "owner": "santagada",
-        "repo": "xontrib-powerline",
+        "owner": "vaaaaanquish",
+        "repo": "xontrib-powerline2",
         "type": "github"
       }
     },
@@ -844,8 +844,8 @@
     },
     "xontribs": {
       "info": {
-        "lastModified": 1589841839,
-        "narHash": "sha256-xIReiWCITCIMeM8J6fUBM4FJsTRiUy5V5ItaDROpvts="
+        "lastModified": 1589843009,
+        "narHash": "sha256-jdVpyC/RZwknACNR8VWr3CSbRCdrkPYvG4wwX8QJrzk="
       },
       "inputs": {
         "apt-tabcomplete": "apt-tabcomplete",
@@ -880,7 +880,7 @@
       "locked": {
         "owner": "bqv",
         "repo": "xontribs",
-        "rev": "cb324ddb02f12b4ed3eaef2113f87d8fd984e2b6",
+        "rev": "6fda831b788ead67f15531e8ff2c75902b1f9828",
         "type": "github"
       },
       "original": {

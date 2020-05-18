@@ -99,7 +99,7 @@
       abduco dvtm # Terminal Multiplexing
       yadm # Dotfile Management
       pstree # Process Monitoring
-      pv # Pipe Management
+      pv pup # Pipe Management
       nmap wget curl ipfscat mitmproxy # Network Utilities
       bitwarden-cli protonvpn-cli-ng # Password Management
       file exa unrar unzip ncdu # File Management
