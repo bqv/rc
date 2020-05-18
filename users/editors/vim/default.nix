@@ -11,10 +11,12 @@ in {
       withRuby = true;
       withNodeJs = true;
       plugins = with pkgs.vimPlugins; [
+        vim-one # theme
+
         vim-nix # nix language
       ];
       extraConfig = ''
-        colorscheme slate
+        colorscheme one
 
         set inccommand=nosplit " previews
         set nohlsearch " unpersist highlights
