@@ -1,9 +1,8 @@
 { lib, ... }:
+
 let
   inherit (builtins) attrNames isAttrs readDir;
-
   inherit (lib) filterAttrs hasSuffix mapAttrs' nameValuePair removeSuffix;
-
 in rec {
   # mapFilterAttrs ::
   #   (name -> value -> bool )

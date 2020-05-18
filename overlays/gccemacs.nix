@@ -28,5 +28,5 @@ final: prev: rec {
   });
 
   # Overridden for exwm
-  emacsWithPackages = (prev.emacsPackagesFor gccEmacs).emacsWithPackages;
+  emacsWithPackages = (final.emacsPackagesFor gccEmacs).emacsWithPackages;
 }

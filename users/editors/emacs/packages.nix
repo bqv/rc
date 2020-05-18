@@ -27,6 +27,7 @@
     smex ivy fzf counsel ivy-rich counsel-projectile swiper ivy-hydra which-key
     # usr-lang-cpp.el
     meson-mode
+    execline
     # usr-lang-racket.el
     racket-mode
     # usr-lang-rust.el
@@ -58,7 +59,7 @@
     # usr-util-web.el
     w3m
     # usr-util-irc.el
-    tracking weechat
+    tracking weechat-patched
     # usr-util-bitwarden.el
     bitwarden
     # usr-util-auth.el

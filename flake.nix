@@ -81,7 +81,7 @@
           snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
           napalm = pkgs.callPackage inputs.napalm;
           inherit (inputs.small.legacyPackages.${system}) pulseeffects;
-          inherit (inputs.staged.legacyPackages.${system}) libgccjit sof-firmware;
+          inherit (inputs.staged.legacyPackages.${system}) libgccjit;
         })
         inputs.nix.overlay
         inputs.guix.overlay
@@ -96,9 +96,9 @@
     nixosConfigurations = let
       system = "x86_64-linux";
       pkgs = pkgsForSystem system;
+      usr = import ./lib/utils.nix { inherit lib; };
       specialArgs = {
-        inherit inputs;
-        usr = import ./lib/utils.nix { inherit lib; };
+        inherit inputs usr;
         fetchPullRequest = fetchPullRequestForSystem system;
 
         nurModules = nur.nixosModules;
@@ -108,7 +108,6 @@
         hosts = import ./secrets/hosts.nix;
       };
 
-      inherit (specialArgs) usr;
       config = hostName: lib.nixosSystem {
         inherit system;
 
@@ -135,12 +134,16 @@
               "nixpkgs-overlays=/etc/nixos/overlays"
             ];
 
-            system.configurationRevision = if (inputs.self ? rev) then inputs.self.rev else "dirty";
+            system.configurationRevision = inputs.self.rev or "dirty";
+            system.nixos.versionSuffix = let inherit (inputs) self;
+              date = lib.substring 0 8 (self.lastModifiedDate or self.lastModified);
+              rev = self.shortRev or "dirty";
+            in lib.mkForce ".${date}.${rev}";
 
             system.extraSystemBuilderCmds = ''
               ln -s '${./.}' "$out/flake"
             '' + (if ! (inputs.self ? rev) then ''
-              echo "Cannot switch to a dirty configuration"
+              echo "Cannot build a dirty configuration"
               exit 1
             '' else "");
 
@@ -195,8 +198,6 @@
       inherit (pkgs) matrix-appservice-irc mx-puppet-discord;
       inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
       inherit (pkgs) next pure sddm-chili shflags yacy;
-
-      inherit (pkgs.weechatScripts) weechat-matrix;
     });
 
     nixosModules = let

@@ -40,11 +40,5 @@ in {
     (final: prev: { large = import (builtins.fetchTarball
       "https://github.com/nixos/nixpkgs/archive/nixos-unstable.tar.gz") { inherit config; };
     })
-    (final: prev: { pr = n: hash: import (builtins.fetchTarball
-      "https://github.com/NixOS/nixpkgs/archive/pull/${toString n}/head.tar.gz") { inherit config; };
-    })
-    (final: prev: { nur = import (builtins.fetchTarball
-      "https://github.com/nix-community/nur/archive/master.tar.gz") { inherit config; };
-    })
   ];
 }

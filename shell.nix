@@ -30,7 +30,7 @@ let
       ARGS="$ARGS -vv"
     fi
 
-    if [ $FLAGS_noisy -eq $FLAGS_TRUE ]; then
+    if [ $FLAGS_verynoisy -eq $FLAGS_TRUE ]; then
       ARGS="$ARGS -vvvvv"
     fi
 
