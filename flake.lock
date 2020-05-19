@@ -187,17 +187,17 @@
     "fzf-widgets": {
       "flake": false,
       "info": {
-        "lastModified": 1538301931,
-        "narHash": "sha256-f+5P44rtpSfJN963HsDyIo4mkRuPtRKwBhYb/+zAbf8="
+        "lastModified": 1588419937,
+        "narHash": "sha256-eKMWeBXSIeqF2StZ6lk2vhBuYD6XL+8eKOxm3pgIGdA="
       },
       "locked": {
-        "owner": "shahinism",
+        "owner": "laloch",
         "repo": "xontrib-fzf-widgets",
-        "rev": "e8ba9e5adae03f330353edbd5952abdb90f6b003",
+        "rev": "417ebebeb8635ef6ce81ab25f3628439b3963d50",
         "type": "github"
       },
       "original": {
-        "owner": "shahinism",
+        "owner": "laloch",
         "repo": "xontrib-fzf-widgets",
         "type": "github"
       }
@@ -844,8 +844,8 @@
     },
     "xontribs": {
       "info": {
-        "lastModified": 1589843009,
-        "narHash": "sha256-jdVpyC/RZwknACNR8VWr3CSbRCdrkPYvG4wwX8QJrzk="
+        "lastModified": 1589898506,
+        "narHash": "sha256-gMm1ORrXCiMAN77vJ+RMIv5IZDQKeoIpDUc8FoKRS64="
       },
       "inputs": {
         "apt-tabcomplete": "apt-tabcomplete",
@@ -880,7 +880,7 @@
       "locked": {
         "owner": "bqv",
         "repo": "xontribs",
-        "rev": "6fda831b788ead67f15531e8ff2c75902b1f9828",
+        "rev": "b57224905fd784bc21b421c2de6a26ee2fa2504f",
         "type": "github"
       },
       "original": {
