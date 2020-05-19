@@ -25,6 +25,7 @@
   in {
     imports = [
       ./shells/fish
+      ./shells/xonsh
       ./browsers/firefox
       ./editors/emacs
       ./editors/vim
@@ -40,6 +41,7 @@
     programs.command-not-found.enable = false; # Needs flake-safe version
     programs.qutebrowser.enable = true;
     programs.firefox.enable = true;
+    programs.xonsh.enable = true;
     programs.fish.enable = true;
     programs.htop.enable = true;
     programs.bat.enable = true;
