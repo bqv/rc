@@ -94,6 +94,7 @@ in {
         # $XONSH_SHOW_TRACEBACK = True
         $COLOR_RESULTS = True
         $COMPLETIONS_BRACKETS = True
+        $XONSH_HISTORY_SIZE = "65536 commands"
 
         xontrib load abbrevs
         xontrib load bashisms
