@@ -14,7 +14,7 @@
   users.users.bao = {
     uid = 1000;
     group = "users";
-    shell = pkgs.fish;
+    shell = pkgs.xonsh;
     isNormalUser = true;
     extraGroups = [ "wheel" "adbusers" ];
   } // import ../secrets/user.password.nix
