@@ -7,10 +7,6 @@ in {
 
   nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
-  imports = [
-    ../local/locale.nix
-  ];
-
   boot = {
     kernelPackages = pkgs.large.linuxPackages_latest;
 
@@ -27,6 +23,12 @@ in {
   hardware.enableAllFirmware = true;
   nixpkgs.config.allowUnfree = true;
   zramSwap.enable = true;
+
+  console.useXkbConfig = true;
+
+  i18n.defaultLocale = "en_GB.UTF-8";
+
+  time.timeZone = "Europe/London";
 
   environment = {
     systemPackages = with pkgs; [
