@@ -131,7 +131,7 @@ in {
           if ''${...}.get("TERM") == "dumb":
             exec bash
           elif "DISPLAY" in ''${...}:        # If we're in X11
-            "TMUX" not in ''${...} && exec ${pkgs.tmux}/bin/tmux new -A -s `echo X$DISPLAY | sed 's/X:/X/;s/:/-/'`
+            "TMUX" not in ''${...} && exec ${pkgs.tmux}/bin/tmux new -A -s @($(echo X$DISPLAY | sed 's/X:/X/;s/:/-/').strip())
           elif "/dev/tty" in $(tty):         # If we're in TTY
             "WINDOW" not in ''${...} && exec ${pkgs.screen}/bin/screen -xRR
           elif "SSH_CONNECTION" in ''${...}: # If we're in SSH
