@@ -153,7 +153,7 @@ in {
         if "DISPLAY" not in ''${...}:
           ''${...}["GPG_TTY"] = $(tty).strip()
 
-        xontrib load powerline2
+        xontrib load powerline
         date
 
         ${pkgs.fortune}/bin/fortune -as linux linuxcookie paradoxum computers science definitions | tee -a /tmp/fortune.log | ${pkgs.cowsay}/bin/cowsay

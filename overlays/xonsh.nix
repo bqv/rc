@@ -18,6 +18,7 @@ final: prev: with final.xontribs; rec {
       powerline
       prompt-bar
       prompt-vi-mode
+      pure
       pyenv
       readable-traceback
       schedule
