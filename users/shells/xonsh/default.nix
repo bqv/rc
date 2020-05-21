@@ -95,13 +95,14 @@ in {
         $COLOR_RESULTS = True
         $COMPLETIONS_BRACKETS = True
         $XONSH_HISTORY_SIZE = "65536 commands"
+        $XONSH_STORE_STDOUT = True
 
         xontrib load abbrevs
         xontrib load bashisms
         xontrib load direnv
         xontrib load fzf-widgets
+        xontrib load histcpy
         xontrib load jedi
-        xontrib load output_search
         xontrib load readable-traceback
         xontrib load schedule
         xontrib load z
