@@ -22,6 +22,10 @@
         relogin = true;
         user = "bao";
       };
+      extraConfig = ''
+        [X11]
+        UserAuthFile=.local/share/sddm/Xauthority
+      '';
     };
   };
 }
