@@ -27,6 +27,8 @@ final: prev: rec {
     buildInputs = with final; o.buildInputs ++ [ jansson libgccjit glibc harfbuzz.dev ];
   });
 
+  gccEmacsPackages = final.emacsPackagesFor gccEmacs;
+
   # Overridden for exwm
-  emacsWithPackages = (final.emacsPackagesFor gccEmacs).emacsWithPackages;
+  emacsWithPackages = gccEmacsPackages.emacsWithPackages;
 }
