@@ -49,7 +49,7 @@
     # usr-tool-avy.el
     avy ace-window switch-window
     # usr-tool-vcs.el
-    magit magithub git-gutter git-timemachine projectile
+    magit forge git-gutter git-timemachine projectile #magithub
     # usr-tool-nix.el
     nix-buffer nix-mode nix-update direnv
     # usr-tool-media.el
