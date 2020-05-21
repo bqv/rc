@@ -99,7 +99,11 @@
     nixosConfigurations = let
       system = "x86_64-linux";
       pkgs = pkgsForSystem system;
-      usr = import ./lib/utils.nix { inherit lib; };
+      usr = {
+        utils = import ./lib/utils.nix {
+          inherit lib;
+        };
+      };
       specialArgs = {
         inherit inputs usr;
         fetchPullRequest = fetchPullRequestForSystem system;
@@ -179,7 +183,7 @@
           home-manager dwarffs guix matrix-construct
         ];
       };
-    in usr.recImport {
+    in usr.utils.recImport {
       dir = ./hosts;
       _import = config;
     };
@@ -228,6 +232,7 @@
       ++ (attrValues (import ./secrets/root.password.nix))
       ++ (attrValues (import ./secrets/user.password.nix))
       ++ (attrValues (import ./secrets/user.description.nix))
+      ++ (attrValues (import ./secrets/emacs.user.nix))
       ++ (attrValues (import ./secrets/git.user.nix))
       ++ (attrValues (import ./secrets/domains.nix))
       ++ (lib.flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
