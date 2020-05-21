@@ -103,6 +103,7 @@ in {
         xontrib load fzf-widgets
         xontrib load histcpy
         xontrib load jedi
+        xontrib load output_search
         xontrib load readable-traceback
         xontrib load schedule
         xontrib load z

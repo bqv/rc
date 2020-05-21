@@ -518,17 +518,17 @@
     "output-search": {
       "flake": false,
       "info": {
-        "lastModified": 1588755481,
-        "narHash": "sha256-9S6UwldfL+IcOxAJQ2OmGMqshsE95EGZZu1tvmhws8k="
+        "lastModified": 1590083794,
+        "narHash": "sha256-uDlYp1b/sOJzM/xxcri+XyRAHTUUFBTH3W+kHRpalxk="
       },
       "locked": {
-        "owner": "anki-code",
+        "owner": "bqv",
         "repo": "xontrib-output-search",
-        "rev": "975ffb935f1716a6e5fd6fdc3ecfc62fd548a571",
+        "rev": "45b1da710b48d5b761cf4063039f3375386ddc1e",
         "type": "github"
       },
       "original": {
-        "owner": "anki-code",
+        "owner": "bqv",
         "repo": "xontrib-output-search",
         "type": "github"
       }
