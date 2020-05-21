@@ -103,6 +103,10 @@
         utils = import ./lib/utils.nix {
           inherit lib;
         };
+        elisp = import ./lib/elisp.nix {
+          inherit lib;
+          pkgs = channels.lib.legacyPackages.${system};
+        };
       };
       specialArgs = {
         inherit inputs usr;

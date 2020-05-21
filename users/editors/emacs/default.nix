@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+args@{ config, lib, pkgs, ... }:
 
 with lib; let
   cfg = config.programs.emacs;
@@ -13,8 +13,13 @@ in {
   ];
 
   config = mkIf cfg.enable rec {
+    home.file = {
+      ".emacs.d/early-init.el".source = (import ./early-init.nix args).out;
+      ".emacs.d/init.el".source = (import ./init.nix args).out;
+    };
+
     home.packages = with pkgs; [
-      pkgs.emacs-all-the-icons-fonts
+      emacs-all-the-icons-fonts
       nixfmt
     ];
 
