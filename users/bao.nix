@@ -37,6 +37,21 @@
       ./services/mpd
     ];
 
+    home.file.".bashrc".text = ''
+      # If not running interactively, don't do anything
+      [[ $- != *i* ]] && return
+
+      source /etc/profile
+
+      [[ $INSIDE_EMACS == "vterm" ]] && [[ $IN_NIX_SHELL == "" ]] && exec xonsh
+
+      PS1='[\u@\h \W]\$ '
+
+      PS1="\n\[\e[1;30m\][''$$:$PPID - \j:\!\[\e[1;30m\]]\[\e[0;36m\] \T \[\e[1;30m\][\[\e[1;34m\]\u@\H\[\e[1;30m\]:\[\e[0;37m\]''${SSH_TTY:-o} \[\e[0;32m\]+''${SHLVL}\[\e[1;30m\]] \[\e[1;37m\]\w\[\e[0;37m\] \n\$ "
+    '';
+    home.file.".profile".text = ''
+    '';
+
     programs.home-manager.enable = true;
     programs.command-not-found.enable = false; # Needs flake-safe version
     programs.qutebrowser.enable = true;
