@@ -1,5 +1,9 @@
-final: prev: {
-  emacsPackages = with prev; emacsPackages // (callPackage ./applications/editors/emacs-modes { });
+final: prev: let
+  inherit (prev.lib) recurseIntoAttrs;
+  emacsOverride = self: super: prev.callPackage ./applications/editors/emacs-modes { };
+in {
+  emacsPackages = recurseIntoAttrs (prev.emacsPackages.overrideScope' emacsOverride);
+  emacsPackagesFor = emacs: recurseIntoAttrs ((prev.emacsPackagesFor emacs).overrideScope' emacsOverride);
 
   arm-adb = prev.callPackage ./applications/misc/arm-adb { };
 
