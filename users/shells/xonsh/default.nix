@@ -12,12 +12,18 @@ with lib; let
     tmux = "tmux -2"; # Force 256 colors
     jq = "jq -C"; # Force colors
     rg = "rg --color always"; # Force color
-    #bw = "env (cat ~/.bwrc) bw";
+    #bw = "env $(cat ~/.bwrc) bw";
   };
 
   abbrevs = rec {
-    cat = aliases.bat;
-    ps = aliases.procs;
+    cat = "bat";
+    ps = "procs";
+
+    gl = "git log --oneline --all --graph";
+    gf = "git fetch --all --prune --tags";
+    gc = "git commit -m ! ";
+    gca = "git commit --amend";
+    gcan = "git commit --amend --no-edit";
 
     sstart = "sudo systemctl start";
     sstop = "sudo systemctl stop";
