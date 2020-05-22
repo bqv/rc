@@ -102,6 +102,7 @@ in {
         $COMPLETIONS_BRACKETS = True
         $XONSH_HISTORY_SIZE = "65536 commands"
         $XONSH_STORE_STDOUT = True
+        $XONTRIB_OUTPUT_SEARCH_KEY = 'i'
 
         xontrib load abbrevs
         xontrib load bashisms

@@ -518,17 +518,17 @@
     "output-search": {
       "flake": false,
       "info": {
-        "lastModified": 1590083794,
-        "narHash": "sha256-uDlYp1b/sOJzM/xxcri+XyRAHTUUFBTH3W+kHRpalxk="
+        "lastModified": 1588755481,
+        "narHash": "sha256-9S6UwldfL+IcOxAJQ2OmGMqshsE95EGZZu1tvmhws8k="
       },
       "locked": {
-        "owner": "bqv",
+        "owner": "anki-code",
         "repo": "xontrib-output-search",
-        "rev": "45b1da710b48d5b761cf4063039f3375386ddc1e",
+        "rev": "975ffb935f1716a6e5fd6fdc3ecfc62fd548a571",
         "type": "github"
       },
       "original": {
-        "owner": "bqv",
+        "owner": "anki-code",
         "repo": "xontrib-output-search",
         "type": "github"
       }
@@ -863,8 +863,7 @@
     "xontribs": {
       "info": {
         "lastModified": 1589966570,
-        "narHash": "sha256-CbG4Lyrx2zv6G3J1Ml0D090U3t3ZspzkFRNzzk5fXWY=",
-        "revCount": 18
+        "narHash": "sha256-CbG4Lyrx2zv6G3J1Ml0D090U3t3ZspzkFRNzzk5fXWY="
       },
       "inputs": {
         "apt-tabcomplete": "apt-tabcomplete",
@@ -898,10 +897,10 @@
         "z": "z"
       },
       "locked": {
-        "ref": "master",
+        "owner": "bqv",
+        "repo": "xontribs",
         "rev": "9f4fe158c93501b65e7edd1d29ef07417141d4bc",
-        "type": "git",
-        "url": "file:///home/bao/dev/xontribs"
+        "type": "github"
       },
       "original": {
         "owner": "bqv",

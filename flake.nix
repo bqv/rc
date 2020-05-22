@@ -27,7 +27,6 @@
     construct.url = "github:jevolk/charybdis";
     emacs.url = "github:nix-community/emacs-overlay";
     xontribs.url = "github:bqv/xontribs";
-    xontribs.inputs.output-search = { url = "github:bqv/xontrib-output-search"; flake = false; };
 
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
     snack = { url = "github:nmattia/snack"; flake = false; };
