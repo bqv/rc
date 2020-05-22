@@ -35,13 +35,15 @@
     hardware = { url = "github:nixos/nixos-hardware"; flake = false; };
   };
 
-  outputs = inputs: with builtins; let
+  outputs = inputs@{ master, staged ? master, small ? master, large ? master, ... }: with builtins; let
     channels = with inputs; {
       pkgs = large;
       modules = master;
       lib = master;
     };
-    inherit (channels.lib) lib;
+    lib = let
+      nixpkgs = if channels.lib ? lib then channels.lib else { inherit (import channels.lib {}) lib; };
+    in nixpkgs.lib;
 
     forAllSystems = lib.genAttrs [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
     diffTrace = left: right: string: value: if left != right then trace string value else value;
@@ -106,6 +108,12 @@
         elisp = import ./lib/elisp.nix {
           inherit lib;
           pkgs = channels.lib.legacyPackages.${system};
+        };
+        nixos = import ./lib/nixos.nix {
+          inherit pkgs;
+        };
+        flake-shell = import ./lib/flake-shell.nix {
+          inherit pkgs;
         };
       };
       specialArgs = {
@@ -230,16 +238,18 @@
       pkgs = import nixpkgs { inherit system; };
     }));
 
-    secrets = with lib.strings; concatMapStringsSep "\n" (replaceStrings [" "] ["\\s"]) ([
-    ] ++ (attrNames (import ./secrets/wifi.networks.nix))
-      ++ (map (n: n.psk) (attrValues (import ./secrets/wifi.networks.nix)))
-      ++ (attrValues (import ./secrets/root.password.nix))
-      ++ (attrValues (import ./secrets/user.password.nix))
-      ++ (attrValues (import ./secrets/user.description.nix))
-      ++ (attrValues (import ./secrets/emacs.user.nix))
-      ++ (attrValues (import ./secrets/git.user.nix))
-      ++ (attrValues (import ./secrets/domains.nix))
-      ++ (lib.flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
-    );
+    lib = {
+      secrets = with lib.strings; concatMapStringsSep "\n" (replaceStrings [" "] ["\\s"]) ([
+      ] ++ (attrNames (import ./secrets/wifi.networks.nix))
+        ++ (map (n: n.psk) (attrValues (import ./secrets/wifi.networks.nix)))
+        ++ (attrValues (import ./secrets/root.password.nix))
+        ++ (attrValues (import ./secrets/user.password.nix))
+        ++ (attrValues (import ./secrets/user.description.nix))
+        ++ (attrValues (import ./secrets/emacs.user.nix))
+        ++ (attrValues (import ./secrets/git.user.nix))
+        ++ (attrValues (import ./secrets/domains.nix))
+        ++ (lib.flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
+      );
+    };
   };
 }
