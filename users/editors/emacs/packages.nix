@@ -6,7 +6,7 @@
     w3m findutils
     cmake gnumake gcc libtool libvterm gtk3 rls age rust-analyzer
   ] ++ (with emacsPackagesFor config.programs.emacs.package.unwrapped; [
-    use-package auto-compile gcmh diminish epkg log4e
+    use-package auto-compile gcmh diminish epkg log4e bug-hunter
 
     # usr-crit-bufmgmt.el
     persp-mode neotree persp-projectile window-purpose ivy-purpose treemacs treemacs-evil treemacs-magit treemacs-persp treemacs-projectile lsp-treemacs treemacs-icons-dired
