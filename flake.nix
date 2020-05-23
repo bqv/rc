@@ -24,7 +24,7 @@
     naersk.inputs.nixpkgs.follows = "large";
 
     guix.url = "github:bqv/guix";
-    construct.url = "github:jevolk/charybdis";
+    construct.url = "github:matrix-construct/construct";
     emacs.url = "github:nix-community/emacs-overlay";
     xontribs.url = "github:bqv/xontribs";
 

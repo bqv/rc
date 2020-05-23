@@ -99,14 +99,14 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "owner": "jevolk",
-        "repo": "charybdis",
+        "owner": "matrix-construct",
+        "repo": "construct",
         "rev": "3ebad48c4ffdd189cccacf839fe07be9caca3832",
         "type": "github"
       },
       "original": {
-        "owner": "jevolk",
-        "repo": "charybdis",
+        "owner": "matrix-construct",
+        "repo": "construct",
         "type": "github"
       }
     },
