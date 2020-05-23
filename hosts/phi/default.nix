@@ -4,43 +4,16 @@
   imports = [
   ];
 
-  boot = {
-    initrd = {
-      availableKernelModules = [ "usbhid" ];
-      kernelModules = [];
-      checkJournalingFS = false;
-    };
-    kernelParams = [
-      "console=ttyAMA0,115200"
-      "console=tty1"
-      "selinux=0"
-      "plymouth.enable=0"
-      "smsc95xx.turbo_mode=N"
-      "dwc_otg.lpm_enable=0"
-      "kgdboc=ttyAMA0,115200"
-      "elevator=noop"
-    ]; 
-    kernelModules = [];
-    kernelPackages = lib.mkForce pkgs.linuxPackages_rpi2;
-    consoleLogLevel = 5;
-    loader = {
-      initScript.enable = false;
-      grub.enable = false;
-      raspberryPi = {
-        enable = true;
-        uboot.enable = true;
-        version = 2;
-        firmwareConfig = ''
-          gpu_mem=64
-        '';
-      };
-      generic-extlinux-compatible.enable = false;
-      generationsDir = {
-        enable = false;
-        copyKernels = true;
-      };
+  # Use the systemd-boot EFI boot loader.
+  boot.loader = {
+    efi.canTouchEfiVariables = true;
+    systemd-boot = {
+      enable = true;
+      configurationLimit = 8;
     };
   };
+
+  boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
 
   fileSystems = {
     "/" = {
@@ -61,7 +34,7 @@
   nix.maxJobs = lib.mkDefault 4;
   nix.buildMachines = [ {
     hostName = "nix-zeta";
-    systems = ["x86_64-linux" "armv6l-linux" "armv7l-linux"];
+    systems = [ "x86_64-linux" ];
     maxJobs = 3;
     speedFactor = 2;
     supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
@@ -72,25 +45,8 @@
     builders-use-substitutes = true
   '';
 
-  nixpkgs.config = {
-    platform = pkgs.platforms.raspberrypi2;
-  };
-
-  networking.hostName = "nu";
-
   networking.useDHCP = false;
   networking.interfaces.eth0.useDHCP = true;
-
-  console = {
-    font = "Lat2-Terminus16";
-    keyMap = "uk";
-  };
-
-  i18n = {
-    defaultLocale = "en_GB.UTF-8";
-  };
-
-  time.timeZone = "Europe/London";
 
   environment.systemPackages = with pkgs; [
     wget htop screen pv git dnsutils
@@ -104,17 +60,12 @@
       };
     })
     dvtm abduco
-    (arm-adb.override {
-     #boringssl = boringssl.override { 
-     #  go = pkgs.go.override { 
-     #  };
-     #};
-    })
   ];
 
   programs.vim.defaultEditor = true;
   programs.mosh.enable = true;
   programs.tmux.enable = true;
+  programs.adb.enable = true;
 
   services.resolved.enable = true;
   services.resolved.dnssec = "false";

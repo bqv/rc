@@ -5,8 +5,6 @@ in {
   emacsPackages = recurseIntoAttrs (prev.emacsPackages.overrideScope' emacsOverride);
   emacsPackagesFor = emacs: recurseIntoAttrs ((prev.emacsPackagesFor emacs).overrideScope' emacsOverride);
 
-  arm-adb = prev.callPackage ./applications/misc/arm-adb { };
-
   dgit = prev.callPackage ./applications/version-management/dgit { };
 
   dejavu_nerdfont = prev.callPackage ./data/fonts/dejavu-nerdfont { };
