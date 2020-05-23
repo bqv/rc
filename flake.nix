@@ -108,12 +108,6 @@
           inherit lib;
           pkgs = channels.lib.legacyPackages.${system};
         };
-        nixos = import ./lib/nixos.nix {
-          inherit pkgs;
-        };
-        flake-shell = import ./lib/flake-shell.nix {
-          inherit pkgs;
-        };
       };
       specialArgs = {
         inherit inputs usr;
@@ -237,8 +231,8 @@
         pkgs = import channels.pkgs { inherit system; };
         my = import ./pkgs pkgs pkgs;
 
-        nixos = import ./lib/nixos.nix { pkgs = pkgs // my; };
-        flake-shell = import ./lib/flake-shell.nix { inherit pkgs; };
+        nixos = import ./pkgs/lib/nixos.nix { pkgs = pkgs // my; };
+        flake-shell = import ./pkgs/lib/flake-shell.nix { inherit pkgs; };
       in pkgs.mkShell {
         nativeBuildInputs = with pkgs; let
           git-crypt = pkgs.git-crypt.overrideAttrs (attrs: rec {
