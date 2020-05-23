@@ -35,4 +35,6 @@ in {
   shflags = prev.callPackage ./tools/misc/shflags { };
 
   yacy = prev.callPackage ./servers/yacy { };
+
+  xxh = prev.callPackage ./development/python-modules/xxh { };
 }

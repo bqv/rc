@@ -3,6 +3,7 @@ final: prev: with final.xontribs; rec {
     propagatedBuildInputs = o.propagatedBuildInputs ++ [
       final.python3Packages.nixpkgs
       final.python3Packages.pip
+      final.xxh
       apt-tabcomplete
       autoxsh
       avox
