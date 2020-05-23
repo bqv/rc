@@ -28,23 +28,21 @@ let
     (setq package-enable-at-startup nil)
     (setq load-prefer-newer t)
 
-    (defconst config-crit-dir ${toString ./legacy/emacs/crit} "Critical feature scripts path")
-    (defconst config-tool-dir ${toString ./legacy/emacs/tool} "Priority feature scripts path")
-    (defconst config-util-dir ${toString ./legacy/emacs/util} "Dispensable feature scripts path")
-    (defconst config-lang-dir ${toString ./legacy/emacs/lang} "Modal feature scripts path")
+    (defconst config-crit-dir "${toString ../../../legacy/emacs/crit}" "Critical feature scripts path")
+    (defconst config-tool-dir "${toString ../../../legacy/emacs/tool}" "Priority feature scripts path")
+    (defconst config-util-dir "${toString ../../../legacy/emacs/util}" "Dispensable feature scripts path")
+    (defconst config-lang-dir "${toString ../../../legacy/emacs/lang}" "Modal feature scripts path")
     (defconst config-dirs `((,'crit . ,config-crit-dir)
                             (,'tool . ,config-tool-dir)
                             (,'util . ,config-util-dir)
                             (,'lang . ,config-lang-dir))
-              "Featue directories mapped by symbols"))
+              "Featue directories mapped by symbols")
   '';
 
   # Setup base packaging - use-package
   package-init = ''
     (setq use-package-verbose t)
     (require 'use-package)
-    (use-package straight
-      :demand t)
     (use-package auto-compile
       :demand t
       :config
