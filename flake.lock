@@ -518,13 +518,13 @@
     "output-search": {
       "flake": false,
       "info": {
-        "lastModified": 1588755481,
-        "narHash": "sha256-9S6UwldfL+IcOxAJQ2OmGMqshsE95EGZZu1tvmhws8k="
+        "lastModified": 1590089933,
+        "narHash": "sha256-OxI+sBjdKMVhboevmU0BEssWkGisGM4//VzwomoNi2o="
       },
       "locked": {
         "owner": "anki-code",
         "repo": "xontrib-output-search",
-        "rev": "975ffb935f1716a6e5fd6fdc3ecfc62fd548a571",
+        "rev": "94e196fc89d161e2b626d9a8aa7ab6a74a65303c",
         "type": "github"
       },
       "original": {
