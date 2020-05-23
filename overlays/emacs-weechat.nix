@@ -7,11 +7,11 @@ final: prev: let
           url = "https://github.com/emacsomancer/weechat.el/commit/77f3e93fabcf300ba6c2d268e2e89baabed6cbf3.patch";
           sha256 = "0j1f6vmmk3sk1mvdwnxwbk5sbs1cdpqw1drlg53z7xr529d7f0bf";
         })
-       #(final.fetchpatch {
-       #  name = "reversed_rx_character_range.patch";
-       #  url = "https://github.com/eklitzke/weechat.el/commit/412b3fca7b41da519c9404085034da509daf0279.patch";
-       #  sha256 = "1ahs89rvgp9hadnqx1pl5crzb8wpxkiil0favdy3pj0nlr859xfx";
-       #})
+        (final.fetchpatch {
+          name = "reversed_rx_character_range.patch";
+          url = "https://github.com/eklitzke/weechat.el/commit/446868de424170be0584980d4dcc0859f7077d54.patch";
+          sha256 = "1q40g3kdq8418dbi9z6i9v3wj4wbh3k3yn77lvyk1yp14jk696qx";
+        })
         (final.fetchpatch {
           name = "ellipsize_nicks.patch";
           url = "https://github.com/bqv/weechat.el/commit/6f655866206eac179f74637c77e6c4b259f9891c.patch";
