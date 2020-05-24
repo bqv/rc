@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../../profiles/security/sudo.conf
   ];
 
   # Use the systemd-boot EFI boot loader.
@@ -132,9 +133,6 @@
   # read /etc/hass/configuration.yaml
 
   networking.firewall.enable = false;
-
-  security.sudo.enable = true;
-  security.sudo.wheelNeedsPassword = false;
 
   sound.enable = true;
   # hardware.pulseaudio.enable = true;

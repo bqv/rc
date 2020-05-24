@@ -221,9 +221,6 @@
     };
   };
 
-  security.sudo.enable = true;
-  security.sudo.wheelNeedsPassword = false;
-
   nix.sshServe.enable = true;
   nix.sshServe.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIYNqRbITjMHmgD/UC87BISFTaw7Tq1jNd8X8i26x4b5 root@delta"
