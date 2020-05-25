@@ -61,6 +61,9 @@
   virtualisation.libvirtd.enable = true;
   virtualisation.virtualbox.host.enable = false;
   virtualisation.anbox.enable = true;
+  systemd.network.networks = {
+    "40-anbox0".networkConfig.ConfigureWithoutCarrier = true;
+  };
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
