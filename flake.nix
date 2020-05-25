@@ -170,9 +170,7 @@
                 specialArgs = specialArgs // {
                   super = config;
                 };
-                modules = [
-                 #({ ... }: { options = { }; })
-                ];
+                modules = import ./modules/home-manager.nix;
               });
             };
 
@@ -183,7 +181,7 @@
 
           local = import "${toString ./hosts}/${hostName}";
 
-          flakeModules = import ./modules/list.nix;
+          flakeModules = import ./modules/nixos.nix;
 
         in flakeModules ++ [
           core global home local
@@ -221,7 +219,7 @@
         in lib.setAttrByPath (lib.splitString "/" cleanFile) (import file)
       );
 
-      moduleList = import ./modules/list.nix;
+      moduleList = (import ./modules/nixos.nix) ++ (import ./modules/home-manager.nix);
       modulesAttrs = mergeAll (pathsToAttrs moduleList);
 
       profilesList = import ./profiles/list.nix;
@@ -273,13 +271,18 @@
     passthru = {
       #$ git config secrets.providers "nix eval --raw .#passthru.secrets"
       secrets = with lib.strings; concatMapStringsSep "\n" (replaceStrings [" "] ["\\s"]) ([
+        (import ./secrets/git.github.nix).oauth-token
       ] ++ (attrNames (import ./secrets/wifi.networks.nix))
         ++ (map (n: n.psk) (attrValues (import ./secrets/wifi.networks.nix)))
         ++ (attrValues (import ./secrets/root.password.nix))
+        ++ (attrValues (import ./secrets/leaf.password.nix))
         ++ (attrValues (import ./secrets/user.password.nix))
         ++ (attrValues (import ./secrets/user.description.nix))
         ++ (attrValues (import ./secrets/emacs.user.nix))
         ++ (attrValues (import ./secrets/git.user.nix))
+        ++ (attrValues (import ./secrets/spotify.credentials.nix))
+        ++ (attrValues (import ./secrets/steam.credentials.nix))
+        ++ (attrValues (import ./secrets/weechat.credentials.nix))
         ++ (attrValues (import ./secrets/domains.nix))
         ++ (lib.flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
       );
