@@ -57,6 +57,10 @@ in pkgs.writeShellScriptBin "nixos" ''
   export NIXOS_LABEL="$DATE-''${REV:0:7}"
 
   if [ $FLAGS_check -eq $FLAGS_TRUE ]; then
+    if [ $FLAGS_showtrace -eq $FLAGS_TRUE ]; then
+      ARGS="$ARGS --show-trace"
+    fi
+
     echo '> nix flake check' $ARGS
     exec nix flake check $ARGS
   fi
