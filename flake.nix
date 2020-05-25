@@ -164,10 +164,12 @@
             };
           };
 
-          home = {
+          home = { config, ... }: {
             options.home-manager.users = lib.mkOption {
               type = with lib.types; attrsOf (submoduleWith {
-                inherit specialArgs;
+                specialArgs = specialArgs // {
+                  super = config;
+                };
                 modules = [
                  #({ ... }: { options = { }; })
                 ];
@@ -206,7 +208,7 @@
       pkgs = pkgsForSystem system;
     in lib.filterAttrs (_: p: (p.meta.broken or null) != true) {
       inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color;
-      inherit (pkgs) dgit dejavu_nerdfont electronmail flarectl fsnoop;
+      inherit (pkgs) dgit dejavu_nerdfont electronmail flarectl fsnoop ipfscat;
       inherit (pkgs) matrix-appservice-irc mx-puppet-discord;
       inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
       inherit (pkgs) next pure sddm-chili shflags yacy;
@@ -268,7 +270,8 @@
       }
     );
 
-    lib = {
+    passthru = {
+      #$ git config secrets.providers "nix eval --raw .#passthru.secrets"
       secrets = with lib.strings; concatMapStringsSep "\n" (replaceStrings [" "] ["\\s"]) ([
       ] ++ (attrNames (import ./secrets/wifi.networks.nix))
         ++ (map (n: n.psk) (attrValues (import ./secrets/wifi.networks.nix)))

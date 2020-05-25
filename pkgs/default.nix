@@ -15,6 +15,8 @@ in {
 
   fsnoop = prev.callPackage ./tools/misc/fsnoop { };
 
+  ipfscat = prev.callPackage ./applications/misc/ipfscat { };
+
   matrix-appservice-irc = prev.callPackage ./servers/matrix-appservice-irc { };
 
   matrix-construct = prev.callPackage ./servers/matrix-construct { };
