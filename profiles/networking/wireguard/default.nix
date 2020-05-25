@@ -21,15 +21,10 @@ let
       publicKey = "Y/SRDGEQfFLUGqx6vMnO1pxHs9zn//NpwdSGQ2Sm+Dg=";
     };
 
-    nu = {
-      ip = hosts.wireguard.nu;
-      localArea = [ hosts.lan.nu ];
+    phi = {
+      ip = hosts.wireguard.phi;
+      localArea = [ hosts.lan.phi ];
       publicKey = "kccZA+GAc0VStb28A+Kr0z8iPCWsiuRMfwHW391Qrko=";
-    };
-
-    mu = {
-      ip = hosts.wireguard.mu;
-      localArea = [ hosts.lan.mu ];
     };
   };
 
