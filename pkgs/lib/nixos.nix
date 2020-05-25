@@ -35,6 +35,10 @@ let
       ARGS="$ARGS -j0"
     fi
 
+    if [ $FLAGS_keepgoing -eq $FLAGS_TRUE ]; then
+      ARGS="$ARGS --keep-going"
+    fi
+
     echo '> nixos-rebuild' $ARGS ${operation}
     source $(which nixos-rebuild) $ARGS ${operation}
   '';
@@ -45,6 +49,7 @@ in pkgs.writeShellScriptBin "nixos" ''
     DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
     DEFINE_boolean 'verynoisy' false 'Show noisy logs' 'V'
     DEFINE_boolean 'remote' false 'Force disable local building' 'R'
+    DEFINE_boolean 'keepgoing' false 'Ignore errors' 'K'
 
     DEFINE_boolean 'check' false 'Run flake checks only' 'c'
     DEFINE_boolean 'build' false 'Attempt to build the system' 'b'

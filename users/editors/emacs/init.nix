@@ -1,6 +1,8 @@
 { config, lib, usr, ... }:
 
 let
+  emacs = config.programs.emacs.package;
+
   # Basic init - no packaging available
   startup-pre = ''
     (defvar before-user-init-time (current-time)
@@ -217,20 +219,13 @@ let
       (require 'server)
       (server-start))
     
-    (let ((config-batch (lambda (sym) (let ((config-dir (cdr (assoc sym config-dirs)))
-                                            (config-re (concat "^usr-" (symbol-name sym) "-.+.el$")))
-                                        (config-segment sym
-                                                        (mapc
-                                                          (lambda (fp)
-                                                            (config-segment
-                                                              (make-symbol
-                                                                (car (last (split-string (file-name-base fp) "-"))))
-                                                              (load-file fp)))
-                                                          (directory-files config-dir t config-re t)))))))
-      (mapc (lambda (d) (funcall config-batch d))
-            (if config-arg-test
-                `(,'crit ,'tool ,'util ,'lang)
-              `(,'crit ,'tool ,'util ,'lang)))
+    (progn
+      ${lib.concatMapStrings ({ sym, script }: ''
+        (config-segment '${sym}
+          ${script emacs.pkgs})
+      '') (lib.mapAttrsToList (sym: cfg@{ script, ... }: {
+        inherit sym script;
+      }) config.emacs-loader)}
       (config-end))
 
     (message "Loading...done (%.3fs)"
