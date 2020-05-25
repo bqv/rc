@@ -31,7 +31,7 @@ let
   currentPeer = peers."${config.networking.hostName}";
   isLan = peer: builtins.length (peers.${peer}.localArea or []) > 0;
   isWan = peer: builtins.length (peers.${peer}.wideArea or []) > 0;
-  endpointsOf = peer: (peer.wideArea or []) ++ (peer.lanArea or []);
+  endpointsOf = peer: (peer.wideArea or []) ++ (peer.localArea or []);
   peerable = from: to: builtins.all lib.id [
     (from != to)
     (peers.${to} ? publicKey)
