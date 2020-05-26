@@ -14,6 +14,7 @@
   environment.systemPackages = with pkgs; [
     bat
     clang
+    dstat
     exa
     execline
     file
