@@ -13,6 +13,13 @@ with lib; let
     jq = "jq -C"; # Force colors
     rg = "rg --color always"; # Force color
     #bw = "env $(cat ~/.bwrc) bw";
+    nix-build = "echo disabled: nix-build"; # require nix-command
+    nix-channel = "echo disabled: nix-channel"; # require nix-command
+    nix-copy-closure = "echo disabled: nix-copy-closure"; # require nix-command
+    nix-env = "echo disabled: nix-env"; # require nix-command
+    nix-hash = "echo disabled: nix-hash"; # require nix-command
+    nix-instantiate = "echo disabled: nix-instantiate"; # require nix-command
+    nix-store = "echo disabled: nix-store"; # require nix-command
   };
 
   abbrevs = rec {
