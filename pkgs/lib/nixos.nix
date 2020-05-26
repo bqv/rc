@@ -61,6 +61,14 @@ in pkgs.writeShellScriptBin "nixos" ''
       ARGS="$ARGS --show-trace"
     fi
 
+    if [ $FLAGS_verbose -eq $FLAGS_TRUE ]; then
+      ARGS="$ARGS -vv"
+    fi
+
+    if [ $FLAGS_verynoisy -eq $FLAGS_TRUE ]; then
+      ARGS="$ARGS -vvvvv"
+    fi
+
     echo '> nix flake check' $ARGS
     exec nix flake check $ARGS
   fi
