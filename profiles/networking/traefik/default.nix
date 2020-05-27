@@ -1,4 +1,4 @@
-{ config, pkgs, domains, ... }:
+{ config, pkgs, domains, hosts, ... }:
 
 {
   services.traefik = {
@@ -447,57 +447,44 @@
         };
       };
 
-      tls = {
-        certificates = [
-          {
-            certFile = "foobar";
-            keyFile = "foobar";
-            stores = [ "foobar" "foobar" ];
-          }
-          {
-            certFile = "foobar";
-            keyFile = "foobar";
-            stores = [ "foobar" "foobar" ];
-          }
-        ];
+      tls = with config.security.acme; {
+        certificates = lib.mapAttrsToList (_: { directory, ... }: {
+          certFile = "${directory}/cert.pem";
+          keyFile = "${directory}/key.pem";
+          #stores = [ "default" ];
+        }) certs;
         options = {
-          Options0 = {
-            cipherSuites = [ "foobar" "foobar" ];
+          default = {
+           #minVersion = "VersionTLS12";
+           #maxVersion = "VersionTLS13";
+           #cipherSuites = [ "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256" ];
+           #curvePreferences = [ "CurveP521", "CurveP384" ];
+           #sniStrict = true;
+           #preferServerCipherSuites = true;
             clientAuth = {
-              caFiles = [ "foobar" "foobar" ];
-              clientAuthType = "foobar";
+              clientAuthType = "RequestClientCert";
+             #caFiles = [ "clientCA.crt" ]; # PEM files
             };
-            curvePreferences = [ "foobar" "foobar" ];
-            maxVersion = "foobar";
-            minVersion = "foobar";
-            preferServerCipherSuites = true;
-            sniStrict = true;
           };
-          Options1 = {
-            cipherSuites = [ "foobar" "foobar" ];
-            clientAuth = {
-              caFiles = [ "foobar" "foobar" ];
-              clientAuthType = "foobar";
-            };
-            curvePreferences = [ "foobar" "foobar" ];
-            maxVersion = "foobar";
-            minVersion = "foobar";
-            preferServerCipherSuites = true;
-            sniStrict = true;
-          };
+         #hardened = {
+         #  cipherSuites = [ "foobar" "foobar" ];
+         #  clientAuth = {
+         #    caFiles = [ "foobar" "foobar" ];
+         #    clientAuthType = "foobar";
+         #  };
+         #  curvePreferences = [ "foobar" "foobar" ];
+         #  maxVersion = "foobar";
+         #  minVersion = "foobar";
+         #  preferServerCipherSuites = true;
+         #  sniStrict = true;
+         #};
         };
         stores = {
-          Store0 = {
-            defaultCertificate = {
-              certFile = "foobar";
-              keyFile = "foobar";
-            };
-          };
-          Store1 = {
-            defaultCertificate = {
-              certFile = "foobar";
-              keyFile = "foobar";
-            };
+          default = {
+           #defaultCertificate = {
+           #  certFile = "foobar";
+           #  keyFile = "foobar";
+           #};
           };
         };
       };
