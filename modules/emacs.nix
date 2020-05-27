@@ -1,7 +1,8 @@
 { config, lib, pkgs, usr, ... }:
 
 let
-  packageSpec = { config, name, ... }: {
+  packageSpec = { config, name, ... }:
+  {
     options = with lib; {
       enable = mkEnableOption "this package" // {
         default = true;
@@ -75,6 +76,7 @@ let
           attrsToQCons = lib.mapAttrsToList (k: v: attrToCons { "\"${k}\"" = v; });
 
           attrs = {
+            name = (assert ! lib.hasInfix " " config.name; config.name);
             demand = if config.demand then ":demand t" else "";
             defer = if config.defer then ":defer t" else "";
             after = if builtins.length config.after <= 0 then ""
@@ -106,7 +108,7 @@ let
                      else "";
           };
         in ''
-          (use-package '${config.name}
+          (use-package ${attrs.name}
             ${attrs.demand}
             ${attrs.defer}
             ${attrs.after}
@@ -115,8 +117,7 @@ let
             ${attrs.hook}
             ${attrs.bind}
             ${attrs.mode}
-            ${attrs.config}
-          )
+            ${attrs.config})
         '';
       };
       systemDeps = mkOption {
