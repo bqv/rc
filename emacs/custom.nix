@@ -3,7 +3,7 @@
 {
   emacs-loader.custom = {
     package = lib.const null;
-    after = [ "doom-themes" ]; # preload theme
+    after = [ "doom-themes" "doom-modeline" ];
     config = ''
       ;(if window-system
       ;  (load-theme 'hc-zenburn t)
