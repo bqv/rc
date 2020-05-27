@@ -1,6 +1,9 @@
-{ config, pkgs, domains, ... }:
+{ config, lib, pkgs, domains, hosts, ... }:
 
 {
+  systemd.services.traefik.serviceConfig.LimitNPROC = lib.mkForce null; # Ridiculous and broken
+  users.users.traefik.extraGroups = [ "keys" ]; # For acme certificates
+
   services.traefik = {
     enable = true;
 
@@ -16,20 +19,20 @@
             entryPoints = [ "http" "https" ];
             rule = "Host(`traefik.${domains.home}`)";
             service = "api@internal";
-            middlewares = [ "auth" ];
-            tls = {
-              domains = [
-                {
-                  main = "foobar";
-                  sans = [ "foobar" "foobar" ];
-                }
-                {
-                  main = "foobar";
-                  sans = [ "foobar" "foobar" ];
-                }
-              ];
-              options = "foobar";
-            };
+           #middlewares = [ "auth" ];
+           #tls = {
+           #  domains = [
+           #    {
+           #      main = "foobar";
+           #      sans = [ "foobar" "foobar" ];
+           #    }
+           #    {
+           #      main = "foobar";
+           #      sans = [ "foobar" "foobar" ];
+           #    }
+           #  ];
+           #  options = "foobar";
+           #};
           };
           auth-request = {
             entryPoints = [ "http" "https" ];
@@ -58,12 +61,12 @@
           };
           mastodon = {
             entryPoints = [ "http" "https" ];
-            rule = "Host(`mastodon.${domains.home}`)";
+            rule = "Host(`u.${domains.srvc}`)";
             service = "mastodon";
           };
           construct = {
             entryPoints = [ "http" "https" ];
-            rule = "Host(`construct.${domains.home}`)";
+            rule = "Host(`cs.${domains.srvc}`)";
             service = "construct";
           };
           certauth = {
@@ -296,7 +299,7 @@
         };
 
         services = {
-          auth-request.loadBalancer = {
+          auth.loadBalancer = {
             healthCheck = {
              #followRedirects = true;
              #headers = {
@@ -311,7 +314,7 @@
              #timeout = "foobar";
             };
             passHostHeader = true;
-            responseForwarding = { flushInterval = 100; };
+            responseForwarding = { flushInterval = "100ms"; };
             servers = [
               { url = "http://10.1.0.2:4010/auth"; }
             ];
@@ -374,20 +377,20 @@
 
       tcp = {
         routers = {
-          ssh = {
-            entryPoints = [ "ssh" ];
-            service = "ssh";
-            tls = {
-              passthrough = true;
-            };
-          };
-          irc = {
-            entryPoints = [ "ircs" ];
-            service = "irc";
-            tls = {
-              passthrough = true;
-            };
-          };
+         #ssh = {
+         #  entryPoints = [ "ssh" ];
+         #  service = "ssh";
+         #  tls = {
+         #    passthrough = true;
+         #  };
+         #};
+         #irc = {
+         #  entryPoints = [ "ircs" ];
+         #  service = "irc";
+         #  tls = {
+         #    passthrough = true;
+         #  };
+         #};
         };
         services = {
           ssh.loadBalancer = {
@@ -447,57 +450,44 @@
         };
       };
 
-      tls = {
-        certificates = [
-          {
-            certFile = "foobar";
-            keyFile = "foobar";
-            stores = [ "foobar" "foobar" ];
-          }
-          {
-            certFile = "foobar";
-            keyFile = "foobar";
-            stores = [ "foobar" "foobar" ];
-          }
-        ];
+      tls = with config.security.acme; {
+        certificates = lib.mapAttrsToList (_: { directory, ... }: {
+          certFile = "${directory}/cert.pem";
+          keyFile = "${directory}/key.pem";
+          #stores = [ "default" ];
+        }) certs;
         options = {
-          Options0 = {
-            cipherSuites = [ "foobar" "foobar" ];
+          default = {
+           #minVersion = "VersionTLS12";
+           #maxVersion = "VersionTLS13";
+           #cipherSuites = [ "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256" ];
+           #curvePreferences = [ "CurveP521", "CurveP384" ];
+           #sniStrict = true;
+           #preferServerCipherSuites = true;
             clientAuth = {
-              caFiles = [ "foobar" "foobar" ];
-              clientAuthType = "foobar";
+              clientAuthType = "RequestClientCert";
+             #caFiles = [ "clientCA.crt" ]; # PEM files
             };
-            curvePreferences = [ "foobar" "foobar" ];
-            maxVersion = "foobar";
-            minVersion = "foobar";
-            preferServerCipherSuites = true;
-            sniStrict = true;
           };
-          Options1 = {
-            cipherSuites = [ "foobar" "foobar" ];
-            clientAuth = {
-              caFiles = [ "foobar" "foobar" ];
-              clientAuthType = "foobar";
-            };
-            curvePreferences = [ "foobar" "foobar" ];
-            maxVersion = "foobar";
-            minVersion = "foobar";
-            preferServerCipherSuites = true;
-            sniStrict = true;
-          };
+         #hardened = {
+         #  cipherSuites = [ "foobar" "foobar" ];
+         #  clientAuth = {
+         #    caFiles = [ "foobar" "foobar" ];
+         #    clientAuthType = "foobar";
+         #  };
+         #  curvePreferences = [ "foobar" "foobar" ];
+         #  maxVersion = "foobar";
+         #  minVersion = "foobar";
+         #  preferServerCipherSuites = true;
+         #  sniStrict = true;
+         #};
         };
         stores = {
-          Store0 = {
-            defaultCertificate = {
-              certFile = "foobar";
-              keyFile = "foobar";
-            };
-          };
-          Store1 = {
-            defaultCertificate = {
-              certFile = "foobar";
-              keyFile = "foobar";
-            };
+          default = {
+           #defaultCertificate = {
+           #  certFile = "foobar";
+           #  keyFile = "foobar";
+           #};
           };
         };
       };
@@ -530,23 +520,23 @@
             insecure = true;
             trustedIPs = [ "127.0.0.1" "${hosts.wireguard.zeta}/8" ];
           };
-          http = {
-           #middlewares = [ "auth@file" "strip@file" ];
-           #tls = {
-           #  certResolver = "foobar";
-           #  domains = [
-           #    {
-           #      main = "foobar";
-           #      sans = [ "foobar" "foobar" ];
-           #    }
-           #    {
-           #      main = "foobar";
-           #      sans = [ "foobar" "foobar" ];
-           #    }
-           #  ];
-           #  options = "foobar";
-           #};
-          };
+         #http = {
+         # #middlewares = [ "auth@file" "strip@file" ];
+         # #tls = {
+         # #  certResolver = "foobar";
+         # #  domains = [
+         # #    {
+         # #      main = "foobar";
+         # #      sans = [ "foobar" "foobar" ];
+         # #    }
+         # #    {
+         # #      main = "foobar";
+         # #      sans = [ "foobar" "foobar" ];
+         # #    }
+         # #  ];
+         # #  options = "foobar";
+         # #};
+         #};
           proxyProtocol = {
             insecure = true;
             trustedIPs = [ "127.0.0.1" "${hosts.wireguard.zeta}/8" ];
@@ -563,9 +553,9 @@
             };
           };
         };
-        ssh = {
-          address = ":22/tcp";
-        };
+       #ssh = {
+       #  address = "${hosts.ipv4.zeta}:22/tcp";
+       #};
         irc = {
           address = ":6667/tcp";
         };
@@ -577,7 +567,7 @@
       providers = {
         providersThrottleDuration = 10;
 
-        docker.exposedByDefault = false;
+       #docker.exposedByDefault = false;
         file = {
           debugLogGeneratedTemplate = true;
          #directory = "foobar";
