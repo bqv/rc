@@ -23,6 +23,7 @@
     iotop
     less
     ltrace
+    mercurial
     ncdu
     nix-diff
     pass
