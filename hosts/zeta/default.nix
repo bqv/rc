@@ -9,13 +9,13 @@
     ../../legacy/containers/search.nix
     ../../legacy/containers/mastodon.nix
     ../../legacy/containers/matrix.nix
-    ../../legacy/http.nix
     ../../profiles/meta/fatal-warnings.nix
     ../../profiles/misc/qemu.nix
     ../../profiles/security/sudo.nix
     ../../profiles/networking/wireguard
     ../../profiles/networking/ipfs
     ../../profiles/networking/tor
+    ../../profiles/networking/traefik
     ../../profiles/networking/mdns.nix
     ../../profiles/services/mastodon
     ../../profiles/services/minecraft
