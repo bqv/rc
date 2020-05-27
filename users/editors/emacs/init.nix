@@ -221,7 +221,7 @@ let
     
     (progn
       ${lib.concatMapStrings ({ sym, script }: ''
-        (config-segment '${sym}
+        (config-segment ${sym}
           ${script emacs.pkgs})
       '') (lib.mapAttrsToList (sym: cfg@{ script, ... }: {
         inherit sym script;
