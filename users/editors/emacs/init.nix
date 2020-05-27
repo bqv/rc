@@ -51,6 +51,16 @@ let
     (use-package diminish
       :demand t)
     (use-package epkg)
+    (use-package log4e
+      :config
+      (log4e:deflogger "log" "%t [%l] %m" "%H:%M:%S" '((fatal . "fatal")
+                                                       (error . "error")
+                                                       (warn  . "warn")
+                                                       (info  . "info")
+                                                       (debug . "debug")
+                                                       (trace . "trace")))
+      (log--log-enable-logging)
+      (log--log-enable-messaging))
 
     (setq init-done nil)
     (defun config-end ()
@@ -88,7 +98,7 @@ let
                                            config-scope
                                            `(,start-time . ,end-time)
                                            error-state)))
-              (message (concat config-name " failed after %.3fs")
+              (log--fatal (concat config-name " failed after %.3fs")
                        (float-time delta))
               (add-to-list 'config-registry `(,config-name . ,registry-data))
               (if noninteractive (funcall rethrow)))
@@ -98,7 +108,7 @@ let
                                            config-scope
                                            `(,start-time . ,end-time)
                                            delta)))
-              (message (concat config-name " finished in %.3fs")
+              (log--info (concat config-name " finished in %.3fs")
                        (float-time delta))
               (add-to-list 'config-registry `(,config-name . ,registry-data)))))))
     
@@ -119,7 +129,7 @@ let
 
   # Load everything else
   startup = ''
-    (message "Bootstrapping...done (%.3fs)"
+    (log--info "Bootstrapping...done (%.3fs)"
              (float-time (time-subtract (current-time)
                                         before-user-init-time)))
     
@@ -218,7 +228,7 @@ let
       }) config.emacs-loader)}
       (config-end))
 
-    (message "Loading...done (%.3fs)"
+    (log--info "Loading...done (%.3fs)"
              (float-time (time-subtract (current-time)
                                         before-user-init-time)))
     (makunbound 'before-user-init-time)
