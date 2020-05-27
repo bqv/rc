@@ -1,8 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.misc-cmds = {
+  emacs-loader.vterm-toggle = {
     demand = true;
-    package = lib.const null;
   };
 }
