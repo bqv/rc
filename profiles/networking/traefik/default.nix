@@ -1,6 +1,8 @@
-{ config, pkgs, domains, ... }:
+{ config, lib, pkgs, domains, hosts, ... }:
 
 {
+  systemd.services.traefik.serviceConfig.LimitNPROC = lib.mkForce null;
+
   services.traefik = {
     enable = true;
 
@@ -17,19 +19,19 @@
             rule = "Host(`traefik.${domains.home}`)";
             service = "api@internal";
             middlewares = [ "auth" ];
-            tls = {
-              domains = [
-                {
-                  main = "foobar";
-                  sans = [ "foobar" "foobar" ];
-                }
-                {
-                  main = "foobar";
-                  sans = [ "foobar" "foobar" ];
-                }
-              ];
-              options = "foobar";
-            };
+           #tls = {
+           #  domains = [
+           #    {
+           #      main = "foobar";
+           #      sans = [ "foobar" "foobar" ];
+           #    }
+           #    {
+           #      main = "foobar";
+           #      sans = [ "foobar" "foobar" ];
+           #    }
+           #  ];
+           #  options = "foobar";
+           #};
           };
           auth-request = {
             entryPoints = [ "http" "https" ];
@@ -447,57 +449,44 @@
         };
       };
 
-      tls = {
-        certificates = [
-          {
-            certFile = "foobar";
-            keyFile = "foobar";
-            stores = [ "foobar" "foobar" ];
-          }
-          {
-            certFile = "foobar";
-            keyFile = "foobar";
-            stores = [ "foobar" "foobar" ];
-          }
-        ];
+      tls = with config.security.acme; {
+        certificates = lib.mapAttrsToList (_: { directory, ... }: {
+          certFile = "${directory}/cert.pem";
+          keyFile = "${directory}/key.pem";
+          #stores = [ "default" ];
+        }) certs;
         options = {
-          Options0 = {
-            cipherSuites = [ "foobar" "foobar" ];
+          default = {
+           #minVersion = "VersionTLS12";
+           #maxVersion = "VersionTLS13";
+           #cipherSuites = [ "TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256" ];
+           #curvePreferences = [ "CurveP521", "CurveP384" ];
+           #sniStrict = true;
+           #preferServerCipherSuites = true;
             clientAuth = {
-              caFiles = [ "foobar" "foobar" ];
-              clientAuthType = "foobar";
+              clientAuthType = "RequestClientCert";
+             #caFiles = [ "clientCA.crt" ]; # PEM files
             };
-            curvePreferences = [ "foobar" "foobar" ];
-            maxVersion = "foobar";
-            minVersion = "foobar";
-            preferServerCipherSuites = true;
-            sniStrict = true;
           };
-          Options1 = {
-            cipherSuites = [ "foobar" "foobar" ];
-            clientAuth = {
-              caFiles = [ "foobar" "foobar" ];
-              clientAuthType = "foobar";
-            };
-            curvePreferences = [ "foobar" "foobar" ];
-            maxVersion = "foobar";
-            minVersion = "foobar";
-            preferServerCipherSuites = true;
-            sniStrict = true;
-          };
+         #hardened = {
+         #  cipherSuites = [ "foobar" "foobar" ];
+         #  clientAuth = {
+         #    caFiles = [ "foobar" "foobar" ];
+         #    clientAuthType = "foobar";
+         #  };
+         #  curvePreferences = [ "foobar" "foobar" ];
+         #  maxVersion = "foobar";
+         #  minVersion = "foobar";
+         #  preferServerCipherSuites = true;
+         #  sniStrict = true;
+         #};
         };
         stores = {
-          Store0 = {
-            defaultCertificate = {
-              certFile = "foobar";
-              keyFile = "foobar";
-            };
-          };
-          Store1 = {
-            defaultCertificate = {
-              certFile = "foobar";
-              keyFile = "foobar";
-            };
+          default = {
+           #defaultCertificate = {
+           #  certFile = "foobar";
+           #  keyFile = "foobar";
+           #};
           };
         };
       };
@@ -530,23 +519,23 @@
             insecure = true;
             trustedIPs = [ "127.0.0.1" "${hosts.wireguard.zeta}/8" ];
           };
-          http = {
-           #middlewares = [ "auth@file" "strip@file" ];
-           #tls = {
-           #  certResolver = "foobar";
-           #  domains = [
-           #    {
-           #      main = "foobar";
-           #      sans = [ "foobar" "foobar" ];
-           #    }
-           #    {
-           #      main = "foobar";
-           #      sans = [ "foobar" "foobar" ];
-           #    }
-           #  ];
-           #  options = "foobar";
-           #};
-          };
+         #http = {
+         # #middlewares = [ "auth@file" "strip@file" ];
+         # #tls = {
+         # #  certResolver = "foobar";
+         # #  domains = [
+         # #    {
+         # #      main = "foobar";
+         # #      sans = [ "foobar" "foobar" ];
+         # #    }
+         # #    {
+         # #      main = "foobar";
+         # #      sans = [ "foobar" "foobar" ];
+         # #    }
+         # #  ];
+         # #  options = "foobar";
+         # #};
+         #};
           proxyProtocol = {
             insecure = true;
             trustedIPs = [ "127.0.0.1" "${hosts.wireguard.zeta}/8" ];
@@ -563,9 +552,9 @@
             };
           };
         };
-        ssh = {
-          address = ":22/tcp";
-        };
+       #ssh = {
+       #  address = "${hosts.ipv4.zeta}:22/tcp";
+       #};
         irc = {
           address = ":6667/tcp";
         };
