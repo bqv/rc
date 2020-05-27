@@ -3,5 +3,8 @@
     enable = true;
     wheelNeedsPassword = false;
   };
-  security.doas.enable = true;
+  security.doas = {
+    enable = true;
+    wheelNeedsPassword = false;
+  };
 }
