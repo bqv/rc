@@ -66,7 +66,7 @@ let
             };
           };
 
-          configSrc = "${configPkg}/share/emacs/site-lisp/${configPkg.pname}.el";
+          configSrc = "${configPkg}/share/emacs/site-lisp/${configPkg.pname}";
           notWhitespace = s: builtins.isNull (builtins.match "[ \\n]*" s);
 
           attrToCons = attr: let car = builtins.head (builtins.attrNames attr);
@@ -104,7 +104,7 @@ let
                    then ":mode ${builtins.head (attrsToCons config.mode)}"
                    else ":mode (${lib.concatStringsSep " " (attrsToCons config.mode)})";
             config = if notWhitespace config.config
-                     then ":config (load-file \"${configSrc}\")"
+                     then ":config (load \"${configSrc}\")"
                      else "";
           };
         in ''
