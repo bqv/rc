@@ -31,6 +31,7 @@
       ./editors/vim
       ./media/gpodder
       ./media/spotify
+      ./media/radio
       ./utilities/git
       ./utilities/htop
       ./services/gnupg
