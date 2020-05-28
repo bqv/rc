@@ -19,8 +19,9 @@ in {
         colorscheme one
 
         set inccommand=nosplit " previews
-        set nohlsearch " unpersist highlights
-        set number " line numbering
+        set nohlsearch         " unpersist highlights
+        set number             " line numbering
+        set shell=bash         " read syntax
       '';
     };
   };
