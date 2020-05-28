@@ -2,9 +2,11 @@
 
 {
   services.xserver = {
-    windowManager.exwm = {
-      enable = true;
-      enableDefaultConfig = false;
+    windowManager.session = lib.singleton {
+      name = "exwm";
+      start = ''
+        ${pkgs.emacs}/bin/emacs
+      '';
     };
     displayManager = with pkgs; {
       defaultSession = "none+exwm";
