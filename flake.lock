@@ -727,8 +727,7 @@
         "naersk": "naersk",
         "napalm": "napalm",
         "nix": "nix",
-        "nur": "nur",
-        "small": "nixpkgs_5",
+        "small": "small",
         "snack": "snack",
         "staged": "staged",
         "xontribs": "xontribs"

@@ -17,9 +17,6 @@
     home.url = "github:rycee/home-manager/bqv-flakes";
     home.inputs.nixpkgs.follows = "large";
 
-    nur.url = "github:nix-community/nur";
-    nur.inputs.nixpkgs.follows = "small";
-
     naersk.url = "github:nmattia/naersk";
     naersk.inputs.nixpkgs.follows = "large";
 
@@ -91,7 +88,6 @@
         inputs.construct.overlay
         inputs.emacs.overlay
         inputs.xontribs.overlay
-        inputs.nur.overlay
         inputs.self.overlay
       ];
     };
@@ -112,9 +108,6 @@
       specialArgs = {
         inherit inputs usr;
         fetchPullRequest = fetchPullRequestForSystem system;
-
-        nurModules = nur.nixosModules;
-        nurOverlays = nur.overlays;
 
         domains = import ./secrets/domains.nix;
         hosts = import ./secrets/hosts.nix;
