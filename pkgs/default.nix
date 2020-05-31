@@ -15,7 +15,13 @@ in {
 
   fsnoop = prev.callPackage ./tools/misc/fsnoop { };
 
+  haskellPackages = recurseIntoAttrs prev.haskellPackages;
+
   ipfscat = prev.callPackage ./applications/misc/ipfscat { };
+
+  idrisPackages = recurseIntoAttrs prev.idrisPackages;
+
+  lispPackages = recurseIntoAttrs prev.lispPackages;
 
   matrix-appservice-irc = prev.callPackage ./servers/matrix-appservice-irc { };
 
@@ -25,9 +31,13 @@ in {
 
   next = prev.callPackage ./applications/networking/browsers/next { };
 
+  nodePackages = recurseIntoAttrs prev.nodePackages;
+
   pleroma = prev.callPackage ./servers/pleroma { };
 
   pure = prev.callPackage ./shells/zsh/pure { };
+
+  rPackages = recurseIntoAttrs prev.rPackages;
 
   sddm-chili =
     prev.callPackage ./applications/display-managers/sddm/themes/chili { };
