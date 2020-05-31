@@ -20,6 +20,7 @@ with lib; let
     nix-hash = "echo disabled: nix-hash"; # require nix-command
     nix-instantiate = "echo disabled: nix-instantiate"; # require nix-command
     nix-store = "echo disabled: nix-store"; # require nix-command
+    nix-shell = "echo disabled: nix-shell"; # require nix-command
   };
 
   abbrevs = rec {
