@@ -73,10 +73,10 @@ let
 
     (defvar config-registry '()
       "Profiling and initialization status data")
-    
+
     (defconst config-scope '()
       "The current config breadcrumb trail.")
-    
+
     (defmacro config-segment (name &rest body)
       "Run a timed config operation BODY with name NAME."
       `(progn
@@ -111,7 +111,7 @@ let
               (log--info (concat config-name " finished in %.3fs")
                        (float-time delta))
               (add-to-list 'config-registry `(,config-name . ,registry-data)))))))
-    
+
     (defmacro config-package (package &rest args)
       "Load a package PACKAGE by calling use-package, with ARGS."
       (let ((name (cond ((symbolp package) package)
@@ -119,7 +119,7 @@ let
                         (t nil))))
         `(config-segment ',name
                          (use-package ,name ,@args))))
-    
+
     (defun config-errors ()
       (let ((error-registry (seq-remove (lambda (c) (eq (type-of (cdr c)) 'config-ok)) config-registry)))
         (mapcar (lambda (c)
@@ -132,7 +132,7 @@ let
     (log--info "Bootstrapping...done (%.3fs)"
              (float-time (time-subtract (current-time)
                                         before-user-init-time)))
-    
+
     (setq inhibit-startup-message t)
     (setq inhibit-startup-buffer-menu t)
     (setq inhibit-startup-screen t)
@@ -180,14 +180,14 @@ let
     (add-hook 'before-save-hook 'whitespace-cleanup)
     (global-set-key (kbd "C-x k") 'kill-this-buffer)
     (setq confirm-kill-emacs 'y-or-n-p)
-    
+
     (config-package custom
       :no-require t
       :config
       (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
       (when (file-exists-p custom-file)
         (load custom-file)))
-    
+
     (cl-flet ((config-custom-arg (switch)
       (let ((found-switch (member switch command-line-args)))
         (setq command-line-args (delete switch command-line-args))
@@ -199,26 +199,13 @@ let
                (setq config-arg-new (or long-arg-new short-arg-new))
                (setq config-arg-daemon long-arg-daemon)
                (setq config-arg-test long-arg-test)))
-    
-    ;(config-package server
-    ;  :demand t
-    ;  :config
-    ;  (unless (or noninteractive config-arg-daemon)
-    ;    (if (server-running-p)
-    ;      (progn
-    ;        (with-demoted-errors "Server Error: %S"
-    ;                             (if (daemonp)
-    ;                               (error "Abort: Another running Emacs server detected")
-    ;                               (let ((args (append '("emacsclient" "-a" "\"\"" "-c")
-    ;                                                   (cdr command-line-args))))
-    ;                                 (make-frame-invisible (selected-frame) t)
-    ;                                 (shell-command (substring (format "%S" args) 1 -1)))))
-    ;        (kill-emacs))
-    ;      (server-start))))
-    (progn
-      (require 'server)
-      (server-start))
-    
+
+    (config-package server
+      :demand t
+      :config
+      (if (not (server-running-p))
+          (server-start)))
+
     (progn
       ${lib.concatMapStrings ({ sym, script }: ''
         (config-segment '${sym}

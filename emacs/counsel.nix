@@ -12,5 +12,6 @@
     config = ''
       (setq ivy-initial-inputs-alist nil)
     '';
+    systemDeps = with pkgs; [ ag ];
   };
 }

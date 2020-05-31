@@ -3,7 +3,6 @@
 {
   emacs-loader.vterm = {
     demand = true;
-    package = epkgs: with epkgs; [ vterm emacs-libvterm ];
     config = ''
       ;; banish ansi-term :)
       ;(defalias 'ansi-term (lambda (&rest _) (call-interactively #'vterm)))

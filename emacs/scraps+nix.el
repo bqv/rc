@@ -86,8 +86,6 @@
    (nixos:--tarball-ttl)]
   ["NixOS"
    ("r" "rebuild" nixos-rebuild)
-   ("c" "check crashes" nixos-check-crashes)
-   ("v" "check vulnerabilities" nixos-check-vulnerabilities)
    ("o" "search options" nixos-search-options)
    ("p" "search packages" nixos-search-packages)
    ("h" "check channels" nixos-howoldis)
