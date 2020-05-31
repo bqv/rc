@@ -278,8 +278,8 @@
     },
     "home": {
       "info": {
-        "lastModified": 1590066068,
-        "narHash": "sha256-fOYg9Fz7ry4EGRlP5XmuEeAW5ka5A/zRoOfe7Sce5Dc="
+        "lastModified": 1589826413,
+        "narHash": "sha256-0qaxqdvPhRiaxtRLdhIYS384gP2VtHG2CzlxZzbfhwI="
       },
       "inputs": {
         "nixpkgs": "nixpkgs_4"
@@ -287,13 +287,13 @@
       "locked": {
         "owner": "rycee",
         "repo": "home-manager",
-        "rev": "d05696efe53dfe021a416a0175a30bb252238563",
+        "rev": "a7a96ab121a3df4386499ebaacf23e726f0c5711",
         "type": "github"
       },
       "original": {
         "owner": "rycee",
+        "ref": "bqv-flakes",
         "repo": "home-manager",
-        "rev": "d05696efe53dfe021a416a0175a30bb252238563",
         "type": "github"
       }
     },
