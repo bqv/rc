@@ -100,6 +100,7 @@
       nmap wget curl ipfscat mitmproxy # Network Utilities
       bitwarden-cli protonvpn-cli-ng # Password Management
       file exa unrar unzip ncdu tree # File Management
+      audacity # Audio Utilities
       xpra xsel xclip scrot # X11 Utilities
       gdb lldb radare2 radare2-cutter # Debug Utilities
     ] ++ lib.optional home-config.programs.emacs.enable emms-play-file;
@@ -196,7 +197,7 @@
         package = pkgs.cantarell-fonts;
       };
     };
-  
+
     qt = {
       enable = true;
       platformTheme = "gnome";
