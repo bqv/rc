@@ -1,13 +1,10 @@
 final: prev: rec {
   gccEmacs = (prev.emacs.override { srcRepo = true; }).overrideAttrs (o: rec {
     name = "gccemacs-${prev.lib.substring 0 8 src.rev}";
-    src = prev.fetchFromGitHub {
-      owner = "emacs-mirror";
-      repo = "emacs";
-      # Fetching off the feature/native-comp git branch
-      rev = "92dc81f85e1b91db04487ccf1b52c0cd3328dfee";
-      sha256 = "1f22bxwq53hhdjlakmqz66y63vix5ybpnc1pk9fpy18wjh871scq";
-    };
+
+    # Fetching off the feature/native-comp git branch
+    src = final.inputs.gccemacs;
+
     patches = [];
     postPatch = ''
       substituteInPlace lisp/loadup.el \

@@ -24,6 +24,11 @@
     construct.url = "github:matrix-construct/construct";
     emacs.url = "github:nix-community/emacs-overlay";
     xontribs.url = "github:bqv/xontribs";
+    gccemacs = {
+      # tracking branch: feature/native-comp
+      url = "github:emacs-mirror/emacs/2e25eebfbd25b131b6d0fcff4e60f7a8773d912b";
+      flake = false;
+    };
 
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
     snack = { url = "github:nmattia/snack"; flake = false; };
@@ -77,6 +82,7 @@
         (channelToOverlay { inherit system config; flake = "large"; branch = "nixos-unstable"; })
         (import inputs.mozilla)
         (pkgs: lib.const {
+          inherit inputs;
           naersk = inputs.naersk.lib.${system};
           snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
           napalm = pkgs.callPackage inputs.napalm;
