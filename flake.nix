@@ -26,7 +26,7 @@
     xontribs.url = "github:bqv/xontribs";
     gccemacs = {
       # tracking branch: feature/native-comp
-      url = "github:emacs-mirror/emacs/2e25eebfbd25b131b6d0fcff4e60f7a8773d912b";
+      url = "github:emacs-mirror/emacs/92dc81f85e1b91db04487ccf1b52c0cd3328dfee";
       flake = false;
     };
 

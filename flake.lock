@@ -205,19 +205,19 @@
     "gccemacs": {
       "flake": false,
       "info": {
-        "lastModified": 1590961652,
-        "narHash": "sha256-ftYaLGHth3fYkQTEUAHrjiiB8ESDBHfE4BEogpnLN80="
+        "lastModified": 1588843470,
+        "narHash": "sha256-mOlwEJQcBX9dmjcwe5cvPe5hvDEf16mobBCOgnlfQrg="
       },
       "locked": {
         "owner": "emacs-mirror",
         "repo": "emacs",
-        "rev": "2e25eebfbd25b131b6d0fcff4e60f7a8773d912b",
+        "rev": "92dc81f85e1b91db04487ccf1b52c0cd3328dfee",
         "type": "github"
       },
       "original": {
         "owner": "emacs-mirror",
         "repo": "emacs",
-        "rev": "2e25eebfbd25b131b6d0fcff4e60f7a8773d912b",
+        "rev": "92dc81f85e1b91db04487ccf1b52c0cd3328dfee",
         "type": "github"
       }
     },
