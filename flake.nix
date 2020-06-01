@@ -86,8 +86,7 @@
           naersk = inputs.naersk.lib.${system};
           snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
           napalm = pkgs.callPackage inputs.napalm;
-          inherit (inputs.small.legacyPackages.${system}) pulseeffects;
-          inherit (inputs.staged.legacyPackages.${system}) libgccjit;
+          inherit (inputs.small.legacyPackages.${system}) libgccjit;
         })
         inputs.nix.overlay
         inputs.guix.overlay
