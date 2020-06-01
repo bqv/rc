@@ -12,6 +12,7 @@
     ;;; Code:
     ${formatted text}
 
+    ;;; ${name}.el ends here
     ;; Local Variables:
     ;; indent-tabs-mode: nil
     ;; End:
