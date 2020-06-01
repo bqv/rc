@@ -26,6 +26,7 @@
     mercurial
     ncdu
     nix-diff
+    nix-top
     pass
     strace
     socat
