@@ -31,6 +31,10 @@ let
       ARGS="$ARGS -vvvvv"
     fi
 
+    if [ $FLAGS_local -eq $FLAGS_TRUE ]; then
+      ARGS="$ARGS --builders ''''"
+    fi
+
     if [ $FLAGS_remote -eq $FLAGS_TRUE ]; then
       ARGS="$ARGS -j0"
     fi
@@ -48,6 +52,7 @@ in pkgs.writeShellScriptBin "nixos" ''
     DEFINE_boolean 'showtrace' false 'Show verbose traces' 'T'
     DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
     DEFINE_boolean 'verynoisy' false 'Show noisy logs' 'V'
+    DEFINE_boolean 'local' false 'Force only local building' 'L'
     DEFINE_boolean 'remote' false 'Force disable local building' 'R'
     DEFINE_boolean 'keepgoing' false 'Ignore errors' 'K'
 
