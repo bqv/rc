@@ -382,6 +382,38 @@
         "type": "github"
       }
     },
+    "nixpkgs_3": {
+      "locked": {
+        "lastModified": 1590704227,
+        "narHash": "sha256-J3R7j54tUBDGazke8/z3WD9YNSKglOuzM1785ZZc2cw=",
+        "path": "/nix/store/pf4r4fs2ylvcj1h3h2ffyl1wlkbab189-source",
+        "rev": "8c5f4b8a3b1957c7c1919658bae1a4b5caf759b7",
+        "type": "path"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixus": {
+      "inputs": {
+        "nixpkgs": "nixpkgs_3"
+      },
+      "locked": {
+        "lastModified": 1591053277,
+        "narHash": "sha256-7LIXbLD413ZzM59duDl3iJ1mU24naPprj17YP8t1iDU=",
+        "owner": "infinisil",
+        "repo": "nixus",
+        "rev": "545254808be876708535079996e2d9efd71f6533",
+        "type": "github"
+      },
+      "original": {
+        "owner": "infinisil",
+        "repo": "nixus",
+        "rev": "545254808be876708535079996e2d9efd71f6533",
+        "type": "github"
+      }
+    },
     "output-search": {
       "flake": false,
       "locked": {
@@ -588,6 +620,7 @@
         "naersk": "naersk",
         "napalm": "napalm",
         "nix": "nix",
+        "nixus": "nixus",
         "pr75800": "pr75800",
         "small": "small",
         "snack": "snack",
