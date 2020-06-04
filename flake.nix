@@ -24,11 +24,6 @@
     construct.url = "github:matrix-construct/construct";
     emacs.url = "github:nix-community/emacs-overlay";
     xontribs.url = "github:bqv/xontribs";
-    gccemacs = {
-      # tracking branch: feature/native-comp
-      url = "github:emacs-mirror/emacs/92dc81f85e1b91db04487ccf1b52c0cd3328dfee";
-      flake = false;
-    };
 
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
     snack = { url = "github:nmattia/snack"; flake = false; };
@@ -86,7 +81,6 @@
           naersk = inputs.naersk.lib.${system};
           snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
           napalm = pkgs.callPackage inputs.napalm;
-          inherit (inputs.small.legacyPackages.${system}) libgccjit;
         })
         inputs.nix.overlay
         inputs.guix.overlay
