@@ -1,5 +1,6 @@
 final: prev: with final.xontribs; rec {
-  xonsh = prev.xonsh.overridePythonAttrs(o: rec {
+  xonsh = prev.xonsh.overridePythonAttrs (o: rec {
+    doCheck = false;
     propagatedBuildInputs = o.propagatedBuildInputs ++ [
       final.python3Packages.nixpkgs
       final.python3Packages.pip

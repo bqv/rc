@@ -20,10 +20,16 @@
     naersk.url = "github:nmattia/naersk";
     naersk.inputs.nixpkgs.follows = "large";
 
-    guix.url = "github:bqv/guix";
-    construct.url = "github:matrix-construct/construct";
-    emacs.url = "github:nix-community/emacs-overlay";
     xontribs.url = "github:bqv/xontribs";
+    xontribs.inputs.nixpkgs.follows = "large";
+
+    guix.url = "github:bqv/guix";
+    guix.inputs.nixpkgs.follows = "large";
+
+    construct.url = "github:matrix-construct/construct";
+    construct.inputs.nixpkgs.follows = "large";
+
+    emacs.url = "github:nix-community/emacs-overlay";
 
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
     snack = { url = "github:nmattia/snack"; flake = false; };

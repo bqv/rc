@@ -208,7 +208,7 @@
         "narHash": "sha256-94cSMVPii8Rkts2MZaJ0URtnzlTjCSPIm5L1+bp2ra4="
       },
       "inputs": {
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
         "owner": "bqv",
@@ -282,7 +282,7 @@
         "narHash": "sha256-0qaxqdvPhRiaxtRLdhIYS384gP2VtHG2CzlxZzbfhwI="
       },
       "inputs": {
-        "nixpkgs": "nixpkgs_4"
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
         "owner": "rycee",
@@ -339,7 +339,7 @@
         "narHash": "sha256-j6+ZeL3vh1w9THce5sosg1eVO04eC7GAW9J4UXLkcgE="
       },
       "inputs": {
-        "nixpkgs": "nixpkgs_4"
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
         "owner": "nmattia",
@@ -373,8 +373,8 @@
     },
     "nix": {
       "info": {
-        "lastModified": 1590663324,
-        "narHash": "sha256-lk9n8O+dvSRtfXix6QELTTI2UJ3AQOgw2zBQa4uopEA="
+        "lastModified": 1591269388,
+        "narHash": "sha256-6HiLuq3XgUpEUEsgYDGCYALPjPjYnmHaimTMn/24HUI="
       },
       "inputs": {
         "nixpkgs": "nixpkgs_2"
@@ -382,7 +382,7 @@
       "locked": {
         "owner": "nixos",
         "repo": "nix",
-        "rev": "17ca997fc6875071c7c0027b7a23c732c3ad02ee",
+        "rev": "f85606c431dc1225ba32ecefaa4aea1eb6d4356e",
         "type": "github"
       },
       "original": {
@@ -394,18 +394,20 @@
     },
     "nixpkgs": {
       "info": {
-        "lastModified": 1589389290,
-        "narHash": "sha256-K5etYl0wKAPvU/B9LliwIgH/m/hYo1WyVlEIhLm8cV0="
+        "lastModified": 1591120815,
+        "narHash": "sha256-kmG7D+k5L1VidMeit8Hmk7XGXUa1o2DLGKvdYOLj52M="
       },
       "locked": {
-        "owner": "NixOS",
+        "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "d5ba826821ae7d895c6385ea99af73c7052e2e79",
+        "rev": "467ce5a9f45aaf96110b41eb863a56866e1c2c3c",
         "type": "github"
       },
       "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
+        "owner": "nixos",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
       }
     },
     "nixpkgs_2": {
@@ -424,57 +426,6 @@
         "ref": "master",
         "repo": "nixpkgs",
         "type": "github"
-      }
-    },
-    "nixpkgs_3": {
-      "info": {
-        "lastModified": 1589349539,
-        "narHash": "sha256-xMUcyl9vI6c8mJzl+M+6JIZmWQknXkSbu1jrgxtoHlo="
-      },
-      "locked": {
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "6a16787d263c96a772bbc74d527e71415811fd3a",
-        "type": "github"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
-    "nixpkgs_4": {
-      "info": {
-        "lastModified": 1591120815,
-        "narHash": "sha256-kmG7D+k5L1VidMeit8Hmk7XGXUa1o2DLGKvdYOLj52M="
-      },
-      "locked": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "467ce5a9f45aaf96110b41eb863a56866e1c2c3c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "nixpkgs_5": {
-      "info": {
-        "lastModified": 1589652606,
-        "narHash": "sha256-0Z0Dt2vVTx8n8xJi3clDuQ1n+u8J5wjwlGBlD3llnas="
-      },
-      "locked": {
-        "lastModified": 1589652606,
-        "narHash": "sha256-0Z0Dt2vVTx8n8xJi3clDuQ1n+u8J5wjwlGBlD3llnas=",
-        "path": "/nix/store/z5avpibqqzb18180a0klqqpxwfsx6mfy-source",
-        "rev": "9cb1a719681ebf8972a3ac3c62f713ffde6f329f",
-        "type": "path"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
       }
     },
     "output-search": {
@@ -683,7 +634,7 @@
         "guix": "guix",
         "hardware": "hardware",
         "home": "home",
-        "large": "nixpkgs_4",
+        "large": "nixpkgs",
         "master": "nixpkgs_2",
         "mozilla": "mozilla",
         "naersk": "naersk",
@@ -856,7 +807,7 @@
         "hist-navigator": "hist-navigator",
         "histcpy": "histcpy",
         "kitty": "kitty",
-        "nixpkgs": "nixpkgs_5",
+        "nixpkgs": "nixpkgs",
         "output-search": "output-search",
         "pause": "pause",
         "pipeliner": "pipeliner",
