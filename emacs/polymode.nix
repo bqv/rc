@@ -9,15 +9,19 @@
           :mode 'nix-mode)
 
         (define-innermode poly-nix-dsquote-elisp-innermode
-          :mode 'elisp-mode
+          :mode 'lisp-mode
           :head-matcher "''''\n"
           :tail-matcher "^\s*''''"
           :head-mode 'host
           :tail-mode 'host)
 
         (define-polymode nix-dsquoted-elisp-mode
-          :hostmode 'poly-host/nix
+          :hostmode 'poly-nix-hostmode
           :innermodes '(poly-nix-dsquote-elisp-innermode)))
     '';
   };
 }
+
+## Local Variables: ***
+## mode: nix-dsquoted-elisp
+## End: ***

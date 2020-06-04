@@ -30,6 +30,7 @@
     construct.inputs.nixpkgs.follows = "large";
 
     emacs.url = "github:nix-community/emacs-overlay";
+    nixus.url = "github:infinisil/nixus/545254808be876708535079996e2d9efd71f6533";
 
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
     snack = { url = "github:nmattia/snack"; flake = false; };
@@ -57,7 +58,7 @@
       ];
     };
 
-    fetchPullRequestForSystem = system: args@{ id, rev ? null, sha256 ? lib.fakeSha256, ... }: 
+    fetchPullRequestForSystem = system: args@{ id, rev ? null, sha256 ? lib.fakeSha256, ... }:
       mapAttrs (k: v: trace "pkgs.${k} pinned to nixpks/pull/${toString id}" v)
         (import (builtins.fetchTarball {
           name = "nixpkgs-pull-request-${toString id}"; inherit sha256;
@@ -99,7 +100,7 @@
 
   in {
     nixosConfigurations = let
-      system = "x86_64-linux";
+      system = "x86_64-linux"; # So far it always is...
       pkgs = pkgsForSystem system;
       usr = {
         utils = import ./lib/utils.nix {
@@ -118,11 +119,8 @@
         hosts = import ./secrets/hosts.nix;
       };
 
-      config = hostName: lib.nixosSystem {
-        inherit system;
-
-        inherit specialArgs;
-
+      modulesFor = hostName: {
+        inherit system specialArgs;
         modules = let
           inherit (inputs.home.nixosModules) home-manager;
           inherit (inputs.dwarffs.nixosModules) dwarffs;
@@ -132,7 +130,9 @@
           core = ./profiles/core.nix;
 
           global = {
-            networking.hostName = hostName;
+            networking = {
+              inherit hostName;
+            };
 
             nix.registry = lib.mapAttrs (id: flake: {
               inherit flake;
@@ -186,9 +186,29 @@
           home-manager dwarffs guix matrix-construct
         ];
       };
+
+      configFor = host: let
+        modules = modulesFor host;
+      in modules ++ [{
+        options = {
+          specialArgs = lib.mkOption {
+            type = lib.types.attrs;
+          };
+          modules = lib.mkOption {
+            type = lib.types.list;
+          };
+        };
+        config = {
+          inherit specialArgs modules;
+        };
+      }];
     in usr.utils.recImport {
       dir = ./hosts;
-      _import = config;
+      _import = host: let
+        modules = modulesFor host;
+      in lib.nixosSystem modules // {
+        inherit specialArgs modules;
+      };
     };
 
     legacyPackages = forAllSystems pkgsForSystem;
@@ -267,6 +287,29 @@
     );
 
     passthru = {
+      nixus = let
+        inherit (import ./secrets/hosts.nix) wireguard;
+      in inputs.nixus.lib.nixus ({ config, ... }: {
+        options.nodes = lib.mkForce (lib.mapAttrs (host: nixos: lib.mkOption {
+          type = with lib.types; attrsOf (submodule {
+            options.configuration = submoduleWith {
+              inherit (nixos) specialArgs modules;
+            };
+            options.host = lib.mkOption {
+              type = str;
+              default = "root@${wireguard.${name}}";
+            };
+          });
+        }) inputs.self.nixosConfigurations);
+
+        config.defaults = { name, ... }: {
+          nixpkgs = channels.lib;
+          configuration = { config, ... }: {
+            networking.hostName = lib.mkDefault name;
+          };
+        };
+      });
+
       #$ git config secrets.providers "nix eval --raw .#passthru.secrets"
       secrets = with lib.strings; concatMapStringsSep "\n" (replaceStrings [" "] ["\\s"]) ([
         (import ./secrets/git.github.nix).oauth-token
