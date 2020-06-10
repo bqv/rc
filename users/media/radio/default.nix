@@ -10,8 +10,7 @@ in {
     };
   }) streams;
 
-  emacs-loader.radio = {
-    package = lib.const null;
+  emacs-loader.emms = {
     config = ''
       (defconst bqv/radio-stations
         (let ((map (make-hash-table)))
