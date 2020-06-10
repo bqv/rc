@@ -1,8 +1,8 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, hosts, ... }:
 
 {
   networking.wireless = {
-    enable = true;
+    iwd.enable = true;
     interfaces = [ "wlp3s0" ];
     #iwd.enable = true; # pending https://github.com/NixOS/nixpkgs/pull/75800
     networks = import ../../secrets/wifi.networks.nix;
@@ -17,16 +17,16 @@
   networking.nameservers = [ "9.9.9.9" ];
   networking.interfaces.eno1 = {
     useDHCP = true;
-    ipv4.addresses = [{ address = "192.168.0.254"; prefixLength = 24; }];
+    ipv4.addresses = [{ address = hosts.lan.delta-wired; prefixLength = 24; }];
   };
   networking.interfaces.wlp3s0 = {
     useDHCP = true;
-    ipv4.addresses = [{ address = "192.168.0.253"; prefixLength = 24; }];
+    ipv4.addresses = [{ address = hosts.lan.delta-wireless; prefixLength = 24; }];
   };
 
   networking.interfaces.enp5s0u1 = {
     useDHCP = true;
-    ipv4.addresses = [{ address = "192.168.0.252"; prefixLength = 24; }];
+    ipv4.addresses = [{ address = hosts.lan.delta-eth; prefixLength = 24; }];
   }; systemd.services.network-link-enp5s0u1.before = [];
   networking.interfaces.enp0s20u3u1u2 = {
     useDHCP = true;
