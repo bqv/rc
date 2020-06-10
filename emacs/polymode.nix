@@ -1,23 +1,59 @@
 { config, lib, usr, pkgs, ... }:
 
-{
-  emacs-loader.polymode = {
-    demand = true;
-    config = ''
-      (with-eval-after-load 'nix-mode
-        (define-hostmode poly-nix-hostmode
-          :mode 'nix-mode)
+let
+  undash = lib.strings.replaceStrings ["-"] [""];
 
-        (define-innermode poly-nix-dsquote-elisp-innermode
-          :mode 'elisp-mode
-          :head-matcher "''''\n"
-          :tail-matcher "^\s*''''"
-          :head-mode 'host
-          :tail-mode 'host)
+  basicPolymode = { host, inner, discrim, headPat, tailPat }: let
+    hostmode = "poly-${undash host}-hostmode";
+    innermode = "poly-${undash host}-${discrim}-${undash inner}-innermode";
+    polymode = "${undash host}-${discrim}-${undash inner}-mode";
+  in ''
+    (define-hostmode ${hostmode}
+      :mode '${host}-mode)
 
-        (define-polymode nix-dsquoted-elisp-mode
-          :hostmode 'poly-host/nix
-          :innermodes '(poly-nix-dsquote-elisp-innermode)))
-    '';
+    (define-innermode ${innermode}
+      :mode '${inner}-mode
+      :head-matcher "${headPat}"
+      :tail-matcher "${tailPat}"
+      :head-mode 'host
+      :tail-mode 'host)
+
+    (define-polymode ${polymode}
+      :hostmode '${hostmode}
+      :innermodes '(${innermode}))
+  '';
+in {
+  emacs-loader.polymode = { config, ... }: {
+    options.polymodes = lib.mkOption {
+      type = with lib.types; loaOf (lines);
+      default = [];
+    };
+
+    config = {
+      demand = true;
+      polymodes = {
+        nix-elisp = basicPolymode {
+          host = "nix";
+          inner = "emacs-lisp";
+          discrim = "dsquoted";
+          headPat = "''\\n";
+          tailPat = "^\\s*''";
+        };
+        nix-sh = basicPolymode {
+          host = "nix";
+          inner = "sh";
+          discrim = "dsquoted";
+          headPat = "''\\n";
+          tailPat = "^\\s*''";
+        };
+      };
+      config = (lib.concatStrings (builtins.attrValues config.polymodes)) + ''
+
+      '';
+    };
   };
 }
+
+## Local Variables: ***
+## mode: nix-dsquoted-emacslisp-mode
+## End: ***
