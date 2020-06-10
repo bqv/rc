@@ -124,3 +124,7 @@ in pkgs.writeShellScriptBin "nixos" ''
     fi
   fi
 ''
+
+## Local Variables: ***
+## mode: nix-dsquoted-sh-mode
+## End: ***
