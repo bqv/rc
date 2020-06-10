@@ -6,6 +6,7 @@
     staged.url = "github:nixos/nixpkgs/staging";
     small.url = "github:nixos/nixpkgs/nixos-unstable-small";
     large.url = "github:nixos/nixpkgs/nixos-unstable";
+    pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd";
 
     nix.url = "github:nixos/nix/flakes";
     nix.inputs.nixpkgs.follows = "master";
@@ -57,7 +58,7 @@
       ];
     };
 
-    fetchPullRequestForSystem = system: args@{ id, rev ? null, sha256 ? lib.fakeSha256, ... }: 
+    fetchPullRequestForSystem = system: args@{ id, rev ? null, sha256 ? lib.fakeSha256, ... }:
       mapAttrs (k: v: trace "pkgs.${k} pinned to nixpks/pull/${toString id}" v)
         (import (builtins.fetchTarball {
           name = "nixpkgs-pull-request-${toString id}"; inherit sha256;
