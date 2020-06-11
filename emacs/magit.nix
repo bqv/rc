@@ -6,5 +6,8 @@
     bind = {
       "C-x g" = "magit-status";
     };
+    config = ''
+      (setq magit-log-show-refname-after-summary t)
+    '';
   };
 }
