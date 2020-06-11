@@ -108,7 +108,7 @@ let
                      else "";
           };
         in ''
-          (use-package ${attrs.name}
+          (leaf ${attrs.name}
             ${attrs.demand}
             ${attrs.defer}
             ${attrs.after}
