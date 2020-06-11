@@ -31,13 +31,12 @@ let
     (setq load-prefer-newer t)
   '';
 
-  # Setup base packaging - use-package
+  # Setup base packaging - leaf
   package-init = ''
-    (setq use-package-verbose t)
-    (require 'use-package)
-    (use-package auto-compile
-      :demand t
-      :config
+    (require 'leaf)
+    (leaf auto-compile
+      :leaf-defer nil
+      :defer-config
       (auto-compile-on-load-mode)
       (auto-compile-on-save-mode)
       (setq auto-compile-display-buffer               nil)
@@ -45,14 +44,14 @@ let
       (setq auto-compile-source-recreate-deletes-dest t)
       (setq auto-compile-toggle-deletes-nonlib-dest   t)
       (setq auto-compile-update-autoloads             t))
-    (use-package gcmh
-      :config
+    (leaf gcmh
+      :defer-config
       (gcmh-mode t))
-    (use-package diminish
-      :demand t)
-    (use-package epkg)
-    (use-package log4e
-      :config
+    (leaf diminish
+      :leaf-defer nil)
+    (leaf epkg)
+    (leaf log4e
+      :defer-config
       (log4e:deflogger "log" "%t [%l] %m" "%H:%M:%S" '((fatal . "fatal")
                                                        (error . "error")
                                                        (warn  . "warn")
@@ -113,12 +112,12 @@ let
               (add-to-list 'config-registry `(,config-name . ,registry-data)))))))
 
     (defmacro config-package (package &rest args)
-      "Load a package PACKAGE by calling use-package, with ARGS."
+      "Load a package PACKAGE by calling leaf, with ARGS."
       (let ((name (cond ((symbolp package) package)
                         ((stringp package) (make-symbol package))
                         (t nil))))
         `(config-segment ',name
-                         (use-package ,name ,@args))))
+                         (leaf ,name ,@args))))
 
     (defun config-errors ()
       (let ((error-registry (seq-remove (lambda (c) (eq (type-of (cdr c)) 'config-ok)) config-registry)))
@@ -185,7 +184,7 @@ let
 
     (config-package custom
       :no-require t
-      :config
+      :defer-config
       (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
       (when (file-exists-p custom-file)
         (load custom-file)))
@@ -203,8 +202,8 @@ let
                (setq config-arg-test long-arg-test)))
 
     (config-package server
-      :demand t
-      :config
+      :leaf-defer nil
+      :defer-config
       (if (not (server-running-p))
           (server-start)))
 
