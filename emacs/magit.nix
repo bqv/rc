@@ -5,6 +5,7 @@
     demand = true;
     bind = {
       "C-x g" = "magit-status";
+      "C-x M-g" = "magit-dispatch-popup";
     };
     config = ''
       (setq magit-log-show-refname-after-summary t)
