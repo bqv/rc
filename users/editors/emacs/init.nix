@@ -149,6 +149,8 @@ let
     ;(global-hl-line-mode 1)
     (column-number-mode 1)
     (line-number-mode 1)
+    (savehist-mode 1)
+    (setq history-length 65536)
     (global-display-line-numbers-mode 1)
     (size-indication-mode 1)
     (setq scroll-margin 0
