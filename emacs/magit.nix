@@ -10,5 +10,6 @@
     config = ''
       (setq magit-log-show-refname-after-summary t)
     '';
+    systemDeps = with pkgs; [ git ];
   };
 }

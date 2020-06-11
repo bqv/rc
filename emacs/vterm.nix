@@ -8,6 +8,6 @@
       ;(defalias 'ansi-term (lambda (&rest _) (call-interactively #'vterm)))
       (setq vterm-shell "${pkgs.xonsh.pname}")
     '';
-    systemDeps = with pkgs; [ cmake libtool ];
+    systemDeps = with pkgs; [ cmake libtool libvterm ];
   };
 }

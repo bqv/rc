@@ -26,13 +26,10 @@ in {
       ".emacs.d/init.el".source = (import ./init.nix args).out;
     };
 
-    home.packages = with pkgs; [
-      emacs-all-the-icons-fonts nixfmt
-    ] ++ packageDeps ++ systemDeps ++ [
-      git fish w3m findutils
-      cmake gnumake gcc libtool libvterm gtk3 rls age rust-analyzer
+    home.packages = with pkgs; packageDeps ++ systemDeps ++ [
+      nixfmt w3m findutils cmake gnumake gcc libtool gtk3 age
     ] ++ (with cfg.package.pkgs; [
-      use-package auto-compile gcmh diminish epkg log4e bug-hunter
+      leaf auto-compile gcmh diminish epkg log4e bug-hunter use-package
     ]);
 
     programs.emacs.package = let

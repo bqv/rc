@@ -7,5 +7,6 @@
     hook = [
       { rust-mode = "lsp"; }
     ];
+    systemDeps = with pkgs; [ rls rust-analyzer ];
   };
 }
