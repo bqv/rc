@@ -77,7 +77,7 @@ let
 
           attrs = {
             name = (assert ! lib.hasInfix " " config.name; config.name);
-            demand = if config.demand then ":demand t" else "";
+            demand = if config.demand then ":leaf-defer nil" else "";
             defer = if config.defer then ":defer t" else "";
             after = if builtins.length config.after <= 0 then ""
                     else if builtins.length config.after == 1
@@ -108,7 +108,7 @@ let
                      else "";
           };
         in ''
-          (use-package ${attrs.name}
+          (leaf ${attrs.name}
             ${attrs.demand}
             ${attrs.defer}
             ${attrs.after}

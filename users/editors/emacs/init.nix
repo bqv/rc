@@ -31,12 +31,11 @@ let
     (setq load-prefer-newer t)
   '';
 
-  # Setup base packaging - use-package
+  # Setup base packaging - leaf
   package-init = ''
-    (setq use-package-verbose t)
-    (require 'use-package)
-    (use-package auto-compile
-      :demand t
+    (require 'leaf)
+    (leaf auto-compile
+      :leaf-defer nil
       :config
       (auto-compile-on-load-mode)
       (auto-compile-on-save-mode)
@@ -45,13 +44,13 @@ let
       (setq auto-compile-source-recreate-deletes-dest t)
       (setq auto-compile-toggle-deletes-nonlib-dest   t)
       (setq auto-compile-update-autoloads             t))
-    (use-package gcmh
+    (leaf gcmh
       :config
       (gcmh-mode t))
-    (use-package diminish
-      :demand t)
-    (use-package epkg)
-    (use-package log4e
+    (leaf diminish
+      :leaf-defer nil)
+    (leaf epkg)
+    (leaf log4e
       :config
       (log4e:deflogger "log" "%t [%l] %m" "%H:%M:%S" '((fatal . "fatal")
                                                        (error . "error")
@@ -113,12 +112,12 @@ let
               (add-to-list 'config-registry `(,config-name . ,registry-data)))))))
 
     (defmacro config-package (package &rest args)
-      "Load a package PACKAGE by calling use-package, with ARGS."
+      "Load a package PACKAGE by calling leaf, with ARGS."
       (let ((name (cond ((symbolp package) package)
                         ((stringp package) (make-symbol package))
                         (t nil))))
         `(config-segment ',name
-                         (use-package ,name ,@args))))
+                         (leaf ,name ,@args))))
 
     (defun config-errors ()
       (let ((error-registry (seq-remove (lambda (c) (eq (type-of (cdr c)) 'config-ok)) config-registry)))
@@ -203,7 +202,7 @@ let
                (setq config-arg-test long-arg-test)))
 
     (config-package server
-      :demand t
+      :leaf-defer nil
       :config
       (if (not (server-running-p))
           (server-start)))
