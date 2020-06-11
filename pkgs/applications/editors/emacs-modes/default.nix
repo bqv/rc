@@ -49,4 +49,17 @@ in lib.recurseIntoAttrs {
     ];
   };
 
+  envrc = trivialBuild rec {
+    pname = "envrc";
+    version = "20200611.254";
+    src = fetchFromGitHub {
+      owner = "purcell"; repo = pname;
+      rev = "aae15dd8c4736ceb515b09b1db9eef3db3bd65d9";
+      sha256 = "14f5hh09qdjdy757h3lg36z5x2nrnx2s0dmzm1jlk4q7qj274114";
+    };
+    buildInputs = with emacsPackages; [
+      seq
+    ];
+  };
+
 }
