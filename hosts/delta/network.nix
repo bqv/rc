@@ -6,6 +6,8 @@ in {
   disabledModules = [ iwdModule ];
   imports = [ "${inputs.pr75800}/nixos/modules/${iwdModule}" ];
 
+  environment.systemPackages = with pkgs; [ dhcp dhcpcd ];
+
   networking.wireless = let
     useIwd = true;
   in {
