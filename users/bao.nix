@@ -27,6 +27,7 @@
       ./shells/fish
       ./shells/xonsh
       ./browsers/firefox
+      ./company/locationextreme
       ./editors/emacs
       ./editors/vim
       ./media/gpodder

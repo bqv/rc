@@ -31,7 +31,10 @@
     construct.inputs.nixpkgs.follows = "large";
 
     emacs.url = "github:nix-community/emacs-overlay";
+    haskell.url = "github:input-output-hk/haskell.nix";
     nixus.url = "github:infinisil/nixus/545254808be876708535079996e2d9efd71f6533";
+    #hies.url = "github:infinisil/all-hies";
+    hies.url = "github:bqv/all-hies/haskell.nix";
 
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
     snack = { url = "github:nmattia/snack"; flake = false; };
@@ -84,7 +87,7 @@
         (channelToOverlay { inherit system config; flake = "small"; branch = "nixos-unstable-small"; })
         (channelToOverlay { inherit system config; flake = "large"; branch = "nixos-unstable"; })
         (import inputs.mozilla)
-        (pkgs: lib.const {
+        (pkgs: lib.const rec {
           inherit inputs;
           naersk = inputs.naersk.lib.${system};
           snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
@@ -94,6 +97,16 @@
         inputs.guix.overlay
         inputs.construct.overlay
         inputs.emacs.overlay
+        inputs.haskell.overlay
+        (pkgs: lib.const rec {
+          all-hies = inputs.hies.defaultPackage.${system};
+          hies = let ghcVer = lib.replaceStrings ["." "-"] ["" ""] pkgs.ghc.name;
+                 #in all-hies.selection {
+                 in inputs.hies.lib.selection {
+                   inherit pkgs;
+                   selector = p: lib.genAttrs [ghcVer] (_: p.${ghcVer});
+                 };
+        })
         inputs.xontribs.overlay
         inputs.self.overlay
       ];
@@ -224,7 +237,7 @@
     packages = forAllSystems (system: let
       pkgs = pkgsForSystem system;
     in lib.filterAttrs (_: p: (p.meta.broken or null) != true) {
-      inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color;
+      inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color envrc emacsbridge;
       inherit (pkgs) dgit dejavu_nerdfont electronmail flarectl fsnoop ipfscat;
       inherit (pkgs) matrix-appservice-irc mx-puppet-discord;
       inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;

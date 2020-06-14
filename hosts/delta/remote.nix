@@ -6,6 +6,7 @@
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
+    startWhenNeeded = true;
     knownHosts = {
       "Alpha CA" = {
         certAuthority = true;

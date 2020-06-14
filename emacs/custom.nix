@@ -8,7 +8,7 @@
       ;(if window-system
       ;  (load-theme 'hc-zenburn t)
       ;  (load-theme 'zenburn t))
-      (progn
+      (progn ;;; Theme configuration
         (load-theme 'doom-nord t)
         (config-package doom-themes-ext-visual-bell
           :config
@@ -25,7 +25,7 @@
           :config
           (doom-themes-org-config))
         (doom-modeline-mode 1))
-      (progn
+      (progn ;;; Modeline configuration
         ;; How tall the mode-line should be. It's only respected in GUI.
         ;; If the actual char height is larger, it respects the actual height.
         (setq doom-modeline-height 25)
@@ -39,7 +39,7 @@
         ;; The project management packages have some issues on detecting project root.
         ;; e.g. `projectile' doesn't handle symlink folders well, while `project' is unable
         ;; to hanle sub-projects.
-        ;(setq doom-modeline-project-detection 'project)
+        (setq doom-modeline-project-detection 'project)
 
         ;; Determines the style used by `doom-modeline-buffer-file-name'.
         ;;

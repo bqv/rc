@@ -172,6 +172,8 @@ let
     (setq compilation-scroll-output t)
     (when (fboundp 'windmove-default-keybindings)
       (windmove-default-keybindings))
+    (when (fboundp 'winner-mode)
+      (winner-mode 1))
     (fset 'yes-or-no-p 'y-or-n-p)
     (progn
       ;; Put backup files neatly away
@@ -217,6 +219,10 @@ let
     (config-package server
       :leaf-defer nil
       :config
+      (setq server-auth-dir "~/.emacs.d/server/"
+            server-use-tcp t
+            server-host "0.0.0.0"
+            server-port 2222)
       (if (not (server-running-p))
           (server-start)))
 

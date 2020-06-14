@@ -52,13 +52,13 @@
     target = "security/limits.conf";
     text = ''
       # add following lines to it
-      *    soft     nproc          65535    
-      *    hard     nproc          65535   
-      *    soft     nofile         65535   
+      *    soft     nproc          65535
+      *    hard     nproc          65535
+      *    soft     nofile         65535
       *    hard     nofile         65535
-      root soft     nproc          65535    
-      root hard     nproc          65535   
-      root soft     nofile         65535   
+      root soft     nproc          65535
+      root hard     nproc          65535
+      root soft     nofile         65535
       root hard     nofile         65535
     '';
   };
@@ -190,6 +190,7 @@
       userkeys = "TrustedUserCAKeys /etc/ssh/ssh_user-ca.pub";
       revokedkeys = "RevokedKeys /etc/ssh/ssh_revoked_keys";
     in builtins.concatStringsSep "\n" (certificates ++ [ userkeys revokedkeys ]);
+  services.openssh.startWhenNeeded = true;
 
   programs.mosh.enable = true;
   environment.variables.MOSH_SERVER_NETWORK_TMOUT = "86400";

@@ -9,3 +9,12 @@
            (with-current-buffer (window-buffer
                                  (async-shell-command "pmbootstrap log"))
              (rename-buffer title t)))))))
+
+(defun comint-sudo-run (program)
+  "Run sudo PROGRAM in a Comint buffer and switch to it.
+See `comint-run'."
+  (declare (interactive-only make-comint))
+  (interactive "sRun program: ")
+  (let ((name (file-name-nondirectory program)))
+    (switch-to-buffer (make-comint name "sudo" nil program))
+    (run-hooks (intern-soft (concat "comint-" name "-hook")))))

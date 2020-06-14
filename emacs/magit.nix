@@ -9,6 +9,7 @@
     };
     config = ''
       (setq magit-log-show-refname-after-summary t)
+      (setq magit-clone-default-directory (expand-file-name "~/dev/"))
     '';
     systemDeps = with pkgs; [ git ];
   };

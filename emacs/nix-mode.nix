@@ -8,6 +8,14 @@
     '' + ''
       (setq nix-indent-function 'nix-indent-line)
 
+      (defun nix-repl-complete ()
+        (interactive)
+        (save-excursion
+          (term-send-raw-string
+           (concat (substring-no-properties (buffer-substring (point-at-bol) (point)))
+                   "\C-i\C-a\C-k"))))
+      (define-key nix-repl-mode-map (kbd "<tab>") #'nix-repl-complete)
+
       (defmacro defcmd (name body &rest cdr)
         `(defun ,name () (interactive) ,body ,@cdr))
 

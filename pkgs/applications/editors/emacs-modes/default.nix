@@ -1,4 +1,4 @@
-{ lib, fetchFromGitHub, emacsPackages, ... }:
+{ lib, writeText, fetchFromGitHub, emacsPackages, ... }:
 
 let
   inherit (emacsPackages) trivialBuild;
@@ -59,6 +59,22 @@ in lib.recurseIntoAttrs {
     };
     buildInputs = with emacsPackages; [
       seq
+    ];
+  };
+
+  emacsbridge = trivialBuild rec {
+    pname = baseNameOf src.meta.homepage;
+    version = lib.substring 0 7 src.rev;
+    src = fetchFromGitHub {
+      owner = "aardsoft";
+      repo = "emacsbridge";
+      rev = "c11e18940f5e662ddd79519ab043d30114f4a7c6";
+      sha256 = "1lkipb4x57pscy62qc3r3zacpmyd85frq7rld2v3psfayxrsb9l6";
+    };
+    preBuild = "cp lisp/* .";
+    postInstall = "cp -r qml $out";
+    buildInputs = with emacsPackages; [
+      alert
     ];
   };
 
