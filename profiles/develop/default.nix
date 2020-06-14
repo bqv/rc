@@ -1,7 +1,11 @@
-{ pkgs, ... }: {
-  imports = [ ./fish ./tmux ];
+{ pkgs, ... }:
 
-  environment.shellAliases = { v = "$EDITOR"; };
+{
+  imports = [ ./fish ./tmux ./haskell ];
+
+  environment.shellAliases = {
+ #  v = "$EDITOR";
+  };
 
   environment.sessionVariables = {
     PAGER = "less";

@@ -17,6 +17,7 @@ in {
       "kernel.sysrq" = 1;
       "kernel.printk" = "3 4 1 3";
       "net.ipv4.ip_forward" = "1";
+      "kernel.pid_max" = "4194304";
     };
   };
 
@@ -81,6 +82,8 @@ in {
       "https://nix-community.cachix.org"
       "https://cross-armed.cachix.org"
       "https://r-ryantm.cachix.org"
+      "https://all-hies.cachix.org"
+      "https://iohk.cachix.org"
       "https://arm.cachix.org"
     ];
 
@@ -88,6 +91,8 @@ in {
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "cross-armed.cachix.org-1:v+RBneV2nKPSKRe3/qUFhOG6/9GE+o0lw9/NW/wX9Hk="
       "r-ryantm.cachix.org-1:gkUbLkouDAyvBdpBX0JOdIiD2/DP1ldF3Z3Y6Gqcc4c="
+      "all-hies.cachix.org-1:JjrzAOEUsD9ZMt8fdFbzo3jNAyEWlPAwdVuHw4RD43k="
+      "iohk.cachix.org-1:DpRUyj7h7V830dp/i6Nti+NEO2/nhblbov/8MW7Rqoo="
       "arm.cachix.org-1:fGqEJIhp5zM7hxe/Dzt9l9Ene9SY27PUyx3hT9Vvei0="
     ];
   };

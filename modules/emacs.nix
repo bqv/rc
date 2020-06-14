@@ -19,6 +19,10 @@ let
         type = types.bool;
         default = false;
       };
+      require = mkOption {
+        type = types.listOf types.str;
+        default = [];
+      };
       after = mkOption {
         type = types.listOf types.str;
         default = [];
@@ -79,6 +83,10 @@ let
             name = (assert ! lib.hasInfix " " config.name; config.name);
             demand = if config.demand then ":leaf-defer nil" else "";
             defer = if config.defer then ":defer t" else "";
+            require = if builtins.length config.require <= 0 then ""
+                      else if builtins.length config.require == 1
+                      then ":require ${builtins.head config.require}"
+                      else ":require (${lib.concatStringsSep " " config.require})";
             after = if builtins.length config.after <= 0 then ""
                     else if builtins.length config.after == 1
                     then ":after ${builtins.head config.after}"
@@ -111,6 +119,7 @@ let
           (leaf ${attrs.name}
             ${attrs.demand}
             ${attrs.defer}
+            ${attrs.require}
             ${attrs.after}
             ${attrs.diminish}
             ${attrs.commands}
