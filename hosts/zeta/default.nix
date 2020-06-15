@@ -9,6 +9,7 @@
     ../../legacy/containers/search.nix
     ../../legacy/containers/mastodon.nix
     ../../legacy/containers/matrix.nix
+    ../../legacy/containers/hydroxide.nix
     ../../profiles/meta/fatal-warnings.nix
     ../../profiles/misc/qemu.nix
     ../../profiles/security/sudo.nix

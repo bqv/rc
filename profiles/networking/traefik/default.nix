@@ -391,13 +391,31 @@
         routers = {
          #ssh = {
          #  entryPoints = [ "ssh" ];
+         #  rule = "HostSNI(`*`)";
          #  service = "ssh";
          #  tls = {
          #    passthrough = true;
          #  };
          #};
+          smtp = {
+            entryPoints = [ "smtp" ];
+            rule = "HostSNI(`*`)";
+            service = "smtp";
+            tls = {
+              passthrough = true;
+            };
+          };
+          imap = {
+            entryPoints = [ "imap" ];
+            rule = "HostSNI(`*`)";
+            service = "imap";
+            tls = {
+              passthrough = true;
+            };
+          };
          #irc = {
          #  entryPoints = [ "ircs" ];
+         #  rule = "HostSNI(`*`)";
          #  service = "irc";
          #  tls = {
          #    passthrough = true;
@@ -408,6 +426,18 @@
           ssh.loadBalancer = {
             servers = [
               { address = "${hosts.ipv4.zeta}:22"; }
+            ];
+            terminationDelay = 100;
+          };
+          smtp.loadBalancer = {
+            servers = [
+              { address = "10.8.0.2:1025"; }
+            ];
+            terminationDelay = 100;
+          };
+          imap.loadBalancer = {
+            servers = [
+              { address = "10.8.0.2:1143"; }
             ];
             terminationDelay = 100;
           };
@@ -568,6 +598,12 @@
        #ssh = {
        #  address = "${hosts.ipv4.zeta}:22/tcp";
        #};
+        smtp = {
+          address = ":1025/tcp";
+        };
+        imap = {
+          address = ":1143/tcp";
+        };
         construct = {
           address = ":4004/tcp";
         };
