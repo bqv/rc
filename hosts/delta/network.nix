@@ -28,7 +28,7 @@ in {
   users.users.resolved.uid = 57; # unused: was network-manager
   networking.useDHCP = false;
   networking.enableIPv6 = true;
-  networking.defaultGateway = "192.168.0.1";
+  networking.defaultGateway = hosts.lan.router;
   networking.nameservers = [ "9.9.9.9" ];
   networking.interfaces.eno1 = {
     useDHCP = true;
