@@ -5,7 +5,7 @@
     demand = true;
     after = [ "lsp" ];
     hook = [
-      { haskell-mode = "lsp"; }
+      { haskell-mode-hook = "lsp"; }
     ];
     config = ''
       (setq lsp-haskell-process-path-hie "hie-wrapper")

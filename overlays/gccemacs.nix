@@ -1,7 +1,5 @@
 final: prev: rec {
-  gccEmacs = final.emacsGcc.overrideAttrs (o: {
-    configureFlags = o.configureFlags ++ [ "--with-json" ];
-  });
+  gccEmacs = final.emacsGcc;
 
   gccEmacsPackages = prev.lib.dontRecurseIntoAttrs (final.emacsPackagesFor gccEmacs);
 

@@ -4,7 +4,7 @@
   emacs-loader.flycheck = {
     demand = true;
     hook = [
-      { prog-mode = "flycheck-mode"; }
+      { prog-mode-hook = "flycheck-mode"; }
     ];
   };
 }

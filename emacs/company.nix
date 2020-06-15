@@ -5,7 +5,7 @@
     demand = true;
     diminish = [ "company-mode" ];
     hook = [
-      { prog-mode = "company-mode"; }
+      { prog-mode-hook = "company-mode"; }
     ];
     config = ''
       (setq company-tooltip-align-annotations t

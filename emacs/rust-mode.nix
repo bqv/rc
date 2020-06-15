@@ -5,7 +5,7 @@
     demand = true;
     after = [ "lsp" ];
     hook = [
-      { rust-mode = "lsp"; }
+      { rust-mode-hook = "lsp"; }
     ];
     systemDeps = with pkgs; [ rls rust-analyzer ];
   };

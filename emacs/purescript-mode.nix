@@ -5,7 +5,7 @@
     demand = true;
     after = [ "lsp" ];
     hook = [
-      { purescript-mode = "lsp"; }
+      { purescript-mode-hook = "lsp"; }
     ];
   };
 }

@@ -5,7 +5,7 @@
     demand = true;
     after = [ "lsp" ];
     hook = [
-      { typescript-mode = "lsp"; }
+      { typescript-mode-hook = "lsp"; }
     ];
   };
 }

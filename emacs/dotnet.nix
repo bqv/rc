@@ -5,7 +5,7 @@
     demand = true;
     after = [ "csharp-mode" ];
     hook = [
-      { csharp-mode = "dotnet-mode"; }
+      { csharp-mode-hook = "dotnet-mode"; }
     ];
     systemDeps = with pkgs.dotnetCorePackages; [
       (combinePackages [

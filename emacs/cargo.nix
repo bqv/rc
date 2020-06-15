@@ -5,7 +5,7 @@
     demand = true;
     after = [ "rust-mode" ];
     hook = [
-      { rust-mode = "cargo-minor-mode"; }
+      { rust-mode-hook = "cargo-minor-mode"; }
     ];
   };
 }

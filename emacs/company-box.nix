@@ -5,7 +5,7 @@
     demand = true;
     after = [ "company" ];
     hook = [
-      { company-mode = "company-box-mode"; }
+      { company-mode-hook = "company-box-mode"; }
     ];
   };
 }
