@@ -191,7 +191,8 @@ let
             delete-old-versions t  ; Clean up the backups
             version-control t      ; Use version numbers on backups,
             kept-new-versions 5    ; keep some new versions
-            kept-old-versions 2))  ; and some old ones, too
+            kept-old-versions 2    ; and some old ones, too
+            create-lockfiles nil)) ; no .#blah files
     (global-auto-revert-mode t)
     (add-hook 'before-save-hook 'whitespace-cleanup)
     (global-set-key (kbd "C-x k") 'kill-this-buffer)
