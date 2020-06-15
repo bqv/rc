@@ -191,7 +191,7 @@
       userkeys = "TrustedUserCAKeys /etc/ssh/ssh_user-ca.pub";
       revokedkeys = "RevokedKeys /etc/ssh/ssh_revoked_keys";
     in builtins.concatStringsSep "\n" (certificates ++ [ userkeys revokedkeys ]);
-  services.openssh.startWhenNeeded = true;
+  #services.openssh.startWhenNeeded = true;
 
   programs.mosh.enable = true;
   environment.variables.MOSH_SERVER_NETWORK_TMOUT = "86400";
