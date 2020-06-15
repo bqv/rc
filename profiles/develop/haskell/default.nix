@@ -5,5 +5,6 @@
     cabal-install
     stack
     ghc hies
+    cabal2nix
   ];
 }
