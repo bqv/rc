@@ -20,6 +20,7 @@
     ../../profiles/services/mastodon
     ../../profiles/services/minecraft
     ../../profiles/services/syncthing
+    ../../profiles/services/hydroxide
     ../../users/root.nix
     ../../users/bao.nix
     ./network.nix
