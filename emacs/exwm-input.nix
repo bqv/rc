@@ -44,6 +44,8 @@
                   (cons "Discord" (list "Discord")))
             (setf (map-elt map 'ripcord)
                   (cons "Ripcord" (list "ripcord")))
+            (setf (map-elt map 'teams)
+                  (cons "MicrosoftTeams" (list "teams")))
             (setf (map-elt map 'termite)
                   (cons "Termite" (list "termite")))
             map)
