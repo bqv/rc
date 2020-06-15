@@ -4,7 +4,7 @@
   emacs-loader.latex = {
     package = lib.const null;
     mode = {
-      "\\.tex\\'" = "latex-mode";
+      "\"\\\\.tex\\\\'\"" = "latex-mode";
     };
     config = ''
       (add-hook 'doc-view-mode-hook 'auto-revert-mode)
