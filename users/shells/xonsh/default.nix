@@ -110,7 +110,7 @@ in {
         $COMPLETIONS_BRACKETS = True
         $XONSH_HISTORY_SIZE = "65536 commands"
         $XONSH_STORE_STDOUT = True
-        $XONTRIB_OUTPUT_SEARCH_KEY = 'i'
+        __xonsh__.env['XONTRIB_OUTPUT_SEARCH_KEY'] = 'i'
 
         xontrib load abbrevs
         xontrib load bashisms
@@ -169,6 +169,7 @@ in {
 
         if "DISPLAY" not in ''${...}:
           ''${...}["GPG_TTY"] = $(tty).strip()
+          ''${...}["SSH_AUTH_SOCK"] = $(gpgconf --list-dirs agent-ssh-socket).strip()
 
         xontrib load powerline
         date
