@@ -85,11 +85,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1589579558,
-        "narHash": "sha256-/HG3bQCNSHR+7IfEisqJqHUoSCGIHDiIVFzxyZXgfAM=",
+        "lastModified": 1592020396,
+        "narHash": "sha256-dw/73dXI5VsOVTaS0e7tOCzmlLL1S6RXUchCCb8dy98=",
         "owner": "matrix-construct",
         "repo": "construct",
-        "rev": "3ebad48c4ffdd189cccacf839fe07be9caca3832",
+        "rev": "6f508f92a45df9ae5a7e449e9ae207f9922c9df8",
         "type": "github"
       },
       "original": {
