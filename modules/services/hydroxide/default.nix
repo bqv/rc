@@ -6,14 +6,6 @@ in {
   options.services.hydroxide = {
     enable = lib.mkEnableOption "hydroxide";
 
-    directory = lib.mkOption {
-      type = lib.types.path;
-      default = "/var/lib/";
-      description = ''
-        The directory for the ./hydroxide/ data directory
-      '';
-    };
-
     userauths = lib.mkOption {
       type = with lib.types; attrsOf str;
       default = {};
@@ -35,19 +27,19 @@ in {
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [ cfg.package ];
 
-    systemd.services.hydroxide = {
+    systemd.services.hydroxide = rec {
       enable = true;
       after = [ "network.target" ];
       description = "Hydroxide bridge server";
-      environment.XDG_CONFIG_HOME = cfg.directory;
+      environment.XDG_CONFIG_HOME = "/var/lib/${serviceConfig.StateDirectory}";
       wantedBy = [ "multi-user.target" ];
-      serviceConfig = rec {
+      serviceConfig = {
         DynamicUser = true;
-        StateDirectory = "${cfg.directory}/hydroxide";
+        StateDirectory = "hydroxide";
         ExecStartPre = let
           authFile = builtins.toJSON cfg.userauths;
         in ''
-          ln -sf ${pkgs.writeText "auth.json" authFile} ${StateDirectory}/auth.json
+          ${pkgs.coreutils}/bin/ln -sf ${pkgs.writeText "auth.json" authFile} ${environment.XDG_CONFIG_HOME}/auth.json
         '';
         ExecStart = ''
           ${cfg.package}/bin/hydroxide ${""} serve
