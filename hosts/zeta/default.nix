@@ -190,7 +190,17 @@
       userkeys = "TrustedUserCAKeys /etc/ssh/ssh_user-ca.pub";
       revokedkeys = "RevokedKeys /etc/ssh/ssh_revoked_keys";
     in builtins.concatStringsSep "\n" (certificates ++ [ userkeys revokedkeys ]);
-  services.openssh.startWhenNeeded = true;
+  #services.openssh.startWhenNeeded = true;
+  
+  # Bit meta but helps ensure sshd is bound to all addresses always
+  # TODO: move to profile
+  systemd.services.restart-openssh.script = "${pkgs.systemd}/bin/systemctl restart sshd";
+  systemd.timers.restart-openssh = {
+    timerConfig = {
+      OnCalendar = "Hourly";
+      Unit = "restart-openssh.service";
+    };
+  };
 
   programs.mosh.enable = true;
   environment.variables.MOSH_SERVER_NETWORK_TMOUT = "86400";

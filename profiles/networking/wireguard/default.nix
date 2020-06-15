@@ -62,4 +62,6 @@ in {
       ) peers);
     };
   };
+
+  systemd.services.wireguard-wg0.serviceConfig.Before = [ "sshd.service" ];
 }
