@@ -47,7 +47,7 @@ in {
         ExecStartPre = let
           authFile = builtins.toJSON cfg.userauths;
         in ''
-          ln -sf ${pkgs.writeText "auth.json" authFile} ${StateDirectory}/auth.json
+          ${pkgs.coreutils}/bin/ln -sf ${pkgs.writeText "auth.json" authFile} ${StateDirectory}/auth.json
         '';
         ExecStart = ''
           ${cfg.package}/bin/hydroxide ${""} serve
