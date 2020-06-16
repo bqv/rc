@@ -17,6 +17,7 @@ let
 
     delta = {
       ip = hosts.wireguard.delta;
+      wideArea = [ hosts.ipv4.delta ];
       localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
       publicKey = "Y/SRDGEQfFLUGqx6vMnO1pxHs9zn//NpwdSGQ2Sm+Dg=";
     };
@@ -49,7 +50,7 @@ in {
       privateKeyFile = "/etc/wireguard/private.key";
       generatePrivateKeyFile = false;
       listenPort = currentPeer.port or 51820;
-  
+
       peers = lib.mapAttrsToList (hostname: hostcfg: {
         inherit (hostcfg) publicKey;
         allowedIPs = [ "${hostcfg.ip}/32" ]
