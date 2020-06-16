@@ -237,7 +237,8 @@
     packages = forAllSystems (system: let
       pkgs = pkgsForSystem system;
     in lib.filterAttrs (_: p: (p.meta.broken or null) != true) {
-      inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color envrc emacsbridge;
+      inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color;
+      inherit (pkgs.emacsPackages) envrc emacsbridge font-lock-ext sln-mode;
       inherit (pkgs) dgit dejavu_nerdfont electronmail flarectl fsnoop ipfscat;
       inherit (pkgs) matrix-appservice-irc mx-puppet-discord;
       inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;

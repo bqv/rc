@@ -2,7 +2,7 @@
 
 let
   inherit (emacsPackages) trivialBuild;
-in lib.recurseIntoAttrs {
+in lib.recurseIntoAttrs rec {
 
   bitwarden = trivialBuild rec {
     pname = "emacs-bitwarden";
@@ -75,6 +75,33 @@ in lib.recurseIntoAttrs {
     postInstall = "cp -r qml $out";
     buildInputs = with emacsPackages; [
       alert
+    ];
+  };
+
+  font-lock-ext = trivialBuild rec {
+    pname = baseNameOf src.meta.homepage;
+    version = lib.substring 0 7 src.rev;
+    src = fetchFromGitHub {
+      owner = "sensorflo";
+      repo = "font-lock-ext";
+      rev = "b6c82e8ac7996d96494a54454015a98ceb883feb";
+      sha256 = "19wywl3y5schs9yzvrnngamajvgbbvajxhgpzfprwwv660phdsvl";
+    };
+    buildInputs = with emacsPackages; [
+    ];
+  };
+
+  sln-mode = trivialBuild rec {
+    pname = baseNameOf src.meta.homepage;
+    version = lib.substring 0 7 src.rev;
+    src = fetchFromGitHub {
+      owner = "sensorflo";
+      repo = "sln-mode";
+      rev = "0f91d1b957c7d2a7bab9278ec57b54d57f1dbd9c";
+      sha256 = "1ahrripvlrislw3b40zkvxnsbwkzagxdbcskn92kpf8944zjmaay";
+    };
+    buildInputs = with emacsPackages; [
+      font-lock-ext
     ];
   };
 
