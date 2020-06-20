@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 
 {
+  environment.systemPackages = with pkgs; [ miraclecast ];
+
   services.xserver = {
     enable = true;
 
