@@ -146,6 +146,7 @@
     anbox #pmbootstrap
 
     (with hunspellDicts; hunspellWithDicts [ en_GB-large ])
+    wineWowPackages.staging
   ];
   nixpkgs.config.firefox.enableFXCastBridge = true;
 }
