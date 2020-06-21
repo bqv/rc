@@ -1,4 +1,4 @@
-{
+{ 
   "nodes": {
     "apt-tabcomplete": {
       "flake": false,
@@ -229,39 +229,19 @@
         "type": "github"
       }
     },
-    "haskell_2": {
+    "hie": {
+      "flake": false,
       "locked": {
-        "lastModified": 1592066945,
-        "narHash": "sha256-jPmBsdB5DFGc42+ZltPdTXshEHyWuMWJpSGamH8HiUs=",
-        "owner": "input-output-hk",
-        "repo": "haskell.nix",
-        "rev": "cb37c1f1e07fa55e983d73633c3a59e485d3329b",
+        "lastModified": 1592748046,
+        "narHash": "sha256-U15bTUl8G/9Tzlr9ZYg52iSuT1vAXODSlh/VU60HJwk=",
+        "owner": "poscat0x04",
+        "repo": "hie-nix",
+        "rev": "3f0ac66eaf23e421f81a450e3c691a4de8bbeccf",
         "type": "github"
       },
       "original": {
-        "owner": "input-output-hk",
-        "repo": "haskell.nix",
-        "rev": "cb37c1f1e07fa55e983d73633c3a59e485d3329b",
-        "type": "github"
-      }
-    },
-    "hies": {
-      "inputs": {
-        "haskell": "haskell_2",
-        "nixpkgs": "nixpkgs_3"
-      },
-      "locked": {
-        "lastModified": 1592109420,
-        "narHash": "sha256-InRmX8LT4b8fQnWYumJtGkbtiqFEK7XNGnqOO0G823w=",
-        "owner": "bqv",
-        "repo": "all-hies",
-        "rev": "4ad2395790dcf014747f3c1dc5e6d2300fd479ef",
-        "type": "github"
-      },
-      "original": {
-        "owner": "bqv",
-        "ref": "haskell.nix",
-        "repo": "all-hies",
+        "owner": "poscat0x04",
+        "repo": "hie-nix",
         "type": "github"
       }
     },
@@ -446,22 +426,9 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_4": {
-      "locked": {
-        "lastModified": 1590704227,
-        "narHash": "sha256-J3R7j54tUBDGazke8/z3WD9YNSKglOuzM1785ZZc2cw=",
-        "path": "/nix/store/pf4r4fs2ylvcj1h3h2ffyl1wlkbab189-source",
-        "rev": "8c5f4b8a3b1957c7c1919658bae1a4b5caf759b7",
-        "type": "path"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
     "nixus": {
       "inputs": {
-        "nixpkgs": "nixpkgs_4"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "lastModified": 1591053277,
@@ -678,7 +645,7 @@
         "guix": "guix",
         "hardware": "hardware",
         "haskell": "haskell",
-        "hies": "hies",
+        "hie": "hie",
         "home": "home",
         "large": "nixpkgs",
         "master": "nixpkgs_2",
