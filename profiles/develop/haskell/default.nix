@@ -4,7 +4,7 @@
   environment.systemPackages = with pkgs; [
     cabal-install
     stack
-    ghc hies
+    ghc haskellPackages.ghcide
     cabal2nix
   ];
 }

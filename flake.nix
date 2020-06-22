@@ -33,13 +33,11 @@
     emacs.url = "github:nix-community/emacs-overlay";
     haskell.url = "github:input-output-hk/haskell.nix";
     nixus.url = "github:infinisil/nixus/545254808be876708535079996e2d9efd71f6533";
-    #hies.url = "github:infinisil/all-hies";
 
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
     snack = { url = "github:nmattia/snack"; flake = false; };
     napalm = { url = "github:nmattia/napalm"; flake = false; };
     hardware = { url = "github:nixos/nixos-hardware"; flake = false; };
-    hie = { url = "github:poscat0x04/hie-nix"; flake = false; };
   };
 
   outputs = inputs@{ master, staged ? master, small ? master, large ? master, ... }: with builtins; let
@@ -98,43 +96,6 @@
         inputs.construct.overlay
         inputs.emacs.overlay
         inputs.haskell.overlay
-        (pkgs: lib.const rec {
-          hies = let
-            inherit (inputs.haskell.overlay pkgs pkgs) haskell-nix;
-            inherit (pkgs.ghc) version;
-            source = let
-              loadJSON = f: pkgs.fetchFromGitHub (builtins.fromJSON (builtins.readFile f));
-              sources = rec {
-                "hie-1.3" = "/spec/hie-1.3.json";
-                "hie-1.4" = "/spec/hie-1.4.json";
-                "hie-master" = "/spec/hie-master.json";
-              };
-            in lib.mapAttrs (k: v: loadJSON (inputs.hie + "/source/" + v)) sources;
-            tag = "master";
-            hsPkgs = with haskell-nix; stackProject {
-              src = source."hie-${tag}";
-              cache = builtins.fromJSON (builtins.readFile (
-                inputs.hie + "/cache-${tag}/${version}.json"
-              ));
-              modules = [
-                { packages.haskell-ide-engine.doCheck = false; }
-              ];
-
-              stackYaml = "stack-${version}.yaml";
-            };
-            component = import inputs.hie {
-              inherit (pkgs.ghc) version;
-              source = (import "${inputs.hie}/source") // {
-                haskell-nix = { ... }: {
-                  sources.nixpkgs-2003 = lib.const {
-                    inherit haskell-nix;
-                  };
-                  nixpkgsArgs = null;
-                };
-              };
-            };
-          in hsPkgs.haskell-ide-engine.components.exes.hie;
-        })
         inputs.xontribs.overlay
         inputs.self.overlay
       ];
