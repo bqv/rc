@@ -9,7 +9,7 @@
       '';
     });
     hook = [
-      { csharp-mode-hook = "lsp"; }
+      { csharp-mode-hook = "omnisharp-mode"; }
     ];
     config = ''
       (setq lsp-csharp-server-path "${pkgs.omnisharp-roslyn}/bin/omnisharp")
