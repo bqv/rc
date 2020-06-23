@@ -90,6 +90,7 @@
           naersk = inputs.naersk.lib.${system};
           snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
           napalm = pkgs.callPackage inputs.napalm;
+          qutebrowser = pkgs.small.qutebrowser;
         })
         inputs.nix.overlay
         inputs.guix.overlay

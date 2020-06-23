@@ -60,7 +60,7 @@
 
   virtualisation.libvirtd.enable = true;
   virtualisation.virtualbox.host.enable = false;
-  virtualisation.anbox.enable = true;
+  virtualisation.anbox.enable = builtins.trace "Anbox still disabled until nixos/nixpkgs#91367 is resolved" false;
   systemd.network.networks = {
     "40-anbox0".networkConfig.ConfigureWithoutCarrier = true;
   };
