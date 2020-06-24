@@ -17,7 +17,7 @@ let
 
     delta = {
       ip = hosts.wireguard.delta;
-      wideArea = [ hosts.ipv4.delta ];
+     #wideArea = [ hosts.ipv4.home ];
       localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
       publicKey = "Y/SRDGEQfFLUGqx6vMnO1pxHs9zn//NpwdSGQ2Sm+Dg=";
     };
