@@ -64,7 +64,7 @@
     '';
   };
 
-  qemu-user.arm = true;
+  qemu-user.arm = builtins.trace "pkgs.qemu-user-arm: disabled for now due to new build error" false;
 
   fileSystems."/" =
     { device = "/dev/sda3";
