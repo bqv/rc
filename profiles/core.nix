@@ -52,7 +52,9 @@ in {
       manpages
       moreutils
       (pkgs.hiPrio nixos-rebuild)
+      perl
       ripgrep
+      rsync
       stdmanpages
       utillinux
     ];
