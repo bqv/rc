@@ -13,6 +13,17 @@
     ];
     config = ''
       (setq lsp-csharp-server-path "${pkgs.omnisharp-roslyn}/bin/omnisharp")
+
+      (defun bqv/csharp-mode-setup ()
+        (setq indent-tabs-mode nil
+              c-syntactic-indentation t)
+        (c-set-style "ellemtel")
+        (setq c-basic-offset 4
+              truncate-lines t
+              tab-width 4
+              evil-shift-width 4))
+
+      (add-hook 'csharp-mode-hook #'bqv/csharp-mode-setup)
     '';
   };
 }
