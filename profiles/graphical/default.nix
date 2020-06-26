@@ -2,8 +2,9 @@
 
 {
   imports = [
-    ./exwm
-    #./qutebrowser
+   #./exwm
+    ./xmonad
+   #./qutebrowser
     ../develop
   ];
 
