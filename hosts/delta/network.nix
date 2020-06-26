@@ -97,4 +97,10 @@ in {
       '';
     }
   ];
+
+  # Disable `systemd-networkd-wait-online` - it's just too buggy
+  systemd.services.systemd-networkd-wait-online.serviceConfig.ExecStart = lib.mkIf config.networking.useNetworkd [
+    ""
+    "${pkgs.coreutils}/bin/sleep 10"
+  ];
 }
