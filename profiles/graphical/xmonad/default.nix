@@ -3,6 +3,7 @@
 {
   environment.systemPackages = with pkgs; [
     dmenu xmobar taffybar
+    maim rofi
   ];
   services.xserver = {
     windowManager = {
