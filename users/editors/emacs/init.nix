@@ -71,14 +71,16 @@ let
       (log--log-enable-logging)
       (log--log-enable-messaging))
 
-    (setq init-done nil)
+    (defun watchdog-systemd-notify ()
+      (with-timeout 10
+        (shell-command (format "systemd-notify READY=1 WATCHDOG_USEC=%d" (* 120 1000000)))))
     (defun config-end ()
       (message
         "Configuring...done (%.3fs) [after-init]"
         (float-time (time-subtract (current-time)
                                    before-user-init-time)))
       (fmakunbound 'config-end)
-      (setq init-done t));(setq debug-on-error t))
+      (run-at-time t 10 #'watchdog-systemd-notify))
 
     (defvar config-registry '()
       "Profiling and initialization status data")

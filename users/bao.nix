@@ -91,7 +91,7 @@
     home.packages = with pkgs; let
       emms-play-file = pkgs.writeScriptBin "emms-play-file" ''
         !#${pkgs.execline}/bin/execlineb -W
-        ${home-config.programs.emacs.package.unwrapped}/bin/emacsclient --eval "(emms-play-file \"$@\")"
+        ${home-config.programs.emacs.package}/bin/emacsclient --eval "(emms-play-file \"$@\")"
       '';
     in [
       abduco dvtm # Terminal Multiplexing

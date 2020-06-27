@@ -32,33 +32,12 @@ in {
       leaf auto-compile gcmh diminish epkg log4e bug-hunter use-package
     ]);
 
-    programs.emacs.package = let
-      daemonScript = pkgs.writeShellScript "emacs-wrapper" ''
-        if [[ "$@" =~ "--fg-daemon" ]] || [[ "$@" =~ "--daemon" ]]; then
-          echo Redirecting output to journal tag: emacs
-          systemd-cat -t emacs ${myEmacs}/bin/emacs ''${@//--daemon/--fg-daemon} & disown
-          while [[ "$(${myEmacs}/bin/emacsclient --eval 'init-done' 2>&1)" != *t ]]; do
-            sleep 1
-          done
-        else
-          exec ${myEmacs}/bin/emacs $@
-        fi
-      '';
-    in pkgs.stdenv.mkDerivation {
-      name = "${myEmacs.name}-wrapped";
-      passthru = with pkgs; {
-        unwrapped = myEmacs;
-        pkgs = emacsPackagesFor myEmacs;
+    programs.emacs.package = lib.fix (self: myEmacs.overrideAttrs (_: {
+      passthru = {
+        pkgs = pkgs.emacsPackagesFor self;
       };
-      buildInputs = with pkgs; [ makeWrapper ];
-      phases = [ "installPhase" ];
-      installPhase = ''
-        mkdir -p $out/bin/
-        makeWrapper ${daemonScript} $out/bin/emacs \
-          --argv0 emacs
-        cp -rus ${myEmacs}/* $out/
-        rm -f $out/bin/emacs-w64
-      '';
-    };
+    }));
+
+    systemd.user.services.emacs.Service.Type = "notify";
   };
 }
