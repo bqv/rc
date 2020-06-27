@@ -83,8 +83,8 @@
     services.spotifyd.enable = true;
     services.mpd.enable = true;
     services.taskwarrior-sync.enable = true;
-    services.dunst.enable = false; # TODO
-    services.emacs.enable = false; # TODO
+    services.dunst.enable = true;
+    services.emacs.enable = true;
     services.syncthing.enable = false; # TODO
     services.unclutter.enable = false; # TODO
 
