@@ -11,8 +11,5 @@
         }}/bin/emacs
       '';
     };
-    displayManager = with pkgs; {
-      defaultSession = "none+exwm";
-    };
   };
 }

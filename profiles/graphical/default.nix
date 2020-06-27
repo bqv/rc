@@ -2,8 +2,9 @@
 
 {
   imports = [
-   #./exwm
+    ./exwm
     ./xmonad
+    ./lxqt
    #./qutebrowser
     ../develop
   ];
@@ -15,18 +16,21 @@
   services.xserver = {
     enable = true;
 
-    displayManager.sddm = {
-      enable = true;
-      theme = "chili";
-      autoLogin = {
+    displayManager = {
+      sddm = {
         enable = true;
-        relogin = true;
-        user = "bao";
+        theme = "chili";
+        autoLogin = {
+          enable = true;
+          relogin = true;
+          user = "bao";
+        };
+        extraConfig = ''
+          [X11]
+          UserAuthFile=.local/share/sddm/Xauthority
+        '';
       };
-      extraConfig = ''
-        [X11]
-        UserAuthFile=.local/share/sddm/Xauthority
-      '';
+      defaultSession = "none+xmonad";
     };
   };
 }

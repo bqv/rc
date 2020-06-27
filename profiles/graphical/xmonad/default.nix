@@ -13,8 +13,5 @@
         hpkgs.xmobar
       ];
     };
-    displayManager = with pkgs; {
-      defaultSession = "none+xmonad";
-    };
   };
 }
