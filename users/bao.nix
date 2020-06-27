@@ -99,7 +99,7 @@
       pstree # Process Monitoring
       pv pup # Pipe Management
       timewarrior # Time Management
-      nmap wget curl ipfscat mitmproxy aria2 # Network Utilities
+      nmap wget curl ipfscat onionshare mitmproxy aria2 # Network Utilities
       bitwarden-cli protonvpn-cli-ng # Password Management
       file exa unrar unzip ncdu tree # File Management
       audacity # Audio Utilities
