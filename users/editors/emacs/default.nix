@@ -37,7 +37,7 @@ in {
         if [[ "$@" =~ "--fg-daemon" ]] || [[ "$@" =~ "--daemon" ]]; then
           echo Redirecting output to journal tag: emacs
           systemd-cat -t emacs ${myEmacs}/bin/emacs ''${@//--daemon/--fg-daemon} & disown
-          while [[ "$(${myEmacs}/bin/emacsclient --eval 'init-done' 2>&1)" != "t" ]]; do
+          while [[ "$(${myEmacs}/bin/emacsclient --eval 'init-done' 2>&1)" != *t ]]; do
             sleep 1
           done
         else
