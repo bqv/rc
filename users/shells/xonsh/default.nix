@@ -49,7 +49,7 @@ with lib; let
     ustatus = "systemctl status --user";
     uenable = "systemctl enable --user";
     udisable = "systemctl disable --user";
-    ureload = "sudo systemctl daemon-reload --user";
+    ureload = "systemctl daemon-reload --user";
   };
 
   functions = {
