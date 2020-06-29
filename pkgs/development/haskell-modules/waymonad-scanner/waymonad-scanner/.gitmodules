@@ -1,0 +1,3 @@
+[submodule "haskell-wayland"]
+	path = haskell-wayland
+	url = git://github.com/ongy/haskell-wayland

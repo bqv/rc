@@ -233,7 +233,7 @@
       inherit (pkgs) dgit dejavu_nerdfont electronmail flarectl fsnoop ipfscat;
       inherit (pkgs) matrix-appservice-irc mx-puppet-discord;
       inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
-      inherit (pkgs) next pure sddm-chili shflags yacy;
+      inherit (pkgs) next pure sddm-chili shflags yacy waymonad;
     });
 
     nixosModules = let

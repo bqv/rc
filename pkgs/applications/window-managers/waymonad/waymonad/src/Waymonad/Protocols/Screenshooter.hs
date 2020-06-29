@@ -1,0 +1,48 @@
+{-
+waymonad A wayland compositor in the spirit of xmonad
+Copyright (C) 2018  Markus Ongyerth
+
+This library is free software; you can redistribute it and/or
+modify it under the terms of the GNU Lesser General Public
+License as published by the Free Software Foundation; either
+version 2.1 of the License, or (at your option) any later version.
+
+This library is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+Lesser General Public License for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License along with this library; if not, write to the Free Software
+Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+
+Reach us at https://github.com/ongy/waymonad
+-}
+{-# LANGUAGE OverloadedStrings #-}
+module Waymonad.Protocols.Screenshooter
+    ( getScreenshooterBracket
+    )
+where
+
+import Control.Monad.IO.Class (liftIO)
+import Foreign.Ptr (Ptr)
+
+import Graphics.Wayland.WlRoots.Backend (backendGetRenderer)
+import Graphics.Wayland.WlRoots.Screencopy
+
+import Waymonad.Start (Bracketed (..))
+import Waymonad.GlobalFilter
+import Waymonad (getState)
+import Waymonad.Types (Way, WayBindingState (..), Compositor (..))
+
+makeManager :: () -> Way vs a (Ptr WlrScreencopy)
+makeManager _ = do
+    Compositor {compDisplay = display, compBackend = backend} <- wayCompositor <$> getState
+    --renderer <- liftIO $ backendGetRenderer backend
+    ptr <- liftIO $ screencopyCreate display
+    registerGlobal "Screenshooter" =<< liftIO (getScreencopyGlobal ptr)
+    pure ptr
+
+getScreenshooterBracket :: Bracketed vs () a
+getScreenshooterBracket = Bracketed makeManager (liftIO . const (pure ()))
+

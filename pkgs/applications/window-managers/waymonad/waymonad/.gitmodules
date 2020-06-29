@@ -1,0 +1,9 @@
+[submodule "hsroots"]
+	path = hsroots
+	url = https://github.com/swaywm/hsroots
+[submodule "hfuse"]
+	path = hfuse
+	url = https://github.com/ongy/hfuse.git
+[submodule "waymonad-scanner"]
+	path = waymonad-scanner
+	url = https://github.com/waymonad/waymonad-scanner

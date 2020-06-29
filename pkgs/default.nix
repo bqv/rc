@@ -1,6 +1,14 @@
 final: prev: let
   inherit (prev.lib) recurseIntoAttrs;
   emacsOverride = self: super: prev.callPackage ./applications/editors/emacs-modes { };
+  haskellOverride = self: super: rec {
+    hayland = self.callPackage ./development/haskell-modules/haskell-wayland { };
+    xkbcommon = self.callPackage ./development/haskell-modules/haskell-xkbcommon { };
+    hfuse = self.callPackage ./development/haskell-modules/hfuse { };
+    hsroots = self.callPackage ./development/haskell-modules/hsroots { };
+    input = self.callPackage ./development/haskell-modules/libinput { };
+    waymonad-scanner = self.callPackage ./development/haskell-modules/waymonad-scanner { };
+  };
 in {
   emacsPackages = recurseIntoAttrs (prev.emacsPackages.overrideScope' emacsOverride);
   emacsPackagesFor = emacs: recurseIntoAttrs ((prev.emacsPackagesFor emacs).overrideScope' emacsOverride);
@@ -15,7 +23,7 @@ in {
 
   fsnoop = prev.callPackage ./tools/misc/fsnoop { };
 
-  haskellPackages = recurseIntoAttrs prev.haskellPackages;
+  haskellPackages = recurseIntoAttrs (prev.haskellPackages.override { overrides = haskellOverride; });
 
   ipfscat = prev.callPackage ./applications/misc/ipfscat { };
 
@@ -45,4 +53,6 @@ in {
   shflags = prev.callPackage ./tools/misc/shflags { };
 
   yacy = prev.callPackage ./servers/yacy { };
+
+  waymonad = final.haskellPackages.callPackage ./applications/window-managers/waymonad { };
 }
