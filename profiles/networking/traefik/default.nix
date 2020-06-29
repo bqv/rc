@@ -1,4 +1,4 @@
-{ config, lib, pkgs, domains, hosts, ... }:
+{ config, lib, pkgs, domains, hosts, inputs, ... }:
 
 let
   traefikModule = "services/web-servers/traefik.nix";
