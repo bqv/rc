@@ -655,6 +655,7 @@
         "small": "small",
         "snack": "snack",
         "staged": "staged",
+        "traefik": "traefik",
         "xontribs": "xontribs"
       }
     },
@@ -767,6 +768,22 @@
       "original": {
         "owner": "tokenizer",
         "repo": "tokenize-output",
+        "type": "github"
+      }
+    },
+    "traefik": {
+      "locked": {
+        "lastModified": 1592580179,
+        "narHash": "sha256-PTYY6yWUoSEGZWJaxVQ5W2Bi5BQ+wt/QW+HkyEopy9A=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "f37b4d24d8872e82564c7b8f0ef5bc90476604d0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "f37b4d24d8872e82564c7b8f0ef5bc90476604d0",
         "type": "github"
       }
     },

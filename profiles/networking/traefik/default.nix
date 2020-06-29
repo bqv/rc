@@ -1,6 +1,11 @@
-{ config, lib, pkgs, domains, hosts, ... }:
+{ config, lib, pkgs, domains, hosts, inputs, ... }:
 
-{
+let
+  traefikModule = "services/web-servers/traefik.nix";
+in {
+  disabledModules = [ traefikModule ];
+  imports = [ "${inputs.traefik}/nixos/modules/${traefikModule}" ];
+
   systemd.services.traefik.serviceConfig.LimitNPROC = lib.mkForce null; # Ridiculous and broken
   users.users.traefik.extraGroups = [ "keys" ]; # For acme certificates
 
@@ -85,6 +90,11 @@
             entryPoints = [ "http" "https" ];
             rule = "Host(`ca.${domains.home}`)";
             service = "certauth";
+          };
+          anki = {
+            entryPoints = [ "http" "https" "anki" ];
+            rule = "Host(`anki.${domains.home}`)";
+            service = "anki";
           };
          #Router1 = {
          #  entryPoints = [ "foobar" "foobar" ];
@@ -366,6 +376,11 @@
               { url = "https://10.4.0.2:443"; }
             ];
           };
+          anki.loadBalancer = {
+            servers = [
+              { url = "http://10.9.0.2:27701"; }
+            ];
+          };
          #mirror-sample.mirroring = {
          #  maxBodySize = 42;
          #  mirrors = [
@@ -606,6 +621,9 @@
         };
         ircs = {
           address = ":6697/tcp";
+        };
+        anki = {
+          address = ":27701/tcp";
         };
       };
 

@@ -7,6 +7,7 @@
     small.url = "github:nixos/nixpkgs/nixos-unstable-small";
     large.url = "github:nixos/nixpkgs/nixos-unstable";
     pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd";
+    traefik.url = "github:nixos/nixpkgs/f37b4d24d8872e82564c7b8f0ef5bc90476604d0";
 
     nix.url = "github:nixos/nix/flakes";
     nix.inputs.nixpkgs.follows = "master";
