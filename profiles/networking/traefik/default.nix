@@ -415,6 +415,11 @@
          #    passthrough = true;
          #  };
          #};
+          anki = {
+            entryPoints = [ "anki" ];
+            rule = "HostSNI(`*`)";
+            service = "anki";
+          };
         };
         services = {
           ssh.loadBalancer = {
@@ -438,6 +443,12 @@
           irc.loadBalancer = {
             servers = [
               { address = "${hosts.wireguard.delta}:6697"; }
+            ];
+            terminationDelay = 100;
+          };
+          anki.loadBalancer = {
+            servers = [
+              { address = "10.9.0.2:27701"; }
             ];
             terminationDelay = 100;
           };
@@ -606,6 +617,9 @@
         };
         ircs = {
           address = ":6697/tcp";
+        };
+        anki = {
+          address = ":27701/tcp";
         };
       };
 

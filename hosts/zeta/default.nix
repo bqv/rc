@@ -2,14 +2,15 @@
 
 {
   imports = [
-    ../../legacy/containers/secure.nix
-    ../../legacy/containers/sandbox.nix
-   #../../legacy/containers/certmon.nix
-    ../../legacy/containers/authority.nix
-    ../../legacy/containers/search.nix
-    ../../legacy/containers/mastodon.nix
-    ../../legacy/containers/matrix.nix
-    ../../legacy/containers/hydroxide.nix
+    ../../legacy/containers/secure.nix    # 10.1.0.x
+    ../../legacy/containers/sandbox.nix   # 10.2.0.x
+   #../../legacy/containers/certmon.nix   # 10.3.0.x
+    ../../legacy/containers/authority.nix # 10.4.0.x
+    ../../legacy/containers/search.nix    # 10.5.0.x
+    ../../legacy/containers/mastodon.nix  # 10.6.0.x
+    ../../legacy/containers/matrix.nix    # 10.7.0.x
+    ../../legacy/containers/hydroxide.nix # 10.8.0.x
+    ../../legacy/containers/anki.nix      # 10.9.0.x
     ../../profiles/meta/fatal-warnings.nix
     ../../profiles/misc/qemu.nix
     ../../profiles/security/sudo.nix
