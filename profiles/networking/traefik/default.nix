@@ -1,6 +1,11 @@
 { config, lib, pkgs, domains, hosts, ... }:
 
-{
+let
+  traefikModule = "services/web-servers/traefik.nix";
+in {
+  disabledModules = [ traefikModule ];
+  imports = [ "${inputs.traefik}/nixos/modules/${traefikModule}" ];
+
   systemd.services.traefik.serviceConfig.LimitNPROC = lib.mkForce null; # Ridiculous and broken
   users.users.traefik.extraGroups = [ "keys" ]; # For acme certificates
 
