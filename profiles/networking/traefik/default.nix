@@ -92,7 +92,8 @@ in {
             service = "certauth";
           };
           anki = {
-            entryPoints = [ "anki" ];
+            entryPoints = [ "http" "https" "anki" ];
+            rule = "Host(`anki.${domains.home}`)";
             service = "anki";
           };
          #Router1 = {
