@@ -86,6 +86,10 @@
             rule = "Host(`ca.${domains.home}`)";
             service = "certauth";
           };
+          anki = {
+            entryPoints = [ "anki" ];
+            service = "anki";
+          };
          #Router1 = {
          #  entryPoints = [ "foobar" "foobar" ];
          #  middlewares = [ "foobar" "foobar" ];
@@ -366,6 +370,11 @@
               { url = "https://10.4.0.2:443"; }
             ];
           };
+          anki.loadBalancer = {
+            servers = [
+              { url = "https://10.9.0.2:27701"; }
+            ];
+          };
          #mirror-sample.mirroring = {
          #  maxBodySize = 42;
          #  mirrors = [
@@ -415,11 +424,6 @@
          #    passthrough = true;
          #  };
          #};
-          anki = {
-            entryPoints = [ "anki" ];
-            rule = "HostSNI(`*`)";
-            service = "anki";
-          };
         };
         services = {
           ssh.loadBalancer = {
@@ -443,12 +447,6 @@
           irc.loadBalancer = {
             servers = [
               { address = "${hosts.wireguard.delta}:6697"; }
-            ];
-            terminationDelay = 100;
-          };
-          anki.loadBalancer = {
-            servers = [
-              { address = "10.9.0.2:27701"; }
             ];
             terminationDelay = 100;
           };
