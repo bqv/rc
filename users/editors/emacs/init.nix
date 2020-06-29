@@ -73,7 +73,9 @@ let
 
     (defun watchdog-systemd-notify ()
       (with-timeout (10)
-        (shell-command (format "systemd-notify READY=1 WATCHDOG_USEC=%d" (* 120 1000000)))))
+        (call-process "systemd-notify" nil 0 nil
+                      "READY=1"
+                      (format "WATCHDOG_USEC=%d" (* 120 1000000)))))
     (defun config-end ()
       (message
         "Configuring...done (%.3fs) [after-init]"
@@ -255,5 +257,5 @@ in usr.elisp.writeFile {
 }
 
 ## Local Variables: ***
-## mode: nix-dsquoted-emacslisp-mode
+## mode: nix-dsquoted-emacslisp ***
 ## End: ***

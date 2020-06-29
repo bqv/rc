@@ -55,5 +55,5 @@ in {
 }
 
 ## Local Variables: ***
-## mode: nix-dsquoted-emacslisp-mode
+## mode: nix-dsquoted-emacslisp ***
 ## End: ***
