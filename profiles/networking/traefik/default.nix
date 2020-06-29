@@ -93,6 +93,7 @@ in {
           };
           anki = {
             entryPoints = [ "anki" ];
+            rule = "HostSNI(`*`)";
             service = "anki";
           };
          #Router1 = {
