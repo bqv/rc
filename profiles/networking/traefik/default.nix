@@ -378,7 +378,7 @@ in {
           };
           anki.loadBalancer = {
             servers = [
-              { url = "https://10.9.0.2:27701"; }
+              { url = "http://10.9.0.2:27701"; }
             ];
           };
          #mirror-sample.mirroring = {
