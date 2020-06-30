@@ -4,7 +4,7 @@
   emacs-loader.xterm-color = {
     demand = true;
     config = ''
-      (when false
+      (when nil
         (setq comint-output-filter-functions
                 (remove 'ansi-color-process-output comint-output-filter-functions))
         (add-hook 'shell-mode-hook
