@@ -8,6 +8,7 @@
         find $out -iname '*.elc' -delete
       '';
     });
+    require = [ "cc-bytecomp" "csharp-mode" "cc-bytecomp" ];
     hook = [
       { csharp-mode-hook = "omnisharp-mode"; }
     ];
