@@ -34,6 +34,7 @@
     emacs.url = "github:nix-community/emacs-overlay";
     haskell.url = "github:input-output-hk/haskell.nix";
     nixus.url = "github:infinisil/nixus/545254808be876708535079996e2d9efd71f6533";
+    utils.url = "github:numtide/flake-utils";
 
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
     snack = { url = "github:nmattia/snack"; flake = false; };

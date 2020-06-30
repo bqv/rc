@@ -656,6 +656,7 @@
         "snack": "snack",
         "staged": "staged",
         "traefik": "traefik",
+        "utils": "utils",
         "xontribs": "xontribs"
       }
     },
@@ -784,6 +785,21 @@
         "owner": "nixos",
         "repo": "nixpkgs",
         "rev": "f37b4d24d8872e82564c7b8f0ef5bc90476604d0",
+        "type": "github"
+      }
+    },
+    "utils": {
+      "locked": {
+        "lastModified": 1593533949,
+        "narHash": "sha256-j5OH1uR8Mu/NqYH44+gnPln0eoGNNahxl0qNSYNi0Og=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "400fa6d9af95481440d8d69a6b49de5901936730",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
         "type": "github"
       }
     },
