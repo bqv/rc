@@ -231,6 +231,7 @@
     in lib.filterAttrs (_: p: (p.meta.broken or null) != true) {
       inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color;
       inherit (pkgs.emacsPackages) envrc emacsbridge font-lock-ext sln-mode;
+      inherit (pkgs.dotnetPackages) azure-functions-core-tools;
       inherit (pkgs) dgit dejavu_nerdfont electronmail flarectl fsnoop ipfscat;
       inherit (pkgs) matrix-appservice-irc mx-puppet-discord;
       inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;

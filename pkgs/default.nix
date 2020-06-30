@@ -1,6 +1,9 @@
 final: prev: let
   inherit (prev.lib) recurseIntoAttrs;
   emacsOverride = self: super: prev.callPackage ./applications/editors/emacs-modes { };
+  dotnetOverride = {
+    azure-functions-core-tools = prev.callPackage ./development/dotnet-modules/azure-functions-core-tools { };
+  };
 in {
   emacsPackages = recurseIntoAttrs (prev.emacsPackages.overrideScope' emacsOverride);
   emacsPackagesFor = emacs: recurseIntoAttrs ((prev.emacsPackagesFor emacs).overrideScope' emacsOverride);
@@ -8,6 +11,8 @@ in {
   dgit = prev.callPackage ./applications/version-management/dgit { };
 
   dejavu_nerdfont = prev.callPackage ./data/fonts/dejavu-nerdfont { };
+
+  dotnetPackages = recurseIntoAttrs (prev.dotnetPackages.override { overrides = dotnetOverride; });
 
   electronmail = prev.callPackage ./applications/networking/mailreaders/electronmail { };
 
