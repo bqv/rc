@@ -7,6 +7,8 @@
     ])
     mono
     azure-cli
+    azure-functions-core-tools
     dotnet2nix
+    jetbrains.rider
   ];
 }
