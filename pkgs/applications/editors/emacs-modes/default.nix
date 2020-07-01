@@ -105,4 +105,14 @@ in lib.recurseIntoAttrs rec {
     ];
   };
 
+  _0xc = null;
+  _2048-game = null;
+  _4clojure = null;
+  at = null;
+  emacs-libvterm = null;
+  emacsClangCompleteAsync = null;
+  term-plus = null;
+  term-plus-key-intercept = null;
+  term-plus-mux = null;
+  xml-plus = null;
 }
