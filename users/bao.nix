@@ -104,7 +104,7 @@
       file exa unrar unzip ncdu tree # File Management
       audacity # Audio Utilities
       xpra xsel xclip scrot # X11 Utilities
-      gdb lldb radare2 radare2-cutter # Debug Utilities
+      gdb lldb radare2 radare2-cutter jadx # Debug Utilities
     ] ++ lib.optional home-config.programs.emacs.enable emms-play-file;
 
     home.file."mimeapps.list".force = lib.mkForce true;

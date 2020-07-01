@@ -1,23 +1,26 @@
 { pkgs, ... }:
-let inherit (pkgs) python3Packages;
-in {
+
+{
   environment.systemPackages = let
     packages = pythonPackages:
       with pythonPackages; [
+        nixpkgs
         numpy
         pandas
         ptpython
         requests
         scipy
+        virtualenv
       ];
 
     python = pkgs.python3.withPackages packages;
+    inherit (pkgs.python3.pkgs) virtualenv;
+  in [ python virtualenv ];
 
-  in [ python ];
   environment.sessionVariables = {
     PYTHONSTARTUP = let
       startup = pkgs.writers.writePython3 "ptpython.py" {
-        libraries = with python3Packages; [ ptpython ];
+        libraries = with pkgs.python3.pkgs; [ ptpython ];
       } ''
         from __future__ import unicode_literals
 
@@ -39,4 +42,3 @@ in {
     in "${startup}";
   };
 }
-
