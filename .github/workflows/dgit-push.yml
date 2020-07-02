@@ -1,6 +1,8 @@
-name: dgit push
+name: push@dgit
 on:
   push:
+    branches:
+      - dgit
 jobs:
   push:
     runs-on: ubuntu-latest
