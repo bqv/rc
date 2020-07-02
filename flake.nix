@@ -1,4 +1,4 @@
-{
+ {
   description = "A highly structured configuration database.";
 
   inputs = {
@@ -42,19 +42,18 @@
     hardware = { url = "github:nixos/nixos-hardware"; flake = false; };
   };
 
-  outputs = inputs@{ master, staged ? master, small ? master, large ? master, ... }: with builtins; let
+  outputs = inputs: with builtins; let
     channels = with inputs; {
       pkgs = large;
       modules = master;
       lib = master;
     };
-    lib = let
-      nixpkgs = if channels.lib ? lib then channels.lib else { inherit (import channels.lib {}) lib; };
-    in nixpkgs.lib;
+    inherit (channels.lib) lib;
 
     forAllSystems = lib.genAttrs [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
     diffTrace = left: right: string: value: if left != right then trace string value else value;
 
+    # Nixos Config
     config = {
       allowUnfree = true;
       android_sdk.accept_license = true;
@@ -63,6 +62,7 @@
       ];
     };
 
+    # Fetch PR prepatched nixpkgs by id and hash
     fetchPullRequestForSystem = system: args@{ id, rev ? null, sha256 ? lib.fakeSha256, ... }:
       mapAttrs (k: v: trace "pkgs.${k} pinned to nixpks/pull/${toString id}" v)
         (import (builtins.fetchTarball {
@@ -75,11 +75,13 @@
           overlays = attrValues inputs.self.overlays;
         } // (removeAttrs args [ "id" "rev" "hash" ]));
 
+    # Nonstandard channel wrapper for build visibility
     channelToOverlay = { system, config, flake, branch }: (final: prev: { ${flake} =
       mapAttrs (k: v: diffTrace (baseNameOf inputs.${flake}) (baseNameOf prev.path) "pkgs.${k} pinned to nixpkgs/${branch}" v)
       (import inputs.${flake} { inherit config system; overlays = []; });
     });
 
+    # Packages for nixos configs
     pkgsForSystem = system: import channels.pkgs rec {
       inherit system config;
       overlays = (attrValues inputs.self.overlays) ++ [
