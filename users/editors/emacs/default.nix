@@ -40,7 +40,7 @@ in {
 
     systemd.user.services.emacs.Service = {
       Type = "notify";
-      Service.NotifyAccess = "all";
+      NotifyAccess = "all";
     };
   };
 }
