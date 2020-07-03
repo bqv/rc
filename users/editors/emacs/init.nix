@@ -75,6 +75,7 @@ let
       (with-timeout (10)
         (call-process "systemd-notify" nil 0 nil
                       "READY=1"
+                      (format "MAINPID=%d" (emacs-pid))
                       (format "WATCHDOG_USEC=%d" (* 120 1000000)))))
     (defun config-end ()
       (message

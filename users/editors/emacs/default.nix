@@ -38,6 +38,9 @@ in {
       };
     }));
 
-    systemd.user.services.emacs.Service.Type = "notify";
+    systemd.user.services.emacs.Service = {
+      Type = "notify";
+      Service.NotifyAccess = "all";
+    };
   };
 }
