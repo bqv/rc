@@ -1,4 +1,4 @@
- {
+{
   description = "A highly structured configuration database.";
 
   inputs = {
