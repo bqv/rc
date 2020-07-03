@@ -5,7 +5,7 @@
     demand = true;
     after = [ "haskell-mode" ];
     hook = [
-      { haskell-mode-hook = "dante-mode"; }
+      #{ haskell-mode-hook = "dante-mode"; }
     ];
   };
 }
