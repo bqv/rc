@@ -41,7 +41,7 @@ import Data.IORef (writeIORef, readIORef, newIORef, IORef, modifyIORef')
 import Data.Tuple (swap)
 
 import Graphics.Wayland.WlRoots.Box (WlrBox (..), Point (..), centerBox)
-import Graphics.Wayland.WlRoots.Output (getEffectiveBox, getOutputPosition)
+import Graphics.Wayland.WlRoots.Output (getEffectiveBox)
 
 import Waymonad (Way, WayBindingState (..), getState, registerTimed, unliftWay)
 import Waymonad.Input.Seat (updatePointerFocus)
@@ -160,7 +160,8 @@ delayedLayout ws = do
 
     case post of
         ((out, layout):_) -> do
-            Point ox oy <- liftIO $ getOutputPosition $ outputRoots out
+            --Point ox oy <- liftIO $ getOutputPosition $ outputRoots out
+            let Point ox oy = Point 0 0
             doApply <- unliftWay $ mapM_ (uncurry applyLayout) post
             void $ sendLayout (ox, oy) layout (unfreeze >> doApply)
         _ -> pure ()
@@ -179,7 +180,8 @@ reLayout ws = do
     case layouts of
         [] -> pure () -- No need to do anything
         ((out, layout):_) -> do
-            Point ox oy <- liftIO $ getOutputPosition $ outputRoots out
+            --Point ox oy <- liftIO $ getOutputPosition $ outputRoots out
+            let Point ox oy = Point 0 0
             _ <- sendLayout (ox, oy) layout (pure ())
             mapM_ (uncurry applyLayout) layouts
 

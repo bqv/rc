@@ -46,7 +46,7 @@ import Data.IORef (modifyIORef, readIORef, writeIORef)
 import Data.List (nub)
 import Data.Maybe (fromJust)
 
-import Graphics.Wayland.WlRoots.Output (getOutputPosition)
+--import Graphics.Wayland.WlRoots.Output (getOutputPosition)
 import Graphics.Wayland.WlRoots.Box (Point (..))
 
 import Waymonad.Input.Seat (Seat, keyboardEnter, keyboardClear, getKeyboardFocus)
@@ -137,7 +137,8 @@ modifyWS ws fun = do
 
         case post of
             ((out, layout):_) -> do
-                Point ox oy <- liftIO $ getOutputPosition $ outputRoots out
+                --Point ox oy <- liftIO $ getOutputPosition $ outputRoots out
+                let Point ox oy = Point 0 0
                 doApply <- unliftWay $ mapM_ (uncurry applyLayout) post
                 void $ sendLayout (ox, oy) layout (unfreeze >> doApply)
             _ -> pure ()

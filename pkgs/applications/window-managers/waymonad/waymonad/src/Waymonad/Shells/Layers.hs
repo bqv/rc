@@ -49,7 +49,7 @@ import Waymonad.Managehook (removeView)
 import Waymonad.Output (outputFromWlr)
 import Waymonad.Output.Core (outApplyDamage)
 import Waymonad.Types
-import Waymonad.Types.Core (View, ShellSurface (..), ManagerData (..), SeatEvent(SeatKeyboard))
+import Waymonad.Types.Core (View, ShellSurface (..), ManagerData (..))
 import Waymonad.Utility (getOutputs)
 import Waymonad.Utility.Base (doJust, whenJust)
 import Waymonad.Utility.Extensible

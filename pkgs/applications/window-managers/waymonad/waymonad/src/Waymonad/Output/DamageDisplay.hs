@@ -77,8 +77,8 @@ getOutputTracker size Output {outputRoots = roots} = do
             modifyIORef damageMap $ IM.insert (ptrToInt roots) ret
             pure $ ret
 
-setOutputDamage :: DamageTracker -> PixmanRegion32 -> IO ()
-setOutputDamage tracker region = do
+setOutputDamage' :: DamageTracker -> PixmanRegion32 -> IO ()
+setOutputDamage' tracker region = do
     index <- readIORef $ damageIndex tracker
     let target = damageRegions tracker !! index
     mapM_ (flip pixmanRegionSubtract region) $ damageRegions tracker
@@ -130,7 +130,7 @@ damageDisplay depth secs out@Output {outputRoots = output, outputLayout = layers
                     withRegion $ \dRegion -> do
                         pixmanRegionUnion dRegion (getOutputDamage output)
                         pixmanRegionUnion dRegion (outputDamage out)
-                        setOutputDamage tracker dRegion
+                        setOutputDamage' tracker dRegion
 
                     damages <- getTrackerRegions tracker
                     Point w h <- outputTransformedResolution output
@@ -152,4 +152,7 @@ damageDisplay depth secs out@Output {outputRoots = output, outputLayout = layers
                     pixmanRegionUnion b2 (getOutputDamage output)
                     resetRegion (outputDamage out) Nothing
                 pure notEmpty
-        when (fromMaybe True reEnable) $ liftIO $ setOutputDamage output True
+        when (fromMaybe True reEnable) $ liftIO $ withRegion $ \region -> do
+            Point w h <- outputTransformedResolution output
+            resetRegion region . Just $ WlrBox 0 0 w h
+            liftIO $ setOutputDamage output region

@@ -205,7 +205,7 @@ handleOutputAdd' handler hook output = do
     modeH <- setSignalHandler (outSignalMode signals) (const $ outputEffectiveChanged out)
     scaleH <- setSignalHandler (outSignalScale signals) (const $ outputEffectiveChanged out)
     transformH <- setSignalHandler (outSignalTransform signals) (const $ outputEffectiveChanged out)
-    needsSwapH <- setSignalHandler (outSignalNeedsSwap signals) (const . liftIO $ scheduleOutputFrame (outputRoots out))
+    needsFrameH <- setSignalHandler (outSignalNeedsFrame signals) (const . liftIO $ scheduleOutputFrame (outputRoots out))
 
     hook out
 
@@ -213,7 +213,7 @@ handleOutputAdd' handler hook output = do
     frameH <- liftIO $ attachFrame frameCB output
 
     setDestroyHandler (outSignalDestroy signals) (\dout -> do
-        liftIO $ mapM_ removeListener [modeH, scaleH, transformH, needsSwapH, frameH]
+        liftIO $ mapM_ removeListener [modeH, scaleH, transformH, needsFrameH, frameH]
         handleOutputRemove dout
                                                  )
 
@@ -298,7 +298,7 @@ addOutputToWork output position = do
 getOutputBox :: Output -> Way vs ws (Maybe WlrBox)
 getOutputBox Output { outputRoots = output } = do
     Compositor {compLayout = layout} <- wayCompositor <$> getState
-    (Point ox oy) <- liftIO (layoutOuputGetPosition =<< layoutGetOutput layout output)
+    Point ox oy <- liftIO (layoutOuputGetPosition =<< layoutGetOutput layout output)
     width <- liftIO $ getWidth output
     height <- liftIO $ getHeight output
     pure $ Just $ WlrBox ox oy (fromIntegral width) (fromIntegral height)

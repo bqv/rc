@@ -55,7 +55,7 @@ import Waymonad.Types
 
 import qualified Data.IntMap.Strict as M
 import qualified Data.Set as S
-import qualified Graphics.Wayland.WlRoots.WlShell as R
+import qualified Graphics.Wayland.WlRoots.XdgShell as R
 
 newtype WlRef = WlRef (IORef (Maybe WlShell))
 
@@ -76,7 +76,7 @@ instance (FocusCore vs ws, WSTag ws) =>  ShellClass WlRef vs ws where
         case ret of
             Just WlShell {wlWlrootsShell = roots, wlShellToken = tok} -> liftIO $ do
                 removeListener tok
-                R.shellDestroy roots
+                R.xdgShellDestroy roots
                 writeIORef ref Nothing
             Nothing -> pure ()
     isShellActive (WlRef ref) = do
@@ -98,18 +98,18 @@ makeShell = WayShell . WlRef <$> liftIO (newIORef Nothing)
 
 data WlShell = WlShell
     { wlSurfaceRef   :: {-# UNPACK #-} !MapRef
-    , wlWlrootsShell :: {-# UNPACK #-} !R.WlrWlShell
+    , wlWlrootsShell :: {-# UNPACK #-} !R.WlrXdgShell
     , wlShellToken   :: !ListenerToken
     }
 
-newtype WlSurface = WlSurface { unWl :: R.WlrWlShellSurface }
+newtype WlSurface = WlSurface { unWl :: R.XdgShellSurface }
 
 wlShellCreate :: (FocusCore vs a, WSTag a)
               => DisplayServer
               -> Way vs a WlShell
 wlShellCreate display = do
     surfaces <- liftIO $ newIORef mempty
-    roots <- liftIO $ R.shellCreate display
+    roots <- liftIO $ R.xdgShellCreate display
     token <- setCallback (handleWlSurface surfaces) (R.setWlShellListener roots)
 
     pure WlShell
@@ -120,7 +120,7 @@ wlShellCreate display = do
 
 handleWlDestroy :: (FocusCore vs a, WSTag a)
                 => MapRef
-                -> Ptr R.WlrWlShellSurface
+                -> Ptr R.XdgShellSurface
                 -> Way vs a ()
 handleWlDestroy ref surf = do
     view <- fromJust . M.lookup (ptrToInt surf) <$> liftIO (readIORef ref)
@@ -130,9 +130,9 @@ handleWlDestroy ref surf = do
     triggerViewDestroy view
 
 
-handleWlPopup :: View -> IO Point -> Ptr R.WlrWlShellSurface -> Way vs ws ()
+handleWlPopup :: View -> IO Point -> Ptr R.XdgShellSurface -> Way vs ws ()
 handleWlPopup view getParentPos ptr = do
-    let popup = R.WlrWlShellSurface ptr
+    let popup = R.XdgShellSurface ptr
     let getPos = do
             transient <- liftIO $ R.getTransientPosition popup
             case transient of
@@ -141,17 +141,17 @@ handleWlPopup view getParentPos ptr = do
                     pure $ Point (parentX + fromIntegral x) (parentY + fromIntegral y)
                 Nothing -> pure $ Point 0 0
 
-    let signals = R.getWlrWlSurfaceEvents popup
-    doJust  (liftIO $ R.wlShellSurfaceGetSurface popup) $
-        viewAddSurf view (R.wlrWlSurfaceEvtDestroy signals) getPos
+    let signals = R.getXdgSurfaceEvents popup
+    doJust  (liftIO $ R.xdgSurfaceGetSurface popup) $
+        viewAddSurf view (R.xdgSurfaceEvtDestroy signals) getPos
 
-    handler <- setSignalHandler (R.wlrWlSurfaceEvtPopup signals) $ handleWlPopup view getPos
-    setDestroyHandler (R.wlrWlSurfaceEvtDestroy signals) $ \_ -> do
+    handler <- setSignalHandler (R.xdgSurfaceEvtPopup signals) $ handleWlPopup view getPos
+    setDestroyHandler (R.xdgSurfaceEvtDestroy signals) $ \_ -> do
         liftIO $ removeListener handler
 
 handleWlSurface :: (FocusCore vs a, WSTag a)
                 => MapRef
-                -> R.WlrWlShellSurface
+                -> R.XdgShellSurface
                 -> Way vs a ()
 handleWlSurface ref surf = do
     isPopup <- liftIO $ R.isPopup surf
@@ -163,19 +163,19 @@ handleWlSurface ref surf = do
         liftIO $ do
             modifyIORef ref $ M.insert (ptrToInt $ R.unWlrSurf surf) view
 
-        let signals = R.getWlrWlSurfaceEvents surf
-        handler <- setSignalHandler (R.wlrWlSurfaceEvtPopup signals) $ handleWlPopup view $ pure (Point 0 0 )
-        setDestroyHandler (R.wlrWlSurfaceEvtDestroy signals) (\arg -> do
+        let signals = R.getXdgSurfaceEvents surf
+        handler <- setSignalHandler (R.xdgSurfaceEvtPopup signals) $ handleWlPopup view $ pure (Point 0 0 )
+        setDestroyHandler (R.xdgSurfaceEvtDestroy signals) (\arg -> do
             liftIO $ removeListener handler
             handleWlDestroy ref arg
                                                              )
 
 
-renderPopups :: (Ptr WlrSurface -> WlrBox -> IO ()) -> R.WlrWlShellSurface -> IO ()
+renderPopups :: (Ptr WlrSurface -> WlrBox -> IO ()) -> R.XdgShellSurface -> IO ()
 renderPopups fun surf = do
     popups <- liftIO $ R.getWlShellPopups surf
     forM_ popups $ \popup -> doJust (liftIO $ R.getTransientPosition popup) $ \(popX, popY) -> do
-        doJust (liftIO $ R.wlShellSurfaceGetSurface popup) $ \wlrSurf -> do
+        doJust (liftIO $ R.xdgSurfaceGetSurface popup) $ \wlrSurf -> do
             Point w h <- liftIO $ surfaceGetSize wlrSurf
             let x = fromIntegral popX
             let y = fromIntegral popY
@@ -185,8 +185,8 @@ renderPopups fun surf = do
                 (\v b -> fun v b {boxX = boxX b + x, boxY = boxY b + y})
                 popup
 
-getBoundingBox :: R.WlrWlShellSurface -> IO (Double, Double)
-getBoundingBox surf = doJust (R.wlShellSurfaceGetSurface surf) $ \wlrsurf -> do
+getBoundingBox :: R.XdgShellSurface -> IO (Double, Double)
+getBoundingBox surf = doJust (R.xdgSurfaceGetSurface surf) $ \wlrsurf -> do
     Point bw bh <-  surfaceGetSize wlrsurf
     pure ((fromIntegral bw), (fromIntegral bh))
 
@@ -197,7 +197,7 @@ wlPopupAt (WlSurface surf) x y = do
 
 wlSubsurfaceAt :: MonadIO m => WlSurface -> Double -> Double -> MaybeT m (Ptr WlrSurface, Double, Double)
 wlSubsurfaceAt (WlSurface surf) x y = do
-    wlrsurf <- MaybeT (liftIO $ R.wlShellSurfaceGetSurface surf)
+    wlrsurf <- MaybeT (liftIO $ R.xdgSurfaceGetSurface surf)
     MaybeT (liftIO $ surfaceAt wlrsurf x y)
 
 wlMainSurf :: MonadIO m => WlSurface -> Double -> Double -> MaybeT m (Ptr WlrSurface, Double, Double)
@@ -205,7 +205,7 @@ wlMainSurf (WlSurface surf) x y = MaybeT . liftIO $ do
     (w, h) <- getBoundingBox surf
     if x > 0 && x < w && y > 0 && y < h
         then do
-            realS <- R.wlShellSurfaceGetSurface surf
+            realS <- R.xdgSurfaceGetSurface surf
             pure $ fmap (, x, y) realS
         else pure Nothing
 
@@ -219,7 +219,7 @@ instance ShellSurface WlSurface where
     close surf = liftIO $ do
         client <- R.getClient $ unWl surf
         clientDestroy client
-    getSurface = liftIO . R.wlShellSurfaceGetSurface . unWl
+    getSurface = liftIO . R.xdgSurfaceGetSurface . unWl
     getSize = liftIO . getBoundingBox . unWl
     resize (WlSurface surf) width height _ = do
         liftIO $ R.configureWlShellSurface surf (fromIntegral width) (fromIntegral height)
