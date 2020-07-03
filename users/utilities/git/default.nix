@@ -13,7 +13,7 @@ in {
           };
           patches = [ worktreePatch ];
         });
-      in [ git git-crypt ] ++ (with gitAndTools; [ hub lab ]);
+      in with gitAndTools; [ hub lab git-crypt git-secrets ];
 
     programs.git = {
       inherit (import ../../../secrets/git.user.nix) userName userEmail;
