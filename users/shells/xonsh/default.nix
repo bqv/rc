@@ -149,9 +149,9 @@ in {
           if ''${...}.get("TERM") == "dumb":
             exec bash
           elif "DISPLAY" in ''${...}:        # If we're in X11
-            "TMUX" not in ''${...} && exec ${pkgs.tmux}/bin/tmux new -A -s @($(echo X$DISPLAY | sed 's/X:/X/;s/:/-/').strip())
+            "DVTM" not in ''${...} && exec env TERM=dvtm-256color ${pkgs.abduco}/bin/abduco -Al main ${pkgs.dvtm}/bin/dvtm -m '^q'
           elif "/dev/tty" in $(tty):         # If we're in TTY
-            "WINDOW" not in ''${...} && exec ${pkgs.screen}/bin/screen -xRR
+            "TMUX" not in ''${...} && exec ${pkgs.tmux}/bin/tmux new -A -s @($(echo X$DISPLAY | sed 's/X:/X/;s/:/-/').strip())
           elif "SSH_CONNECTION" in ''${...}: # If we're in SSH
             if "MOBILE" in ''${...}:         # If we're on mobile
               "DVTM" not in ''${...} && exec env -u MOBILE TERM=dvtm-256color ${pkgs.abduco}/bin/abduco -A  main ${pkgs.dvtm}/bin/dvtm -m '^q'
