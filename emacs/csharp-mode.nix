@@ -25,6 +25,10 @@
               evil-shift-width 4))
 
       (add-hook 'csharp-mode-hook #'bqv/csharp-mode-setup)
+
+      (defun csharp-repl ()
+        (interactive)
+        (comint-run "${pkgs.mono}/bin/csharp"))
     '';
   };
 }

@@ -34,6 +34,7 @@
       ./media/spotify
       ./media/radio
       ./utilities/git
+      ./utilities/darcs
       ./utilities/htop
       ./services/gnupg
       ./services/mpd
