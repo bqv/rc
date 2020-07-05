@@ -68,7 +68,9 @@ in {
             pushInsteadOf = [ "gist:" "git://gist.github.com/" ];
           };
         };
-        github = import ../../../secrets/git.github.nix;
+        github = {
+          inherit (import ../../../secrets/git.github.nix) user oauth-token;
+        };
 
         format.pretty = "oneline";
         log.decorate = "full";
@@ -94,6 +96,7 @@ in {
             required = true;
           };
         };
+        inherit (import ../../../secrets/git.github.nix) git-bug;
       };
     };
   };
