@@ -20,6 +20,8 @@ in {
 
   fsnoop = prev.callPackage ./tools/misc/fsnoop { };
 
+  git-pr-mirror = prev.callPackage ./applications/version-management/git-and-tools/git-pr-mirror { };
+
   haskellPackages = recurseIntoAttrs prev.haskellPackages;
 
   ipfscat = prev.callPackage ./applications/misc/ipfscat { };

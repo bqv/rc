@@ -232,10 +232,12 @@
     packages = forAllSystems (system: let
       pkgs = pkgsForSystem system;
     in lib.filterAttrs (_: p: (p.meta.broken or null) != true) {
-      inherit (pkgs.emacsPackages) bitwarden ivy-exwm flycheck-purescript eterm-256color;
+      inherit (pkgs.emacsPackages) bitwarden ivy-exwm;
+      inherit (pkgs.emacsPackages) flycheck-purescript eterm-256color;
       inherit (pkgs.emacsPackages) envrc emacsbridge font-lock-ext sln-mode;
       inherit (pkgs.dotnetPackages) azure-functions-core-tools;
-      inherit (pkgs) dgit dejavu_nerdfont electronmail flarectl fsnoop ipfscat;
+      inherit (pkgs) dgit dejavu_nerdfont electronmail;
+      inherit (pkgs) flarectl fsnoop git-pr-mirror ipfscat;
       inherit (pkgs) matrix-appservice-irc mx-puppet-discord;
       inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
       inherit (pkgs) next pure sddm-chili shflags yacy;
