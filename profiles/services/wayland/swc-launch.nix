@@ -95,7 +95,12 @@ in
     # needs setuid in order to manage tty's
     security.wrappers.swc-launch = {
       source = "${pkgs.velox.swc}/bin/swc-launch";
+      owner = cfg.user;
+      group = config.users.extraUsers.${cfg.user}.group;
+      setuid = true;
+      setgid = true;
       capabilities = "cap_sys_tty_config+ep";
+      permissions = "u+rx,g+rx,o+rx";
     };
   };
 }
