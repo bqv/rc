@@ -51,5 +51,7 @@ in {
 
   shflags = prev.callPackage ./tools/misc/shflags { };
 
+  velox = prev.callPackage ./applications/window-managers/velox { };
+
   yacy = prev.callPackage ./servers/yacy { };
 }
