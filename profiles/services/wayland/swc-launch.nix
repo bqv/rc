@@ -76,6 +76,8 @@ in
 
       serviceConfig = {
         User = "${cfg.user}";
+        AmbientCapabilities = "CAP_SYS_TTY_CONFIG";
+        CapabilitiesBoundingSet = "CAP_SYS_TTY_CONFIG";
       };
 
       environment = {
@@ -95,7 +97,12 @@ in
     # needs setuid in order to manage tty's
     security.wrappers.swc-launch = {
       source = "${pkgs.velox.swc}/bin/swc-launch";
-      capabilities = "cap_sys_tty_config+ep";
+      owner = cfg.user;
+      group = config.users.extraUsers.${cfg.user}.group;
+      setuid = true;
+      setgid = true;
+      capabilities = "cap_sys_admin,cap_sys_ptrace,cap_sys_tty_config=eip";
+      permissions = "u+rx,g+rx,o+rx";
     };
   };
 }
