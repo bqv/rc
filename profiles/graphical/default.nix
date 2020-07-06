@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 {
   imports = [
@@ -11,7 +11,7 @@
 
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;
-  hardware.pulseaudio.enable = true;
+  hardware.pulseaudio.enable = lib.mkDefault true;
 
   services.xserver = {
     enable = true;
