@@ -4,8 +4,6 @@ with lib;
 
 let
   cfg = config.services.swc-launch;
-
-  libswc = (import ../../pkgs/libswc/default.nix);
 in
 
 {
@@ -76,6 +74,8 @@ in
 
       serviceConfig = {
         User = "${cfg.user}";
+        AmbientCapabilities = "CAP_SYS_TTY_CONFIG";
+        CapabilitiesBoundingSet = "CAP_SYS_TTY_CONFIG";
       };
 
       environment = {
@@ -88,14 +88,23 @@ in
 
       script = with cfg; ''
         ${config.security.wrapperDir}/swc-launch -t /dev/tty${toString tty} \
-        -- ${server.${server.active_server}.command}
+        -- ${config.security.wrapperDir}/velox
       '';
     };
 
     # needs setuid in order to manage tty's
     security.wrappers.swc-launch = {
       source = "${pkgs.velox.swc}/bin/swc-launch";
-      capabilities = "cap_sys_tty_config+ep";
+     #owner = cfg.user;
+     #group = config.users.extraUsers.${cfg.user}.group;
+     #setuid = true;
+     #setgid = true;
+     #permissions = "u+rx,g+rx,o+rx";
+      capabilities = "cap_sys_admin,cap_sys_ptrace,cap_sys_tty_config=eip";
+    };
+    security.wrappers.velox = {
+      source = "${cfg.server.${cfg.server.active_server}.command}";
+      capabilities = "cap_sys_ptrace,cap_sys_tty_config=eip";
     };
   };
 }
