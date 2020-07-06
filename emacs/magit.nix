@@ -10,6 +10,7 @@
     config = ''
       (setq magit-log-show-refname-after-summary t)
       (setq magit-clone-default-directory (expand-file-name "~/dev/"))
+      (setq ediff-window-setup-function 'ediff-setup-windows-plain)
     '';
     systemDeps = with pkgs; [ git ];
   };
