@@ -13,6 +13,7 @@
     ../../profiles/networking/mdns.nix
     ../../profiles/sound/pulse.nix
     ../../profiles/graphical
+    ../../profiles/wayland.nix
     ../../profiles/weechat.nix
     ../../users/root.nix
     ../../users/bao.nix
