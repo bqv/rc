@@ -6,7 +6,7 @@
       zz = import ./zz.nix { inherit pkgs; };
     };
 
-    layout = "zz,gb";
+    layout = "gb,zz";
     xkbModel = "pc105";
     xkbOptions = lib.concatStringsSep "," [
       "terminate:ctrl_alt_bksp" # kill xserver
