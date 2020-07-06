@@ -9,6 +9,10 @@
    #./qutebrowser
     ../develop
   ];
+  
+  environment.systemPackages = with pkgs; [
+    velox
+  ];
 
   hardware.opengl.enable = true;
   hardware.opengl.driSupport = true;

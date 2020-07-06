@@ -1,27 +1,27 @@
-{ stdenv, fetchFromGitHub, pkgconfig, writeText
-, ncurses, wayland, wayland-protocols, wld, libxkbcommon, fontconfig, pixman
+{ stdenv, lib, fetchFromGitHub, pkgconfig, writeText
+, ncurses, wayland, wayland-protocols, wld, libxkbcommon, fontconfig, pixman, xorg
 , conf, patches }:
-
-with stdenv.lib;
 
 stdenv.mkDerivation rec {
   name = "st-velox-${version}";
-  version = "git-2016-12-22";
+  version = lib.substring 0 7 src.rev;
 
   src = fetchFromGitHub {
     owner = "michaelforney";
     repo = "st";
-    rev = "b27f17da65f74b0a923952601873524e03b4d047";
-    sha256 = "17aa4bz5g14jvqghk2c8mw77hb8786s07pv814rmlk7nnsavmp3i";
+    rev = "c63a87cd936c1eeef14c4c21572e5b782d3df4bc";
+    sha256 = "1fnzpka964wvavzcgis27k9px2bvgav7dccxfpd73dh1xiflqald";
+    # date = 2016-12-16T10:50:23+01:00;
   };
 
   inherit patches;
 
-  configFile = optionalString (conf!=null) (writeText "config.def.h" conf);
-  preBuild = optionalString (conf!=null) "cp ${configFile} config.def.h";
+  configFile = lib.optionalString (conf!=null) (writeText "config.def.h" conf);
+  preBuild = lib.optionalString (conf!=null) "cp ${configFile} config.def.h";
 
   nativeBuildInputs = [ pkgconfig ];
-  buildInputs = [ ncurses wayland wayland-protocols wld libxkbcommon fontconfig pixman ];
+  buildInputs = [ ncurses wayland wayland-protocols wld libxkbcommon fontconfig pixman ]
+    ++ (with xorg; [ libX11 libXft ]);
 
   NIX_LDFLAGS = "-lfontconfig";
 
@@ -31,7 +31,7 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  meta = {
+  meta = with stdenv.lib; {
     homepage = https://st.suckless.org/;
     license = licenses.mit;
     maintainers = with maintainers; [ ];

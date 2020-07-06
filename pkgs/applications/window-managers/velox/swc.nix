@@ -4,13 +4,14 @@
 
 stdenv.mkDerivation rec {
   name = "swc-${version}";
-  version = "git-2017-06-28";
+  version = lib.substring 0 7 src.rev;
 
   src = fetchFromGitHub {
     owner = "michaelforney";
     repo = "swc";
-    rev = "5b20050872f8ad29cfc97729f8af47b6b3df5393";
-    sha256 = "1lxpm17v5d8png6ixc0zn0w00xgrhz2n5b8by9vx6800b18246z8";
+    rev = "86b45d5701e509660650facdad4f7bef8f4f5362";
+    sha256 = "0hyy6fyih99fs09wlywkgr4kfj87addncijzsywm1v692yrv7i7r";
+    # date = 2020-02-28T13:27:59-08:00;
   };
 
   nativeBuildInputs = [ pkgconfig ];

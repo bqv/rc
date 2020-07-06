@@ -1,21 +1,21 @@
-{stdenv, fetchFromGitHub #, libX11, libXinerama, enableXft, libXft, zlib
-, swc, wld, wayland, libxkbcommon, pixman, fontconfig
+{stdenv, lib, fetchFromGitHub
+, swc, wld, wayland, libxkbcommon, pixman, fontconfig, xorg
 }:
-
-with stdenv.lib;
 
 stdenv.mkDerivation rec {
   name = "dmenu-velox-${version}";
-  version = "git-2017-04-07";
+  version = lib.substring 0 7 src.rev;
 
   src = fetchFromGitHub {
     owner = "michaelforney";
     repo = "dmenu";
-    rev = "f385d9d18813071b4b4257bf8d4d572daeda0e70";
-    sha256 = "14j8jv0nlybinhzkgd6dplvng9zy8p292prlx39w0k4fm6x5nv6y";
+    rev = "5cd66e2c6ca6a82e59927d495498fa6e478594d6";
+    sha256 = "1rzl0spv3ab5xbshza7jr47qbav0dakhf9ifpcs5lixahn9lfnkl";
+    # date = 2016-12-11T12:33:16+01:00;
   };
 
-  buildInputs = [ swc wld wayland libxkbcommon pixman fontconfig ];
+  buildInputs = [ swc wld wayland libxkbcommon pixman fontconfig ]
+    ++ (with xorg; [ libX11 libXft libXinerama ]);
 
   postPatch = ''
     sed -ri -e 's!\<(dmenu|dmenu_path)\>!'"$out/bin"'/&!g' dmenu_run

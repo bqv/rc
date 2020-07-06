@@ -4,13 +4,14 @@
 
 stdenv.mkDerivation rec {
   name = "wld-${version}";
-  version = "git-2017-10-31";
+  version = lib.substring 0 7 src.rev;
 
   src = fetchFromGitHub {
     owner = "michaelforney";
     repo = "wld";
-    rev = "b4e902bbecb678c45485b52c3aa183cbc932c595";
-    sha256 = "0j2n776flnzyw3vhxl0r8h1c48wrihi4g6bs2z8j4hbw5pnwq1k6";
+    rev = "ea4eccb64cfcfc508b029a530fc434d6e6695af5";
+    sha256 = "0ynvqd3cwy23q97rn2x8v5gldpc3aa37nx66p8cd4cgpvcwvps5z";
+    # date = 2020-02-20T13:50:32-08:00;
   };
 
   nativeBuildInputs = [ pkgconfig ];

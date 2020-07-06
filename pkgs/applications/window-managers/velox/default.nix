@@ -1,12 +1,11 @@
 { lib, stdenv, fetchFromGitHub, pkgconfig, makeWrapper, newScope
-, libxkbcommon
-, wayland, pixman, fontconfig
+, libxkbcommon, wayland, pixman, fontconfig, libinput
 , stConf ? null, stPatches ? []
 }:
 
 let
-  callPackage = newScope self;
-  self = {
+  callPackage = newScope scope;
+  scope = {
     swc = callPackage ./swc.nix {};
     wld = callPackage ./wld.nix {};
     dmenu-velox = callPackage ./dmenu.nix {};
@@ -15,22 +14,23 @@ let
       patches = stPatches;
     };
   };
-in with self; stdenv.mkDerivation rec {
+in stdenv.mkDerivation rec {
   name = "velox-${version}";
-  version = "git-2017-07-04";
+  version = lib.substring 0 7 src.rev;
 
   src = fetchFromGitHub {
     owner = "michaelforney";
     repo = "velox";
-    rev = "0b1d3d62861653d92d0a1056855a84fcef661bc0";
-    sha256 = "0p5ra5p5w21wl696rmv0vdnl7jnri5iwnxfs6nl6miwydhq2dmci";
+    rev = "f5b0042427d5925ba29437cc25343e8ac7b4d721";
+    sha256 = "0zmc3i2an72f6zddsaf0j37q6v3njs6zk7swchrh1dq0ll7jmiav";
+    # date = 2019-12-20T23:47:50-08:00;
   };
 
   nativeBuildInputs = [ pkgconfig makeWrapper ];
 
-  buildInputs = [ swc libxkbcommon wld wayland pixman fontconfig ];
+  buildInputs = with scope; [ swc libxkbcommon wld wayland pixman fontconfig libinput ];
 
-  propagatedUserEnvPkgs = [ swc ];
+  propagatedUserEnvPkgs = with scope; [ swc ];
 
   makeFlags = "PREFIX=$(out)";
   preBuild = ''
@@ -42,12 +42,14 @@ in with self; stdenv.mkDerivation rec {
     mkdir -p $out/etc
     cp velox.conf.sample $out/etc/velox.conf
   '';
-  postFixup = ''
+  postFixup = with scope; ''
     wrapProgram $out/bin/velox \
       --prefix PATH : "${stdenv.lib.makeBinPath [ dmenu-velox st-velox ]}"
   '';
 
   enableParallelBuilding = false; # https://hydra.nixos.org/build/79799608
+
+  passthru = scope;
 
   meta = {
     description = "velox window manager";
