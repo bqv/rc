@@ -9,10 +9,6 @@
     # Enable touchpad support.
     libinput.enable = true;
 
-    layout = "gb";
-    xkbModel = "pc105";
-    xkbOptions = "compose:ralt,keypad:pointerkeys:ctrl:nocaps";
-
     serverLayoutSection = ''
       Option        "StandbyTime" "0"
       Option        "SuspendTime" "0"

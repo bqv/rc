@@ -1,3 +1,5 @@
+{ pkgs, ... }:
+
 let
   layout = ''
     default  partial alphanumeric_keys
@@ -5,6 +7,7 @@ let
         include "gb(dvorak)"
         name[Group1]= "Breaded Dvorak";
     
+        //             Unmodified       Shift           AltGr            Shift+AltGr
         key <AE01>	{ [         1,     exclam,  onesuperior,   exclamdown ]	};
         key <AE02>	{ [         2,   quotedbl,  twosuperior,      onehalf ]	};
         key <AE03>	{ [         3,   sterling, threesuperior,    onethird ]	};
@@ -62,8 +65,79 @@ let
     // key <BKSL>	{ [ backslash bar,  dead_macron,  dead_belowmacron  ] }; 
     // key <TLDE>	{ [ numbersign,     asciitilde,   Greek_pi,         Greek_PI ] };
     // See /usr/include/X11/keysymdef.h for Symbol explanation
+    // vim: set ft=xkb:
   '';
+
+  dvp = ''
+    default  partial alphanumeric_keys modifier_keys
+    // programmer Dvorak, by Roland Kaufmann <rlndkfmn at gmail dot com>
+    // License: BSD, available at <http://www.kaufmann.no/roland/dvorak/license.html>
+    // Main features: Numbers are in shift position (like French), symbols have been
+    // placed in locations that give good hand-alternation and finger rolling with
+    // symbols that usually follows, accented characters are possible for I18N.
+    // Patch suggestions should be sent upstream.
+    partial alphanumeric_keys
+    xkb_symbols "dvp" {
     
+        include "us(dvorak)"
+        name[Group1] = "English (programmer Dvorak)";
+    
+        //             Unmodified       Shift           AltGr            Shift+AltGr
+        // symbols row, left side
+        key <TLDE> { [ dollar,          asciitilde,     dead_tilde                  ] };
+        key <AE01> { [ ampersand,       percent                                     ] };
+        key <AE02> { [ bracketleft,     7,              currency                    ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <AE03> { [ braceleft,       5,              cent                        ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <AE04> { [ braceright,      3,              yen                         ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <AE05> { [ parenleft,       1,              EuroSign                    ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <AE06> { [ equal,           9,              sterling                    ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+    
+        // symbols row, right side
+        key <AE07> { [ asterisk,        0                                           ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <AE08> { [ parenright,      2,              onehalf                     ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <AE09> { [ plus,            4                                           ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <AE10> { [ bracketright,    6                                           ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <AE11> { [ exclam,          8,              exclamdown,      U2E18      ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };  // reversed interrobang
+        key <AE12> { [ numbersign,      grave,          dead_grave                  ] };
+        key <BKSP> { [ BackSpace,       BackSpace                                   ] };
+    
+        // upper row, left side
+        key <AD01> { [ semicolon,       colon,          dead_diaeresis              ] };
+        key <AD02> { [ comma,           less,           guillemotleft,   U201C      ] };
+        key <AD03> { [ period,          greater,        guillemotright,  U201D      ] };
+        key <AD04> { [ p,               P,              paragraph,       section    ] };
+        key <AD05> { [ y,               Y,              udiaeresis,      Udiaeresis ] };
+    
+        // upper row, right side
+        key <AD08> { [ c,               C,              ccedilla,        Ccedilla   ] };
+        key <AD09> { [ r,               R,              registered,      trademark  ] };
+        key <AD11> { [ slash,           question,       questiondown,    U203D      ] };  // interrobang
+        key <AD12> { [ at,              asciicircum,    dead_circumflex, dead_caron ] };
+    
+        // home row, left side
+        key <AC01> { [ a,               A,              aring,           Aring      ] };
+        key <AC02> { [ o,               O,              oslash,          Ooblique   ] };
+        key <AC03> { [ e,               E,              ae,              AE         ] };
+        key <AC04> { [ u,               U,              eacute,          Eacute     ] };
+    
+        // home row, right side
+        key <AC06> { [ d,               D,              eth,             ETH        ] };
+        key <AC07> { [ h,               H,              dead_acute                  ] };
+        key <AC08> { [ t,               T,              thorn,           THORN      ] };
+        key <AC09> { [ n,               N,              ntilde,          Ntilde     ] };
+        key <AC10> { [ s,               S,              ssharp,          U1E9E      ] };
+        key <AC11> { [ minus,           underscore,     hyphen,          endash     ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <BKSL> { [ backslash,       bar                                         ] };
+    
+        // lower row, left side
+        key <AB01> { [ apostrophe,      quotedbl,       dead_acute                  ] };
+    
+        // do NOT hardcode this switch; use lv3:ralt_switch option instead!
+        //include "level3(ralt_switch)"
+    };
+    // vim: set ft=xkb:
+  '';
+
   guide = ''
     ┌─────┐
     │ 2 4 │   2 = Shift,  4 = Level3 + Shift
@@ -86,4 +160,8 @@ let
     ┃Ctrl   ┃Meta   ┃Alt    ┃ ␣           Space               ⍽ ┃AltGr ⇮┃Menu   ┃Ctrl   ┃
     ┗━━━━━━━┻━━━━━━━┻━━━━━━━┹───────────────────────────────────┺━━━━━━━┻━━━━━━━┻━━━━━━━┛
   '';
-in layout
+in {
+  description = "Intl programmer dvorak layout.";
+  languages = [ "eng" ];
+  symbolsFile = pkgs.writeScript "symbols" layout;
+}

@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ./xkb
     ./exwm
     ./xmonad
     ./lxqt
