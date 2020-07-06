@@ -18,7 +18,7 @@
       "lv5:rwin_switch_lock"
       "kpdl:semi" # semicolon on numpad delete level3
       "numpad:shift3" # shift chooses numpad level3
-      "grp:sclk_toggle" # scroll lock switches layout
+      "grp:alts_toggle" # alt+altgr switches layout
     ];
   };
 }
