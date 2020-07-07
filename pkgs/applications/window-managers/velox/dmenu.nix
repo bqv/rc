@@ -1,6 +1,4 @@
-{stdenv, lib, fetchFromGitHub
-, swc, wld, wayland, libxkbcommon, pixman, fontconfig, xorg
-}:
+{ stdenv, lib, fetchFromGitHub, swc, wld, wayland, libxkbcommon, pixman, fontconfig }:
 
 stdenv.mkDerivation rec {
   name = "dmenu-velox-${version}";
@@ -9,13 +7,12 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "michaelforney";
     repo = "dmenu";
-    rev = "5cd66e2c6ca6a82e59927d495498fa6e478594d6";
-    sha256 = "1rzl0spv3ab5xbshza7jr47qbav0dakhf9ifpcs5lixahn9lfnkl";
-    # date = 2016-12-11T12:33:16+01:00;
+    rev = "f385d9d18813071b4b4257bf8d4d572daeda0e70";
+    sha256 = "14j8jv0nlybinhzkgd6dplvng9zy8p292prlx39w0k4fm6x5nv6y";
+    # date = 2017-04-07T12:33:16+01:00;
   };
 
-  buildInputs = [ swc wld wayland libxkbcommon pixman fontconfig ]
-    ++ (with xorg; [ libX11 libXft libXinerama ]);
+  buildInputs = [ swc wld wayland libxkbcommon pixman fontconfig ];
 
   postPatch = ''
     sed -ri -e 's!\<(dmenu|dmenu_path)\>!'"$out/bin"'/&!g' dmenu_run
@@ -24,6 +21,18 @@ stdenv.mkDerivation rec {
   preConfigure = [
     ''sed -i "s@PREFIX = /usr/local@PREFIX = $out@g; s@/usr/share/swc@${swc}/share/swc@g" config.mk''
   ];
+
+  preFixup = ''
+    # Patch dmenu scripts to use binaries with -wl suffix.
+    for i in dmenu_path dmenu_run; do
+      sed -i 's!'"$out/bin/"'dmenu\b!&-wl!g' $out/bin/$i
+      sed -i 's!'"$out/bin/"'dmenu_path\b!&-wl!g' $out/bin/$i
+    done
+    # Rename all executables with the -wl suffix.
+    for i in dmenu dmenu_path dmenu_run stest; do
+      mv $out/bin/$i $out/bin/$i-wl
+    done
+  '';
 
   enableParallelBuilding = true;
 
