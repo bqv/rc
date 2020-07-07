@@ -1,5 +1,5 @@
 { stdenv, lib, fetchFromGitHub, pkgconfig, writeText
-, ncurses, wayland, wayland-protocols, wld, libxkbcommon, fontconfig, pixman, xorg
+, ncurses, wayland, wayland-protocols, wld, libxkbcommon, fontconfig, pixman
 , conf, patches }:
 
 stdenv.mkDerivation rec {
@@ -9,9 +9,9 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "michaelforney";
     repo = "st";
-    rev = "c63a87cd936c1eeef14c4c21572e5b782d3df4bc";
-    sha256 = "1fnzpka964wvavzcgis27k9px2bvgav7dccxfpd73dh1xiflqald";
-    # date = 2016-12-16T10:50:23+01:00;
+    rev = "83d6bc6e0efccff6905374c1a5fb550f7c08bd4a";
+    sha256 = "0hfrbyr5vck9f4appphk4wbg27l39vyxzlb8rjg4j1gk9pn44b1s";
+    # date = 2019-10-14T10:50:23+01:00;
   };
 
   inherit patches;
@@ -20,13 +20,16 @@ stdenv.mkDerivation rec {
   preBuild = lib.optionalString (conf!=null) "cp ${configFile} config.def.h";
 
   nativeBuildInputs = [ pkgconfig ];
-  buildInputs = [ ncurses wayland wayland-protocols wld libxkbcommon fontconfig pixman ]
-    ++ (with xorg; [ libX11 libXft ]);
+  buildInputs = [ ncurses wayland wayland-protocols wld libxkbcommon fontconfig pixman ];
 
   NIX_LDFLAGS = "-lfontconfig";
 
   installPhase = ''
     TERMINFO=$out/share/terminfo make install PREFIX=$out
+  '';
+
+  preFixup = ''
+    mv $out/bin/st $out/bin/st-wl
   '';
 
   enableParallelBuilding = true;
