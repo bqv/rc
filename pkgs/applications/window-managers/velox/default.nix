@@ -6,7 +6,16 @@
 let
   callPackage = newScope scope;
   scope = {
-    swc = callPackage ./swc.nix {};
+    swc = (callPackage ./swc.nix {}).overrideAttrs (o: {
+      src = fetchFromGitHub {
+        owner = "bqv";
+        repo = "swc";
+        rev = "b26b054b843e5f163da896954850073ec8c91071";
+        sha256 = "1gx8z4398z4w0iz110al531vcj5hxmzhxfppdfng9gj2zvyv4lvb";
+        # date = 2020-07-07T20:23:08+01:00;
+      };
+      makeFlags = o.makeFlags + " ENABLE_XWAYLAND=1";
+    });
     wld = callPackage ./wld.nix {};
     dmenu-velox = callPackage ./dmenu.nix {};
     st-velox = callPackage ./st.nix {
