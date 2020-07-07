@@ -9,6 +9,7 @@
     dmenu
     dmenu-velox
     st-velox
+    xwayland
   ];
 
   environment.etc = {
