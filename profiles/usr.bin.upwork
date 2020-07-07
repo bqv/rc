@@ -1,6 +1,6 @@
 #include <tunables/global>
 
-/usr/share/upwork/upwork {
+/opt/Upwork/upwork {
 
 	#include <abstractions/base>
 	#include <abstractions/fonts>
@@ -19,9 +19,9 @@
 	/etc/ r,
 	/etc/*-release r,
 
-	/usr/share/upwork/upwork ix,
-	/usr/share/upwork/ r,
-	/usr/share/upwork/** rm,
+	/opt/Upwork/upwork ix,
+	/opt/Upwork/ r,
+	/opt/Upwork/** rm,
 
 	owner @{HOME}/.pki{,/nssdb}/ rw,
 	owner @{HOME}/.pki/nssdb/** rwmk,
@@ -36,7 +36,7 @@
 	#  check for vm: /bin/sh -c dmesg | grep -i virtual | grep -iE "vmware|qemu|kvm|xen"
 	deny /usr/bin/bash x,
 
-	deny /usr/share/upwork/cmon x, # crash monitor binary
+	deny /opt/Upwork/cmon x, # crash monitor binary
 	deny /dev/video0 rwk, # don't need that
 
 	# Tries to ptrace itself for some reason (integrity check?)
@@ -62,6 +62,7 @@
 	owner @{PROC}/@{pid}/oom_score_adj rw,
 
 	@{PROC}/sys/kernel/shmmax r,
+	@{PROC}/sys/fs/inotify/max_user_watches r,
 
 	deny @{PROC}/*/stat{,m} r,
 	deny @{PROC}/{uptime,vmstat} r,
