@@ -1,5 +1,5 @@
-{ lib, stdenv, fetchFromGitHub, pkgconfig
-, wld, wayland, wayland-protocols, fontconfig, pixman, libdrm, libinput, libevdev, libxkbcommon, libxcb, xcbutilwm
+{ lib, stdenv, fetchFromGitHub, pkgconfig, makeWrapper
+, wld, wayland, wayland-protocols, fontconfig, pixman, libdrm, libinput, libevdev, libxkbcommon, libxcb, xcbutilwm, xwayland
 }:
 
 stdenv.mkDerivation rec {
@@ -9,12 +9,12 @@ stdenv.mkDerivation rec {
   src = fetchFromGitHub {
     owner = "michaelforney";
     repo = "swc";
-    rev = "86b45d5701e509660650facdad4f7bef8f4f5362";
-    sha256 = "0hyy6fyih99fs09wlywkgr4kfj87addncijzsywm1v692yrv7i7r";
-    # date = 2020-02-28T13:27:59-08:00;
+    rev = "1fe3b4d45f9e4f03f92401f6c771a2cd60047029";
+    sha256 = "13p2p211hyvsf3w6bnciy1qf869gdvjqgppyvcfhb96w6g1jbanb";
+    # date = 2020-07-07T16:15:49-07:00;
   };
 
-  nativeBuildInputs = [ pkgconfig ];
+  nativeBuildInputs = [ pkgconfig makeWrapper ];
 
   buildInputs = [ wld wayland wayland-protocols fontconfig pixman libdrm libinput libevdev libxkbcommon libxcb xcbutilwm ];
 
@@ -22,8 +22,13 @@ stdenv.mkDerivation rec {
     substituteInPlace launch/local.mk --replace 4755 755
   '';
 
-  makeFlags = "PREFIX=$(out)";
+  makeFlags = "PREFIX=$(out) ENABLE_XWAYLAND=1";
   installPhase = "PREFIX=$out make install";
+
+  postFixup = ''
+    wrapProgram $out/bin/swc-launch \
+      --prefix PATH : "${stdenv.lib.makeBinPath [ xwayland ]}"
+  '';
 
   enableParallelBuilding = true;
 
