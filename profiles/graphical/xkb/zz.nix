@@ -2,7 +2,7 @@
 
 let
   layout = ''
-    default  partial alphanumeric_keys
+    default  partial alphanumeric_keys modifier_keys
     xkb_symbols "basic" {
         include "gb(dvorak)"
         name[Group1]= "Breaded Dvorak";
@@ -65,11 +65,51 @@ let
     // key <BKSL>	{ [ backslash bar,  dead_macron,  dead_belowmacron  ] }; 
     // key <TLDE>	{ [ numbersign,     asciitilde,   Greek_pi,         Greek_PI ] };
     // See /usr/include/X11/keysymdef.h for Symbol explanation
+
+    partial alphanumeric_keys
+    xkb_symbols "coder" {
+    
+        include "us(dvorak)"
+        name[Group1] = "English (programmer Dvorak)";
+    
+        //             Unmodified       Shift           AltGr            Shift+AltGr
+        // symbols row, left side
+        key <TLDE> { [ sterling,        asciitilde,     dead_tilde                  ] };
+        key <AE01> { [ ampersand,       percent                                     ] };
+        key <AE02> { [ bracketleft,     7,              currency                    ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <AE03> { [ braceleft,       5,              cent                        ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <AE04> { [ braceright,      3,              yen                         ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <AE05> { [ parenleft,       1,              EuroSign                    ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <AE06> { [ equal,           9,              dollar                      ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+    
+        // symbols row, right side
+        key <AE07> { [ asterisk,        0                                           ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <AE08> { [ parenright,      2,              onehalf                     ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <AE09> { [ plus,            4                                           ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <AE10> { [ bracketright,    6                                           ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <AE11> { [ exclam,          8,              exclamdown,      U2E18      ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };  // reversed interrobang
+        key <AE12> { [ numbersign,      grave,          dead_grave                  ] };
+    
+        // upper row, left side
+        key <AD01> { [ semicolon,       colon,          dead_diaeresis              ] };
+        key <AD02> { [ comma,           less,           guillemotleft,   U201C      ] };
+        key <AD03> { [ period,          greater,        guillemotright,  U201D      ] };
+    
+        // upper row, right side
+        key <AD11> { [ slash,           question,       questiondown,    U203D      ] };  // interrobang
+        key <AD12> { [ at,              asciicircum,    dead_circumflex, dead_caron ] };
+    
+        // home row, right side
+        key <AC11> { [ minus,           underscore,     hyphen,          endash     ], type[Group1] = "FOUR_LEVEL_ALPHABETIC" };
+        key <BKSL> { [ backslash,       bar                                         ] };
+    
+        // lower row, left side
+        key <AB01> { [ apostrophe,      quotedbl,       dead_acute                  ] };
+    };
     // vim: set ft=xkb:
   '';
 
   dvp = ''
-    default  partial alphanumeric_keys modifier_keys
     // programmer Dvorak, by Roland Kaufmann <rlndkfmn at gmail dot com>
     // License: BSD, available at <http://www.kaufmann.no/roland/dvorak/license.html>
     // Main features: Numbers are in shift position (like French), symbols have been
