@@ -58,6 +58,7 @@ in {
       stdmanpages
       utillinux
     ];
+    enableDebugInfo = true;
   };
 
   fonts = {
