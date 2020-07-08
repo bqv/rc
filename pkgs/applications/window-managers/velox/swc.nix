@@ -1,5 +1,5 @@
 { lib, stdenv, fetchFromGitHub, pkgconfig, makeWrapper
-, wld, wayland, wayland-protocols, fontconfig, pixman, libdrm, libinput, libevdev, libxkbcommon, libxcb, xcbutilwm, xwayland
+, wld, wayland, wayland-protocols, fontconfig, pixman, libdrm, libinput, libevdev, libxkbcommon, libxcb, xcbutilwm
 }:
 
 stdenv.mkDerivation rec {
@@ -24,11 +24,6 @@ stdenv.mkDerivation rec {
 
   makeFlags = "PREFIX=$(out) ENABLE_XWAYLAND=1";
   installPhase = "PREFIX=$out make install";
-
-  postFixup = ''
-    wrapProgram $out/bin/swc-launch \
-      --prefix PATH : "${stdenv.lib.makeBinPath [ xwayland ]}"
-  '';
 
   enableParallelBuilding = true;
 
