@@ -59,7 +59,9 @@ in
   ###### implementation
 
   config = mkIf cfg.enable {
-    environment.systemPackages = with pkgs; [ velox ] ++ (with velox; [ swc wld ]);
+    environment.systemPackages =
+      (with pkgs.velox; [ swc wld ]) ++
+      (with pkgs; [ xwayland ]);
 
     environment.etc = {
       "velox.conf".source = "${pkgs.velox}/etc/velox.conf";
