@@ -78,6 +78,7 @@ in
 
       serviceConfig = {
         User = "${cfg.user}";
+        Restart = "always";
         AmbientCapabilities = "CAP_SYS_TTY_CONFIG";
        #CapabilitiesBoundingSet = "CAP_SYS_TTY_CONFIG";
       };
