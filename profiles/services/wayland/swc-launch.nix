@@ -79,7 +79,7 @@ in
       serviceConfig = {
         User = "${cfg.user}";
         AmbientCapabilities = "CAP_SYS_TTY_CONFIG";
-        CapabilitiesBoundingSet = "CAP_SYS_TTY_CONFIG";
+       #CapabilitiesBoundingSet = "CAP_SYS_TTY_CONFIG";
       };
 
       environment = {
