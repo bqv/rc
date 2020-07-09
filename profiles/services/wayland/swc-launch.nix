@@ -74,7 +74,7 @@ in
 
       restartIfChanged = false;
 
-      path = with pkgs; [ xwayland ];
+      path = with pkgs; [ xwayland dbus.lib ];
 
       serviceConfig = {
         User = "${cfg.user}";
@@ -92,7 +92,8 @@ in
       };
 
       script = with cfg; ''
-        exec ${config.security.wrapperDir}/swc-launch -t /dev/tty${toString tty} \
+        exec dbus-launch --sh-syntax --exit-with-session \
+          ${config.security.wrapperDir}/swc-launch -t /dev/tty${toString tty} \
           -- ${cfg.server.${cfg.server.active_server}.command}
       '';
     };
