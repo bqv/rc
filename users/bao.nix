@@ -37,6 +37,7 @@
       ./utilities/darcs
       ./utilities/htop
       ./services/gnupg
+      ./services/velox
       ./services/mpd
       ./services/ckb
     ];
