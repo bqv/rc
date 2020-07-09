@@ -14,6 +14,10 @@ stdenv.mkDerivation rec {
     # date = 2020-07-07T16:15:49-07:00;
   };
 
+  patches = [
+    ./hardcode-screen-order.patch
+  ];
+
   nativeBuildInputs = [ pkgconfig makeWrapper ];
 
   buildInputs = [ wld wayland wayland-protocols fontconfig pixman libdrm libinput libevdev libxkbcommon libxcb xcbutilwm ];

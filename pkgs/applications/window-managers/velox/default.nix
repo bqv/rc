@@ -28,7 +28,8 @@ in stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ pkgconfig makeWrapper ];
 
-  buildInputs = with scope; [ swc libxkbcommon wld wayland pixman fontconfig libinput ];
+  buildInputs = [ libxkbcommon wayland pixman fontconfig libinput ];
+  propagatedBuildInputs = with scope; [ swc wld ];
 
   propagatedUserEnvPkgs = with scope; [ swc ];
 
