@@ -74,6 +74,8 @@ in
 
       restartIfChanged = false;
 
+      path = with pkgs; [ xwayland ];
+
       serviceConfig = {
         User = "${cfg.user}";
         AmbientCapabilities = "CAP_SYS_TTY_CONFIG";
