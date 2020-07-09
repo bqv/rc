@@ -286,13 +286,13 @@
         in linkFarm "nix-conf-dir" ( [ {
           name = "nix.conf";
           path = writeText "flakes-nix.conf" nixConf;
-        } ] ++ ( lib.optional (builtins.pathExists /etc/nix/registry.json) {
+        } {
           name = "registry.json";
           path = /etc/nix/registry.json;
-        } ) ++ ( lib.optional (builtins.pathExists /etc/nix/machines) {
+        } {
           name = "machines";
           path = /etc/nix/machines;
-        } ) );
+        } ] );
       }
     );
 
