@@ -89,8 +89,8 @@ in
       };
 
       script = with cfg; ''
-        ${config.security.wrapperDir}/swc-launch -t /dev/tty${toString tty} \
-        -- ${cfg.server.${cfg.server.active_server}.command}
+        exec ${config.security.wrapperDir}/swc-launch -t /dev/tty${toString tty} \
+          -- ${cfg.server.${cfg.server.active_server}.command}
       '';
     };
 

@@ -1,9 +1,10 @@
-final: prev: {
+final: prev: rec {
+  swc = prev.velox.swc.overrideAttrs (o: {
+    separateDebugInfo = true;
+  });
   velox = prev.velox.overrideAttrs (o: {
     passthru = o.passthru // {
-      swc = o.passthru.swc.overrideAttrs (o: {
-        separateDebugInfo = true;
-      });
+      inherit swc;
     };
     separateDebugInfo = true;
   });

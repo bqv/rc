@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   imports = [
@@ -24,4 +24,6 @@
     xkbOptions = "caps:ctrl_modifier";
     server.velox.enable = true;
   };
+  systemd.services.swc-launch.wantedBy = [ "multi-user.target" ];
+  systemd.services.display-manager.wantedBy = lib.mkForce [ ];
 }
