@@ -11,11 +11,13 @@ stdenv.mkDerivation rec {
     fetchSubmodules = true;
   };
 
-  nativeBuildInputs = [ git cacert ];
+  nativeBuildInputs = [ git cacert makeWrapper wrapGAppsHook ];
   buildInputs = [
     sbcl openssl libfixposix
     glib gdk-pixbuf cairo
     pango gtk3 webkitgtk
+    glib-networking gsettings-desktop-schemas
+    xclip notify-osd enchant
   ];
 
   buildPhase = ''
@@ -23,8 +25,12 @@ stdenv.mkDerivation rec {
     export HOME=$PWD && make build-deps nyxt
   '';
 
+  dontWrapGApps = true;
   installPhase = ''
     make DESTDIR=$out PREFIX=/ install
+    wrapProgram $out/bin/nyxt \
+      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath buildInputs}" \
+      "''${gappsWrapperArgs[@]}"
   '';
 
   __noChroot = true;
