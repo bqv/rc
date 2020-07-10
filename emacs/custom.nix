@@ -187,6 +187,10 @@
       By default, this shows the information specified by `global-mode-string'."
         (unless (doom-modeline--active)
             '("" mode-line-misc-info)))
+
+      (defun set-frame-scale (n)
+        (interactive "nFont Size: ")
+        (set-frame-font (format "DejaVu Sans Mono-%s" n)))
     '';
   };
 }
