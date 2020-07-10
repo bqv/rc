@@ -1,4 +1,4 @@
-{ config, lib, usr, ... }:
+{ config, pkgs, lib, usr, ... }:
 
 let
   emacs = config.programs.emacs.package;
@@ -71,13 +71,23 @@ let
       (log--log-enable-logging)
       (log--log-enable-messaging))
 
+    (require 'ffi)
+    (require 's)
+    (define-ffi-library lib/systemd "libsystemd")
+    (define-ffi-library lib/systemd "${pkgs.systemd.lib}/lib/libsystemd.so")
+    (define-ffi-function lib/systemd/sd_notify "sd_notify" :int (:int :pointer) lib/systemd)
+    (defun sd_notify (&rest assocs)
+      (let* ((assignments (mapcar (lambda (p) (format "%s=%s" (car p) (cdr p))) assocs))
+             (lstr (s-join "\n" assignments)))
+        (with-ffi-string (cstr lstr)
+          (lib/systemd/sd_notify 0 cstr))))
+
     (defun watchdog-systemd-notify ()
       (with-timeout (10)
-        (message "Notified at %s" (time-stamp-string))
-        (call-process "systemd-notify" nil 0 nil
-                      "READY=1"
-                      (format "MAINPID=%d" (emacs-pid))
-                      (format "WATCHDOG_USEC=%d" (* 120 1000000)))))
+        (sd_notify "systemd-notify"
+                   '("READY" . 1)
+                   );`("WATCHDOG_USEC" . ,(* 120 1000000)))
+        (log--trace "Notified at %s" (time-stamp-string))))
     (defun config-end ()
       (message
         "Configuring...done (%.3fs) [after-init]"
