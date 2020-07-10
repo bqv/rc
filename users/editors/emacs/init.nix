@@ -73,6 +73,7 @@ let
 
     (defun watchdog-systemd-notify ()
       (with-timeout (10)
+        (message "Notified at %s" (time-stamp-string))
         (call-process "systemd-notify" nil 0 nil
                       "READY=1"
                       (format "MAINPID=%d" (emacs-pid))
