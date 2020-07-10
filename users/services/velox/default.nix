@@ -24,13 +24,11 @@
       set tag.9.name                      9
 
       #      name             type    arguments
-      action spawn_term       spawn   exec env DVTM=off st-wl
+      action spawn_lone_term  spawn   exec env DVTM=off st-wl
       action spawn_terminal   spawn   exec st-wl
       action spawn_emacs      spawn   exec emacsclient -c
       action spawn_run        spawn   exec dmenu_run-wl
-      action spawn_run_def    spawn   exec env WAYLAND_DISPLAY=wayland-0 DISPLAY=:0 dmenu_run-wl
       action spawn_browser    spawn   exec firefox
-      action spawn_browser_0  spawn   exec env DISPLAY=:0 firefox
 
       #   key         modifiers           action
       key j           mod                 focus_next
@@ -52,11 +50,9 @@
 
       key Return      mod,shift           spawn_terminal
       key Return      mod                 spawn_emacs
-      key w           mod                 spawn_term
+      key w           mod                 spawn_lone_term
       key r           mod                 spawn_run
-      key r           mod,shift           spawn_run_def
       key b           mod                 spawn_browser
-      key b           mod,shift           spawn_browser_0
 
       key 1           mod                 tag.1.activate
       key 2           mod                 tag.2.activate
