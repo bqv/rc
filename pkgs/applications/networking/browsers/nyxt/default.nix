@@ -11,11 +11,12 @@ stdenv.mkDerivation rec {
     fetchSubmodules = true;
   };
 
-  nativeBuildInputs = [ git cacert ];
+  nativeBuildInputs = [ git cacert makeWrapper ];
   buildInputs = [
     sbcl openssl libfixposix
     glib gdk-pixbuf cairo
     pango gtk3 webkitgtk
+    glib-networking
   ];
 
   buildPhase = ''
@@ -25,6 +26,8 @@ stdenv.mkDerivation rec {
 
   installPhase = ''
     make DESTDIR=$out PREFIX=/ install
+    wrapProgram $out/bin/nyxt \
+      --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath buildInputs}"
   '';
 
   __noChroot = true;
