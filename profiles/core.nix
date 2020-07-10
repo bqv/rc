@@ -77,7 +77,7 @@ in {
 
     maxJobs = lib.mkDefault 4;
 
-    useSandbox = true;
+    useSandbox = "relaxed";
 
     allowedUsers = [ "@wheel" ];
 

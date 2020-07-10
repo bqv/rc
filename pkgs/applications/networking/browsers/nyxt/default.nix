@@ -13,25 +13,19 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ git cacert ];
   buildInputs = [
-    sbcl
-    openssl
-    libfixposix
-    glib
-    gdk-pixbuf
-    cairo
-    pango
-    gtk3
-    webkitgtk
+    sbcl openssl libfixposix
+    glib gdk-pixbuf cairo
+    pango gtk3 webkitgtk
   ];
 
   buildPhase = ''
-    export HOME=$PWD
     export LD_LIBRARY_PATH=${lib.makeLibraryPath buildInputs}:$LD_LIBRARY_PATH
-    NYXT_INTERNAL_QUICKLISP=true make build-deps nyxt
+    export HOME=$PWD && make build-deps nyxt
   '';
 
   installPhase = ''
     make DESTDIR=$out PREFIX=/ install
-    find $out
   '';
+
+  __noChroot = true;
 }
