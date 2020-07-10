@@ -94,7 +94,7 @@ in
       script = with cfg; ''
         exec dbus-launch --sh-syntax --exit-with-session \
           ${config.security.wrapperDir}/swc-launch -t /dev/tty${toString tty} \
-          -- ${cfg.server.${cfg.server.active_server}.command}
+          -- ${pkgs.bash}/bin/bash -lc "exec ${cfg.server.${cfg.server.active_server}.command}"
       '';
     };
 
@@ -104,9 +104,6 @@ in
       owner = "root";
       group = "root";
       setuid = true;
-     #setgid = true;
-     #permissions = "u+rx,g+rx,o+rx";
-     #capabilities = "cap_sys_admin,cap_sys_ptrace,cap_sys_tty_config=eip";
     };
   };
 }
