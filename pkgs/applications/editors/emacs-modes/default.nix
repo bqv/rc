@@ -1,7 +1,7 @@
-{ lib, writeText, fetchFromGitHub, emacsPackages, ... }:
+{ lib, writeText, fetchFromGitHub, emacsPackages, libffi, libtool, ... }:
 
 let
-  inherit (emacsPackages) trivialBuild;
+  inherit (emacsPackages) trivialBuild emacs;
 in lib.recurseIntoAttrs rec {
 
   bitwarden = trivialBuild rec {
@@ -103,6 +103,33 @@ in lib.recurseIntoAttrs rec {
     buildInputs = with emacsPackages; [
       font-lock-ext
     ];
+  };
+
+  emacs-ffi = trivialBuild rec {
+    pname = baseNameOf src.meta.homepage;
+    version = lib.substring 0 7 src.rev;
+    src = fetchFromGitHub {
+      owner = "tromey";
+      repo = "emacs-ffi";
+      rev = "cc19a6c2098f54b7254b1c94727f0eae26d8c5b1";
+      sha256 = "0lqybbk3k7p4jnazc69d9a8yndbd6cddagmynkyk975vznbnzpqp";
+      # date = 2017-12-06T09:35:52-07:00;
+    };
+    postPatch = ''
+      sed 's%^EMACS_BUILDDIR.*$%EMACS_BUILDDIR = ${emacsPackages.emacs}%' -i Makefile
+      sed 's%"ffi-module.so"%(concat (file-name-directory (or load-file-name buffer-file-name)) &)%' -i ffi.el
+    '';
+    buildPhase = ''
+      make all
+      export LD_LIBRARY_PATH=$PWD:$LD_LIBRARY_PATH
+    '';
+    buildInputs = with emacsPackages; [
+      libffi libtool libtool.lib
+    ];
+    postInstall = ''
+      cp *.so $out/share/emacs/site-lisp/
+      mkdir $out/lib && cp *.so $out/lib/
+    '';
   };
 
   _0xc = null;
