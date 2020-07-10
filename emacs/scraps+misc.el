@@ -34,3 +34,12 @@ See `comint-run'."
           (rename-buffer new-name)
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
+
+(defun pulseaudio-ctl/volume-up (&rest r)
+  (interactive)
+  (shell-command-to-string "pulseaudio-ctl up"))
+(defun pulseaudio-ctl/volume-down (&rest r)
+  (interactive)
+  (shell-command-to-string "pulseaudio-ctl down"))
+(define-key desktop-environment-mode-map (kbd "<269025043>") 'pulseaudio-ctl/volume-up)
+(define-key desktop-environment-mode-map (kbd "<269025041>") 'pulseaudio-ctl/volume-up)
