@@ -32,11 +32,14 @@ in {
       leaf auto-compile gcmh diminish epkg log4e bug-hunter use-package
     ]);
 
-    programs.emacs.package = lib.fix (self: myEmacs.overrideAttrs (_: {
-      passthru = {
-        pkgs = pkgs.emacsPackagesFor self;
-      };
-    }));
+    programs.emacs = {
+      package = lib.fix (self: myEmacs.overrideAttrs (_: {
+        passthru = {
+          pkgs = pkgs.emacsPackagesFor self;
+        };
+      }));
+      extraPackages = epkgs: forEachPackage (p: p.package epkgs);
+    };
 
     systemd.user.services.emacs.Service = {
       Type = "notify";
