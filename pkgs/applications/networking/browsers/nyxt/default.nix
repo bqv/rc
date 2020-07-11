@@ -23,16 +23,20 @@ stdenv.mkDerivation rec {
   dontStrip = true;
   buildPhase = ''
     export LD_LIBRARY_PATH=${lib.makeLibraryPath buildInputs}:$LD_LIBRARY_PATH
-    export HOME=$PWD && make build-deps nyxt
+    make build-deps
   '';
 
   dontWrapGApps = true;
   installPhase = ''
-    make DESTDIR=$out PREFIX=/ install
-    wrapProgram $out/bin/nyxt \
+    cp -r . $out && cd $out
+    export HOME=$out
+    make DESTDIR=$out PREFIX=/ nyxt install
+    install -D -m0755 nyxt $out/libexec/nyxt
+    mkdir -p $out/bin && makeWrapper $out/libexec/nyxt $out/bin/nyxt \
       --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath buildInputs}" \
-      "''${gappsWrapperArgs[@]}"
+      --argv0 nyxt "''${gappsWrapperArgs[@]}"
   '';
 
   __noChroot = true;
+  # Packaged like a kebab in duct-tape, for now
 }
