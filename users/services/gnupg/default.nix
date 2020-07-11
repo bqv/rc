@@ -29,6 +29,7 @@ in {
         allow-preset-passphrase
       '';
       verbose = true;
+      pinentryFlavor = "gnome3";
     };
   };
 }
