@@ -31,6 +31,9 @@
     construct.url = "github:matrix-construct/construct";
     construct.inputs.nixpkgs.follows = "large";
 
+    wayland.url = "github:colemickens/nixpkgs-wayland";
+    wayland.inputs.nixpkgs.follows = "large";
+
     emacs.url = "github:nix-community/emacs-overlay";
     haskell.url = "github:input-output-hk/haskell.nix";
     nixus.url = "github:infinisil/nixus/545254808be876708535079996e2d9efd71f6533";
@@ -100,6 +103,7 @@
         inputs.emacs.overlay
         inputs.haskell.overlay
         inputs.xontribs.overlay
+        inputs.wayland.overlay
         inputs.self.overlay
       ];
     };

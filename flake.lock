@@ -338,6 +338,22 @@
         "type": "github"
       }
     },
+    "master_2": {
+      "locked": {
+        "lastModified": 1594418068,
+        "narHash": "sha256-E6KBMWS6NJIHYon5JHJudgKY4nhbOWKdje3FgfuyCrE=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "57a53677b457e11c91c7ade1edab40fb82fc934d",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "master",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "mozilla": {
       "flake": false,
       "locked": {
@@ -657,6 +673,7 @@
         "staged": "staged",
         "traefik": "traefik",
         "utils": "utils",
+        "wayland": "wayland",
         "xontribs": "xontribs"
       }
     },
@@ -816,6 +833,27 @@
       "original": {
         "owner": "Granitosaurus",
         "repo": "xonsh-vox-tabcomplete",
+        "type": "github"
+      }
+    },
+    "wayland": {
+      "inputs": {
+        "master": "master_2",
+        "nixpkgs": [
+          "large"
+        ]
+      },
+      "locked": {
+        "lastModified": 1594445269,
+        "narHash": "sha256-ARa/G0IN+7c6elT5GW0k/vjwn78HUYJyZm5sfub31VI=",
+        "owner": "colemickens",
+        "repo": "nixpkgs-wayland",
+        "rev": "2755f7d4b089aecb87773767cf6804d8c0bfa16b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "colemickens",
+        "repo": "nixpkgs-wayland",
         "type": "github"
       }
     },

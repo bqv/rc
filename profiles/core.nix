@@ -88,6 +88,7 @@ in {
     '';
 
     binaryCaches = [
+      "https://nixpkgs-wayland.cachix.org"
       "https://nix-community.cachix.org"
       "https://cross-armed.cachix.org"
       "https://r-ryantm.cachix.org"
@@ -97,6 +98,7 @@ in {
     ];
 
     binaryCachePublicKeys = [
+      "nixpkgs-wayland.cachix.org-1:3lwxaILxMRkVhehr5StQprHdEo4IrE8sRho9R9HOLYA="
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
       "cross-armed.cachix.org-1:v+RBneV2nKPSKRe3/qUFhOG6/9GE+o0lw9/NW/wX9Hk="
       "r-ryantm.cachix.org-1:gkUbLkouDAyvBdpBX0JOdIiD2/DP1ldF3Z3Y6Gqcc4c="
