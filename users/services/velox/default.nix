@@ -29,11 +29,12 @@
       action spawn_emacs      spawn   exec emacsclient -c
       action spawn_run        spawn   exec dmenu_run-wl
       action spawn_browser    spawn   exec firefox
+      action spawn_nyxt       spawn   exec nyxt
 
       #   key         modifiers           action
       key j           mod                 focus_next
       key k           mod                 focus_prev
-      key Return      mod                 zoom
+     #key Return      mod                 zoom
       key space       mod                 layout_next
       key Tab         mod                 previous_tags
       key q           mod,shift           quit
@@ -53,6 +54,7 @@
       key w           mod                 spawn_lone_term
       key r           mod                 spawn_run
       key b           mod                 spawn_browser
+      key n           mod                 spawn_nyxt
 
       key 1           mod                 tag.1.activate
       key 2           mod                 tag.2.activate
