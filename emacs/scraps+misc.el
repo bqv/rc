@@ -42,4 +42,4 @@ See `comint-run'."
   (interactive)
   (shell-command-to-string "pulseaudio-ctl down"))
 (define-key desktop-environment-mode-map (kbd "<269025043>") 'pulseaudio-ctl/volume-up)
-(define-key desktop-environment-mode-map (kbd "<269025041>") 'pulseaudio-ctl/volume-up)
+(define-key desktop-environment-mode-map (kbd "<269025041>") 'pulseaudio-ctl/volume-down)
