@@ -4,7 +4,7 @@
   environment.systemPackages = with pkgs; [
     androidenv.androidPkgs_9_0.androidsdk
     androidenv.androidPkgs_9_0.platform-tools
-    jre graalvm8
+    jre (pkgs.lowPrio graalvm8) (pkgs.lowPrio e2fsprogs)
     jadx apktool
   ];
 }

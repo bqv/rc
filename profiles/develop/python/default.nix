@@ -14,8 +14,7 @@
       ];
 
     python = pkgs.python3.withPackages packages;
-    inherit (pkgs.python3.pkgs) virtualenv;
-  in [ python virtualenv ];
+  in [ python ];
 
   environment.sessionVariables = {
     PYTHONSTARTUP = let
