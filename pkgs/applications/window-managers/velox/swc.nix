@@ -7,15 +7,15 @@ stdenv.mkDerivation rec {
   version = lib.substring 0 7 src.rev;
 
   src = fetchFromGitHub {
-    owner = "michaelforney";
+    owner = "bqv";
     repo = "swc";
-    rev = "1fe3b4d45f9e4f03f92401f6c771a2cd60047029";
-    sha256 = "13p2p211hyvsf3w6bnciy1qf869gdvjqgppyvcfhb96w6g1jbanb";
-    # date = 2020-07-07T16:15:49-07:00;
+    rev = "2d5a062c22f944f888f739ae289a6878babf7a81";
+    sha256 = "0znbnyaym718dfzb78ahcajd6ncfr89mjv7dpb652phri5qprcwg";
+    # date = 2020-07-13T01:30:15+01:00;
   };
 
   patches = [
-    ./hardcode-screen-order.patch
+   #./hardcode-screen-order.patch # committed
   ];
 
   nativeBuildInputs = [ pkgconfig makeWrapper ];
