@@ -221,6 +221,9 @@
       };
     };
 
+    # convenience...
+    homeConfigurations = inputs.self.nixosConfigurations.delta.config.home-manager.users;
+
     legacyPackages = forAllSystems pkgsForSystem;
 
     overlay = import ./pkgs;
