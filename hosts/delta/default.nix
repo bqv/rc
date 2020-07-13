@@ -1,4 +1,4 @@
-{ nixpkgs, home, nur, self, config, lib, pkgs, system, hosts, ... }:
+{ inputs, config, lib, pkgs, system, hosts, ... }:
 
 {
   imports = [
@@ -150,4 +150,8 @@
     wineWowPackages.staging
   ];
   nixpkgs.config.firefox.enableFXCastBridge = true;
+
+  system.extraSystemBuilderCmds = ''
+    ln -s '${inputs.self.nixosConfigurations.zeta.config.system.build.toplevel}' "$out/zeta"
+  '';
 }
