@@ -27,7 +27,9 @@ in {
       extraConfig = ''
         allow-emacs-pinentry
         allow-preset-passphrase
-      '';
+      '' + (builtins.trace "gpg-agent: disabled scdaemon due to weird behaviour" ''
+        disable-scdaemon
+      '');
       verbose = true;
       pinentryFlavor = "gnome3";
     };
