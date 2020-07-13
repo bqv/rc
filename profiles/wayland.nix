@@ -23,6 +23,16 @@
     xkbOptions = "caps:ctrl_modifier";
     server.velox.enable = true;
   };
-  systemd.services.swc-launch.wantedBy = [ "multi-user.target" ];
-  systemd.services.display-manager.wantedBy = lib.mkForce [ ];
+  systemd.services.swc-launch = {
+    wantedBy = [ "multi-user.target" ];
+  };
+  systemd.services.display-manager = {
+    unitConfig = {
+      Before = "swc-launch.service";
+      Wants = "swc-launch.service";
+    };
+    serviceConfig = {
+      ExecStartPre = "systemctl stop display-manager.service";
+    };
+  };
 }
