@@ -27,9 +27,10 @@
     efi.canTouchEfiVariables = true;
     systemd-boot = {
       enable = true;
-      configurationLimit = 16;
+      configurationLimit = 2;
     };
   };
+  boot.plymouth.enable = true;
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbcore" "sd_mod" "sr_mod" "amdgpu" ];
   boot.initrd.kernelModules = [ "amdgpu" ];
