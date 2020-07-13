@@ -234,6 +234,20 @@
     };
   };
 
+  systemd.services.restart-sshd = {
+    serviceConfig = {
+      Type = "oneshot";
+      ExecStart = "systemctl restart sshd.service";
+    };
+  };
+  systemd.timers.restart-sshd = {
+    timerConfig = {
+      OnStartupSec = "1h";
+      OnUnitActiveSec = "1h";
+    };
+    wantedBy = [ "timers.target" ];
+  };
+
   nix.sshServe.enable = true;
   nix.sshServe.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIYNqRbITjMHmgD/UC87BISFTaw7Tq1jNd8X8i26x4b5 root@delta"
