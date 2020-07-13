@@ -6,9 +6,9 @@
   ];
 
   environment.systemPackages = with pkgs; with velox; [
-    dmenu
-    (pkgs.lowPrio dmenu-velox)
+    dmenu (pkgs.lowPrio dmenu-velox)
     st-velox
+    wl-clipboard
   ];
 
   environment.etc = {
