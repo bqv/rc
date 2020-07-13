@@ -6,10 +6,9 @@
   ];
 
   environment.systemPackages = with pkgs; with velox; [
-    (pkgs.lowPrio dmenu)
-    dmenu-velox
+    dmenu
+    (pkgs.lowPrio dmenu-velox)
     st-velox
-    (pkgs.hiPrio xwayland)
   ];
 
   environment.etc = {

@@ -61,7 +61,7 @@ in
   config = mkIf cfg.enable {
     environment.systemPackages =
       (with pkgs.velox; [ swc wld ]) ++
-      (with pkgs; [ xwayland ]);
+      (with pkgs; [ (hiPrio xwayland) ]);
 
     environment.etc = {
       "velox.conf".source = "${pkgs.velox}/etc/velox.conf";

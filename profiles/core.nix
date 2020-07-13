@@ -42,7 +42,7 @@ in {
       coreutils
       curl
       disnixos
-      dosfstools
+      (pkgs.lowPrio dosfstools)
       dnsutils
       fd
       git
