@@ -22,6 +22,8 @@ in {
 
   git-pr-mirror = prev.callPackage ./applications/version-management/git-and-tools/git-pr-mirror { };
 
+  greetd = prev.callPackage ./applications/display-managers/greetd { };
+
   haskellPackages = recurseIntoAttrs prev.haskellPackages;
 
   ipfscat = prev.callPackage ./applications/misc/ipfscat { };
