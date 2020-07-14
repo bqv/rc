@@ -9,7 +9,7 @@
    #./qutebrowser
     ../develop
   ];
-  
+
   environment.systemPackages = with pkgs; [
     velox
   ];
@@ -25,15 +25,15 @@
       sddm = {
         enable = true;
         theme = "chili";
-        autoLogin = {
-          enable = true;
-          relogin = true;
-          user = "bao";
-        };
+        autoLogin.relogin = true;
         extraConfig = ''
           [X11]
           UserAuthFile=.local/share/sddm/Xauthority
         '';
+      };
+      autoLogin = {
+        enable = true;
+        user = "bao";
       };
       defaultSession = "none+xmonad";
     };

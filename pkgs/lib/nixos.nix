@@ -19,6 +19,14 @@ let
       ARGS="$ARGS --flake $FLAKE#$FLAGS_host"
     fi
 
+    if [ -z "$FLAGS_passthru" ]; then
+      ARGS="$ARGS $FLAGS_passthru"
+    fi
+
+    if [ $FLAGS_fallback -eq $FLAGS_TRUE ]; then
+      ARGS="$ARGS --fallback"
+    fi
+
     if [ $FLAGS_showtrace -eq $FLAGS_TRUE ]; then
       ARGS="$ARGS --show-trace"
     fi
@@ -49,7 +57,9 @@ let
 in pkgs.writeShellScriptBin "nixos" ''
   ${shFlagsRules ''
     DEFINE_string 'host' "" 'Host to build' 'H'
+    DEFINE_string 'passthru' "" 'Extra arguments to pass' 'P'
     DEFINE_boolean 'showtrace' false 'Show verbose traces' 'T'
+    DEFINE_boolean 'fallback' false 'Fallback to source builds' 'F'
     DEFINE_boolean 'verbose' false 'Show verbose logs' 'v'
     DEFINE_boolean 'verynoisy' false 'Show noisy logs' 'V'
     DEFINE_boolean 'local' false 'Force only local building' 'L'
@@ -67,6 +77,10 @@ in pkgs.writeShellScriptBin "nixos" ''
   export NIXOS_LABEL="$DATE-''${REV:0:7}"
 
   if [ $FLAGS_check -eq $FLAGS_TRUE ]; then
+    if [ -z "$FLAGS_passthru" ]; then
+      ARGS="$ARGS $FLAGS_passthru"
+    fi
+
     if [ $FLAGS_showtrace -eq $FLAGS_TRUE ]; then
       ARGS="$ARGS --show-trace"
     fi
@@ -126,5 +140,5 @@ in pkgs.writeShellScriptBin "nixos" ''
 ''
 
 ## Local Variables: ***
-## mode: nix-dsquoted-sh-mode
+## mode: nix-dsquoted-sh-mode ***
 ## End: ***
