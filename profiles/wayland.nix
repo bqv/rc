@@ -42,11 +42,11 @@
 
         [default_session]
         command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd ${swcd}"
-        user = "greeter"
+        user = "${config.users.users.greeter.name}"
 
         [initial_session]
         command = "${swcd}"
-        user = "bao"
+        user = "${config.users.users.bao.name}"
       '';
     };
 
@@ -60,13 +60,16 @@
       tty = 9;
     };
     systemd.services.swc-launch = {
+      enable = lib.mkForce false;
       wantedBy = lib.mkForce [];
     };
     systemd.services.greetd = {
+      enable = true;
       serviceConfig.ExecStart = "${pkgs.greetd}/bin/greetd";
       wantedBy = [ "multi-user.target" ];
     };
     systemd.services.display-manager = {
+      enable = lib.mkForce false;
       unitConfig = {
         Before = "swc-launch.service";
         Wants = "swc-launch.service";
@@ -75,5 +78,7 @@
         ExecStartPost = "systemctl stop display-manager.service";
       };
     };
+
+    users.users.greeter.isSystemUser = true;
   };
 }
