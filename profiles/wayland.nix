@@ -82,6 +82,9 @@
       serviceConfig.StartLimitBurst = "5";
       serviceConfig.StartLimitInterval = "30";
 
+      stopIfChanged = false;
+      restartIfChanged = false;
+
       wantedBy = [ "multi-user.target" ];
       aliases = [ "display-manager.service" ];
     };
