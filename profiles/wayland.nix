@@ -16,12 +16,12 @@
     environment.etc = {
       "velox.conf".source = "${pkgs.velox}/etc/velox.conf";
       "greetd/config.toml".text = let
-        swcd = with config.services.swc-launch; pkgs.writeShellScriptBin "wayland-session" ''
-          export XKB_DEFAULT_LAYOUT = "${layout}";
-          export XKB_DEFAULT_OPTIONS = "${xkbOptions}";
+        swcd = with config.services.swc-launch; pkgs.writeShellScript "wayland-session" ''
+          export XKB_DEFAULT_LAYOUT="${layout}";
+          export XKB_DEFAULT_OPTIONS="${xkbOptions}";
 
           # FIXME: This doesn't work when the user hasn't explicitly set her uid.
-          export XDG_RUNTIME_DIR = "/run/user/${toString config.users.extraUsers.${user}.uid}";
+          export XDG_RUNTIME_DIR="/run/user/${toString config.users.extraUsers.${user}.uid}";
           export XDG_SESSION_TYPE=wayland
 
           export MOZ_ENABLE_WAYLAND=1

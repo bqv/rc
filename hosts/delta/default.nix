@@ -107,7 +107,7 @@
   services.guix.enable = true;
   services.guix.package = pkgs.guix;
   services.nixos-git = {
-    enable = true;
+    enable = false;
     github = { owner = "bqv"; repo = "nixos"; };
     branch = "live";
     extraParams = {
