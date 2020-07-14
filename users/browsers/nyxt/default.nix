@@ -2,9 +2,12 @@
 
 {
   config = {
-    home.file.".config/nyxt/init.lisp".text = let 
+    home.file.".config/nyxt/init.lisp".text = let
       secrets = import ../../../secrets/nyxt.autofill.nix;
     in ''
+      (setq *swank-port* 4005)
+      (start-swank)
+
       (define-mode shell-mode ()
           "A basic shell prompt."
           ((keymap-schemes
@@ -69,43 +72,44 @@
         "Scroll up by one page height."
         (%scroll-page-up))
 
-      (define-configuration browser
-        ((session-restore-prompt :always-ask)
-         (autofills (list (nyxt::make-autofill :key "Name" :fill "${secrets.name}")))
-         (external-editor-program "gnvim")))
-
       (define-configuration buffer
         ((keymap-scheme-name scheme:emacs)
          (default-new-buffer-url "about:blank")
          (start-page-url "https://nyxt.atlas.engineer/quickstart")
          (search-engines (list (make-instance 'search-engine
-                :shortcut "default"
-                :search-url "https://qwant.com/?q=~a"
-                :fallback-url "https://qwant.com/")
+                                              :shortcut "default"
+                                              :search-url "https://qwant.com/?q=~a"
+                                              :fallback-url "https://qwant.com/")
                                (make-instance 'search-engine
-                :shortcut "github"
-                :search-url "https://github.com/?q=~a"
-                :fallback-url "https://github.com/")
-             ))
-      ;   (override-map (let ((map (make-keymap "override-map")))
-      ;                             (define-key map
-      ;                               "M-x" #'execute-command
-      ;                               "C-x C-c" #'quit)
-      ;                             (define-key map "C-x s" #'shell)
-      ;                             (define-key map "C-r" #'reload-page)
-      ;                             (define-key map
-      ;                               "C-v" #'scroll-page-down
-      ;                               "M-v" #'scroll-page-up)
+                                              :shortcut "qwant"
+                                              :search-url "https://qwant.com/?q=~a"
+                                              :fallback-url "https://qwant.com/")
+                               (make-instance 'search-engine
+                                              :shortcut "github"
+                                              :search-url "https://github.com/?q=~a"
+                                              :fallback-url "https://github.com/")
+                               ))
+      ;  (override-map (let ((map (make-keymap "override-map")))
+      ;                            (define-key map
+      ;                              "M-x" #'execute-command
+      ;                              "C-x C-c" #'quit)
+      ;                            (define-key map "C-x s" #'shell)
+      ;                            (define-key map "C-r" #'reload-page)
+      ;                            (define-key map
+      ;                              "C-v" #'scroll-page-down
+      ;                              "M-v" #'scroll-page-up)
       ;
-      ;                             map))
+      ;                            map))
          ))
 
-      (setq *swank-port* 4005)
-      (start-swank)
+      (define-configuration browser
+        ((session-restore-prompt :always-ask)
+         (autofills (list (nyxt::make-autofill :key "Name" :fill "${secrets.name}")))
+         (external-editor-program "gnvim")))
     '';
   };
 }
 
 ## Local Variables: ***
-## mode: nix-dsquoted-commonlisp-mode ***
+## mode: nix-dsquoted-commonlisp ***
 ## End: ***
