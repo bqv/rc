@@ -50,6 +50,8 @@
       '';
     };
 
+    security.pam.services.greetd = {};
+
     # Enable swc+velox (Wayland compositor) as alternative to X11
     services.swc-launch = {
       enable = true;
@@ -65,8 +67,23 @@
     };
     systemd.services.greetd = {
       enable = true;
+      description = "Display greeter";
+
+      unitConfig.After = [ "systemd-user-sessions.service" "plymouth-quit-wait.service" "getty@tty1.service" ];
+      unitConfig.Conflicts = [ "getty@tty1.service" ];
+
       serviceConfig.ExecStart = "${pkgs.greetd}/bin/greetd";
+      serviceConfig.IgnoreSIGPIPE = "no";
+      serviceConfig.SendSIGHUP = "yes";
+      serviceConfig.TimeoutStopSec = "30s";
+      serviceConfig.KeyringMode = "shared";
+      serviceConfig.Restart = "always";
+      serviceConfig.RestartSec = "1";
+      serviceConfig.StartLimitBurst = "5";
+      serviceConfig.StartLimitInterval = "30";
+
       wantedBy = [ "multi-user.target" ];
+      aliases = [ "display-manager.service" ];
     };
     systemd.services.display-manager = {
       enable = lib.mkForce false;
