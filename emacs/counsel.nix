@@ -11,6 +11,10 @@
     };
     config = ''
       (setq ivy-initial-inputs-alist nil)
+      (recentf-mode 1)
+      (setq recentf-max-menu-items 64)
+      (setq recentf-max-saved-items 64)
+      (run-at-time nil (* 5 60) 'recentf-save-list)
     '';
     systemDeps = with pkgs; [ ag ];
   };
