@@ -16,7 +16,7 @@
     environment.etc = {
       "velox.conf".source = "${pkgs.velox}/etc/velox.conf";
       "greetd/config.toml".text = let
-        swcd = with config.services.swc-launch; pkgs.writeShellScriptBin "wayland-session" ''
+        swcd = with config.services.swc-launch; pkgs.writeShellScript "wayland-session" ''
           export XKB_DEFAULT_LAYOUT = "${layout}";
           export XKB_DEFAULT_OPTIONS = "${xkbOptions}";
 
