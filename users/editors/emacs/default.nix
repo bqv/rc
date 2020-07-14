@@ -42,7 +42,7 @@ in {
     };
 
     systemd.user.services.emacs.Service = {
-      Type = if true then builtins.trace "emacs service type still unset from notify - buggy as hell" "simple" else "notify";
+      Type = "notify";
       NotifyAccess = "all";
     };
   };
