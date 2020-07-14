@@ -65,38 +65,39 @@
       enable = lib.mkForce false;
       wantedBy = lib.mkForce [];
     };
-    systemd.services.greetd = {
-      enable = true;
-      description = "Display greeter";
 
-      unitConfig.After = [ "systemd-user-sessions.service" "plymouth-quit-wait.service" "getty@tty1.service" ];
-      unitConfig.Conflicts = [ "getty@tty1.service" ];
-
-      serviceConfig.ExecStart = "${pkgs.greetd}/bin/greetd";
-      serviceConfig.IgnoreSIGPIPE = "no";
-      serviceConfig.SendSIGHUP = "yes";
-      serviceConfig.TimeoutStopSec = "30s";
-      serviceConfig.KeyringMode = "shared";
-      serviceConfig.Restart = "always";
-      serviceConfig.RestartSec = "1";
-      serviceConfig.StartLimitBurst = "5";
-      serviceConfig.StartLimitInterval = "30";
-
-      stopIfChanged = false;
-      restartIfChanged = false;
-
-      wantedBy = [ "multi-user.target" ];
-      aliases = [ "display-manager.service" ];
-    };
+    systemd.services."getty@tty1".enable = lib.mkForce false;
     systemd.services.display-manager = {
-      enable = lib.mkForce false;
-      unitConfig = {
-        Before = "swc-launch.service";
-        Wants = "swc-launch.service";
+      enable = true;
+
+      unitConfig = lib.mkForce {
+        Wants = [
+          "systemd-user-sessions.service"
+        ];
+        After = [
+          "systemd-user-sessions.service"
+          "plymouth-quit-wait.service"
+          "getty@tty1.service"
+        ];
+        Conflicts = [
+          "getty@tty1.service"
+        ];
       };
+
       serviceConfig = {
-        ExecStartPost = "systemctl stop display-manager.service";
+        ExecStart = lib.mkForce "${pkgs.greetd}/bin/greetd";
+
+        IgnoreSIGPIPE = "no";
+        SendSIGHUP = "yes";
+        TimeoutStopSec = "30s";
+        KeyringMode = "shared";
+
+        # Wayland is way faster to start up
+        StartLimitBurst = lib.mkForce "5";
       };
+
+      startLimitIntervalSec = 30;
+      restartTriggers = lib.mkForce [];
     };
 
     users.users.greeter.isSystemUser = true;
