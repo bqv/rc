@@ -41,5 +41,6 @@ See `comint-run'."
 (defun pulseaudio-ctl/volume-down (&rest r)
   (interactive)
   (shell-command-to-string "pulseaudio-ctl down"))
-(define-key desktop-environment-mode-map (kbd "<269025043>") 'pulseaudio-ctl/volume-up)
-(define-key desktop-environment-mode-map (kbd "<269025041>") 'pulseaudio-ctl/volume-down)
+(define-key desktop-environment-mode-map (kbd "<269025043>") #'pulseaudio-ctl/volume-up) ; mouse v-up
+(define-key desktop-environment-mode-map (kbd "<269025041>") #'pulseaudio-ctl/volume-down) ; mouse v-down
+(define-key desktop-environment-mode-map (kbd "<269025073>") #'emms-pause) ; headset btn
