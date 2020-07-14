@@ -99,6 +99,9 @@
       ;
       ;                             map))
          ))
+
+      (setq *swank-port* 4005)
+      (start-swank)
     '';
   };
 }

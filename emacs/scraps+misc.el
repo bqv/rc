@@ -44,3 +44,7 @@ See `comint-run'."
 (define-key desktop-environment-mode-map (kbd "<269025043>") #'pulseaudio-ctl/volume-up) ; mouse v-up
 (define-key desktop-environment-mode-map (kbd "<269025041>") #'pulseaudio-ctl/volume-down) ; mouse v-down
 (define-key desktop-environment-mode-map (kbd "<269025073>") #'emms-pause) ; headset btn
+
+(defun nyxt-repl ()
+  (interactive)
+  (slime-connect "localhost" 4005))
