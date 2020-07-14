@@ -27,6 +27,7 @@
       ./shells/fish
       ./shells/xonsh
       ./browsers/firefox
+      ./browsers/nyxt
       ./company/locationextreme
       ./editors/emacs
       ./editors/vim
@@ -137,55 +138,59 @@
 
       mimeApps = let
         firefox = "firefox.desktop";
+        nyxt = "nyxt.desktop";
         qutebrowser = "org.qutebrowser.qutebrowser.desktop";
         thunderbird = "thunderbird.desktop";
+
+        defaultBrowser = nyxt;
+        defaultMailer = thunderbird;
       in {
         enable = true;
 
-        defaultApplications."text/html" = firefox;
-        defaultApplications."x-scheme-handler/http" = firefox;
-        defaultApplications."x-scheme-handler/https" = firefox;
-        defaultApplications."x-scheme-handler/ftp" = firefox;
-        defaultApplications."x-scheme-handler/chrome" = firefox;
-        defaultApplications."application/x-extension-htm" = firefox;
-        defaultApplications."application/x-extension-html" = firefox;
-        defaultApplications."application/x-extension-shtml" = firefox;
-        defaultApplications."application/xhtml+xml" = firefox;
-        defaultApplications."application/x-extension-xhtml" = firefox;
-        defaultApplications."application/x-extension-xht" = firefox;
+        defaultApplications."text/html" = defaultBrowser;
+        defaultApplications."x-scheme-handler/http" = defaultBrowser;
+        defaultApplications."x-scheme-handler/https" = defaultBrowser;
+        defaultApplications."x-scheme-handler/ftp" = defaultBrowser;
+        defaultApplications."x-scheme-handler/chrome" = defaultBrowser;
+        defaultApplications."application/x-extension-htm" = defaultBrowser;
+        defaultApplications."application/x-extension-html" = defaultBrowser;
+        defaultApplications."application/x-extension-shtml" = defaultBrowser;
+        defaultApplications."application/xhtml+xml" = defaultBrowser;
+        defaultApplications."application/x-extension-xhtml" = defaultBrowser;
+        defaultApplications."application/x-extension-xht" = defaultBrowser;
 
-        defaultApplications."x-scheme-handler/about" = qutebrowser;
-        defaultApplications."x-scheme-handler/unknown" = qutebrowser;
+        defaultApplications."x-scheme-handler/about" = defaultBrowser;
+        defaultApplications."x-scheme-handler/unknown" = defaultBrowser;
 
-        defaultApplications."x-scheme-handler/mailto" = thunderbird;
-        defaultApplications."x-scheme-handler/news" = thunderbird;
-        defaultApplications."x-scheme-handler/snews" = thunderbird;
-        defaultApplications."x-scheme-handler/nntp" = thunderbird;
-        defaultApplications."x-scheme-handler/feed" = thunderbird;
-        defaultApplications."message/rfc822" = thunderbird;
-        defaultApplications."application/rss+xml" = thunderbird;
-        defaultApplications."application/x-extension-rss" = thunderbird;
+        defaultApplications."x-scheme-handler/mailto" = defaultMailer;
+        defaultApplications."x-scheme-handler/news" = defaultMailer;
+        defaultApplications."x-scheme-handler/snews" = defaultMailer;
+        defaultApplications."x-scheme-handler/nntp" = defaultMailer;
+        defaultApplications."x-scheme-handler/feed" = defaultMailer;
+        defaultApplications."message/rfc822" = defaultMailer;
+        defaultApplications."application/rss+xml" = defaultMailer;
+        defaultApplications."application/x-extension-rss" = defaultMailer;
 
-        associations.added."x-scheme-handler/http" = [ firefox ];
-        associations.added."x-scheme-handler/https" = [ firefox ];
-        associations.added."x-scheme-handler/ftp" = [ firefox ];
-        associations.added."x-scheme-handler/chrome" = [ firefox ];
-        associations.added."text/html" = [ firefox ];
-        associations.added."application/xhtml+xml" = [ firefox ];
-        associations.added."application/x-extension-htm" = [ firefox ];
-        associations.added."application/x-extension-html" = [ firefox ];
-        associations.added."application/x-extension-shtml" = [ firefox ];
-        associations.added."application/x-extension-xhtml" = [ firefox ];
-        associations.added."application/x-extension-xht" = [ firefox ];
+        associations.added."x-scheme-handler/http" = [ defaultBrowser ];
+        associations.added."x-scheme-handler/https" = [ defaultBrowser ];
+        associations.added."x-scheme-handler/ftp" = [ defaultBrowser ];
+        associations.added."x-scheme-handler/chrome" = [ defaultBrowser ];
+        associations.added."text/html" = [ defaultBrowser ];
+        associations.added."application/xhtml+xml" = [ defaultBrowser ];
+        associations.added."application/x-extension-htm" = [ defaultBrowser ];
+        associations.added."application/x-extension-html" = [ defaultBrowser ];
+        associations.added."application/x-extension-shtml" = [ defaultBrowser ];
+        associations.added."application/x-extension-xhtml" = [ defaultBrowser ];
+        associations.added."application/x-extension-xht" = [ defaultBrowser ];
 
-        associations.added."x-scheme-handler/mailto" = [ thunderbird ];
-        associations.added."x-scheme-handler/news" = [ thunderbird ];
-        associations.added."x-scheme-handler/snews" = [ thunderbird ];
-        associations.added."x-scheme-handler/nntp" = [ thunderbird ];
-        associations.added."x-scheme-handler/feed" = [ thunderbird ];
-        associations.added."message/rfc822" = [ thunderbird ];
-        associations.added."application/rss+xml" = [ thunderbird ];
-        associations.added."application/x-extension-rss" = [ thunderbird ];
+        associations.added."x-scheme-handler/mailto" = [ defaultMailer ];
+        associations.added."x-scheme-handler/news" = [ defaultMailer ];
+        associations.added."x-scheme-handler/snews" = [ defaultMailer ];
+        associations.added."x-scheme-handler/nntp" = [ defaultMailer ];
+        associations.added."x-scheme-handler/feed" = [ defaultMailer ];
+        associations.added."message/rfc822" = [ defaultMailer ];
+        associations.added."application/rss+xml" = [ defaultMailer ];
+        associations.added."application/x-extension-rss" = [ defaultMailer ];
       };
     };
 

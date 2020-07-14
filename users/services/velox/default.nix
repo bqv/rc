@@ -26,7 +26,7 @@
       #      name             type    arguments
       action spawn_terminal   spawn   exec st-wl
       action spawn_emacs      spawn   exec emacsclient -c
-      action spawn_browser    spawn   exec env MOZ_ENABLE_WAYLAND=0 firefox
+      action spawn_browser    spawn   exec env -u MOZ_ENABLE_WAYLAND firefox
       action spawn_nyxt       spawn   exec nyxt
       action spawn_run        spawn   exec dmenu_run-wl
 

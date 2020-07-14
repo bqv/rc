@@ -39,6 +39,13 @@ in {
           headPat = "''\\n";
           tailPat = "^\\s*''";
         };
+        nix-clisp = basicPolymode {
+          host = "nix";
+          inner = "common-lisp";
+          discrim = "dsquoted";
+          headPat = "''\\n";
+          tailPat = "^\\s*''";
+        };
         nix-sh = basicPolymode {
           host = "nix";
           inner = "sh";
