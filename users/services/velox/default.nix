@@ -24,17 +24,16 @@
       set tag.9.name                      9
 
       #      name             type    arguments
-      action spawn_lone_term  spawn   exec env DVTM=off st-wl
       action spawn_terminal   spawn   exec st-wl
       action spawn_emacs      spawn   exec emacsclient -c
-      action spawn_run        spawn   exec dmenu_run-wl
-      action spawn_browser    spawn   exec firefox
+      action spawn_browser    spawn   exec env MOZ_ENABLE_WAYLAND=0 firefox
       action spawn_nyxt       spawn   exec nyxt
+      action spawn_run        spawn   exec dmenu_run-wl
 
       #   key         modifiers           action
       key j           mod                 focus_next
       key k           mod                 focus_prev
-     #key Return      mod                 zoom
+      key z           mod                 zoom
       key space       mod                 layout_next
       key Tab         mod                 previous_tags
       key q           mod,shift           quit
@@ -51,10 +50,10 @@
 
       key Return      mod,shift           spawn_terminal
       key Return      mod                 spawn_emacs
-      key w           mod                 spawn_lone_term
+      key b           mod,shift           spawn_browser
+      key b           mod                 spawn_nyxt
       key r           mod                 spawn_run
-      key b           mod                 spawn_browser
-      key n           mod                 spawn_nyxt
+      key p           mod                 spawn_run
 
       key 1           mod                 tag.1.activate
       key 2           mod                 tag.2.activate
