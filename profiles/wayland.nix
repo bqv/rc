@@ -60,13 +60,16 @@
       tty = 9;
     };
     systemd.services.swc-launch = {
+      enable = lib.mkForce false;
       wantedBy = lib.mkForce [];
     };
     systemd.services.greetd = {
+      enable = true;
       serviceConfig.ExecStart = "${pkgs.greetd}/bin/greetd";
       wantedBy = [ "multi-user.target" ];
     };
     systemd.services.display-manager = {
+      enable = lib.mkForce false;
       unitConfig = {
         Before = "swc-launch.service";
         Wants = "swc-launch.service";
