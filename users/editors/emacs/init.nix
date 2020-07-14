@@ -83,8 +83,7 @@ let
 
     (defun watchdog-systemd-notify ()
       (with-timeout (10)
-        (sd_notify "systemd-notify"
-                   '("READY" . 1)
+        (sd_notify '("READY" . 1)
                    );`("WATCHDOG_USEC" . ,(* 120 1000000)))
         (log--trace "Notified at %s" (time-stamp-string))))
     (defun config-end ()
