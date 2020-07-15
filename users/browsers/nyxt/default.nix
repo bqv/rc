@@ -72,44 +72,42 @@
 
       (define-command scroll-page-up ()
         "Scroll up by one page height."
-        (%scroll-page-up)
-      ; )
-      ;
-      ;(define-configuration buffer
-      ;  (
-        (keymap-scheme-name scheme:emacs)
+        (%scroll-page-up))
+
+      (define-configuration buffer
+        ((keymap-scheme-name scheme:emacs)
          (default-new-buffer-url "about:blank")
+         (override-map (let ((map (make-keymap "override-map")))
+                                   (define-key map
+                                     "M-x" 'execute-command
+                                     "C-x C-c" 'quit)
+                                  ;(define-key map "C-x s" 'shell)
+                                   (define-key map "C-r" 'reload-page)
+                                   (define-key map
+                                     "C-v" 'scroll-page-down
+                                     "M-v" 'scroll-page-up)
+                                   map))
+         ))
+
+      (define-configuration browser
+        ((session-restore-prompt :always-restore)
+         (autofills (list (nyxt::make-autofill :key "Name" :fill "${secrets.name}")))
+         (external-editor-program "gnvim")
          (start-page-url "https://nyxt.atlas.engineer/quickstart")
          (search-engines (list (make-instance 'search-engine
                                               :shortcut "default"
                                               :search-url "https://qwant.com/?q=~a"
                                               :fallback-url "https://qwant.com/")
                                (make-instance 'search-engine
-                                              :shortcut "qwant"
+                                              :shortcut "qw"
                                               :search-url "https://qwant.com/?q=~a"
                                               :fallback-url "https://qwant.com/")
                                (make-instance 'search-engine
-                                              :shortcut "github"
+                                              :shortcut "gh"
                                               :search-url "https://github.com/?q=~a"
                                               :fallback-url "https://github.com/")
                                ))
-      ;  (override-map (let ((map (make-keymap "override-map")))
-      ;                            (define-key map
-      ;                              "M-x" #'execute-command
-      ;                              "C-x C-c" #'quit)
-      ;                            (define-key map "C-x s" #'shell)
-      ;                            (define-key map "C-r" #'reload-page)
-      ;                            (define-key map
-      ;                              "C-v" #'scroll-page-down
-      ;                              "M-v" #'scroll-page-up)
-      ;
-      ;                            map))
          ))
-
-      (define-configuration browser
-        ((session-restore-prompt :always-ask)
-         (autofills (list (nyxt::make-autofill :key "Name" :fill "${secrets.name}")))
-         (external-editor-program "gnvim")))
     '';
   };
 }

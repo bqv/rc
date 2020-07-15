@@ -191,9 +191,7 @@
       (defun set-frame-scale (n)
         (interactive "nFont Size: ")
         (set-frame-font (format "DejaVu Sans Mono-%s" n)))
-      (defun set-default-frame-scale ()
-        (set-frame-scale 8))
-      (add-hook server-after-make-frame-hook #'set-default-frame-scale)
+      (global-set-key (kbd "<65300>") #'set-frame-scale)
     '';
   };
 }
