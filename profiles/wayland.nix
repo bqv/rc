@@ -66,6 +66,7 @@
       wantedBy = lib.mkForce [];
     };
 
+    systemd.services."autovt@tty1".enable = lib.mkForce false;
     systemd.services."getty@tty1".enable = lib.mkForce false;
     systemd.services.display-manager = lib.mkForce {
       enable = true;
@@ -98,6 +99,8 @@
 
       startLimitIntervalSec = 30;
       restartTriggers = lib.mkForce [];
+      restartIfChanged = false;
+      stopIfChanged = false;
       aliases = [ "greetd.service" ];
       wantedBy = [ "graphical.target" ];
     };
