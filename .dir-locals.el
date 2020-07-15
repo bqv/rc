@@ -4,7 +4,7 @@
 ((nil . (
         ;(eval . (set (make-local-variable 'default-directory)
         ;             (locate-dominating-file buffer-file-name ".dir-locals.el")))
-         (compile-command . "nixos -Tvbas")
+         (compile-command . "nixos -basv")
          (eval . (setq projectile-project-compilation-cmd
-                       "nixos -Tvbas"))
+                       "nixos -basv"))
          )))
