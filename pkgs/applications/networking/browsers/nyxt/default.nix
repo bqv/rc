@@ -38,7 +38,7 @@ let
       buildInputs = [
         lisp openssl libfixposix
         glib gdk-pixbuf cairo
-        pango gtk3 webkitgtk
+        pango gtk3 webkitgtk vivaldi-widevine
         glib-networking gsettings-desktop-schemas
         xclip notify-osd enchant
       ];

@@ -6,7 +6,9 @@
       secrets = import ../../../secrets/nyxt.autofill.nix;
     in ''
       (setq *swank-port* 4005)
-      (start-swank)
+      (handler-case
+        (start-swank)
+        (error () nil))
 
       (define-mode shell-mode ()
           "A basic shell prompt."
@@ -70,10 +72,12 @@
 
       (define-command scroll-page-up ()
         "Scroll up by one page height."
-        (%scroll-page-up))
-
-      (define-configuration buffer
-        ((keymap-scheme-name scheme:emacs)
+        (%scroll-page-up)
+      ; )
+      ;
+      ;(define-configuration buffer
+      ;  (
+        (keymap-scheme-name scheme:emacs)
          (default-new-buffer-url "about:blank")
          (start-page-url "https://nyxt.atlas.engineer/quickstart")
          (search-engines (list (make-instance 'search-engine
