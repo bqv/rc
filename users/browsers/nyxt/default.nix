@@ -2,6 +2,7 @@
 
 {
   config = {
+    home.file.".config/nyxt/init.lisp".force = true;
     home.file.".config/nyxt/init.lisp".text = let
       secrets = import ../../../secrets/nyxt.autofill.nix;
     in ''
