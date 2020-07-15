@@ -189,9 +189,9 @@
             '("" mode-line-misc-info)))
 
       (defun set-frame-scale (n)
-        (interactive "nFont Size: ")
+        (interactive "NFont Size: ")
         (set-frame-font (format "DejaVu Sans Mono-%s" n)))
-      (global-set-key (kbd "<65300>") #'set-frame-scale)
+      (define-key desktop-environment-mode-map (kbd "<65300>") #'set-frame-scale)
     '';
   };
 }
