@@ -67,7 +67,7 @@
     };
 
     systemd.services."getty@tty1".enable = lib.mkForce false;
-    systemd.services.display-manager = {
+    systemd.services.display-manager = lib.mkForce {
       enable = true;
 
       unitConfig = lib.mkForce {
@@ -98,6 +98,8 @@
 
       startLimitIntervalSec = 30;
       restartTriggers = lib.mkForce [];
+      aliases = [ "greetd.service" "display-manager.service" ];
+      wantedBy = [ "graphical.target" ];
     };
 
     users.users.greeter.isSystemUser = true;
