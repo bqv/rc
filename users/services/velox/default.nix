@@ -1,7 +1,13 @@
 { config, lib, pkgs, ... }:
 
 {
-  config = {
+  config = let
+    emacsclient = pkgs.writeShellScript "emacsclient-run" ''
+      exec systemd-run --user --scope \
+        -p BindsTo=emacs.service -p After=emacs.service \
+        emacsclient -c
+    '';
+  in {
     home.file.".velox.conf".text = ''
       # velox.conf
 
@@ -25,7 +31,7 @@
 
       #      name             type    arguments
       action spawn_terminal   spawn   exec st-wl
-      action spawn_emacs      spawn   exec emacsclient -c
+      action spawn_emacs      spawn   exec ${emacsclient}
       action spawn_browser    spawn   exec env -u MOZ_ENABLE_WAYLAND firefox
       action spawn_nyxt       spawn   exec nyxt
       action spawn_run        spawn   exec dmenu_run-wl

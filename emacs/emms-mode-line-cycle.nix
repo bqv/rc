@@ -1,10 +1,11 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.slime = {
+  emacs-loader.emms-mode-line-cycle = {
     demand = true;
+    after = [ "emms" ];
     config = ''
-      (setq slime-auto-connect 'always)
+      nil
     '';
   };
 }

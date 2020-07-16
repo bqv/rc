@@ -9,6 +9,7 @@
       (setq *swank-port* 4005)
       (handler-case
         (start-swank)
+        (uiop:launch-program (list "emacsclient" "--eval" "(nyxt-repl)"))
         (error () nil))
 
       (define-mode shell-mode ()
@@ -92,8 +93,8 @@
 
       (define-configuration browser
         ((session-restore-prompt :always-restore)
-         (autofills (list (nyxt::make-autofill :key "Name" :fill "${secrets.name}")))
          (external-editor-program "gnvim")
+         (download-path (make-instance 'download-data-path :dirname "~/tmp"))
          (start-page-url "https://nyxt.atlas.engineer/quickstart")
          (search-engines (list (make-instance 'search-engine
                                               :shortcut "default"
@@ -108,6 +109,7 @@
                                               :search-url "https://github.com/?q=~a"
                                               :fallback-url "https://github.com/")
                                ))
+         (autofills (list (nyxt::make-autofill :key "Name" :fill "${secrets.name}")))
          ))
     '';
   };

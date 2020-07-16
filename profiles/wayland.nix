@@ -11,6 +11,7 @@
       st-velox
       wl-clipboard clipman
       kanshi
+      mako
     ];
 
     environment.etc = {
