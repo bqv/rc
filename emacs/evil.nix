@@ -18,7 +18,7 @@
       (evil-set-initial-state 'term-mode 'emacs)
       (evil-set-initial-state 'vterm-mode 'emacs)
       (evil-set-initial-state 'dashboard-mode 'emacs)
-      (evil-set-initial-state 'magit-mode 'emacs)
+      (evil-set-initial-state 'magit-mode 'insert)
       (evil-mode 1)
       (define-key evil-insert-state-map (kbd "C-e") 'move-end-of-line)
       (define-key evil-insert-state-map (kbd "C-k") 'kill-line)

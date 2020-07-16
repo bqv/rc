@@ -9,9 +9,6 @@
     environment.systemPackages = with pkgs; with velox; [
       dmenu (pkgs.lowPrio dmenu-velox)
       st-velox
-      wl-clipboard clipman
-      kanshi
-      mako
     ];
 
     environment.etc = {
