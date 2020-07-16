@@ -5,6 +5,7 @@
     demand = true;
     config = ''
       (setq slime-auto-connect 'always)
+      (setq slime-enable-evaluate-in-emacs t)
     '';
   };
 }
