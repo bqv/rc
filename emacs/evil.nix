@@ -19,6 +19,8 @@
       (evil-set-initial-state 'vterm-mode 'emacs)
       (evil-set-initial-state 'dashboard-mode 'emacs)
       (evil-set-initial-state 'magit-mode 'insert)
+      (evil-set-initial-state 'magit-log-edit-mode 'insert)
+      (add-hook 'git-commit-mode-hook 'evil-insert-state)
       (evil-mode 1)
       (define-key evil-insert-state-map (kbd "C-e") 'move-end-of-line)
       (define-key evil-insert-state-map (kbd "C-k") 'kill-line)
