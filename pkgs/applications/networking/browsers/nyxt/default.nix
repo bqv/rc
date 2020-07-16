@@ -36,7 +36,7 @@ let
 
       nativeBuildInputs = [ git cacert makeWrapper wrapGAppsHook ];
       buildInputs = [
-        lisp openssl libfixposix
+        lisp openssl libfixposix mime-types
         glib gdk-pixbuf cairo
         pango gtk3 webkitgtk vivaldi-widevine
         glib-networking gsettings-desktop-schemas
