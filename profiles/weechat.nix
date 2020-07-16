@@ -29,7 +29,7 @@ in { # TODO: https://github.com/rycee/home-manager/pull/953
       LogsDirectory = "weechat";
       StateDirectory = "weechat";
       RuntimeDirectory = "weechat";
-      ExecStartPost = with pkgs; ''${bash}/bin/bash -c "sleep 60 && echo -e '/allpv close' | ${dtach}/bin/dtach -p /run/weechat/weechat || true"'';
+     #ExecStartPost = with pkgs; ''${bash}/bin/bash -c "sleep 60 && echo -e '/allpv close' | ${dtach}/bin/dtach -p /run/weechat/weechat || true"'';
     };
     path = [ "/run/current-system/sw" ];
     script = with pkgs; ''
