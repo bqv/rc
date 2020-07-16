@@ -138,9 +138,9 @@ in lib.recurseIntoAttrs rec {
     src = fetchFromGitHub {
       owner = "lastquestion";
       repo = "explain-pause-mode";
-      rev = "87b047865488df73d64f884d077c28128c0a9ce2";
-      sha256 = "0040vjlz76w49m2j7dyvmmghpcw917d0c2vdv2rj2j3rr55fnzaw";
-      # date = 2020-07-15T00:12:49-07:00;
+      rev = "319ba9aa1ab2e185a4085dc685007a35213a6e86";
+      sha256 = "1y3gwwryr6wg82x8ibzrkrii47i4qrdfv9y10zvif5l8rvj2fjmk";
+      # date = 2020-07-15T22:44:47-07:00;
     };
     buildInputs = with emacsPackages; [
     ];

@@ -8,8 +8,9 @@
     in ''
       (setq *swank-port* 4005)
       (handler-case
-        (start-swank)
-        (uiop:launch-program (list "emacsclient" "--eval" "(nyxt-repl)"))
+        (progn
+          (start-swank)
+          (uiop:launch-program (list "emacsclient" "--eval" "(nyxt-repl)")))
         (error () nil))
 
       (define-mode shell-mode ()
