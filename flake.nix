@@ -9,7 +9,7 @@
     pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd";
 
     nix.url = "github:nixos/nix/master";
-    nix.inputs.nixpkgs.follows = "master";
+   #nix.inputs.nixpkgs.follows = "master"; # hmm
 
     dwarffs.url = "github:edolstra/dwarffs";
     dwarffs.inputs.nix.follows = "nix";
