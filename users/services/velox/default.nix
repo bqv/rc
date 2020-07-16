@@ -3,9 +3,8 @@
 {
   config = let
     emacsclient = pkgs.writeShellScript "emacsclient-run" ''
-      exec systemd-run --user --scope \
-        -p BindsTo=emacs.service -p After=emacs.service \
-        emacsclient -c
+      systemctl start --user emacs.service || exit 1
+      exec emacsclient -c
     '';
   in {
     home.file.".velox.conf".text = ''
