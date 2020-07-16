@@ -132,6 +132,20 @@ in lib.recurseIntoAttrs rec {
     '';
   };
 
+  explain-pause-mode = trivialBuild rec {
+    pname = baseNameOf src.meta.homepage;
+    version = lib.substring 0 7 src.rev;
+    src = fetchFromGitHub {
+      owner = "lastquestion";
+      repo = "explain-pause-mode";
+      rev = "87b047865488df73d64f884d077c28128c0a9ce2";
+      sha256 = "0040vjlz76w49m2j7dyvmmghpcw917d0c2vdv2rj2j3rr55fnzaw";
+      # date = 2020-07-15T00:12:49-07:00;
+    };
+    buildInputs = with emacsPackages; [
+    ];
+  };
+
   _0xc = null;
   _2048-game = null;
   _4clojure = null;
