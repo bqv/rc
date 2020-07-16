@@ -8,7 +8,7 @@
     large.url = "github:nixos/nixpkgs/nixos-unstable";
     pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd";
 
-    nix.url = "github:nixos/nix/flakes";
+    nix.url = "github:nixos/nix/master";
     nix.inputs.nixpkgs.follows = "master";
 
     dwarffs.url = "github:edolstra/dwarffs";
@@ -237,9 +237,10 @@
       inherit (pkgs.emacsPackages) bitwarden ivy-exwm;
       inherit (pkgs.emacsPackages) flycheck-purescript eterm-256color;
       inherit (pkgs.emacsPackages) envrc emacsbridge font-lock-ext sln-mode;
+      inherit (pkgs.emacsPackages) emacs-ffi explain-pause-mode;
       inherit (pkgs.dotnetPackages) azure-functions-core-tools;
       inherit (pkgs) dgit dejavu_nerdfont electronmail;
-      inherit (pkgs) flarectl fsnoop git-pr-mirror ipfscat;
+      inherit (pkgs) flarectl fsnoop git-pr-mirror greetd ipfscat;
       inherit (pkgs) matrix-appservice-irc mx-puppet-discord;
       inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
       inherit (pkgs) nyxt pure sddm-chili shflags velox yacy;
