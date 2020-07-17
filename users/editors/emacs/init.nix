@@ -237,7 +237,7 @@ let
             server-host "0.0.0.0"
             server-port 2222)
       (if (not (server-running-p))
-          (server-mode t)))
+          (server-start)))
 
     (progn
       ${lib.concatMapStrings ({ sym, script }: ''
