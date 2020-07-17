@@ -4,6 +4,7 @@
   environment.systemPackages = let
     packages = pythonPackages:
       with pythonPackages; [
+        pkgs.hy
         nixpkgs
         numpy
         pandas
