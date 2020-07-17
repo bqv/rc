@@ -78,17 +78,17 @@
         (%scroll-page-up))
 
       (define-configuration buffer
-        ((keymap-scheme-name scheme:emacs)
+        ((keymap-scheme-name scheme:vi-normal)
          (default-new-buffer-url "about:blank")
          (override-map (let ((map (make-keymap "override-map")))
-                                   (define-key map
-                                     "M-x" 'execute-command
-                                     "C-x C-c" 'quit)
                                   ;(define-key map "C-x s" 'shell)
                                    (define-key map "C-r" 'reload-page)
+                                  ;(define-key map
+                                  ;  "C-v" 'scroll-page-down
+                                  ;  "M-v" 'scroll-page-up)
                                    (define-key map
-                                     "C-v" 'scroll-page-down
-                                     "M-v" 'scroll-page-up)
+                                     "j" 'scroll-page-down
+                                     "k" 'scroll-page-up)
                                    map))
          ))
 
