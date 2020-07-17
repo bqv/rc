@@ -14,7 +14,7 @@
       ];
 
     python = pkgs.python3.withPackages packages;
-  in [ python ];
+  in [ python pkgs.hy ];
 
   environment.sessionVariables = {
     PYTHONSTARTUP = let
