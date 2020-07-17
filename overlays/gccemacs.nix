@@ -1,19 +1,13 @@
 final: prev: rec {
   gccEmacs = let
     shortrev = prev.lib.substring 0 7;
-    preMerged = prev.fetchFromGitHub {
-      owner = "bqv";
-      repo = "emacs";
-      rev = "0f468a2f8bd6b8950be92431905b79f4d36ef8fd";
-      sha256 = "09hkn99jdwa0wm3kl1lfdirby22pyd5qa42hqamfd5x70s67141v";
-    };
 
-    nrev = "2593bbee51f4d15d3a4fc1d4e2e3b215222f783a";#final.emacsGcc.src.rev;
+    nrev = final.emacsGcc.src.rev;
     wrev = final.emacs-pgtk.src.rev;
 
     nativecomp = prev.fetchzip {
       url = "http://github.com/emacs-mirror/emacs/archive/${nrev}.zip";
-      sha256 = "3jLpUATsIupns9uTLDiRI84vX21Crps/TQquhUOMUkQ=";#final.emacsGcc.src.outputHash;
+      sha256 = final.emacsGcc.src.outputHash;
     };
     pgtk = prev.fetchzip {
       url = "http://github.com/masm11/emacs/archive/${wrev}.zip";
