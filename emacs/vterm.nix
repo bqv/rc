@@ -54,6 +54,11 @@
           (assert (not (null executable)))
           (let ((vterm-shell (concat "ssh " server " -t sudo " command)))
             (vterm buffer-name))))
+      (defun htop (with-sudo)
+        (interactive "P")
+        (if with-sudo
+          (vterm-run-sudo "htop")
+          (vterm-run "htop")))
     '';
     systemDeps = with pkgs; [ cmake libtool libvterm ];
   };
