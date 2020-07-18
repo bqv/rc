@@ -10,7 +10,8 @@
       (handler-case
         (progn
           (start-swank)
-          (uiop:launch-program (list "emacsclient" "--eval" "(nyxt-repl)")))
+          (uiop:launch-program (list "emacsclient" "--eval" "(nyxt-repl)"))
+          (uiop:launch-program (list "emacsclient" "--eval" "(setq slime-enable-evaluate-in-emacs t)")))
         (error () nil))
 
       (define-mode shell-mode ()
@@ -77,6 +78,31 @@
         "Scroll up by one page height."
         (%scroll-page-up))
 
+      (defun emacs-paste ()
+        (swank::eval-in-emacs '(substring-no-properties (current-kill 0))))
+      (defun emacs-copy (s)
+        (swank::eval-in-emacs `(kill-new ,s)))
+      (defun message (s)
+        (swank::eval-in-emacs `(message ,s)))
+
+      (define-command paste-from-emacs ()
+        "Paste text from emacs kill-ring."
+        (%paste :input-text (emacs-paste)))
+
+      (define-command copy-to-emacs ()
+        "Copy text to emacs kill-ring."
+        (with-result (input (%copy))
+          (emacs-paste input)
+          (echo "Sent!")
+          (message "Recieved!")))
+
+      (define-command copy-url-to-emacs ()
+        "Copy url to emacs kill-ring."
+        (with-result (url (object-string (url (current-buffer))))
+          (emacs-paste input)
+          (echo "Sent!")
+          (message "Recieved!")))
+
       (define-configuration buffer
         ((keymap-scheme-name scheme:vi-normal)
          (default-new-buffer-url "about:blank")
@@ -89,6 +115,9 @@
                                    (define-key map
                                      "j" 'scroll-page-down
                                      "k" 'scroll-page-up)
+                                   (define-key map
+                                     "C-k" 'copy-to-emacs
+                                     "C-y" 'paste-from-emacs)
                                    map))
          ))
 
