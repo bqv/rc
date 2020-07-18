@@ -48,7 +48,10 @@
       '';
     };
 
-    security.pam.services.greetd = {};
+    security.pam.services.greetd = {
+      allowNullPassword = true;
+      startSession = true;
+    };
 
     # Enable swc+velox (Wayland compositor) as alternative to X11
     services.swc-launch = {
