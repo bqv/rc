@@ -92,29 +92,26 @@
       (define-command copy-to-emacs ()
         "Copy text to emacs kill-ring."
         (with-result (input (%copy))
-          (emacs-paste input)
-          (echo "Sent!")
-          (message "Recieved!")))
+          (emacs-copy input))
+        (echo "Sent!")
+        (message "Recieved!"))
 
       (define-command copy-url-to-emacs ()
         "Copy url to emacs kill-ring."
-        (with-result (url (object-string (url (current-buffer))))
-          (emacs-paste input)
-          (echo "Sent!")
-          (message "Recieved!")))
+        (with-result (uri (object-string (url (current-buffer))))
+          (emacs-copy uri))
+        (echo "Sent!")
+        (message "Recieved!"))
 
       (define-configuration buffer
-        ((keymap-scheme-name scheme:vi-normal)
+        ((keymap-scheme-name scheme:emacs)
          (default-new-buffer-url "about:blank")
          (override-map (let ((map (make-keymap "override-map")))
                                   ;(define-key map "C-x s" 'shell)
                                    (define-key map "C-r" 'reload-page)
-                                  ;(define-key map
-                                  ;  "C-v" 'scroll-page-down
-                                  ;  "M-v" 'scroll-page-up)
                                    (define-key map
-                                     "j" 'scroll-page-down
-                                     "k" 'scroll-page-up)
+                                     "C-v" 'scroll-page-down
+                                     "M-v" 'scroll-page-up)
                                    (define-key map
                                      "C-k" 'copy-to-emacs
                                      "C-y" 'paste-from-emacs)
