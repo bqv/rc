@@ -30,7 +30,6 @@
       configurationLimit = 16;
     };
   };
-  boot.plymouth.enable = true;
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbcore" "sd_mod" "sr_mod" "amdgpu" ];
   boot.initrd.kernelModules = [ "amdgpu" ];

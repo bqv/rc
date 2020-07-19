@@ -180,6 +180,7 @@ let
           scroll-conservatively 100000
           scroll-preserve-screen-position 1)
     (setq-default indent-tabs-mode nil)
+    (setq view-read-only t)
     (setq compilation-scroll-output t)
     (when (fboundp 'windmove-default-keybindings)
       (windmove-default-keybindings))
