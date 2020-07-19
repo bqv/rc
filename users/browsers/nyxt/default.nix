@@ -87,21 +87,20 @@
 
       (define-command paste-from-emacs ()
         "Paste text from emacs kill-ring."
-        (%paste :input-text (emacs-paste)))
+        (swank::eval-in-emacs `(nyxt-push (substring-no-properties (current-kill 0))))
+        (%paste :input-text (containers:first-item (clipboard-ring *browser*))))
 
       (define-command copy-to-emacs ()
         "Copy text to emacs kill-ring."
         (with-result (input (%copy))
-          (emacs-copy input))
-        (echo "Sent!")
-        (message "Recieved!"))
+          (containers:insert-item (clipboard-ring *browser*) input))
+        (swank::eval-in-emacs `(nyxt-pull)))
 
       (define-command copy-url-to-emacs ()
         "Copy url to emacs kill-ring."
         (with-result (uri (object-string (url (current-buffer))))
-          (emacs-copy uri))
-        (echo "Sent!")
-        (message "Recieved!"))
+          (containers:insert-item (clipboard-ring *browser*) uri))
+        (swank::eval-in-emacs `(nyxt-pull)))
 
       (define-configuration buffer
         ((keymap-scheme-name scheme:emacs)
