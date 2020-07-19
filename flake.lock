@@ -509,11 +509,11 @@
     },
     "pr75800": {
       "locked": {
-        "lastModified": 1585273838,
-        "narHash": "sha256-mYGc8vcZyeUte3sah3SdIIHijm2TyeObdVAerNZ4uf8=",
+        "lastModified": 1595080042,
+        "narHash": "sha256-4qdMZ3jPN84DZPcPJeTWECoM0HVaOKMgejSGI7ra7x0=",
         "owner": "ma27",
         "repo": "nixpkgs",
-        "rev": "e5196a557779341c74aba7036161dbe5a722161d",
+        "rev": "90544bac34513039069d7fe717c5dcf20c742d94",
         "type": "github"
       },
       "original": {
