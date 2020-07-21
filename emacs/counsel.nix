@@ -7,14 +7,13 @@
     bind = {
       "M-x" = "counsel-M-x";
       "C-x M-f" = "counsel-recentf";
-      #"C-y" = "counsel-yank-pop";
+     #"C-y" = "counsel-yank-pop";
     };
     config = ''
       (setq ivy-initial-inputs-alist nil)
       (recentf-mode 1)
       (setq recentf-max-menu-items 64)
       (setq recentf-max-saved-items 64)
-      (add-hook 'after-save-hook 'recentf-save-list)
       (run-at-time nil (* 5 60) 'recentf-save-list)
 
       (defun suppress-messages (func &rest args)
