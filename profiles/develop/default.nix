@@ -26,12 +26,15 @@
     htop
     iotop
     less
+    lsof
     ltrace
     mercurial
     ncdu
     nix-diff
     nix-top
+    page
     pass
+    psmisc
     strace
     socat
     subversion
