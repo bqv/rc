@@ -99,18 +99,19 @@
         ${home-config.programs.emacs.package}/bin/emacsclient --eval "(emms-play-file \"$@\")"
       '';
     in [
+      appimage-run # Package Tools
       abduco dvtm # Terminal Multiplexing
       yadm # Dotfile Management
       pstree # Process Monitoring
       pv pup # Pipe Management
       timewarrior # Time Management
       nmap wget curl mitmproxy aria2 # Network Utilities
-      ipfscat onionshare nyxt # Communication Tools
+      ipfscat onionshare nyxt tuir # Communication Tools
       bitwarden-cli protonvpn-cli-ng # Password Management
       file exa unrar unzip ncdu tree # File Management
       audacity # Audio Utilities
       xpra xsel xclip scrot # X11 Utilities
-      gdb lldb radare2 radare2-cutter jadx # Debug Utilities
+      gdb lldb radare2 radare2-cutter jadx stress # Debug Utilities
     ] ++ lib.optional home-config.programs.emacs.enable emms-play-file;
 
     home.file."mimeapps.list".force = lib.mkForce true;
