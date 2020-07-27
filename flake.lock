@@ -654,6 +654,7 @@
         "pr75800": "pr75800",
         "small": "small",
         "snack": "snack",
+        "stable": "stable",
         "staged": "staged",
         "utils": "utils",
         "wayland": "wayland",
@@ -737,6 +738,22 @@
       "original": {
         "owner": "dyuri",
         "repo": "xontrib-ssh-agent",
+        "type": "github"
+      }
+    },
+    "stable": {
+      "locked": {
+        "lastModified": 1595801797,
+        "narHash": "sha256-esMYMOrelVZv9l+FbJpg+rRl5EFCXlSMLaze75m6s2s=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "b50d55871fb7de1e5791bbd56738ff20f4d15f2c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-20.03",
+        "repo": "nixpkgs",
         "type": "github"
       }
     },

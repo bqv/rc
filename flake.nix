@@ -3,6 +3,7 @@
 
   inputs = {
     master.url = "github:nixos/nixpkgs/master";
+    stable.url = "github:nixos/nixpkgs/nixos-20.03";
     staged.url = "github:nixos/nixpkgs/staging";
     small.url = "github:nixos/nixpkgs/nixos-unstable-small";
     large.url = "github:nixos/nixpkgs/nixos-unstable";
@@ -85,6 +86,7 @@
       inherit system config;
       overlays = (attrValues inputs.self.overlays) ++ [
         (channelToOverlay { inherit system config; flake = "master"; branch = "master"; })
+        (channelToOverlay { inherit system config; flake = "stable"; branch = "nixos-20.03"; })
         (channelToOverlay { inherit system config; flake = "staged"; branch = "staging"; })
         (channelToOverlay { inherit system config; flake = "small"; branch = "nixos-unstable-small"; })
         (channelToOverlay { inherit system config; flake = "large"; branch = "nixos-unstable"; })
@@ -95,6 +97,7 @@
           snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
           napalm = pkgs.callPackage inputs.napalm;
           inherit (pkgs.staged) mitmproxy;
+          inherit (pkgs.stable) firefox;
         })
         inputs.nix.overlay
         inputs.guix.overlay
