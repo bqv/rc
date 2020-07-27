@@ -97,7 +97,7 @@
           snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
           napalm = pkgs.callPackage inputs.napalm;
           inherit (pkgs.staged) mitmproxy;
-          inherit (pkgs.stable) firefox;
+          inherit (pkgs.stable) firefox thunderbird;
         })
         inputs.nix.overlay
         inputs.guix.overlay
