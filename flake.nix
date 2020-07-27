@@ -96,8 +96,6 @@
           naersk = inputs.naersk.lib.${system};
           snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
           napalm = pkgs.callPackage inputs.napalm;
-          inherit (pkgs.staged) mitmproxy;
-          inherit (pkgs.stable) firefox thunderbird;
         })
         inputs.nix.overlay
         inputs.guix.overlay
@@ -107,6 +105,11 @@
         inputs.xontribs.overlay
         inputs.wayland.overlay
         inputs.self.overlay
+        (pkgs: lib.const {
+          inherit (pkgs.staged) mitmproxy;
+          inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird webkitgtk;
+          ripcord = builtins.trace "ripcord: disabled, broken by appimageTools changes" pkgs.hello;
+        })
       ];
     };
 
@@ -319,6 +322,8 @@
     );
 
     passthru = {
+      inherit inputs;
+
       nixus = let
         inherit (import ./secrets/hosts.nix) wireguard;
       in inputs.nixus.lib.nixus ({ config, ... }: {
