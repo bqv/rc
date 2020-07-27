@@ -119,7 +119,7 @@
 
       (define-configuration browser
         ((session-restore-prompt :always-restore)
-         (external-editor-program "${pkgs.gnvim}/bin/gnvim")
+         (external-editor-program "gnvim")
          (download-path (make-instance 'download-data-path :dirname "~/tmp"))
          (start-page-url "https://nyxt.atlas.engineer/quickstart")
          (search-engines (list (make-instance 'search-engine
