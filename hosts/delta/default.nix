@@ -49,7 +49,7 @@
   in {
     "/" = btrfs // { options = [ "subvol=nixos" ]; };
     "/home" = btrfs // { options = [ "subvol=home" ]; };
-    "/nix" = btrfs // { options = [ "subvol=nix" ]; };
+    "/nix" = btrfs // { options = [ "subvol=nix" "noatime" "nodiratime" ]; };
     "/games" = btrfs // { options = [ "subvol=games" ]; };
     "/var/run/btrfs" = btrfs // { options = [ "subvolid=0" ]; };
 
