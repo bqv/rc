@@ -246,6 +246,17 @@
       inherit (pkgs) nyxt pure sddm-chili shflags velox yacy;
     });
 
+    apps = forAllSystems (system: let
+      pkgs = pkgsForSystem system;
+    in {
+      nixos = {
+        type = "app";
+        program = pkgs.callPackage ./pkgs/lib/nixos.nix {} + "/bin/nixos";
+      };
+    });
+
+    defaultApp = forAllSystems (system: inputs.self.apps.${system}.nixos);
+
     nixosModules = let
       mergeAll = lib.fold lib.recursiveUpdate {};
       pathsToAttrs = map (file:

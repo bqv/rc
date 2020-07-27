@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchzip, writeShellScriptBin, dotnetCorePackages }:
+{ lib, system, stdenv, fetchzip, writeShellScriptBin, dotnetCorePackages }:
 
 let
   sdk = dotnetCorePackages.sdk_3_1;
@@ -16,4 +16,8 @@ in wrapper.overrideAttrs (_: rec {
   pname = "azure-functions-core-tools";
   version = "3.0.2630";
   name = "${pname}-${version}";
+
+  meta = {
+    broken = system != "x86_64-linux";
+  };
 })

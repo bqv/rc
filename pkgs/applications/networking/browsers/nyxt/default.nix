@@ -90,6 +90,10 @@ let
         $out/bin/nyxt -h
       '';
 
+      meta = pkgs.next.meta // {
+        broken = pkgs.system != "x86_64-linux";
+      };
+
       __noChroot = true;
       # Packaged like a kebab in duct-tape, for now
     };
