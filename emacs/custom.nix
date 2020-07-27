@@ -5,7 +5,6 @@
     package = lib.const null;
     after = [ "doom-themes" "doom-modeline" ];
     config = ''
-      (setq custom-file "~/.emacs.d/custom.el")
       ;(if window-system
       ;  (load-theme 'hc-zenburn t)
       ;  (load-theme 'zenburn t))
