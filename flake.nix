@@ -94,6 +94,7 @@
           naersk = inputs.naersk.lib.${system};
           snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
           napalm = pkgs.callPackage inputs.napalm;
+          inherit (pkgs.staged) mitmproxy;
         })
         inputs.nix.overlay
         inputs.guix.overlay

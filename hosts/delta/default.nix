@@ -36,6 +36,10 @@
   boot.kernelModules = [ "kvm-intel" "amdgpu" "fuse" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
   boot.binfmt.emulatedSystems = [ "armv7l-linux" "aarch64-linux" ];
+  boot.postBootCommands = ''
+    echo disabled > /sys/bus/usb/devices/usb6/power/wakeup
+    echo usb6 > /sys/bus/usb/devices/usb6/driver/unbind
+  ''; # usb6 is faulty
 
   fileSystems = let
     btrfs = {
