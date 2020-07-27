@@ -42,16 +42,21 @@
   ''; # usb6 is faulty
 
   fileSystems = let
-    btrfs = {
+    hdd = {
       device = "/dev/disk/by-uuid/f46f6fe4-c480-49f0-b3fb-22e61c57069c";
       fsType = "btrfs";
     };
+    ssd = {
+      device = "/dev/disk/by-uuid/586c219f-a156-4088-8631-2a4a08bf9dc7";
+      fsType = "btrfs";
+    };
   in {
-    "/" = btrfs // { options = [ "subvol=nixos" ]; };
-    "/home" = btrfs // { options = [ "subvol=home" ]; };
-    "/nix" = btrfs // { options = [ "subvol=nix" "noatime" "nodiratime" ]; };
-    "/games" = btrfs // { options = [ "subvol=games" ]; };
-    "/var/run/btrfs" = btrfs // { options = [ "subvolid=0" ]; };
+    "/" = hdd // { options = [ "subvol=nixos" ]; };
+    "/home" = hdd // { options = [ "subvol=home" ]; };
+    "/nix" = hdd // { options = [ "subvol=nix" "noatime" "nodiratime" ]; };
+    "/games" = hdd // { options = [ "subvol=games" ]; };
+    "/var/run/hdd" = hdd // { options = [ "subvolid=0" ]; };
+    "/var/run/ssd" = ssd // { options = [ "subvolid=0" "noatime" "nodiratime" "discard=async" ]; };
 
     "/boot" = {
       device = "/dev/disk/by-uuid/CEF4-EDD1";
