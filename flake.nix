@@ -220,7 +220,8 @@
     };
 
     # convenience...
-    homeConfigurations = inputs.self.nixosConfigurations.delta.config.home-manager.users;
+    homeConfigurations = lib.genAttrs (builtins.attrNames inputs.self.nixosConfigurations)
+      (host: inputs.self.nixosConfigurations.${host}.config.home-manager.users);
 
     legacyPackages = forAllSystems pkgsForSystem;
 
