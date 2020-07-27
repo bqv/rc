@@ -169,7 +169,7 @@ in {
 
         if "DISPLAY" not in ''${...}:
           ''${...}["GPG_TTY"] = $(tty).strip()
-          ''${...}["SSH_AUTH_SOCK"] = $(gpgconf --list-dirs agent-ssh-socket).strip()
+        ''${...}["SSH_AUTH_SOCK"] = $(gpgconf --list-dirs agent-ssh-socket).strip()
 
         xontrib load powerline
         date

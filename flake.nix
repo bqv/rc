@@ -106,8 +106,7 @@
         inputs.wayland.overlay
         inputs.self.overlay
         (pkgs: lib.const {
-          inherit (pkgs.staged) mitmproxy;
-          inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird webkitgtk;
+          inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird webkitgtk mitmproxy;
           ripcord = builtins.trace "ripcord: disabled, broken by appimageTools changes" pkgs.hello;
         })
       ];
