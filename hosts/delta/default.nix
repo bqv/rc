@@ -34,6 +34,7 @@
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbcore" "sd_mod" "sr_mod" "amdgpu" ];
   boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ "kvm-intel" "amdgpu" "fuse" ];
+  boot.kernelParams = [ "mce=3" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
   boot.binfmt.emulatedSystems = [ "armv7l-linux" "aarch64-linux" ];
   boot.postBootCommands = ''

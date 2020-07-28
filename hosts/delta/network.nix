@@ -8,7 +8,7 @@ in {
 
   environment.systemPackages = with pkgs; [ dhcp dhcpcd ];
 
-  networking.namespacing.enable = true;
+  networking.namespacing.enable = false;
   networking.wireless = let
     useIwd = true;
   in {

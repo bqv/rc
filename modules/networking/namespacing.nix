@@ -13,7 +13,16 @@ let
     systemd.sockets."${name}".socketConfig.RestrictNamespaces = "~net";
   };
 in {
-  imports = [
+  options = with lib; {
+    networking.namespacing = {
+      enable = mkEnableOption "full system network namespacing";
+      virtualSplit = mkEnableOption "virtual namespace by default" // {
+        default = true;
+      };
+    };
+  };
+
+  config = lib.mkIf cfg.enable ((lib.mkMerge [
     # networkmanager units:
     (makeServiceNsPhysical "NetworkManager")
     (makeServiceNsPhysical "NetworkManager-dispatcher")
@@ -35,18 +44,7 @@ in {
     (makeServiceNsPhysical "ipfs")
     (makeServiceNsPhysical "wireguard-wg0")
     (makeSocketNsPhysical "sshd")
-  ];
-
-  options = with lib; {
-    networking.namespacing = {
-      enable = mkEnableOption "full system network namespacing";
-      virtualSplit = mkEnableOption "virtual namespace by default" // {
-        default = true;
-      };
-    };
-  };
-
-  config = lib.mkIf cfg.enable {
+  ]) // {
    #networking = {
    #  hostId = "deadbeef";
    #};
@@ -86,5 +84,5 @@ in {
       ${pkgs.iproute}/bin/ip netns exec virtual ip route add default via 169.254.1.1 dev v0
       ${pkgs.iproute}/bin/ip netns exec virtual ip link set v0 up
     '';
-  };
+  });
 }
