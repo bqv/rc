@@ -102,7 +102,7 @@
       appimage-run # Package Tools
       abduco dvtm # Terminal Multiplexing
       yadm # Dotfile Management
-      pstree # Process Monitoring
+      pstree bottom # Process Monitoring
       pv pup # Pipe Management
       timewarrior # Time Management
       nmap wget curl mitmproxy aria2 # Network Utilities
