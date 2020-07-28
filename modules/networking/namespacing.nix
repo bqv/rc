@@ -19,6 +19,17 @@ in {
 
     # without networkmanager:
     (makeServiceNsPhysical "dhcpcd")
+    (makeServiceNsPhysical "systemd-networkd")
+    (makeServiceNsPhysical "systemd-resolved")
+    (makeServiceNsPhysical "systemd-timesyncd")
+    (makeServiceNsPhysical "systemd-networkd-wait-online")
+    (makeServiceNsPhysical "network-local-commands")
+    (makeServiceNsPhysical "nftables")
+    (makeServiceNsPhysical "nix-daemon")
+    (makeServiceNsPhysical "nscd")
+    (makeServiceNsPhysical "weechat")
+    (makeServiceNsPhysical "ipfs")
+    (makeServiceNsPhysical "wireguard-wg0")
     (makeSocketNsPhysical "sshd")
   ];
 
