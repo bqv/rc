@@ -5,4 +5,5 @@
   ./services/hydroxide/default.nix
   ./security/mitigations.nix
   ./networking/wireguard-mesh.nix
+  ./networking/namespacing.nix
 ]

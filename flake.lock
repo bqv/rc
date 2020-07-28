@@ -429,17 +429,16 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1591053277,
-        "narHash": "sha256-7LIXbLD413ZzM59duDl3iJ1mU24naPprj17YP8t1iDU=",
-        "owner": "infinisil",
-        "repo": "nixus",
-        "rev": "545254808be876708535079996e2d9efd71f6533",
+        "lastModified": 1595698184,
+        "narHash": "sha256-fpUfGxbFxVKPcUVXOPw0hefocc3li+DFo0jzxUKy8vY=",
+        "owner": "mic92",
+        "repo": "sops-nix",
+        "rev": "4728721e32c0aecf86f9d3a1297842432479c532",
         "type": "github"
       },
       "original": {
-        "owner": "infinisil",
-        "repo": "nixus",
-        "rev": "545254808be876708535079996e2d9efd71f6533",
+        "owner": "mic92",
+        "repo": "sops-nix",
         "type": "github"
       }
     },

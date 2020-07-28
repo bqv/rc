@@ -36,7 +36,7 @@
 
     emacs.url = "github:nix-community/emacs-overlay";
     haskell.url = "github:input-output-hk/haskell.nix";
-    nixus.url = "github:infinisil/nixus/545254808be876708535079996e2d9efd71f6533";
+    nixus.url = "github:mic92/sops-nix";
     utils.url = "github:numtide/flake-utils";
 
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
@@ -323,28 +323,28 @@
     passthru = {
       inherit inputs;
 
-      nixus = let
-        inherit (import ./secrets/hosts.nix) wireguard;
-      in inputs.nixus.lib.nixus ({ config, ... }: {
-        options.nodes = lib.mkForce (lib.mapAttrs (host: nixos: lib.mkOption {
-          type = with lib.types; attrsOf (submodule {
-            options.configuration = submoduleWith {
-              inherit (nixos) specialArgs modules;
-            };
-            options.host = lib.mkOption {
-              type = str;
-              default = "root@${wireguard.${name}}";
-            };
-          });
-        }) inputs.self.nixosConfigurations);
+     #nixus = let
+     #  inherit (import ./secrets/hosts.nix) wireguard;
+     #in inputs.nixus.lib.nixus ({ config, ... }: {
+     #  options.nodes = lib.mkForce (lib.mapAttrs (host: nixos: lib.mkOption {
+     #    type = with lib.types; attrsOf (submodule {
+     #      options.configuration = submoduleWith {
+     #        inherit (nixos) specialArgs modules;
+     #      };
+     #      options.host = lib.mkOption {
+     #        type = str;
+     #        default = "root@${wireguard.${name}}";
+     #      };
+     #    });
+     #  }) inputs.self.nixosConfigurations);
 
-        config.defaults = { name, ... }: {
-          nixpkgs = channels.lib;
-          configuration = { config, ... }: {
-            networking.hostName = lib.mkDefault name;
-          };
-        };
-      });
+     #  config.defaults = { name, ... }: {
+     #    nixpkgs = channels.lib;
+     #    configuration = { config, ... }: {
+     #      networking.hostName = lib.mkDefault name;
+     #    };
+     #  };
+     #});
 
       #$ git config secrets.providers "nix eval --raw .#passthru.secrets"
       secrets = with lib.strings; concatMapStringsSep "\n" (replaceStrings [" "] ["\\s"]) ([
