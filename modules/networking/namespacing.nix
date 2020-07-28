@@ -9,6 +9,9 @@ let
   makeSocketNsPhysical = name: {
     systemd.sockets."${name}".socketConfig.NetworkNamespacePath = "/var/run/netns/physical";
   };
+  unRestrictNamespaces = name: {
+    systemd.sockets."${name}".socketConfig.RestrictNamespaces = "~net";
+  };
 in {
   imports = [
     # networkmanager units:
@@ -21,6 +24,7 @@ in {
     (makeServiceNsPhysical "dhcpcd")
     (makeServiceNsPhysical "systemd-networkd")
     (makeServiceNsPhysical "systemd-resolved")
+    (unRestrictNamespaces "systemd-resolved")
     (makeServiceNsPhysical "systemd-timesyncd")
     (makeServiceNsPhysical "systemd-networkd-wait-online")
     (makeServiceNsPhysical "network-local-commands")
@@ -59,7 +63,7 @@ in {
       );
     };
 
-    boot.postBootCommands = ''
+    systemd.services.systemd-networkd.serviceConfig.ExecStartPre = pkgs.writeScript "setup-virtual-ns" ''
       ${pkgs.iproute}/bin/ip link add v0 type veth peer name p0
 
       # configure the "p0" device, which is
@@ -69,11 +73,11 @@ in {
       ${pkgs.iproute}/bin/ip netns exec physical ip link set p0 up
 
       ${pkgs.iproute}/bin/ip netns exec physical bash -c 'echo 0 > /proc/sys/net/ipv4/conf/all/forwarding'
-      ${pkgs.iproute}/bin/ip netns exec physical bash -c 'echo 1 > /proc/sys/net/ipv4/conf/eth1/forwarding
+      ${pkgs.iproute}/bin/ip netns exec physical bash -c 'echo 1 > /proc/sys/net/ipv4/conf/eno1/forwarding
       ${pkgs.iproute}/bin/ip netns exec physical bash -c 'echo 1 > /proc/sys/net/ipv4/ip_forward'
-      ${pkgs.iproute}/bin/ip netns exec physical iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE
-      ${pkgs.iproute}/bin/ip netns exec physical iptables -I FORWARD -i eth1 -o p0 -m state --state RELATED,ESTABLISHED -j ACCEPT
-      ${pkgs.iproute}/bin/ip netns exec physical iptables -I FORWARD -i p0 -o eth1 -j ACCEPT
+      ${pkgs.iproute}/bin/ip netns exec physical iptables -t nat -A POSTROUTING -o eno1 -j MASQUERADE
+      ${pkgs.iproute}/bin/ip netns exec physical iptables -I FORWARD -i eno1 -o p0 -m state --state RELATED,ESTABLISHED -j ACCEPT
+      ${pkgs.iproute}/bin/ip netns exec physical iptables -I FORWARD -i p0 -o eno1 -j ACCEPT
 
       # configure the "v0" device, which is
       # the link TO v0, and lives in "virtual"
