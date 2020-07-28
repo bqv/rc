@@ -53,7 +53,7 @@
   in {
     "/" = hdd // { options = [ "subvol=nixos" ]; };
     "/home" = hdd // { options = [ "subvol=home" ]; };
-    "/nix" = hdd // { options = [ "subvol=nix" "noatime" "nodiratime" ]; };
+    "/nix" = ssd // { options = [ "subvol=nix" "noatime" "nodiratime" "discard=async" ]; };
     "/games" = hdd // { options = [ "subvol=games" ]; };
     "/var/run/hdd" = hdd // { options = [ "subvolid=0" ]; };
     "/var/run/ssd" = ssd // { options = [ "subvolid=0" "noatime" "nodiratime" "discard=async" ]; };
