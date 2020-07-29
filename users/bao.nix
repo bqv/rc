@@ -34,6 +34,7 @@
       ./media/gpodder
       ./media/spotify
       ./media/radio
+      ./media/mpv
       ./utilities/git
       ./utilities/darcs
       ./utilities/htop
