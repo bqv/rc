@@ -9,6 +9,8 @@
     large.url = "github:nixos/nixpkgs/nixos-unstable";
     pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd";
 
+    lg531.url = "github:bqv/nixrc/54fee446d8110f516f946a5cb6a27a760e538700";
+
     nix.url = "github:nixos/nix/master";
     nix.inputs.nixpkgs.follows = "master";
 
@@ -36,7 +38,7 @@
 
     emacs.url = "github:nix-community/emacs-overlay";
     haskell.url = "github:input-output-hk/haskell.nix";
-    nixus.url = "github:mic92/sops-nix";
+    sops.url = "github:mic92/sops-nix";
     utils.url = "github:numtide/flake-utils";
 
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
@@ -80,6 +82,10 @@
       mapAttrs (k: v: diffTrace (baseNameOf inputs.${flake}) (baseNameOf prev.path) "pkgs.${k} pinned to nixpkgs/${branch}" v)
       (import inputs.${flake} { inherit config system; overlays = []; });
     });
+    flakeToOverlay = { system, flake, name }: (final: prev: { ${flake} =
+      mapAttrs (k: v: diffTrace (baseNameOf inputs.${flake}) (baseNameOf prev.path) "pkgs.${k} pinned to ${name}" v)
+      inputs.${flake}.legacyPackages.${system};
+    });
 
     # Packages for nixos configs
     pkgsForSystem = system: import channels.pkgs rec {
@@ -90,6 +96,7 @@
         (channelToOverlay { inherit system config; flake = "staged"; branch = "staging"; })
         (channelToOverlay { inherit system config; flake = "small"; branch = "nixos-unstable-small"; })
         (channelToOverlay { inherit system config; flake = "large"; branch = "nixos-unstable"; })
+        (flakeToOverlay { inherit system; flake = "lg531"; name = "delta/system-531-link"; })
         (import inputs.mozilla)
         (pkgs: lib.const {
           inherit inputs;
@@ -108,6 +115,7 @@
         (pkgs: lib.const {
           inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird webkitgtk mitmproxy;
           ripcord = builtins.trace "ripcord: disabled, broken by appimageTools changes" pkgs.hello;
+          inherit (pkgs.lg531) teams nyxt catt;
         })
       ];
     };
