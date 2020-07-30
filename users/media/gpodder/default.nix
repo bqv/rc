@@ -12,13 +12,13 @@ in {
   config = mkIf cfg.enable {
     home.packages = with pkgs; [
       (pkgs.hiPrio (pkgs.writeShellScriptBin "gpodder" ''
-        export GPODDER_HOME=${config.home.homeDirectory}/var/pod
+        export GPODDER_HOME=${config.home.sessionVariables.GPODDER_HOME}
         exec ${gpodder}/bin/gpodder
       ''))
       gpodder mutagen normalize
     ];
 
-    home.sessionVariables.GPODDER_HOME = "$HOME/var/pod";
+    home.sessionVariables.GPODDER_HOME = "/srv/pod";
   };
 }
 
