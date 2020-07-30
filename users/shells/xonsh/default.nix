@@ -21,6 +21,7 @@ with lib; let
     nix-instantiate = "echo disabled: nix-instantiate"; # require nix-command
     nix-store = "echo disabled: nix-store"; # require nix-command
     nix-shell = "echo disabled: nix-shell"; # require nix-command
+    sudo = "echo disabled: sudo"; # discourage sudo
   };
 
   abbrevs = rec {
@@ -33,15 +34,15 @@ with lib; let
     gca = "git commit --amend";
     gcan = "git commit --amend --no-edit";
 
-    sstart = "sudo systemctl start";
-    sstop = "sudo systemctl stop";
-    srestart = "sudo systemctl restart";
-    sstatus = "sudo systemctl status";
-    senable = "sudo systemctl enable";
-    sdisable = "sudo systemctl disable";
-    smask = "sudo systemctl mask";
-    sunmask = "sudo systemctl unmask";
-    sreload = "sudo systemctl daemon-reload";
+    sstart = "doas systemctl start";
+    sstop = "doas systemctl stop";
+    srestart = "doas systemctl restart";
+    sstatus = "doas systemctl status";
+    senable = "doas systemctl enable";
+    sdisable = "doas systemctl disable";
+    smask = "doas systemctl mask";
+    sunmask = "doas systemctl unmask";
+    sreload = "doas systemctl daemon-reload";
 
     ustart = "systemctl start --user";
     ustop = "systemctl stop --user";
@@ -57,7 +58,7 @@ with lib; let
     exwm-sudo-exec = '' emacsclient --eval '(bqv/exwm-sudo-exec "'(which $argv[1])" $argv[2..-1]"'")' '';
     exwm-nix-exec = '' emacsclient --eval '(bqv/exwm-nix-exec "'(which $argv[1])" $argv[2..-1]"'")' '';
     find-file = '' emacsclient --eval '(find-file "'"$argv"'")' '';
-    please = '' eval sudo $history[1] '';
+    please = '' eval doas $history[1] '';
     vterm-printf = ''
       if [ -n "$TMUX" ]
           # tell tmux to pass the escape sequences through
