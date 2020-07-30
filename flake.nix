@@ -10,6 +10,7 @@
     pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd";
 
     lg531.url = "github:bqv/nixrc/54fee446d8110f516f946a5cb6a27a760e538700";
+    lg400.url = "github:bqv/nixrc/c66055501d4ef83d5e392f29d4e951b1a8289668";
 
     nix.url = "github:nixos/nix/master";
     nix.inputs.nixpkgs.follows = "master";
@@ -97,6 +98,7 @@
         (channelToOverlay { inherit system config; flake = "small"; branch = "nixos-unstable-small"; })
         (channelToOverlay { inherit system config; flake = "large"; branch = "nixos-unstable"; })
         (flakeToOverlay { inherit system; flake = "lg531"; name = "delta/system-531-link"; })
+        (flakeToOverlay { inherit system; flake = "lg400"; name = "delta/system-400-link"; })
         (import inputs.mozilla)
         (pkgs: lib.const {
           inherit inputs;
@@ -115,7 +117,8 @@
         (pkgs: lib.const {
           inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird webkitgtk mitmproxy;
           ripcord = builtins.trace "ripcord: disabled, broken by appimageTools changes" pkgs.hello;
-          inherit (pkgs.lg531) teams nyxt catt;
+          inherit (pkgs.lg531) teams nyxt;
+          inherit (pkgs.lg400) catt;
         })
       ];
     };
