@@ -1337,19 +1337,6 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_3": {
-      "locked": {
-        "lastModified": 1595830461,
-        "narHash": "sha256-ckxGjtGXhV68FsWfcq0nvSjV6+fL1aS+I7obBWSDiEM=",
-        "path": "/nix/store/k7ym3784bqqlbk1gp1k0zd6vvylk86kb-source",
-        "rev": "7bf0f7301a3fdd8478e8abe81df96fbbff5fb9e7",
-        "type": "path"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
     "nixus": {
       "inputs": {
         "nixpkgs": "nixpkgs"
@@ -2186,7 +2173,9 @@
     },
     "sops": {
       "inputs": {
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": [
+          "large"
+        ]
       },
       "locked": {
         "lastModified": 1596006704,

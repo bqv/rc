@@ -37,9 +37,11 @@
     wayland.url = "github:colemickens/nixpkgs-wayland";
     wayland.inputs.nixpkgs.follows = "large";
 
+    sops.url = "github:mic92/sops-nix";
+    sops.inputs.nixpkgs.follows = "large";
+
     emacs.url = "github:nix-community/emacs-overlay";
     haskell.url = "github:input-output-hk/haskell.nix";
-    sops.url = "github:mic92/sops-nix";
     utils.url = "github:numtide/flake-utils";
 
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
@@ -149,6 +151,7 @@
         modules = let
           inherit (inputs.home.nixosModules) home-manager;
           inherit (inputs.dwarffs.nixosModules) dwarffs;
+          inherit (inputs.sops.nixosModules) sops;
           inherit (inputs.guix.nixosModules) guix;
           inherit (inputs.construct.nixosModules) matrix-construct;
 
@@ -306,10 +309,24 @@
             };
             patches = [ worktreePatch ];
           });
-        in [ git git-crypt git-secrets age rage nixfmt flake-shell nixos ];
+        in [
+          git git-crypt git-secrets
+          nixfmt flake-shell nixos
+        ] ++ builtins.filter lib.isDerivation (builtins.attrValues inputs.sops.packages.${system});
+
+        sopsPGPKeyDirs = [
+          "./secrets/hosts"
+          "./secrets/users"
+        ]; # imports all files ending in .asc/.gpg and sets $SOPS_PGP_FP.
+        sopsPGPKeys = [
+         #"./secrets/users/bao.asc"
+         #"./secrets/hosts/delta.asc"
+        ]; # Also single files can be imported.
 
         shellHook = ''
           mkdir -p secrets
+          mkdir -p secrets/{hosts,users}
+          sopsPGPHook
         '';
 
         NIX_CONF_DIR = with pkgs; let
