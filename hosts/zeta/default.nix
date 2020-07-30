@@ -122,6 +122,8 @@
   virtualisation.libvirtd.enable = false;
   virtualisation.virtualbox.host.enable = false;
 
+  headless = true;
+
   nix.gc.automatic = true;
   nix.gc.dates = "05:00";
   nix.gc.options = "";

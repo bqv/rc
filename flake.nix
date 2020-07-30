@@ -202,7 +202,16 @@
             };
           };
 
-          local = import "${toString ./hosts}/${hostName}";
+          local = { lib, ... }: {
+            imports = [ "${toString ./hosts}/${hostName}" ];
+
+            options = {
+              headless = lib.mkOption {
+                type = lib.types.bool;
+                description = "Is a headless machine";
+              };
+            };
+          };
 
           flakeModules = import ./modules/nixos.nix;
 

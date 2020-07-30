@@ -90,7 +90,7 @@
     services.taskwarrior-sync.enable = true;
     services.dunst.enable = true;
     services.emacs.enable = true;
-    services.ckb.enable = true;
+    services.ckb.enable = !config.headless;
     services.syncthing.enable = false; # TODO
     services.unclutter.enable = false; # TODO
 

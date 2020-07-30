@@ -74,6 +74,8 @@
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
+  headless = false;
+
   nix = {
     gc.automatic = true;
     gc.dates = "12:00";
