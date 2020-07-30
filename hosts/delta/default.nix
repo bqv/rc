@@ -27,7 +27,7 @@
     efi.canTouchEfiVariables = true;
     systemd-boot = {
       enable = true;
-      configurationLimit = 8;
+      configurationLimit = 64;
     };
   };
 
@@ -56,7 +56,7 @@
     "/var/run/ssd" = ssd // { options = [ "subvolid=0" "noatime" "nodiratime" "discard=async" ]; };
 
     "/boot" = {
-      device = "/dev/disk/by-uuid/CEF4-EDD1";
+      device = "/dev/disk/by-uuid/4305-4121";
       fsType = "vfat";
     };
   };
