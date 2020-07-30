@@ -27,11 +27,11 @@
     efi.canTouchEfiVariables = true;
     systemd-boot = {
       enable = true;
-      configurationLimit = 16;
+      configurationLimit = 8;
     };
   };
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbcore" "sd_mod" "sr_mod" "amdgpu" ];
+  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbcore" "sd_mod" "sr_mod" "nvme" "amdgpu" ];
   boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ "kvm-intel" "amdgpu" "fuse" ];
   boot.kernelParams = [ "mce=3" ];
@@ -44,7 +44,7 @@
 
   fileSystems = let
     hdd = {
-      device = "/dev/disk/by-uuid/f46f6fe4-c480-49f0-b3fb-22e61c57069c";
+      device = "/dev/disk/by-uuid/f61d5c96-14db-4684-9bd6-218a468433b2";
       fsType = "btrfs";
     };
     ssd = {
