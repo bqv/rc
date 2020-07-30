@@ -62,7 +62,7 @@
   };
 
   swapDevices = [
-    { device = "/dev/disk/by-uuid/86868083-921c-452a-bf78-ae18f26b78bf"; }
+   #{ device = "/dev/disk/by-uuid/86868083-921c-452a-bf78-ae18f26b78bf"; }
   ];
 
   virtualisation.libvirtd.enable = true;
