@@ -123,6 +123,15 @@
         ;; Whether display the modal state icon.
         ;; Including `evil', `overwrite', `god', `ryo' and `xah-fly-keys', etc.
         (setq doom-modeline-modal-icon t)
+        (progn
+          (set-face-foreground 'doom-modeline-evil-emacs-state    "SkyBlue2")
+          (set-face-foreground 'doom-modeline-evil-insert-state   "chartreuse3")
+          (set-face-foreground 'doom-modeline-evil-motion-state   "plum3")
+          (set-face-foreground 'doom-modeline-evil-normal-state   "DarkGoldenrod2")
+          (set-face-foreground 'doom-modeline-evil-operator-state "DarkGoldenrod4")
+          (set-face-foreground 'doom-modeline-evil-visual-state   "gray")
+          (set-face-foreground 'doom-modeline-evil-replace-state  "chocolate")
+          t)
 
         ;; Whether display the mu4e notifications. It requires `mu4e-alert' package.
         (setq doom-modeline-mu4e t)
