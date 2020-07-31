@@ -210,6 +210,13 @@ let
     (global-set-key (kbd "C-x k") 'kill-this-buffer)
     (setq confirm-kill-emacs 'y-or-n-p)
     (setq default-input-method "programmer-dvorak")
+    (defun activate-default-input-method ()
+      (activate-input-method default-input-method))
+    (defadvice switch-to-buffer (after activate-input-method activate)
+      (activate-default-input-method))
+    (add-hook 'minibuffer-setup-hook #'activate-default-input-method)
+    (with-current-buffer "*scratch*"
+      (activate-default-input-method))
 
     (config-package custom
       :config
