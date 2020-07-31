@@ -108,7 +108,7 @@
 
   services.disnix.enable = true;
   services.printing.enable = true;
-  services.nix-index.enable = true;
+  services.nix-index.enable = false; # has been broken by flakes for ages
   services.locate.enable = true;
   services.pcscd.enable = true;
   services.guix.enable = true;
