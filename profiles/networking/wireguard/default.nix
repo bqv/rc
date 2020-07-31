@@ -17,7 +17,7 @@ let
 
     delta = {
       ip = hosts.wireguard.delta;
-     #wideArea = [ hosts.ipv4.home ];
+      wideArea = [ hosts.ipv4.home ];
       localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
       publicKey = "Y/SRDGEQfFLUGqx6vMnO1pxHs9zn//NpwdSGQ2Sm+Dg=";
     };
@@ -31,7 +31,7 @@ let
 
   currentPeer = peers."${config.networking.hostName}";
   isLan = peer: builtins.length (peers.${peer}.localArea or []) > 0;
-  isWan = peer: builtins.length (peers.${peer}.wideArea or []) > 0;
+  isWan = peer: !(isLan peer);
   endpointsOf = peer: (peer.wideArea or []) ++ (peer.localArea or []);
   peerable = from: to: builtins.all lib.id [
     (from != to)

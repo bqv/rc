@@ -11,6 +11,24 @@
 
   services.dbus.packages = with pkgs; [ gnome3.dconf ];
 
+  services.xinetd = let 
+    profile = config.users.users.bao;
+  in {
+    enable = true;
+    services = [{
+      name = "telnet";
+      port = 23;
+      protocol = "tcp";
+      server = "${pkgs.telnet}/libexec/telnetd";
+      serverArgs = let
+        shell = pkgs.writeShellScript "run-emacsclient" ''
+          exec ${pkgs.emacs}/bin/emacsclient -f ${profile.home}/.emacs.d/server/server -t
+        '';
+      in '' --exec-login="${shell}" '';
+      user = profile.name;
+    }];
+  };
+
   users.users.bao = {
     uid = 1000;
     group = "users";
