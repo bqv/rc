@@ -210,13 +210,25 @@ let
     (global-set-key (kbd "C-x k") 'kill-this-buffer)
     (setq confirm-kill-emacs 'y-or-n-p)
     (setq default-input-method "programmer-dvorak")
+
     (defun activate-default-input-method ()
       (activate-input-method default-input-method))
+    ;; new buffers
     (defadvice switch-to-buffer (after activate-input-method activate)
       (activate-default-input-method))
-    (add-hook 'minibuffer-setup-hook #'activate-default-input-method)
+    ;; minibuffer
+    ;(add-hook 'minibuffer-setup-hook #'activate-default-input-method)
+    ;; scratch
     (with-current-buffer "*scratch*"
       (activate-default-input-method))
+    ;; toggleback
+    (advice-add #'toggle-input-method :after #'toggle-input-method-back)
+    (defvar toggle-input-method-timeout 60 "Input method switchback timeout")
+    (defun toggle-input-method-back (&rest args)
+      (run-at-time toggle-input-method-timeout nil
+                   `(lambda ()
+                      (with-current-buffer ,(current-buffer)
+                        (activate-default-input-method)))))
 
     (config-package custom
       :config
