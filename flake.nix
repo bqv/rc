@@ -51,13 +51,6 @@
   };
 
   outputs = inputs: with builtins; let
-    channels = with inputs; {
-      pkgs = large;
-      modules = master;
-      lib = master;
-    };
-    inherit (channels.lib) lib;
-
     forAllSystems = lib.genAttrs [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
     diffTrace = left: right: string: value: if left != right then trace string value else value;
 
@@ -66,6 +59,12 @@
       allowUnfree = true;
       android_sdk.accept_license = true;
     };
+
+    channels = with inputs; {
+      pkgs = large;     # For packages
+      modules = master; # For nixos modules
+      lib = master;     # For flake-wide lib
+    }; inherit (channels.lib) lib; # this ^
 
     # Fetch PR prepatched nixpkgs by id and hash
     fetchPullRequestForSystem = system: args@{ id, rev ? null, sha256 ? lib.fakeSha256, ... }:
@@ -85,6 +84,7 @@
       mapAttrs (k: v: diffTrace (baseNameOf inputs.${flake}) (baseNameOf prev.path) "pkgs.${k} pinned to nixpkgs/${branch}" v)
       (import inputs.${flake} { inherit config system; overlays = []; });
     });
+    # Loopback flake wrapper for build visibility
     flakeToOverlay = { system, flake, name }: (final: prev: { ${flake} =
       mapAttrs (k: v: diffTrace (baseNameOf inputs.${flake}) (baseNameOf prev.path) "pkgs.${k} pinned to ${name}" v)
       inputs.${flake}.legacyPackages.${system};
@@ -275,22 +275,6 @@
           home-manager dwarffs sops guix matrix-construct
         ];
       };
-
-      configFor = host: let
-        modules = modulesFor host;
-      in modules ++ [{
-        options = {
-          specialArgs = lib.mkOption {
-            type = lib.types.attrs;
-          };
-          modules = lib.mkOption {
-            type = lib.types.list;
-          };
-        };
-        config = {
-          inherit specialArgs modules;
-        };
-      }];
     in usr.utils.recImport {
       dir = ./hosts;
       _import = host: let
@@ -328,12 +312,10 @@
       inherit (pkgs) nyxt pure sddm-chili shflags velox yacy;
     });
 
-    apps = forAllSystems (system: let
-      pkgs = pkgsForSystem system;
-    in {
+    apps = forAllSystems (system: {
       nixos = {
         type = "app";
-        program = pkgs.callPackage ./pkgs/lib/nixos.nix {} + "/bin/nixos";
+        program = (pkgsForSystem system).callPackage ./pkgs/lib/nixos.nix {} + "/bin/nixos";
       };
     });
 
@@ -412,29 +394,6 @@
     passthru = rec {
       inherit inputs;
       inherit inputMap;
-
-     #nixus = let
-     #  inherit (import ./secrets/hosts.nix) wireguard;
-     #in inputs.nixus.lib.nixus ({ config, ... }: {
-     #  options.nodes = lib.mkForce (lib.mapAttrs (host: nixos: lib.mkOption {
-     #    type = with lib.types; attrsOf (submodule {
-     #      options.configuration = submoduleWith {
-     #        inherit (nixos) specialArgs modules;
-     #      };
-     #      options.host = lib.mkOption {
-     #        type = str;
-     #        default = "root@${wireguard.${name}}";
-     #      };
-     #    });
-     #  }) inputs.self.nixosConfigurations);
-
-     #  config.defaults = { name, ... }: {
-     #    nixpkgs = channels.lib;
-     #    configuration = { config, ... }: {
-     #      networking.hostName = lib.mkDefault name;
-     #    };
-     #  };
-     #});
 
       #$ git config secrets.providers "nix eval --raw .#passthru.secrets"
       secrets = with lib.strings; concatMapStringsSep "\n" (replaceStrings [" "] ["\\s"]) ([
