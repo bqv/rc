@@ -158,8 +158,4 @@
     wineWowPackages.staging
   ];
   nixpkgs.config.firefox.enableFXCastBridge = true;
-
-  system.extraSystemBuilderCmds = ''
-    ln -s '${inputs.self.nixosConfigurations.zeta.config.system.build.toplevel}' "$out/zeta"
-  '';
 }
