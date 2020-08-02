@@ -1,53 +1,53 @@
 {
   description = "A highly structured configuration database.";
 
-  inputs = {
-    master.url = "github:nixos/nixpkgs/master";
-    stable.url = "github:nixos/nixpkgs/nixos-20.03";
-    staged.url = "github:nixos/nixpkgs/staging";
-    small.url = "github:nixos/nixpkgs/nixos-unstable-small";
-    large.url = "github:nixos/nixpkgs/nixos-unstable";
-    pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd";
+  inputs = rec {
+    master.url = "github:nixos/nixpkgs/master";                        #|
+    stable.url = "github:nixos/nixpkgs/nixos-20.03";                   #|\
+    staged.url = "github:nixos/nixpkgs/staging";                       #| -- Nixpkgs
+    small.url  = "github:nixos/nixpkgs/nixos-unstable-small";          #|/
+    large.url  = "github:nixos/nixpkgs/nixos-unstable";                #|
+    pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd"; #|
 
-    lg531.url = "github:bqv/nixrc/54fee446d8110f516f946a5cb6a27a760e538700";
-    lg400.url = "github:bqv/nixrc/c66055501d4ef83d5e392f29d4e951b1a8289668";
+    lg531.url = "github:bqv/nixrc/54fee446d8110f516f946a5cb6a27a760e538700"; # Historical sys-531
+    lg400.url = "github:bqv/nixrc/c66055501d4ef83d5e392f29d4e951b1a8289668"; # Historical sys-400
 
-    nix.url = "github:nixos/nix/master";
-    nix.inputs.nixpkgs.follows = "master";
+    nix.url = "github:nixos/nix/master";   #|- Nix
+    nix.inputs.nixpkgs.follows = "master"; #|
 
-    dwarffs.url = "github:edolstra/dwarffs";
-    dwarffs.inputs.nix.follows = "nix";
-    dwarffs.inputs.nixpkgs.follows = "master";
+    dwarffs.url = "github:edolstra/dwarffs";   #|- Dwarffs
+    dwarffs.inputs.nix.follows = "nix";        #|
+    dwarffs.inputs.nixpkgs.follows = "master"; #|
 
-    home.url = "github:rycee/home-manager/bqv-flakes";
-    home.inputs.nixpkgs.follows = "large";
+    home.url = "github:rycee/home-manager/bqv-flakes"; #|- Home-manager
+    home.inputs.nixpkgs.follows = "large";             #|
 
-    naersk.url = "github:nmattia/naersk";
-    naersk.inputs.nixpkgs.follows = "large";
+    naersk.url = "github:nmattia/naersk";    #|- Naersk
+    naersk.inputs.nixpkgs.follows = "large"; #|
 
-    xontribs.url = "github:bqv/xontribs";
-    xontribs.inputs.nixpkgs.follows = "large";
+    xontribs.url = "github:bqv/xontribs";      #|- Xontribs
+    xontribs.inputs.nixpkgs.follows = "large"; #|
 
-    guix.url = "github:bqv/guix";
-    guix.inputs.nixpkgs.follows = "large";
+    guix.url = "github:bqv/guix";          #|- Guix
+    guix.inputs.nixpkgs.follows = "large"; #|
 
-    construct.url = "github:matrix-construct/construct";
-    construct.inputs.nixpkgs.follows = "large";
+    construct.url = "github:matrix-construct/construct"; #|- Construct
+    construct.inputs.nixpkgs.follows = "large";          #|
 
-    wayland.url = "github:colemickens/nixpkgs-wayland";
-    wayland.inputs.nixpkgs.follows = "large";
+    wayland.url = "github:colemickens/nixpkgs-wayland"; #|- Nixpkgs-wayland
+    wayland.inputs.nixpkgs.follows = "large";           #|
 
-    sops.url = "github:mic92/sops-nix";
-    sops.inputs.nixpkgs.follows = "large";
+    sops.url = "github:mic92/sops-nix";    #|- Sops-nix
+    sops.inputs.nixpkgs.follows = "large"; #|
 
-    emacs.url = "github:nix-community/emacs-overlay";
-    haskell.url = "github:input-output-hk/haskell.nix";
-    utils.url = "github:numtide/flake-utils";
+    emacs.url = "github:nix-community/emacs-overlay";   # Emacs-overlay
+    haskell.url = "github:input-output-hk/haskell.nix"; # Haskell.nix
+    utils.url = "github:numtide/flake-utils";           # Flake-utils
+    hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
 
-    mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };
-    snack = { url = "github:nmattia/snack"; flake = false; };
-    napalm = { url = "github:nmattia/napalm"; flake = false; };
-    hardware = { url = "github:nixos/nixos-hardware"; flake = false; };
+    mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; }; # Nixpkgs-mozilla
+    snack = { url = "github:nmattia/snack"; flake = false; };             # Snack
+    napalm = { url = "github:nmattia/napalm"; flake = false; };           # Napalm
   };
 
   outputs = inputs: with builtins; let
@@ -125,6 +125,27 @@
       ];
     };
 
+    inputMap = let
+      tryGetValue = res: if res.success then res.value else null;
+    in {
+      n1 = lib.mapAttrsToList lib.nameValuePair inputs;
+
+      n2 = let
+        s0 = inputs // { self = {}; };
+        s1 = lib.mapAttrs (k: v: v.inputs) (lib.filterAttrs (k: v: v ? inputs) s0);
+        s2 = lib.mapAttrsRecursiveCond (s: !(s ? outPath)) (n: i: lib.nameValuePair (lib.concatStringsSep "." n) i) s1;
+      in lib.concatMap lib.attrValues (lib.attrValues s2);
+
+      n3 = let # broken (but why?)
+        s0 = inputs // { self = {}; };
+        s1 = lib.mapAttrs (k: v: v.inputs) (lib.filterAttrs (k: v: v ? inputs) s0);
+        s2 = lib.mapAttrsRecursiveCond (s: !(s ? outPath)) (n: i: lib.nameValuePair (lib.concatStringsSep "." n) i) s1;
+        s3 = lib.concatMap lib.attrValues (lib.attrValues s2);
+        s4 = lib.mapAttrs (k: v: v.inputs) (lib.filterAttrs (k: v: v ? inputs) (lib.listToAttrs s3));
+        s5 = lib.mapAttrsRecursiveCond (s: !(s ? outPath)) (n: i: lib.nameValuePair (lib.concatStringsSep "." n) i) s4;
+        s6 = lib.concatMap lib.attrValues (lib.attrValues s5);
+      in tryGetValue (builtins.tryEval (lib.concatMap lib.attrValues (lib.attrValues s6)));
+    };
   in {
     nixosConfigurations = let
       system = "x86_64-linux"; # So far it always is...
@@ -178,12 +199,34 @@
               rev = self.shortRev or "dirty";
             in lib.mkForce ".${date}.${rev}";
 
-            system.extraSystemBuilderCmds = ''
-              ln -s '${./.}' "$out/flake"
-            '' + (if ! (inputs.self ? rev) then ''
+            system.extraSystemBuilderCmds = (''
+
+              mkdir -p $out/flake/input
+
+              # Link first-class inputs
+              ${lib.concatMapStringsSep "\n" ({ name, value }: ''
+                ln -s '${value}' "$out/flake/input/${name}"
+              '') inputMap.n1}
+
+              # Link second-class inputs
+              ${(lib.concatMapStringsSep "\n" ({ name, value }: ''
+                ln -s '${value}' "$out/flake/input/${name}"
+              '') inputMap.n2)}
+
+              # Link third-class inputs (skipped)
+              ${lib.concatMapStringsSep "\n" ({ name, value }: ''
+                ln -s '${value}' "$out/flake/input/${name}"
+              '') (lib.const [] inputMap.n3)}
+
+            '') + (if ! (inputs.self ? rev) then ''
               echo "Cannot complete a dirty configuration"
               exit 1
             '' else "");
+
+            system.activationScripts.etcnixos = ''
+              rm -f /etc/nixos
+              ln -sfn /run/current-system/flake/input/self /etc/nixos
+            '';
 
             nixpkgs = {
               inherit pkgs;
@@ -366,8 +409,9 @@
       }
     );
 
-    passthru = {
+    passthru = rec {
       inherit inputs;
+      inherit inputMap;
 
      #nixus = let
      #  inherit (import ./secrets/hosts.nix) wireguard;
