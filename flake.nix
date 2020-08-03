@@ -48,6 +48,8 @@
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; }; # Nixpkgs-mozilla
     snack = { url = "github:nmattia/snack"; flake = false; };             # Snack
     napalm = { url = "github:nmattia/napalm"; flake = false; };           # Napalm
+
+    nixexprs = { url = "https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz"; flake = false; };
   };
 
   outputs = inputs: with builtins; let

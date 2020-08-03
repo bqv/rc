@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
 with lib;
 
@@ -28,6 +28,8 @@ in
     environment.systemPackages = [ cfg.package ];
 
     environment.interactiveShellInit = "source ${cfg.package}/etc/profile.d/command-not-found.sh";
+
+    programs.command-not-found.enable = false;
 
   };
 }
