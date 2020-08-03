@@ -196,7 +196,7 @@
             nix.nixPath = [
               "nixpkgs=${channels.pkgs}"
               "nixos-config=/etc/nixos/configuration.nix"
-              "nixpkgs-overlays=/etc/nixos/overlays"
+             #"nixpkgs-overlays=/etc/nixos/overlays" # breaks nix-index, is it even needed?
             ];
 
             system.configurationRevision = inputs.self.rev or "dirty";
