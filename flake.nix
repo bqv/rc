@@ -118,6 +118,7 @@
         inputs.self.overlay
         (pkgs: lib.const {
           inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird webkitgtk mitmproxy;
+          inherit (inputs.stable.legacyPackages.${system}) home-assistant;
           ripcord = builtins.trace "ripcord: disabled, broken by appimageTools changes" pkgs.hello;
           inherit (pkgs.lg531) teams nyxt;
           inherit (pkgs.lg400) catt;
@@ -311,6 +312,14 @@
       inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
       inherit (pkgs) nyxt pure sddm-chili shflags velox yacy;
     });
+
+    defaultPackage = forAllSystems (system: let
+      pkgs = pkgsForSystem system;
+    in pkgs.linkFarm "nixrc" (
+      (lib.mapAttrsToList (host: { config, ... }:
+        { name = "nixosConfigurations/${host}"; path = config.system.build.toplevel; }
+      ) inputs.self.nixosConfigurations)
+    ));
 
     apps = forAllSystems (system: {
       nixos = {
