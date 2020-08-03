@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
 {
   imports = [
@@ -11,7 +11,7 @@
 
   services.dbus.packages = with pkgs; [ gnome3.dconf ];
 
-  services.xinetd = let 
+  services.xinetd = let
     profile = config.users.users.bao;
   in {
     enable = true;
@@ -78,7 +78,8 @@
     '';
 
     programs.home-manager.enable = true;
-    programs.command-not-found.enable = false; # Needs flake-safe version
+    programs.command-not-found.enable = true;
+    programs.command-not-found.dbPath = "${inputs.nixexprs}/programs.sqlite";
     programs.qutebrowser.enable = true;
     programs.firefox.enable = true;
     programs.xonsh.enable = true;
