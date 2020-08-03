@@ -51,7 +51,7 @@
   };
 
   outputs = inputs: with builtins; let
-    forAllSystems = lib.genAttrs [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
+    allSystems = [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
     diffTrace = left: right: string: value: if left != right then trace string value else value;
 
     # Nixos Config
@@ -125,6 +125,11 @@
         })
       ];
     };
+
+    forAllSystems = f: lib.genAttrs allSystems (system: f {
+      inherit system;
+      pkgs = pkgsForSystem system;
+    });
 
     inputMap = let
       tryGetValue = res: if res.success then res.value else null;
@@ -289,7 +294,7 @@
     homeConfigurations = lib.genAttrs (builtins.attrNames inputs.self.nixosConfigurations)
       (host: inputs.self.nixosConfigurations.${host}.config.home-manager.users);
 
-    legacyPackages = forAllSystems pkgsForSystem;
+    legacyPackages = forAllSystems ({ pkgs, ... }: pkgs);
 
     overlay = import ./pkgs;
 
@@ -298,9 +303,7 @@
       value = import (./overlays + "/${name}");
     }) (attrNames (readDir ./overlays)));
 
-    packages = forAllSystems (system: let
-      pkgs = pkgsForSystem system;
-    in lib.filterAttrs (_: p: (p.meta.broken or null) != true) {
+    packages = forAllSystems ({ pkgs, ... }: lib.filterAttrs (_: p: (p.meta.broken or null) != true) {
       inherit (pkgs.emacsPackages) bitwarden ivy-exwm;
       inherit (pkgs.emacsPackages) flycheck-purescript eterm-256color;
       inherit (pkgs.emacsPackages) envrc emacsbridge font-lock-ext sln-mode;
@@ -313,22 +316,20 @@
       inherit (pkgs) nyxt pure sddm-chili shflags velox yacy;
     });
 
-    defaultPackage = forAllSystems (system: let
-      pkgs = pkgsForSystem system;
-    in pkgs.linkFarm "nixrc" (
+    defaultPackage = forAllSystems ({ pkgs, ... }: pkgs.linkFarm "nixrc" (
       (lib.mapAttrsToList (host: { config, ... }:
         { name = "nixosConfigurations/${host}"; path = config.system.build.toplevel; }
       ) inputs.self.nixosConfigurations)
     ));
 
-    apps = forAllSystems (system: {
+    apps = forAllSystems ({ pkgs, ... }: {
       nixos = {
         type = "app";
-        program = (pkgsForSystem system).callPackage ./pkgs/lib/nixos.nix {} + "/bin/nixos";
+        program = pkgs.callPackage ./pkgs/lib/nixos.nix {} + "/bin/nixos";
       };
     });
 
-    defaultApp = forAllSystems (system: inputs.self.apps.${system}.nixos);
+    defaultApp = forAllSystems ({ system, ... }: inputs.self.apps.${system}.nixos);
 
     nixosModules = let
       mergeAll = lib.fold lib.recursiveUpdate {};
@@ -338,13 +339,10 @@
       );
 
       moduleList = (import ./modules/nixos.nix) ++ (import ./modules/home-manager.nix);
-      modulesAttrs = mergeAll (pathsToAttrs moduleList);
-
       profilesList = import ./profiles/list.nix;
-      profilesAttrs = { profiles = mergeAll (pathsToAttrs profilesList); };
-    in modulesAttrs // profilesAttrs;
+    in mergeAll (pathsToAttrs moduleList) // { profiles = mergeAll (pathsToAttrs profilesList); };
 
-    devShell = forAllSystems (system:
+    devShell = forAllSystems ({ system, ... }:
       let
         pkgs = import channels.pkgs { inherit system; };
         my = import ./pkgs pkgs pkgs;
@@ -376,7 +374,6 @@
         ]; # Also single files can be imported.
 
         shellHook = ''
-          mkdir -p secrets
           mkdir -p secrets/{hosts,users}
           sopsPGPHook
         '';
@@ -387,22 +384,16 @@
               (builtins.readFile /etc/nix/nix.conf)}
             experimental-features = nix-command flakes ca-references
           '';
-        in linkFarm "nix-conf-dir" ( [ {
-          name = "nix.conf";
-          path = writeText "flakes-nix.conf" nixConf;
-        } {
-          name = "registry.json";
-          path = /etc/nix/registry.json;
-        } {
-          name = "machines";
-          path = /etc/nix/machines;
-        } ] );
+        in linkFarm "nix-conf-dir" ( [
+          { name = "nix.conf"; path = writeText "flakes-nix.conf" nixConf; }
+          { name = "registry.json"; path = /etc/nix/registry.json; }
+          { name = "machines"; path = /etc/nix/machines; }
+        ] );
       }
     );
 
     passthru = rec {
-      inherit inputs;
-      inherit inputMap;
+      inherit inputs channels config allSystems inputMap;
 
       #$ git config secrets.providers "nix eval --raw .#passthru.secrets"
       secrets = with lib.strings; concatMapStringsSep "\n" (replaceStrings [" "] ["\\s"]) ([
