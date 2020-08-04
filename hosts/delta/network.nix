@@ -74,7 +74,8 @@ in {
           # accept SSH connections (required for a server)
           #tcp dport 22 accept
 
-          deny
+          log
+          drop
         }
 
         chain output {

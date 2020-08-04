@@ -37,6 +37,9 @@
   boot.kernelParams = [ "mce=3" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
   boot.binfmt.emulatedSystems = [ "armv7l-linux" "aarch64-linux" ];
+  boot.postBootCommands = ''
+    echo 0000:04:00.0 > /sys/bus/pci/drivers/xhci_hcd/unbind
+  ''; # usb4 is faulty
 
   fileSystems = let
     hdd = {
