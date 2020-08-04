@@ -114,15 +114,15 @@
         inputs.guix.overlay
         inputs.construct.overlay
         inputs.emacs.overlay
-        inputs.haskell.overlay
+        (final: prev: builtins.removeAttrs (inputs.haskell.overlay final prev) [ "harfbuzz" ])
         inputs.xontribs.overlay
         inputs.wayland.overlay
         inputs.self.overlay
         (pkgs: lib.const {
           inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird webkitgtk mitmproxy;
           inherit (inputs.stable.legacyPackages.${system}) home-assistant;
-          ripcord = builtins.trace "ripcord: disabled, broken by appimageTools changes" pkgs.hello;
-          inherit (pkgs.lg531) teams nyxt;
+          graalvm8 = builtins.trace "graalvm8: suspended - too big and not cached" pkgs.hello;
+          inherit (pkgs.lg531) teams nyxt ripcord;
           inherit (pkgs.lg400) catt;
         })
       ];
@@ -236,7 +236,9 @@
             '';
 
             nixpkgs = {
-              inherit pkgs;
+              pkgs = pkgs // {
+                iptables = pkgs.iptables-nftables-compat;
+              };
             };
           };
 
