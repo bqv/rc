@@ -14,7 +14,7 @@
   services.xinetd = let
     profile = config.users.users.bao;
   in {
-    enable = true;
+    enable = false;
     services = [{
       name = "telnet";
       port = 23;

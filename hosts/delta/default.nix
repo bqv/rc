@@ -98,6 +98,7 @@
     wrappedBinaries = {
       chromium-safe = "${lib.getBin pkgs.large.chromium}/bin/chromium";
       firefox-safe = "${lib.getBin pkgs.large.firefox}/bin/firefox";
+      teams-safe = "${lib.getBin pkgs.teams}/bin/teams";
       mpv-safe = "${lib.getBin pkgs.mpv}/bin/mpv";
     };
   };
