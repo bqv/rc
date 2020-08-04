@@ -209,8 +209,8 @@ let
     (add-hook 'before-save-hook 'whitespace-cleanup)
     (global-set-key (kbd "C-x k") 'kill-this-buffer)
     (setq confirm-kill-emacs 'y-or-n-p)
-    (setq default-input-method "programmer-dvorak")
 
+    (setq default-input-method "programmer-dvorak")
     (defun activate-default-input-method ()
       (activate-input-method default-input-method))
     ;; new buffers
