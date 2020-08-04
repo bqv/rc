@@ -71,8 +71,9 @@ in {
           ip6 nexthdr icmpv6 icmpv6 type echo-request accept
           ip protocol icmp icmp type echo-request accept
 
-          # accept SSH connections (required for a server)
-          #tcp dport 22 accept
+          #tcp dport 22 accept # SSH connections
+
+          tcp dport 6697 accept # Weechat
 
           log
           drop
