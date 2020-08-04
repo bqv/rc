@@ -103,7 +103,7 @@
 
     services.lorri.enable = true;
     services.gpg-agent.enable = true;
-    services.spotifyd.enable = true;
+    services.spotifyd.enable = false;
     services.mpd.enable = true;
     services.taskwarrior-sync.enable = true;
     services.dunst.enable = true;
