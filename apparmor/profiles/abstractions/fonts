@@ -1,0 +1,62 @@
+# vim:syntax=apparmor
+# ------------------------------------------------------------------
+#
+#    Copyright (C) 2002-2009 Novell/SUSE
+#    Copyright (C) 2009 Canonical Ltd.
+#
+#    This program is free software; you can redistribute it and/or
+#    modify it under the terms of version 2 of the GNU General Public
+#    License published by the Free Software Foundation.
+#
+# ------------------------------------------------------------------
+
+  /usr/share/AbiSuite/fonts/**          r,
+
+  /usr/lib/xorg/modules/fonts/**.so*    mr,
+
+  /usr/share/fonts/                     r,
+  /usr/share/fonts/**                   mr,
+
+  /etc/fonts/**                         mr,
+  /usr/share/fontconfig/conf.avail/**   r,
+  /usr/share/fontconfig/conf.avail.*/**   r,
+
+  /var/cache/fonts/**                   mr,
+  /var/cache/fontconfig/**              mr,
+  /var/lib/defoma/**                    mr,
+
+  /usr/share/a2ps/fonts/**              mr,
+  /usr/share/xfce/fonts/**              mr,
+  /usr/share/ghostscript/fonts/**       mr,
+  /usr/share/javascript/*/fonts/**      mr,
+  /usr/share/texmf/{,*/}fonts/**        mr,
+  /usr/share/texlive/texmf-dist/fonts/** mr,
+  /var/lib/ghostscript/**               mr,
+
+  owner @{HOME}/.fonts.conf             r,
+  owner @{HOME}/.fonts/                 r,
+  owner @{HOME}/.fonts/**               mr,
+  owner @{HOME}/.local/share/fonts/     mr,
+  owner @{HOME}/.local/share/fonts/**   mr,
+  owner @{HOME}/.fonts.cache-2          mr,
+  owner @{HOME}/.{,cache/}fontconfig/   r,
+  owner @{HOME}/.{,cache/}fontconfig/** mrl,
+  owner @{HOME}/.fonts.conf.d/          r,
+  owner @{HOME}/.fonts.conf.d/**        mr,
+  owner @{HOME}/.config/fontconfig/     r,
+  owner @{HOME}/.config/fontconfig/**   mr,
+
+  /usr/local/share/fonts/               r,
+  /usr/local/share/fonts/**             mr,
+
+  # poppler CMap tables
+  /usr/share/poppler/cMap/**            r,
+
+  # data files for LibThai
+  /usr/share/libthai/thbrk.tri          r,
+
+  deny @{HOME}/.cache/fontconfig/ w,
+  deny @{HOME}/.cache/fontconfig/** w,
+  deny /var/cache/fontconfig/ w,
+  deny /var/cache/fontconfig/** w,
+  deny /usr/share/fonts/** w,

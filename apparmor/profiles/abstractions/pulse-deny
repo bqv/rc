@@ -1,0 +1,15 @@
+deny /usr/bin/pulseaudio xrm,
+
+deny /dev/shm/ r,
+deny /run/user/*/pulse/ rw,
+deny /usr/share/alsa/alsa.conf r,
+deny /dev/snd/* rw,
+
+deny /tmp/orcexec.* m,
+deny /run/user/*/orcexec.* rwkm,
+deny @{HOME}/orcexec.* m,
+
+## Site-local symlinks
+deny @{SYS_GIT}/sys/pulse/* r,
+deny @{SYS_GIT}/sys/asound.conf r,
+deny @{SYS_GIT}/sys/secure/pulse.cookie r,
