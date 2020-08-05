@@ -5,11 +5,14 @@ let
 in lib.recurseIntoAttrs rec {
 
   bitwarden = trivialBuild rec {
-    pname = "emacs-bitwarden";
+    pname = baseNameOf src.meta.homepage;
+    version = lib.substring 0 7 src.rev;
     src = fetchFromGitHub {
-      owner = "seanfarley"; repo = pname;
+      owner = "seanfarley";
+      repo = "emacs-bitwarden";
       rev = "e03919ca68c32a8053ddea2ed05ecc5e454d8a43";
       sha256 = "1bbxh01856vg8acwrjbq3hyxa81zcvfby7k1j5hdfps918xy10m2";
+      # date = 2019-08-08T16:55:08-07:00;
     };
   };
 
@@ -50,12 +53,14 @@ in lib.recurseIntoAttrs rec {
   };
 
   envrc = trivialBuild rec {
-    pname = "envrc";
-    version = "20200611.254";
+    pname = baseNameOf src.meta.homepage;
+    version = lib.substring 0 7 src.rev;
     src = fetchFromGitHub {
-      owner = "purcell"; repo = pname;
-      rev = "aae15dd8c4736ceb515b09b1db9eef3db3bd65d9";
-      sha256 = "14f5hh09qdjdy757h3lg36z5x2nrnx2s0dmzm1jlk4q7qj274114";
+      owner = "purcell";
+      repo = "envrc";
+      rev = "19b4d6a8384a8e2a52caa496315377797fa8a062";
+      sha256 = "0fkld36r4fc6anqyq1hj6ak2vxal77aligyqw04g22j9c3l4l1rx";
+      # date = 2020-07-14T14:01:25+12:00;
     };
     buildInputs = with emacsPackages; [
       seq
@@ -138,9 +143,9 @@ in lib.recurseIntoAttrs rec {
     src = fetchFromGitHub {
       owner = "lastquestion";
       repo = "explain-pause-mode";
-      rev = "319ba9aa1ab2e185a4085dc685007a35213a6e86";
-      sha256 = "1y3gwwryr6wg82x8ibzrkrii47i4qrdfv9y10zvif5l8rvj2fjmk";
-      # date = 2020-07-15T22:44:47-07:00;
+      rev = "2356c8c3639cbeeb9751744dbe737267849b4b51";
+      sha256 = "0frnfwqal9mrnrz6q4v7vcai26ahaw81894arff1yjw372pfgv7v";
+      # date = 2020-07-27T02:27:40-07:00;
     };
     buildInputs = with emacsPackages; [
     ];
