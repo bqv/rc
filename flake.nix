@@ -9,6 +9,7 @@
     large.url  = "github:nixos/nixpkgs/nixos-unstable";                #|
     pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd"; #|
     pr93457.url = "github:ju1m/nixpkgs/apparmor";                      #|
+    pr93659.url = "github:ju1m/nixpkgs/security.pass";                 #|
 
     lg531.url = "github:bqv/nixrc/54fee446d8110f516f946a5cb6a27a760e538700"; # Historical sys-531
     lg400.url = "github:bqv/nixrc/c66055501d4ef83d5e392f29d4e951b1a8289668"; # Historical sys-400
@@ -279,15 +280,17 @@
               };
             };
           };
-          
+
           apparmor = { ... }: {
             environment.etc."ld-nix.so.preload".text = lib.mkDefault "";
           };
 
+          gnupg = import "${inputs.pr93659}/nixos/modules/security/gnupg.nix";
+
           flakeModules = import ./modules/nixos.nix;
 
         in flakeModules ++ [
-          core global home secrets local apparmor
+          core global home secrets local apparmor gnupg
           home-manager dwarffs sops guix matrix-construct
         ];
       };
