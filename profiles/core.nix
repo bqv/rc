@@ -120,6 +120,8 @@ in {
     apparmor = {
       enable = true;
     };
+    audit.enable = true;
+    auditd.enable = true;
 
     hideProcessInformation = true;
 
