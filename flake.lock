@@ -920,11 +920,11 @@
     },
     "large": {
       "locked": {
-        "lastModified": 1595770343,
-        "narHash": "sha256-GTmeVtwj+ZvtPMYyliFspWRoLly1P25suz694NfD9d8=",
+        "lastModified": 1596265691,
+        "narHash": "sha256-9ofCzFqttTsGrvTaS4RrDSTNQO9PFOz5uyn8V+2eA5M=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "28fce082c8ca1a8fb3dfac5c938829e51fb314c8",
+        "rev": "840c782d507d60aaa49aa9e3f6d0b0e780912742",
         "type": "github"
       },
       "original": {
