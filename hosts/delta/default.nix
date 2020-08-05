@@ -12,6 +12,7 @@
     ../../profiles/networking/wireguard
     ../../profiles/networking/mdns.nix
     ../../profiles/sound/pulse.nix
+    ../../profiles/virtualization/anbox
     ../../profiles/graphical
     ../../profiles/bcachefs.nix
     ../../profiles/wayland.nix
@@ -32,7 +33,10 @@
     };
   };
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbcore" "sd_mod" "sr_mod" "nvme" "amdgpu" ];
+  boot.initrd.availableKernelModules = [
+    "xhci_pci" "ehci_pci" "ahci" "usbcore"
+    "sd_mod" "sr_mod" "nvme" "amdgpu"
+  ];
   boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ "kvm-intel" "amdgpu" "fuse" ];
   boot.kernelParams = [ "mce=3" ];
@@ -71,7 +75,7 @@
 
   virtualisation.libvirtd.enable = true;
   virtualisation.virtualbox.host.enable = false;
-  virtualisation.anbox.enable = builtins.trace "Anbox may be disabled until nixos/nixpkgs#91367 is resolved" (lib.versionOlder boot.kernelPackages.kernel.version "5.7.0");
+  virtualisation.anbox.enable = true;
   systemd.network.networks = {
     "40-anbox0".networkConfig.ConfigureWithoutCarrier = true;
   };
