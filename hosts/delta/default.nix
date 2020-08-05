@@ -12,6 +12,7 @@
     ../../profiles/networking/wireguard
     ../../profiles/networking/mdns.nix
     ../../profiles/sound/pulse.nix
+    ../../profiles/virtualization/anbox
     ../../profiles/graphical
     ../../profiles/bcachefs.nix
     ../../profiles/wayland.nix
@@ -71,7 +72,7 @@
 
   virtualisation.libvirtd.enable = true;
   virtualisation.virtualbox.host.enable = false;
-  virtualisation.anbox.enable = builtins.trace "Anbox may be disabled until nixos/nixpkgs#91367 is resolved" (lib.versionOlder boot.kernelPackages.kernel.version "5.7.0");
+  virtualisation.anbox.enable = true;
   systemd.network.networks = {
     "40-anbox0".networkConfig.ConfigureWithoutCarrier = true;
   };
