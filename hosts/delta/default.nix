@@ -13,6 +13,7 @@
     ../../profiles/networking/mdns.nix
     ../../profiles/sound/pulse.nix
     ../../profiles/graphical
+    ../../profiles/bcachefs.nix
     ../../profiles/wayland.nix
     ../../profiles/weechat.nix
     ../../users/root.nix
@@ -87,6 +88,8 @@
     autoOptimiseStore = false; # Disabled for speed
     optimise.automatic = true;
     optimise.dates = [ "17:30" "02:00" ];
+
+    maxJobs = 16;
   };
 
   hardware.ckb-next.enable = true;

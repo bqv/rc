@@ -148,7 +148,7 @@
         s2 = lib.mapAttrsRecursiveCond (s: !(s ? outPath)) (n: i: lib.nameValuePair (lib.concatStringsSep "." n) i) s1;
       in lib.concatMap lib.attrValues (lib.attrValues s2);
 
-      n3 = let # broken (but why?)
+      n3 = lib.const [] (let # broken (but why?)
         s0 = inputs // { self = {}; };
         s1 = lib.mapAttrs (k: v: v.inputs) (lib.filterAttrs (k: v: v ? inputs) s0);
         s2 = lib.mapAttrsRecursiveCond (s: !(s ? outPath)) (n: i: lib.nameValuePair (lib.concatStringsSep "." n) i) s1;
@@ -156,7 +156,7 @@
         s4 = lib.mapAttrs (k: v: v.inputs) (lib.filterAttrs (k: v: v ? inputs) (lib.listToAttrs s3));
         s5 = lib.mapAttrsRecursiveCond (s: !(s ? outPath)) (n: i: lib.nameValuePair (lib.concatStringsSep "." n) i) s4;
         s6 = lib.concatMap lib.attrValues (lib.attrValues s5);
-      in tryGetValue (builtins.tryEval (lib.concatMap lib.attrValues (lib.attrValues s6)));
+      in tryGetValue (builtins.tryEval (lib.concatMap lib.attrValues (lib.attrValues s6))));
     };
   in {
     nixosConfigurations = let
@@ -227,7 +227,7 @@
               # Link third-class inputs (skipped)
               ${lib.concatMapStringsSep "\n" ({ name, value }: ''
                 ln -s '${value}' "$out/flake/input/${name}"
-              '') (lib.const [] inputMap.n3)}
+              '') inputMap.n3}
 
             '') + (if ! (inputs.self ? rev) then ''
               echo "Cannot complete a dirty configuration"
