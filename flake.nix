@@ -8,6 +8,7 @@
     small.url  = "github:nixos/nixpkgs/nixos-unstable-small";          #|/
     large.url  = "github:nixos/nixpkgs/nixos-unstable";                #|
     pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd"; #|
+    pr93457.url = "github:ju1m/nixpkgs/apparmor";                      #|
 
     lg531.url = "github:bqv/nixrc/54fee446d8110f516f946a5cb6a27a760e538700"; # Historical sys-531
     lg400.url = "github:bqv/nixrc/c66055501d4ef83d5e392f29d4e951b1a8289668"; # Historical sys-400
@@ -63,9 +64,9 @@
     };
 
     channels = with inputs; {
-      pkgs = large;     # For packages
-      modules = master; # For nixos modules
-      lib = master;     # For flake-wide lib
+      pkgs = large;       # For packages
+      modules = pr93457;  # For nixos modules
+      lib = master;       # For flake-wide lib
     }; inherit (channels.lib) lib; # this ^
 
     # Fetch PR prepatched nixpkgs by id and hash
@@ -276,11 +277,15 @@
               };
             };
           };
+          
+          apparmor = { ... }: {
+            environment.etc."ld-nix.so.preload".text = lib.mkDefault "";
+          };
 
           flakeModules = import ./modules/nixos.nix;
 
         in flakeModules ++ [
-          core global home secrets local
+          core global home secrets local apparmor
           home-manager dwarffs sops guix matrix-construct
         ];
       };
@@ -288,7 +293,7 @@
       dir = ./hosts;
       _import = host: let
         modules = modulesFor host;
-      in lib.nixosSystem modules // {
+      in channels.modules.lib.nixosSystem modules // {
         inherit specialArgs modules;
       };
     };

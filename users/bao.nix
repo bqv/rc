@@ -34,7 +34,10 @@
     group = "users";
     shell = pkgs.xonsh;
     isNormalUser = true;
-    extraGroups = [ "wheel" "adbusers" "ipfs" "audio" "video" "dwarffs" "tty" ];
+    extraGroups = [
+      "wheel" "audio" "video" "tty"
+      "adbusers" "ipfs" "dwarffs" "audit"
+    ];
   } // import ../secrets/user.password.nix
     // import ../secrets/user.description.nix;
 

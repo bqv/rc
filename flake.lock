@@ -1627,6 +1627,22 @@
         "type": "github"
       }
     },
+    "pr93457": {
+      "locked": {
+        "lastModified": 1595225844,
+        "narHash": "sha256-AR6D190DyJr61ROV3NQ3k2TVuQ6LR3kkw2BFBjal1hM=",
+        "owner": "ju1m",
+        "repo": "nixpkgs",
+        "rev": "bce3e77715c237b5067e8a62224a2e50e3f85ea6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ju1m",
+        "ref": "apparmor",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "prompt-bar": {
       "flake": false,
       "locked": {
@@ -1982,6 +1998,7 @@
         "nix": "nix_3",
         "nixexprs": "nixexprs",
         "pr75800": "pr75800_3",
+        "pr93457": "pr93457",
         "small": "small_3",
         "snack": "snack_3",
         "sops": "sops",
