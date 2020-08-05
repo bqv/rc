@@ -156,6 +156,8 @@ let
              (float-time (time-subtract (current-time)
                                         before-user-init-time)))
 
+    (when (eq window-system 'pgtk)
+      (pgtk-use-im-context t))
     (setq inhibit-startup-message t)
     (setq inhibit-startup-buffer-menu t)
     (setq inhibit-startup-screen t)
