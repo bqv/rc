@@ -73,7 +73,8 @@ in {
 
           #tcp dport 22 accept # SSH connections
 
-          tcp dport 6697 accept # Weechat
+          tcp dport 6667 accept # Weechat
+          ip saddr ${hosts.lan.theta} accept # Shells
 
           log
           drop
