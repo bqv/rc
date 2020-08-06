@@ -21,7 +21,7 @@ with lib; let
     nix-instantiate = "echo disabled: nix-instantiate"; # require nix-command
     nix-store = "echo disabled: nix-store"; # require nix-command
     nix-shell = "echo disabled: nix-shell"; # require nix-command
-    sudo = "echo disabled: sudo"; # discourage sudo
+    sudo = "echo warning: sudo; env sudo"; # discourage sudo
   };
 
   abbrevs = rec {
@@ -143,7 +143,7 @@ in {
               user = $(whoami).strip(),
               host = $(hostname).strip(),
               cwd = $(pwd).strip()))
-        
+
         if ''${...}.get("INSIDE_EMACS") == "vterm":
           "DVTM" not in ''${...} && exec env TERM=dvtm-256color ${pkgs.abduco}/bin/abduco -Al emacs ${pkgs.dvtm}/bin/dvtm -m '^q'
         elif "EMACS" not in ''${...}:
