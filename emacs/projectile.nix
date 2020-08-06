@@ -9,6 +9,9 @@
       (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
       (setq projectile-enable-caching t)
       (projectile-mode t)
+      (setq compilation-buffer-name-function
+            (lambda (mode)
+              (concat "*" (downcase mode) ": " (projectile-project-name) "*")))
     '';
   };
 }
