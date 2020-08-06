@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 
 {
+  services.pulseaudio = lib.mkForce false;
+
   services.pipewire = {
     enable = true;
   };
