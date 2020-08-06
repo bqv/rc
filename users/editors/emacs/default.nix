@@ -42,7 +42,8 @@ in {
     };
 
     systemd.user.services.emacs = {
-      Service.Type = "notify";
+     #Service.Type = "notify";
+      Service.Restart = lib.mkForce "no";
       Install.WantedBy = lib.mkForce [];
     };
 
@@ -51,7 +52,8 @@ in {
     in {
       Unit.Description = "Socket for ${service.Unit.Description}";
       Unit.Documentation = service.Unit.Documentation;
-      Socket.ListenStream = "%h/.emacs.d/server/server";
+      Socket.ListenStream = "%t/emacs/server";
+      Socket.Symlinks = "%h/.emacs.d/server/server";
       Install.WantedBy = [ "sockets.target" ];
     };
   };
