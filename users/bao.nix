@@ -108,7 +108,7 @@
     services.gpg-agent.enable = true;
     services.spotifyd.enable = false;
     services.mpd.enable = true;
-    services.taskwarrior-sync.enable = true;
+    services.taskwarrior-sync.enable = false;
     services.dunst.enable = true;
     services.emacs.enable = true;
     services.ckb.enable = !config.headless;
