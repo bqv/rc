@@ -127,7 +127,7 @@
           inherit (pkgs.lg531) teams nyxt ripcord;
           inherit (pkgs.lg400) catt;
           riot-desktop = pkgs.element-desktop;
-          inherit (inputs.pr93457.legacyPackages.${system}) lvm2;
+          inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils lvm2;
         })
       ];
     };

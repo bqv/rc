@@ -2,11 +2,11 @@
 
 let
   profiles = {
-   #pulseaudio = ../apparmor/usr.bin.pulseaudio;
-   #firefox = ../apparmor/usr.bin.firefox;
-    chromium = ../apparmor/usr.bin.chrome;
-    skype = ../apparmor/usr.bin.skypeforlinux;
-    wine = ../apparmor/usr.bin.wine;
+   #pulseaudio = ../../../apparmor/usr.bin.pulseaudio;
+   #firefox = ../../../apparmor/usr.bin.firefox;
+    chromium = ../../../apparmor/usr.bin.chrome;
+    skype = ../../../apparmor/usr.bin.skypeforlinux;
+    wine = ../../../apparmor/usr.bin.wine;
   };
 
   initScript = pkgs.writeShellScript "aa-init" ''

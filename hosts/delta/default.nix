@@ -7,6 +7,7 @@
     ../../profiles/misc/udev-nosettle.nix
     ../../profiles/misc/adblocking.nix
     ../../profiles/security/sudo.nix
+    ../../profiles/security/apparmor
     ../../profiles/networking/ipfs
     ../../profiles/networking/bluetooth
     ../../profiles/networking/wireguard
