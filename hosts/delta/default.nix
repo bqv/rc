@@ -14,7 +14,7 @@
     ../../profiles/sound/pulse.nix
     ../../profiles/virtualization/anbox
     ../../profiles/graphical
-    ../../profiles/bcachefs.nix
+   #../../profiles/bcachefs.nix
     ../../profiles/wayland.nix
     ../../profiles/weechat.nix
     ../../users/root.nix
@@ -75,7 +75,7 @@
 
   virtualisation.libvirtd.enable = true;
   virtualisation.virtualbox.host.enable = false;
-  virtualisation.anbox.enable = true;
+  virtualisation.anbox.enable = builtins.trace "anbox: still f****d by kernel updates" false;
   systemd.network.networks = {
     "40-anbox0".networkConfig.ConfigureWithoutCarrier = true;
   };
