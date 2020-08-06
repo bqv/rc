@@ -41,9 +41,18 @@ in {
       extraPackages = epkgs: forEachPackage (p: p.package epkgs);
     };
 
-    systemd.user.services.emacs.Service = {
-      Type = "notify";
-      NotifyAccess = "all";
+    systemd.user.services.emacs = {
+      Service.Type = "notify";
+      Install.WantedBy = lib.mkForce [];
+    };
+
+    systemd.user.sockets.emacs = let
+      service = config.systemd.user.services.emacs;
+    in {
+      Unit.Description = "Socket for ${service.Unit.Description}";
+      Unit.Documentation = service.Unit.Documentation;
+      Socket.ListenStream = "%h/.emacs.d/server/server";
+      Install.WantedBy = [ "sockets.target" ];
     };
   };
 }

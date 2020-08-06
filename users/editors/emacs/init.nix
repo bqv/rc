@@ -254,15 +254,15 @@ let
       :leaf-defer nil
       :config
       (setq server-auth-dir "~/.emacs.d/server/"
-            server-use-tcp t
-            server-host "0.0.0.0"
-            server-port 2222)
+          );server-use-tcp t
+           ;server-host "0.0.0.0"
+           ;server-port 2222)
       (if (not (server-running-p))
           (server-start)
-          (shell-command
-            (format "cp --reflink=always %s/server %s/%s" server-auth-dir server-auth-dir
-              (format "server@%d" (round (time-to-seconds))))
-            nil)))
+        );(shell-command
+         ;  (format "cp --reflink=always %s/server %s/%s" server-auth-dir server-auth-dir
+         ;    (format "server@%d" (round (time-to-seconds))))
+         ;  nil)))
 
     (progn
       ${lib.concatMapStrings ({ sym, script }: ''

@@ -115,6 +115,8 @@
     services.syncthing.enable = false; # TODO
     services.unclutter.enable = false; # TODO
 
+    systemd.user.startServices = true;
+
     home.packages = with pkgs; let
       emms-play-file = pkgs.writeScriptBin "emms-play-file" ''
         !#${pkgs.execline}/bin/execlineb -W
