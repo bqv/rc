@@ -34,8 +34,8 @@
                   (cons "ProtonMail" (list "protonmail-desktop")))
             (setf (map-elt map 'signal)
                   (cons "Signal" (list "signal-desktop")))
-            (setf (map-elt map 'riot)
-                  (cons "Riot" (list "riot-desktop")))
+            (setf (map-elt map 'element)
+                  (cons "Riot" (list "element-desktop")))
             (setf (map-elt map 'nheko)
                   (cons "Nheko" (list "nheko")))
             (setf (map-elt map 'slack)
@@ -253,7 +253,7 @@
             (bqv/exwm-svc-start 'protonmail))
           (with-demoted-errors "Exwm: %S"
             (bqv/exwm-app-join 'firefox)
-            (bqv/exwm-app-join 'riot)))
+            (bqv/exwm-app-join 'element)))
 
         (add-hook 'exwm-init-hook 'bqv/exwm-setup-app)
        ;(add-hook 'exwm-init-hook 'bqv/exwm-setup-games)

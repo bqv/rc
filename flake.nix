@@ -124,9 +124,8 @@
           inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird webkitgtk mitmproxy;
           inherit (inputs.stable.legacyPackages.${system}) home-assistant;
           graalvm8 = builtins.trace "graalvm8: suspended - too big and not cached" pkgs.hello;
-          inherit (pkgs.lg531) teams nyxt ripcord;
+          inherit (pkgs.lg531) nyxt;
           inherit (pkgs.lg400) catt;
-          riot-desktop = pkgs.element-desktop;
           inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils lvm2;
         })
       ];

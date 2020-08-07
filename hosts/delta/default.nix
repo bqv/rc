@@ -158,7 +158,7 @@
   environment.systemPackages = with pkgs; [
     clipmenu bitwarden bitwarden-cli pass protonmail-bridge
 
-    ckb-next riot-desktop nheko discord ripcord
+    ckb-next element-desktop nheko discord ripcord
     qutebrowser firefox fx_cast_bridge
     thunderbird electronmail mpv apvlv
 

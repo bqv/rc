@@ -79,6 +79,11 @@
     '';
     home.file.".profile".text = ''
     '';
+    home.file.".config/nixpkgs/config.nix".text = ''
+      {
+        ${lib.optionalString config.nixpkgs.config.allowUnfree "allowUnfree = true;"}
+      }
+    '';
 
     programs.home-manager.enable = true;
     programs.command-not-found.enable = false;
