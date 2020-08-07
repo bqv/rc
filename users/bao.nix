@@ -113,6 +113,7 @@
     services.gpg-agent.enable = true;
     services.spotifyd.enable = false;
     services.mpd.enable = true;
+    services.mpdris2.enable = true;
     services.taskwarrior-sync.enable = false;
     services.dunst.enable = true;
     services.emacs.enable = true;

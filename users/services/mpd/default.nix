@@ -6,6 +6,7 @@ in {
   config = mkIf cfg.enable {
     services.mpd = {
       musicDirectory = config.xdg.userDirs.music;
+      network.listenAddress = "any";
     };
   };
 }
