@@ -21,7 +21,10 @@ with lib; let
     nix-instantiate = "echo disabled: nix-instantiate"; # require nix-command
     nix-store = "echo disabled: nix-store"; # require nix-command
     nix-shell = "echo disabled: nix-shell"; # require nix-command
-    sudo = "echo warning: sudo; env sudo"; # discourage sudo
+    sudo = pkgs.writeShellScript "sudo-discouraged" ''
+      echo warning: `sudo $@` should be `doas $@` >&2
+      exec sudo $@
+    ''; # discourage sudo
   };
 
   abbrevs = rec {
