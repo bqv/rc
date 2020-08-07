@@ -124,7 +124,15 @@
           inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird webkitgtk mitmproxy;
           inherit (inputs.stable.legacyPackages.${system}) home-assistant;
           graalvm8 = builtins.trace "graalvm8: suspended - too big and not cached" pkgs.hello;
-          inherit (pkgs.lg531) nyxt;
+          nyxt = pkgs.lg531.nyxt.overrideAttrs (old: {
+            buildInputs = old.buildInputs ++ (with pkgs.gst_all_1; [
+              gstreamer gst-libav
+              gst-plugins-base
+              gst-plugins-good
+              gst-plugins-bad
+              gst-plugins-ugly
+            ]);
+          });
           inherit (pkgs.lg400) catt;
           inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils lvm2;
         })

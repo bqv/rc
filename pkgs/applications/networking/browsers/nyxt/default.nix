@@ -41,7 +41,13 @@ let
         pango gtk3 webkitgtk vivaldi-widevine
         glib-networking gsettings-desktop-schemas
         xclip notify-osd enchant
-      ];
+      ] ++ (with gst_all_1; [
+        gstreamer gst-libav
+        gst-plugins-base
+        gst-plugins-good
+        gst-plugins-bad
+        gst-plugins-ugly
+      ]);
 
       configurePhase = ''
         mkdir -p quicklisp-client/local-projects
