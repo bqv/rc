@@ -159,6 +159,7 @@
     clipmenu bitwarden bitwarden-cli pass protonmail-bridge
 
     ckb-next element-desktop nheko discord ripcord
+    vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine
     qutebrowser firefox fx_cast_bridge
     thunderbird electronmail mpv apvlv
 

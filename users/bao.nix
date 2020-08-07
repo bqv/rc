@@ -167,9 +167,10 @@
       };
 
       mimeApps = let
-        firefox = "firefox.desktop";
         nyxt = "nyxt.desktop";
-        qutebrowser = "org.qutebrowser.qutebrowser.desktop";
+        vivaldi = "vivaldi-stable.desktop";
+       #qutebrowser = "org.qutebrowser.qutebrowser.desktop";
+       #firefox = "firefox.desktop";
         thunderbird = "thunderbird.desktop";
 
         defaultBrowser = nyxt;
