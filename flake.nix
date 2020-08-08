@@ -136,6 +136,9 @@
           inherit (pkgs.lg400) catt;
           inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils lvm2;
         })
+        (pkgs: lib.const {
+	  webkitgtk = pkgs.hello;
+        })
       ];
     };
 

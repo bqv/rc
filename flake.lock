@@ -1314,7 +1314,7 @@
     "nixexprs": {
       "flake": false,
       "locked": {
-        "narHash": "sha256-WBuCFfDc2ZFKizWJ9PJf55qz4rUqpps7ILC1ZccgW/s=",
+        "narHash": "sha256-+oakb9Jq2FHA7CaClhYAJd1v4zUQweSCjaUH3wwJU9I=",
         "type": "tarball",
         "url": "https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz"
       },
