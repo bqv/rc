@@ -259,7 +259,7 @@ let
            ;server-port 2222)
       (if (not (server-running-p))
           (server-start)
-        );(shell-command
+       ));(shell-command
          ;  (format "cp --reflink=always %s/server %s/%s" server-auth-dir server-auth-dir
          ;    (format "server@%d" (round (time-to-seconds))))
          ;  nil)))

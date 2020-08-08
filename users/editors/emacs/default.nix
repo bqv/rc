@@ -54,6 +54,7 @@ in {
       Unit.Documentation = service.Unit.Documentation;
       Socket.ListenStream = "%t/emacs/server";
       Socket.Symlinks = "%h/.emacs.d/server/server";
+      Socket.ExecStartPre="${pkgs.coreutils}/bin/chmod 700 %t/emacs";
       Install.WantedBy = [ "sockets.target" ];
     };
   };
