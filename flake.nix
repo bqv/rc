@@ -131,6 +131,7 @@
               gst-plugins-ugly
             ]);
           });
+          inherit (pkgs.lg531) azure-cli audacity nheko;
           inherit (pkgs.lg400) catt;
           inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils lvm2;
         })

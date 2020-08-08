@@ -4,7 +4,10 @@ let
   iwdModule = "services/networking/iwd.nix";
 in {
   disabledModules = [ iwdModule ];
-  imports = [ "${inputs.pr75800}/nixos/modules/${iwdModule}" ];
+  imports = [ (import "${inputs.pr75800}/nixos/modules/${iwdModule}" {
+    inherit config pkgs;
+    lib = import "${inputs.pr75800}/lib/default.nix";
+  }) ];
 
   environment.systemPackages = with pkgs; [ dhcp dhcpcd ];
 

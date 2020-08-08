@@ -4,7 +4,7 @@
   imports = [
     ./xkb
     ./exwm
-    ./xmonad
+   #./xmonad
     ./lxqt
    #./qutebrowser
     ../develop
@@ -35,7 +35,7 @@
         enable = true;
         user = "bao";
       };
-      defaultSession = "none+xmonad";
+      defaultSession = "none+exwm";
     };
   };
 }

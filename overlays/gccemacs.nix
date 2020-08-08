@@ -16,8 +16,8 @@ final: prev: rec {
 
     version = "${shortrev nrev}+${shortrev wrev}";
     src = prev.runCommandNoCC "git-merge" { buildInputs = with prev; [ git ]; } ''
-      cp ${pgtk} src -Lr && cd src && chmod -R a+w .
-      git fetch ${nativecomp} && git merge FETCH_HEAD -m nixmerge
+      cp ${nativecomp} src -Lr && cd src && chmod -R a+w .
+      git fetch ${pgtk} && git merge FETCH_HEAD -m nixmerge
       rm -rf .git && cp -r . $out
     '';
   in final.emacsGcc.overrideAttrs (old: {
