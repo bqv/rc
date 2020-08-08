@@ -47,7 +47,9 @@ in {
   networking.nat.enable = true;
   networking.nat.internalInterfaces = ["ve-+"];
   networking.nat.externalInterface = wanInterface;
-  systemd.services.nat.path = [ pkgs.iptables-nftables-compat ];
+  systemd.services.nat.path = with pkgs; lib.mkForce [
+    iptables-nftables-compat coreutils 
+  ];
 
   networking.firewall.enable = false;
   networking.nftables = {
