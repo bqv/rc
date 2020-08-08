@@ -1311,18 +1311,6 @@
         "type": "github"
       }
     },
-    "nixexprs": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-WBuCFfDc2ZFKizWJ9PJf55qz4rUqpps7ILC1ZccgW/s=",
-        "type": "tarball",
-        "url": "https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz"
-      },
-      "original": {
-        "type": "tarball",
-        "url": "https://nixos.org/channels/nixos-unstable/nixexprs.tar.xz"
-      }
-    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1590704227,
@@ -2012,7 +2000,6 @@
         "naersk": "naersk_3",
         "napalm": "napalm_3",
         "nix": "nix_3",
-        "nixexprs": "nixexprs",
         "pr75800": "pr75800_3",
         "pr93457": "pr93457",
         "pr93659": "pr93659",
