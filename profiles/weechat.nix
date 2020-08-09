@@ -16,6 +16,7 @@ in { # TODO: https://github.com/rycee/home-manager/pull/953
   environment.systemPackages = with pkgs; [ systemWeechat dtach ];
 
   systemd.services.weechat = {
+    restartIfChanged = false;
     serviceConfig = {
       Type = "simple";
       Restart = "always";
