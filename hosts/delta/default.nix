@@ -9,6 +9,7 @@
     ../../profiles/security/sudo.nix
     ../../profiles/security/apparmor
    #../../profiles/security/selinux
+    ../../profiles/services/syncthing
     ../../profiles/networking/ipfs
     ../../profiles/networking/bluetooth
     ../../profiles/networking/wireguard
