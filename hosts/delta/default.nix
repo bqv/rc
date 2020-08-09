@@ -17,7 +17,7 @@
     ../../profiles/sound/pulse.nix
     ../../profiles/virtualization/anbox
     ../../profiles/graphical
-   #../../profiles/bcachefs.nix
+    ../../profiles/bcachefs.nix
     ../../profiles/wayland.nix
     ../../profiles/weechat.nix
     ../../users/root.nix
