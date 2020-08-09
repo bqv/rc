@@ -36,7 +36,8 @@
     isNormalUser = true;
     extraGroups = [
       "wheel" "audio" "video" "tty"
-      "adbusers" "ipfs" "dwarffs" "audit"
+      "adbusers" "dwarffs" "audit"
+      "ipfs" "syncthing"
     ];
   } // import ../secrets/user.password.nix
     // import ../secrets/user.description.nix;
