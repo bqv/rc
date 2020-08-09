@@ -56,6 +56,7 @@
       ./media/spotify
       ./media/radio
       ./media/mpv
+      ./utilities/ssh
       ./utilities/git
       ./utilities/darcs
       ./utilities/htop
@@ -107,7 +108,7 @@
     programs.mpv.enable = true;
     programs.feh.enable = true;
     programs.git.enable = true;
-    programs.ssh.enable = false; # TODO
+    programs.ssh.enable = true;
 
     services.lorri.enable = true;
     services.gpg-agent.enable = true;
@@ -118,10 +119,8 @@
     services.dunst.enable = true;
     services.emacs.enable = true;
     services.ckb.enable = !config.headless;
-    services.syncthing.enable = false; # TODO
-    services.unclutter.enable = false; # TODO
 
-    #systemd.user.startServices = true;
+    #systemd.user.startServices = true; # broken by the [nix-env -> nix profile] move
 
     home.packages = with pkgs; let
       emms-play-file = pkgs.writeScriptBin "emms-play-file" ''
