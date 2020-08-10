@@ -26,6 +26,7 @@
       #      name             type    arguments
       action spawn_terminal   spawn   exec st-wl
       action spawn_emacs      spawn   exec emacsclient -c
+      action spawn_firefox    spawn   exec firefox-safe-wl
       action spawn_browser    spawn   exec vivaldi
       action spawn_nyxt       spawn   exec systemd-cat -t nyxt-browser nyxt
       action spawn_run        spawn   exec dmenu_run-wl
@@ -36,7 +37,7 @@
       key z           mod                 zoom
       key space       mod                 layout_next
       key Tab         mod                 previous_tags
-      key q           mod,shift           quit
+      key q           mod,ctrl,shift      quit
 
       key g           mod                 window.switch_layer
       key c           mod,shift           window.close
@@ -50,6 +51,7 @@
 
       key Return      mod,shift           spawn_terminal
       key Return      mod                 spawn_emacs
+      key b           mod,ctrl,shift      spawn_firefox
       key b           mod,shift           spawn_browser
       key b           mod                 spawn_nyxt
       key r           mod                 spawn_run
