@@ -10,6 +10,8 @@
     ../../profiles/security/apparmor
    #../../profiles/security/selinux
     ../../profiles/services/syncthing
+    ../../profiles/services/aria2
+    ../../profiles/services/guix
     ../../profiles/networking/ipfs
     ../../profiles/networking/bluetooth
     ../../profiles/networking/wireguard
@@ -126,10 +128,6 @@
   services.nix-index.enable = true;
   services.locate.enable = true;
   services.pcscd.enable = true;
-  services.guix.enable = true;
-  services.guix.package = pkgs.guix;
-  services.aria2.enable = true;
-  services.aria2.downloadDir = "/srv";
   services.nixos-git = {
     enable = false;
     github = { owner = "bqv"; repo = "nixos"; };
@@ -166,7 +164,6 @@
     vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine
     qutebrowser firefox fx_cast_bridge
     thunderbird electronmail mpv apvlv
-    python3Packages.aria2p
 
     dunst catt termite rxvt_unicode
     steam obs-studio

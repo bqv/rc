@@ -1,4 +1,4 @@
-{ config, lib, pkgs, usr, ... }:
+{ super, config, lib, pkgs, usr, ... }:
 
 let
   packageSpec = { config, name, ... }:
