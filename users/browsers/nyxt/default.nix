@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ super, config, lib, pkgs, ... }:
 
 {
   config = {
@@ -105,16 +105,56 @@
       (define-configuration buffer
         ((keymap-scheme-name scheme:emacs)
          (default-new-buffer-url "about:blank")
-         (override-map (let ((map (make-keymap "override-map")))
-                                  ;(define-key map "C-x s" 'shell)
-                                   (define-key map "C-r" 'reload-page)
-                                   (define-key map
-                                     "C-v" 'scroll-page-down
-                                     "M-v" 'scroll-page-up)
-                                   (define-key map
-                                     "C-k" 'copy-to-emacs
-                                     "C-y" 'paste-from-emacs)
-                                   map))
+         (override-map
+          (let ((map (make-keymap "override-map")))
+           ;(define-key map "C-x s" 'shell)
+            (define-key map "C-r" 'reload-page)
+            (define-key map
+              "C-v" 'scroll-page-down
+              "M-v" 'scroll-page-up)
+            (define-key map
+              "C-k" 'copy-to-emacs
+              "C-y" 'paste-from-emacs)
+            map))
+         (request-resource-hook
+          (reduce #'hooks:add-hook
+                  (list ;; doi://path -> https url
+                        (url-dispatching-handler
+                         'doi-link-dispatcher (match-scheme "doi")
+                         (lambda (url)
+                           (quri:uri (format nil "https://doi.org/~a"
+                                             (quri:uri-path url)))))
+
+                        ;; magnet:uri -> aria2
+                        (url-dispatching-handler
+                         'aria2-magnet-links (match-scheme "magnet")
+                         (lambda (url)
+                           (uiop:launch-program
+                            (list "${pkgs.python3Packages.aria2p}/bin/aria2p"
+                                  "--secret" "${super.services.aria2.rpcSecret}"
+                                  "add-magnets" (object-string url)))
+                            nil))
+
+                        ;; youtube -> mpv
+                        (url-dispatching-handler
+                         'mpv-youtube-links (match-domain "youtube.com" "m.youtube.com" "youtu.be")
+                         (lambda (url)
+                           (uiop:launch-program
+                            (list "${pkgs.mpv}/bin/mpv"
+                                  (object-string url)))
+                            nil))
+
+                        ;; twitch -> mpv
+                        (url-dispatching-handler
+                         'mpv-twitch-links (match-domain "twitch.tv")
+                         (lambda (url)
+                           (uiop:launch-program
+                            (list "${pkgs.mpv}/bin/mpv"
+                                  "--no-cache"
+                                  (object-string url)))
+                            nil))
+                  )
+                  :initial-value %slot-default))
          ))
 
       (define-configuration browser
@@ -122,19 +162,20 @@
          (external-editor-program "gnvim")
          (download-path (make-instance 'download-data-path :dirname "~/tmp"))
          (start-page-url "https://nyxt.atlas.engineer/quickstart")
-         (search-engines (list (make-instance 'search-engine
-                                              :shortcut "default"
-                                              :search-url "https://qwant.com/?q=~a"
-                                              :fallback-url "https://qwant.com/")
-                               (make-instance 'search-engine
-                                              :shortcut "qw"
-                                              :search-url "https://qwant.com/?q=~a"
-                                              :fallback-url "https://qwant.com/")
-                               (make-instance 'search-engine
-                                              :shortcut "gh"
-                                              :search-url "https://github.com/?q=~a"
-                                              :fallback-url "https://github.com/")
-                               ))
+         (search-engines
+          (list (make-instance 'search-engine
+                               :shortcut "default"
+                               :search-url "https://qwant.com/?q=~a"
+                               :fallback-url "https://qwant.com/")
+                (make-instance 'search-engine
+                               :shortcut "qw"
+                               :search-url "https://qwant.com/?q=~a"
+                               :fallback-url "https://qwant.com/")
+                (make-instance 'search-engine
+                               :shortcut "gh"
+                               :search-url "https://github.com/?q=~a"
+                               :fallback-url "https://github.com/")
+                ))
          (autofills (list (nyxt::make-autofill :key "Name" :fill "${secrets.name}")))
          ))
     '';
