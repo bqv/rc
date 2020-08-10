@@ -57,6 +57,7 @@
       ./media/spotify
       ./media/radio
       ./media/mpv
+      ./media/aria2
       ./utilities/ssh
       ./utilities/git
       ./utilities/darcs
@@ -110,6 +111,7 @@
     programs.feh.enable = true;
     programs.git.enable = true;
     programs.ssh.enable = true;
+    programs.aria2p.enable = true;
 
     services.lorri.enable = true;
     services.gpg-agent.enable = true;
