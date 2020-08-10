@@ -27,7 +27,7 @@
       action spawn_terminal   spawn   exec st-wl
       action spawn_emacs      spawn   exec emacsclient -c
       action spawn_browser    spawn   exec vivaldi
-      action spawn_nyxt       spawn   exec nyxt
+      action spawn_nyxt       spawn   exec systemd-cat -t nyxt-browser nyxt
       action spawn_run        spawn   exec dmenu_run-wl
 
       #   key         modifiers           action
