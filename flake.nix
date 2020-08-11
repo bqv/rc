@@ -50,6 +50,7 @@
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; }; # Nixpkgs-mozilla
     snack = { url = "github:nmattia/snack"; flake = false; };             # Snack
     napalm = { url = "github:nmattia/napalm"; flake = false; };           # Napalm
+    nixus = { url = "github:infinisil/nixus"; flake = false; };           # Nixus
   };
 
   outputs = inputs: with builtins; let
@@ -236,8 +237,8 @@
               '') inputMap.n3}
 
             '') + (if ! (inputs.self ? rev) then ''
-              echo "Cannot complete a dirty configuration"
-              exit 1
+             #echo "Cannot complete a dirty configuration"
+             #exit 1
             '' else "");
 
             system.activationScripts.etcnixos = ''
@@ -335,11 +336,29 @@
       inherit (pkgs) nyxt pure sddm-chili shflags velox yacy;
     });
 
-    defaultPackage = forAllSystems ({ pkgs, ... }: pkgs.linkFarm "nixrc" (
-      (lib.mapAttrsToList (host: { config, ... }:
-        { name = "nixosConfigurations/${host}"; path = config.system.build.toplevel; }
-      ) inputs.self.nixosConfigurations)
-    ));
+    defaultPackage = forAllSystems ({ pkgs, system, ... }:
+      import inputs.nixus ({config, ... }: {
+        defaults = { name, ... }: {
+          configuration = { lib, ... }: {
+            networking.hostName = lib.mkDefault name;
+          };
+
+          # Which nixpkgs version we want to use for this node
+          nixpkgs = channels.modules;
+        };
+
+        nodes.phi = { lib, config, ... }: {
+          # How to reach this node
+          host = "root@10.0.0.4";
+
+          # What configuration it should have
+          configuration = {
+            _module.args = inputs.self.nixosConfigurations.phi.modules.specialArgs;
+            imports = inputs.self.nixosConfigurations.phi.modules.modules;
+          };
+        };
+      })
+    );
 
     apps = forAllSystems ({ pkgs, ... }: {
       nixos = {
@@ -431,6 +450,7 @@
         ++ (attrValues (import ./secrets/domains.nix))
         ++ (lib.flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
       );
+    meh = builtins.attrNames inputs.self.nixosConfigurations.delta.modules.modules;
     };
   };
 }
