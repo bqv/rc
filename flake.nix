@@ -348,7 +348,7 @@
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }:
-      import inputs.nixus { deploySystem = system; } ({config, ... }: {
+      import inputs.nixus { deploySystem = system; } ({ config, lib, ... }: {
         defaults = { name, ... }: let
           nixos = inputs.self.nixosConfigurations.${name}.modules;
         in {
@@ -361,6 +361,11 @@
             imports = nixos.modules;
           };
 
+          deployScriptPhases.nix-copy-alias = lib.dag.entryBefore ["copy-closure"] ''
+            PATH=${lib.makeBinPath [ pkgs.nixUnstable ]}:$PATH
+            alias nix-copy-closure="nix copy"
+          '';
+
           successTimeout = 120;
           switchTimeout = 120;
 
@@ -368,9 +373,13 @@
         };
 
         nodes = {
-          delta = {};
-          zeta = {};
-          phi = {};
+          delta = {
+          };
+          zeta = {
+            hasFastConnection = true;
+          };
+          phi = {
+          };
         };
       })
     );

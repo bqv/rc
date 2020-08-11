@@ -150,7 +150,8 @@
                          (lambda (url)
                            (uiop:launch-program
                             (list "${pkgs.mpv}/bin/mpv"
-                                  "--no-cache"
+                                  "--no-cache" "--cache-secs=0" "--demuxer-readahead-secs=0" "--untimed"
+                                 ;"--cache-pause=no"
                                   (object-string url)))
                             nil))
                   )
