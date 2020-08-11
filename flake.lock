@@ -1393,15 +1393,16 @@
     "nixus_3": {
       "flake": false,
       "locked": {
-        "lastModified": 1597020288,
-        "narHash": "sha256-uhQojjwGeaP+NLpeGgDlld3NXFYREb659uIBIkYX/M0=",
+        "lastModified": 1597108924,
+        "narHash": "sha256-/6YgWgBVe38/YrQFkZZz2YhW8RdOUPQYEBcmFHDuCXY=",
         "owner": "infinisil",
         "repo": "nixus",
-        "rev": "c6bde95b39e41653cf19c1cc6a3c3018ee65523f",
+        "rev": "3e9a56827d1dcee40e98d92322c68d833dd30846",
         "type": "github"
       },
       "original": {
         "owner": "infinisil",
+        "ref": "pure",
         "repo": "nixus",
         "type": "github"
       }
