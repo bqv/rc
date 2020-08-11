@@ -1390,6 +1390,22 @@
         "type": "github"
       }
     },
+    "nixus_3": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1597115349,
+        "narHash": "sha256-sQr3sb9wsLWYv4EtL5Gx0o6dglrbRaKPNBCJFrjL38A=",
+        "owner": "infinisil",
+        "repo": "nixus",
+        "rev": "69462cdd201a938a2f3e72840bbd7d3c96a795a1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "infinisil",
+        "repo": "nixus",
+        "type": "github"
+      }
+    },
     "output-search": {
       "flake": false,
       "locked": {
@@ -2015,6 +2031,7 @@
         "naersk": "naersk_3",
         "napalm": "napalm_3",
         "nix": "nix_3",
+        "nixus": "nixus_3",
         "pr75800": "pr75800_3",
         "pr93457": "pr93457",
         "pr93659": "pr93659",
