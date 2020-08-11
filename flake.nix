@@ -50,6 +50,7 @@
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; }; # Nixpkgs-mozilla
     snack = { url = "github:nmattia/snack"; flake = false; };             # Snack
     napalm = { url = "github:nmattia/napalm"; flake = false; };           # Napalm
+    nixus = { url = "github:infinisil/nixus"; flake = false; };           # Nixus
   };
 
   outputs = inputs: with builtins; let
@@ -241,8 +242,9 @@
             '' else "");
 
             system.activationScripts.etcnixos = ''
-              rm -f /etc/nixos
-              ln -sfn /run/current-system/flake/input/self /etc/nixos
+              rm -f /etc/nixos && \
+              ln -sfn /run/current-system/flake/input/self /etc/nixos || \
+              true
             '';
 
             nixpkgs = {
@@ -335,11 +337,31 @@
       inherit (pkgs) nyxt pure sddm-chili shflags velox yacy;
     });
 
-    defaultPackage = forAllSystems ({ pkgs, ... }: pkgs.linkFarm "nixrc" (
-      (lib.mapAttrsToList (host: { config, ... }:
-        { name = "nixosConfigurations/${host}"; path = config.system.build.toplevel; }
-      ) inputs.self.nixosConfigurations)
-    ));
+    defaultPackage = forAllSystems ({ pkgs, system, ... }:
+      import inputs.nixus { deploySystem = system; } ({config, ... }: {
+        defaults = { name, ... }: {
+          configuration = { lib, ... }: {
+            networking.hostName = lib.mkDefault name;
+          };
+
+          nixpkgs = channels.modules;
+
+          ignoreFailingSystemdUnits = true;
+        };
+
+        nodes.phi = { lib, config, ... }: with inputs.self.nixosConfigurations.phi; {
+          host = "leaf@${modules.specialArgs.hosts.wireguard.phi}";
+
+          configuration = {
+            _module.args = modules.specialArgs;
+            imports = modules.modules;
+          };
+
+          successTimeout = 120;
+          switchTimeout = 120;
+        };
+      })
+    );
 
     apps = forAllSystems ({ pkgs, ... }: {
       nixos = {
