@@ -200,6 +200,25 @@
         (interactive "NFont Size: ")
         (set-frame-font (format "DejaVu Sans Mono-%s" n)))
       (define-key desktop-environment-mode-map (kbd "<65300>") #'set-frame-scale)
+
+      ;; Chinese, simplified
+      (set-fontset-font t 'han "Noto Sans Mono CJK SC Regular")
+      ;; Chinese, traditional (the former script does not have everything)
+      (set-fontset-font t 'han "Noto Sans Mono CJK TC Regular" nil 'append)
+      ;; Japanese hiragana, katakana, etc
+      (set-fontset-font t 'kana "Noto Sans Mono CJK SC Regular")
+      ;; Korean
+      (set-fontset-font t 'hangul "Noto Sans Mono CJK SC Regular")
+      ;; Various
+      (set-fontset-font t 'cjk-misc "Noto Sans Mono CJK SC Regular")
+      ;; Good arabic font, not too small
+      (set-fontset-font t 'arabic "Noto Sans Arabic")
+      ;; Symbols, including b/w emoji
+      (set-fontset-font t 'unicode "Noto Color Emoji" nil 'append)
+      (set-fontset-font t 'unicode "Noto Emoji" nil 'append)
+      (set-fontset-font t 'unicode "Noto Sans Symbols" nil 'append)
+      (set-fontset-font t 'unicode "Noto Sans Symbols2" nil 'append)
+      (set-fontset-font t 'unicode "Symbola" nil 'append)
     '';
   };
 }
