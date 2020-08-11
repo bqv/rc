@@ -19,8 +19,10 @@
   };
 
   systemd.services.ipfs-init = builtins.trace "ipfs still running ephemerally" {
-    path = [ pkgs.coreutils ];
-    serviceConfig.ExecStartPre = "rm -rf /var/lib/ipfs";
-    serviceConfig.ExecStartPost = "chmod g+r /var/lib/ipfs/config";
+    serviceConfig.ExecStartPre = "${pkgs.coreutils}/bin/rm -rf /var/lib/ipfs/*";
+  };
+
+  systemd.services.ipfs = builtins.trace "ipfs config permissions still broken" {
+    serviceConfig.ExecStartPost = "${pkgs.coreutils}/bin/chmod g+r /var/lib/ipfs/config";
   };
 }

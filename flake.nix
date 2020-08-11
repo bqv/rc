@@ -363,7 +363,8 @@
 
           deployScriptPhases.nix-copy-alias = lib.dag.entryBefore ["copy-closure"] ''
             PATH=${lib.makeBinPath [ pkgs.nixUnstable ]}:$PATH
-            alias nix-copy-closure="nix copy"
+           #alias nix-copy-closure="nix copy --from file:///nix/store"
+            export NIX_REMOTE=""
           '';
 
           successTimeout = 120;
