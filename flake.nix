@@ -247,6 +247,7 @@
             '';
 
             nixpkgs = {
+              localSystem = system;
               pkgs = pkgs // {
                 iptables = pkgs.iptables-nftables-compat;
               };
@@ -355,6 +356,7 @@
           configuration = {
             _module.args = inputs.self.nixosConfigurations.phi.modules.specialArgs;
             imports = inputs.self.nixosConfigurations.phi.modules.modules;
+            config.nixpkgs.localSystem = system;
           };
         };
       })

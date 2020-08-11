@@ -1,0 +1,328 @@
+trace: pkgs.nyxt pinned to delta/system-531-link
+error: --- EvalError --------------------------------------------------------------------------------------------- nix
+at: (90:39) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/pkgs/top-level/impure.nix
+
+    89|                 else (if args ? localSystem then {}
+    90|                       else { system = builtins.currentSystem; }) // localSystem;
+      |                                       ^
+    91| })
+
+attribute 'currentSystem' missing
+----------------------------------------------------- show-trace -----------------------------------------------------
+trace: while evaluating the attribute 'system'
+at: (90:30) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/pkgs/top-level/impure.nix
+
+    89|                 else (if args ? localSystem then {}
+    90|                       else { system = builtins.currentSystem; }) // localSystem;
+      |                              ^
+    91| })
+
+trace: while evaluating 'addContextFrom'
+at: (369:23) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/strings.nix
+
+   368|   */
+   369|   addContextFrom = a: b: substring 0 0 a + b;
+      |                       ^
+   370|
+
+trace: from call site
+at: (385:11) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/strings.nix
+
+   384|       sep = addContextFrom _s _sep;
+   385|       s = addContextFrom _sep _s;
+      |           ^
+   386|       sepLen = stringLength sep;
+
+trace: while evaluating 'recurse'
+at: (392:24) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/strings.nix
+
+   391|
+   392|       recurse = index: startAt:
+      |                        ^
+   393|         let cutUntil = i: [(substring startAt (i - startAt) s)]; in
+
+trace: from call site
+at: (403:7) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/strings.nix
+
+   402|     in
+   403|       recurse 0 0;
+      |       ^
+   404|
+
+trace: while evaluating 'splitString'
+at: (382:23) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/strings.nix
+
+   381|   */
+   382|   splitString = _sep: _s:
+      |                       ^
+   383|     let
+
+trace: from call site
+at: (443:69) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/systems/parse.nix
+
+   442|
+   443|   mkSystemFromString = s: mkSystemFromSkeleton (mkSkeletonFromList (lib.splitString "-" s));
+      |                                                                     ^
+   444|
+
+trace: while evaluating 'mkSkeletonFromList'
+at: (368:24) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/systems/parse.nix
+
+   367|
+   368|   mkSkeletonFromList = l: {
+      |                        ^
+   369|     "1" = if elemAt l 0 == "avr"
+
+trace: from call site
+at: (443:49) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/systems/parse.nix
+
+   442|
+   443|   mkSystemFromString = s: mkSystemFromSkeleton (mkSkeletonFromList (lib.splitString "-" s));
+      |                                                 ^
+   444|
+
+trace: while evaluating 'mkSystemFromString'
+at: (443:24) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/systems/parse.nix
+
+   442|
+   443|   mkSystemFromString = s: mkSystemFromSkeleton (mkSkeletonFromList (lib.splitString "-" s));
+      |                        ^
+   444|
+
+trace: from call site
+at: (22:16) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/systems/default.nix
+
+    21|       # Prefer to parse `config` as it is strictly more informative.
+    22|       parsed = parse.mkSystemFromString (if args ? config then args.config else args.system);
+      |                ^
+    23|       # Either of these can be losslessly-extracted from `parsed` iff parsing succeeds.
+
+trace: while evaluating the attribute 'parsed.abi.assertions'
+at: (22:7) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/systems/default.nix
+
+    21|       # Prefer to parse `config` as it is strictly more informative.
+    22|       parsed = parse.mkSystemFromString (if args ? config then args.config else args.system);
+      |       ^
+    23|       # Either of these can be losslessly-extracted from `parsed` iff parsing succeeds.
+
+trace: while evaluating 'foldl''
+at: (82:16) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/lists.nix
+
+    81|     let
+    82|       foldl' = n:
+      |                ^
+    83|         if n == -1
+
+trace: from call site
+at: (86:8) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/lists.nix
+
+    85|         else op (foldl' (n - 1)) (elemAt list n);
+    86|     in foldl' (length list - 1);
+      |        ^
+    87|
+
+trace: while evaluating 'foldl'
+at: (80:20) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/lists.nix
+
+    79|   */
+    80|   foldl = op: nul: list:
+      |                    ^
+    81|     let
+
+trace: from call site
+at: (128:13) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/systems/default.nix
+
+   127|   in assert final.useAndroidPrebuilt -> final.isAndroid;
+   128|      assert lib.foldl
+      |             ^
+   129|        (pass: { assertion, message }:
+
+trace: while evaluating 'elaborate'
+at: (17:15) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/systems/default.nix
+
+    16|   # always just used `final.*` would fail on both counts.
+    17|   elaborate = args': let
+      |               ^
+    18|     args = if lib.isString args' then { system = args'; }
+
+trace: from call site
+at: (60:17) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/pkgs/top-level/default.nix
+
+    59|   # nixpkgs configuration), infer the other one and platform as needed.
+    60|   localSystem = lib.systems.elaborate (if builtins.isAttrs args.localSystem then (
+      |                 ^
+    61|     # Allow setting the platform in the config file. This take precedence over
+
+trace: while evaluating anonymous lambda
+at: (7:1) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/pkgs/stdenv/default.nix
+
+     6|
+     7| { # Args just for stdenvs' usage
+      | ^
+     8|   lib
+
+trace: from call site
+at: (119:12) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/pkgs/top-level/default.nix
+
+   118|
+   119|   stages = stdenvStages {
+      |            ^
+   120|     inherit lib localSystem crossSystem config overlays crossOverlays;
+
+trace: while evaluating 'reverseList'
+at: (393:17) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/lists.nix
+
+   392|   */
+   393|   reverseList = xs:
+      |                 ^
+   394|     let l = length xs; in genList (n: elemAt xs (l - n - 1)) l;
+
+trace: from call site
+at: (85:6) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/pkgs/stdenv/booter.nix
+
+    84|       // (stageFun prevStage))
+    85|     (lib.lists.reverseList stageFuns);
+      |      ^
+    86|
+
+trace: while evaluating 'imap1'
+at: (116:14) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/lib/lists.nix
+
+   115|   */
+   116|   imap1 = f: list: genList (n: f (n + 1) (elemAt list n)) (length list);
+      |              ^
+   117|
+
+trace: from call site
+at: (78:30) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/pkgs/stdenv/booter.nix
+
+    77|   # isn't already set.
+    78|   withAllowCustomOverrides = lib.lists.imap1
+      |                              ^
+    79|     (index: stageFun: prevStage:
+
+trace: while evaluating 'go'
+at: (63:18) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/pkgs/stdenv/booter.nix
+
+    62|       len = builtins.length list;
+    63|       go = pred: n:
+      |                  ^
+    64|         if n == len
+
+trace: from call site
+at: (72:13) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/pkgs/stdenv/booter.nix
+
+    71|       lapp = lnul cur;
+    72|       cur = go lapp 0;
+      |             ^
+    73|     in cur;
+
+trace: while evaluating 'dfold'
+at: (60:27) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/pkgs/stdenv/booter.nix
+
+    59|   */
+    60|   dfold = op: lnul: rnul: list:
+      |                           ^
+    61|     let
+
+trace: from call site
+at: (136:4) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/pkgs/stdenv/booter.nix
+
+   135|
+   136| in dfold folder postStage (_: {}) withAllowCustomOverrides
+      |    ^
+
+trace: while evaluating anonymous lambda
+at: (42:1) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/pkgs/stdenv/booter.nix
+
+    41| # other words, this does a foldr not foldl.
+    42| stageFuns: let
+      | ^
+    43|
+
+trace: from call site
+at: (123:10) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/pkgs/top-level/default.nix
+
+   122|
+   123|   pkgs = boot stages;
+      |          ^
+   124|
+
+trace: while evaluating anonymous lambda
+at: (20:1) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/pkgs/top-level/default.nix
+
+    19|
+    20| { # The system packages will be built on. See the manual for the
+      | ^
+    21|   # subtle division of labor between these two `*System`s and the three
+
+trace: from call site
+at: (84:1) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/pkgs/top-level/impure.nix
+
+    83|
+    84| import ./. (builtins.removeAttrs args [ "system" "platform" ] // {
+      | ^
+    85|   inherit config overlays crossSystem crossOverlays;
+
+trace: while evaluating anonymous lambda
+at: (15:1) in file: /nix/store/f67pixsmrh2zdj6qax25w2a69hf98ml5-source/pkgs/top-level/impure.nix
+
+    14|
+    15| { # We combine legacy `system` and `platform` into `localSystem`, if
+      | ^
+    16|   # `localSystem` was not passed. Strictly speaking, this is pure desugar, but
+
+trace: from call site
+at: (4:15) in file: /nix/store/hb2pshhfmp4bxy0410gwirvyv0xjlnil-source/default.nix
+
+     3|
+     4|   nixusPkgs = import nixpkgs {
+      |               ^
+     5|     config = {};
+
+trace: while evaluating anonymous lambda
+at: (1:1) in file: /nix/store/hb2pshhfmp4bxy0410gwirvyv0xjlnil-source/default.nix
+
+     1| conf: let
+      | ^
+     2|   nixpkgs = import ./nixpkgs.nix;
+
+trace: from call site
+at: (340:7) in file: /nix/store/1jrbr2808zb839hkqlfmraj4h97j5g4k-source/flake.nix
+
+   339|     defaultPackage = forAllSystems ({ pkgs, system, ... }:
+   340|       import inputs.nixus ({config, ... }: {
+      |       ^
+   341|         defaults = { name, ... }: {
+
+trace: while evaluating anonymous lambda
+at: (339:37) in file: /nix/store/1jrbr2808zb839hkqlfmraj4h97j5g4k-source/flake.nix
+
+   338|
+   339|     defaultPackage = forAllSystems ({ pkgs, system, ... }:
+      |                                     ^
+   340|       import inputs.nixus ({config, ... }: {
+
+trace: from call site
+at: (142:57) in file: /nix/store/1jrbr2808zb839hkqlfmraj4h97j5g4k-source/flake.nix
+
+   141|
+   142|     forAllSystems = f: lib.genAttrs allSystems (system: f {
+      |                                                         ^
+   143|       inherit system;
+
+trace: while evaluating anonymous lambda
+at: (142:49) in file: /nix/store/1jrbr2808zb839hkqlfmraj4h97j5g4k-source/flake.nix
+
+   141|
+   142|     forAllSystems = f: lib.genAttrs allSystems (system: f {
+      |                                                 ^
+   143|       inherit system;
+
+trace: from call site
+at: (292:43) in file: /nix/store/10852j70crqy11ryfq13n8hhaqsk4brc-source/lib/attrsets.nix
+
+   291|   genAttrs = names: f:
+   292|     listToAttrs (map (n: nameValuePair n (f n)) names);
+      |                                           ^
+   293|
