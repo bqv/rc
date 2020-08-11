@@ -36,6 +36,7 @@ in {
       package = lib.fix (self: myEmacs.overrideAttrs (_: {
         passthru = {
           pkgs = pkgs.emacsPackagesFor self;
+          nativeComp = myEmacs.nativeComp or false;
         };
       }));
       extraPackages = epkgs: forEachPackage (p: p.package epkgs);

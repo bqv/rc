@@ -201,7 +201,7 @@
         (set-frame-font (format "DejaVu Sans Mono-%s" n)))
       (define-key desktop-environment-mode-map (kbd "<65300>") #'set-frame-scale)
 
-      (defun bqv/set-frame-fonts ()
+      (defun bqv/set-frame-fonts (&rest r)
         ;; Chinese, simplified
         (set-fontset-font t 'han "Noto Sans Mono CJK SC Regular")
         ;; Chinese, traditional (the former script does not have everything)

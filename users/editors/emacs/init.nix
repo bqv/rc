@@ -17,13 +17,17 @@ let
 
     (message "Initializing...")
     (require 'cl-lib)
+    (require 's)
     (defun update-load-paths ()
       (cl-flet ((add-paths-for (dir) (let ((default-directory dir))
                                        (when (file-directory-p default-directory)
                                          (normal-top-level-add-subdirs-to-load-path)))))
         (add-paths-for "/run/current-system/sw/share/emacs/site-lisp")
         (add-paths-for (format "/etc/profiles/per-user/%s/share/emacs/site-lisp" (getenv "USER")))
-        (add-paths-for (format "%s/.nix-profile/share/emacs/site-lisp" (getenv "HOME"))))) (update-load-paths)
+        (add-paths-for (format "%s/.nix-profile/share/emacs/site-lisp" (getenv "HOME"))))
+      (setq load-path (delete-dups
+                        (append (seq-filter (lambda (p) (s-contains? "/eln-" p)) load-path)
+                                load-path nil)))) (update-load-paths)
     (setq package-enable-at-startup nil)
     (setq load-prefer-newer t)
   '';

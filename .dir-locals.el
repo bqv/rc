@@ -4,7 +4,7 @@
 ((nil . (
         ;(eval . (set (make-local-variable 'default-directory)
         ;             (locate-dominating-file buffer-file-name ".dir-locals.el")))
-         (compile-command . "systemd-run --user --scope nixos -Tbasv")
+         (compile-command . "systemd-run --user --scope nix run . -- -Tbasv")
          (eval . (setq projectile-project-compilation-cmd
-                       "systemd-run --user -u nixos --scope nix run . -- -Tbasv"))
+                       "systemd-run --user -u nixos --scope foreground nix build '' ./result"))
          )))
