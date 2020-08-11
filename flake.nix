@@ -242,12 +242,12 @@
             '' else "");
 
             system.activationScripts.etcnixos = ''
-              rm -f /etc/nixos
-              ln -sfn /run/current-system/flake/input/self /etc/nixos
+              rm -f /etc/nixos && \
+              ln -sfn /run/current-system/flake/input/self /etc/nixos || \
+              true
             '';
 
             nixpkgs = {
-              localSystem = system;
               pkgs = pkgs // {
                 iptables = pkgs.iptables-nftables-compat;
               };
@@ -338,26 +338,27 @@
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }:
-      import inputs.nixus ({config, ... }: {
+      import inputs.nixus { deploySystem = system; } ({config, ... }: {
         defaults = { name, ... }: {
           configuration = { lib, ... }: {
             networking.hostName = lib.mkDefault name;
           };
 
-          # Which nixpkgs version we want to use for this node
           nixpkgs = channels.modules;
+
+          ignoreFailingSystemdUnits = true;
         };
 
         nodes.phi = { lib, config, ... }: {
-          # How to reach this node
-          host = "root@10.0.0.4";
+          host = "leaf@10.0.0.4";
 
-          # What configuration it should have
           configuration = {
             _module.args = inputs.self.nixosConfigurations.phi.modules.specialArgs;
             imports = inputs.self.nixosConfigurations.phi.modules.modules;
-            config.nixpkgs.localSystem = system;
           };
+
+          successTimeout = 120;
+          switchTimeout = 120;
         };
       })
     );
