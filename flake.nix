@@ -295,10 +295,20 @@
 
           gnupg = import "${inputs.pr93659}/nixos/modules/security/gnupg.nix";
 
+          pulls = { config, ... }: let
+            iwdModule = "services/networking/iwd.nix";
+          in {
+            disabledModules = [ iwdModule ];
+            imports = [ (import "${inputs.pr75800}/nixos/modules/${iwdModule}" {
+              inherit config pkgs;
+              lib = import "${inputs.pr75800}/lib/default.nix";
+            }) ];
+          };
+
           flakeModules = import ./modules/nixos.nix;
 
         in flakeModules ++ [
-          core global home secrets local apparmor gnupg
+          core global home secrets local apparmor gnupg pulls
           home-manager dwarffs sops guix matrix-construct
         ];
       };
@@ -339,26 +349,28 @@
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }:
       import inputs.nixus { deploySystem = system; } ({config, ... }: {
-        defaults = { name, ... }: {
-          configuration = { lib, ... }: {
-            networking.hostName = lib.mkDefault name;
-          };
+        defaults = { name, ... }: let
+          nixos = inputs.self.nixosConfigurations.${name}.modules;
+        in {
+          host = nixos.specialArgs.hosts.wireguard.${name};
 
           nixpkgs = channels.modules;
 
-          ignoreFailingSystemdUnits = true;
-        };
-
-        nodes.phi = { lib, config, ... }: with inputs.self.nixosConfigurations.phi; {
-          host = "leaf@${modules.specialArgs.hosts.wireguard.phi}";
-
           configuration = {
-            _module.args = modules.specialArgs;
-            imports = modules.modules;
+            _module.args = nixos.specialArgs;
+            imports = nixos.modules;
           };
 
           successTimeout = 120;
           switchTimeout = 120;
+
+          ignoreFailingSystemdUnits = true;
+        };
+
+        nodes = {
+          delta = {};
+          zeta = {};
+          phi = {};
         };
       })
     );

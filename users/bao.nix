@@ -37,7 +37,7 @@
     extraGroups = [
       "wheel" "audio" "video" "tty"
       "adbusers" "dwarffs" "audit"
-      "ipfs" "syncthing"
+      "ipfs" "syncthing" "aria2"
     ];
   } // import ../secrets/user.password.nix
     // import ../secrets/user.description.nix;

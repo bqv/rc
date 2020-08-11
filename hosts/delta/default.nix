@@ -36,6 +36,7 @@
     systemd-boot = {
       enable = true;
       configurationLimit = 64;
+      memtest86.enable = true;
     };
   };
 
