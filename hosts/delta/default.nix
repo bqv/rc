@@ -67,6 +67,7 @@
     "/home" = hdd // { options = [ "subvol=home" ]; };
     "/nix" = ssd // { options = [ "subvol=nix" "noatime" "nodiratime" "discard=async" ]; };
     "/games" = hdd // { options = [ "subvol=games" ]; };
+    "/var/lib/ipfs" = hdd // { options = [ "subvol=ipfs" ]; };
     "/var/run/hdd" = hdd // { options = [ "subvolid=0" ]; };
     "/var/run/ssd" = ssd // { options = [ "subvolid=0" "noatime" "nodiratime" "discard=async" ]; };
 
