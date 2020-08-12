@@ -20,6 +20,8 @@ in {
 
   fsnoop = prev.callPackage ./tools/misc/fsnoop { };
 
+  git-get = prev.callPackage ./applications/version-management/git-get { };
+
   git-pr-mirror = prev.callPackage ./applications/version-management/git-and-tools/git-pr-mirror { };
 
   greetd = prev.callPackage ./applications/display-managers/greetd { };
