@@ -24,6 +24,8 @@ in {
 
   git-pr-mirror = prev.callPackage ./applications/version-management/git-and-tools/git-pr-mirror { };
 
+  git-remote-ipfs = prev.callPackage ./applications/version-management/git-remote-ipfs { };
+
   greetd = prev.callPackage ./applications/display-managers/greetd { };
 
   haskellPackages = recurseIntoAttrs prev.haskellPackages;
