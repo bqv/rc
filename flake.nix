@@ -47,10 +47,10 @@
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
 
+    nixus = { url = "github:infinisil/nixus"; flake = false; };           # Nixus
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; }; # Nixpkgs-mozilla
     snack = { url = "github:nmattia/snack"; flake = false; };             # Snack
     napalm = { url = "github:nmattia/napalm"; flake = false; };           # Napalm
-    nixus = { url = "github:infinisil/nixus"; flake = false; };           # Nixus
   };
 
   outputs = inputs: with builtins; let
@@ -352,7 +352,7 @@
         defaults = { name, ... }: let
           nixos = inputs.self.nixosConfigurations.${name}.modules;
         in {
-          host = nixos.specialArgs.hosts.wireguard.${name};
+          host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
 
           nixpkgs = channels.modules;
 
