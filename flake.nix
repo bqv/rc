@@ -348,8 +348,8 @@
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }:
-      import inputs.nixus { deploySystem = system; } ({ config, lib, ... }: {
-        defaults = { name, ... }: let
+      import inputs.nixus { deploySystem = system; } ({ lib, ... }: {
+        defaults = { name, config, ... }: let
           nixos = inputs.self.nixosConfigurations.${name}.modules;
         in {
           host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
@@ -361,10 +361,25 @@
             imports = nixos.modules;
           };
 
+          deployScriptPhases.filter-known-hosts = lib.dag.entryBefore ["copy-closure"] ''
+            exec 2> >(${pkgs.gnugrep}/bin/grep -v "list of known hosts")
+          '';
+
           deployScriptPhases.nix-copy-alias = lib.dag.entryBefore ["copy-closure"] ''
             PATH=${lib.makeBinPath [ pkgs.nixUnstable ]}:$PATH
-           #alias nix-copy-closure="nix copy --from file:///nix/store"
+            alias nix-copy-closure="nix copy"
             export NIX_REMOTE=""
+          '';
+
+          deployScriptPhases.git-tag = let
+            inherit (config.configuration) system;
+          in lib.dag.entryAfter ["switch"] ''
+            systempath=$(basename "${system.build.toplevel.outPath}")
+            systemnum=${name}/system-$id
+            echo Tagging $systempath
+            ${pkgs.git}/bin/git tag $systempath ${system.configurationRevision} || true
+            echo Tagging $systemnum
+            ${pkgs.git}/bin/git tag $systemnum ${system.configurationRevision} || true
           '';
 
           successTimeout = 120;

@@ -115,6 +115,7 @@
             (define-key map
               "C-k" 'copy-to-emacs
               "C-y" 'paste-from-emacs)
+            (define-key map "M-h" 'buffer-history-tree)
            ;(define-key map "button4" 'history-backwards)
            ;(define-key map "button5" 'history-forwards)
            ;(define-key map "button6" 'delete-current-buffer)
