@@ -115,6 +115,11 @@
             (define-key map
               "C-k" 'copy-to-emacs
               "C-y" 'paste-from-emacs)
+           ;(define-key map "button4" 'history-backwards)
+           ;(define-key map "button5" 'history-forwards)
+           ;(define-key map "button6" 'delete-current-buffer)
+           ;(define-key map "button7" 'switch-buffor-previous)
+           ;(define-key map "button8" 'switch-buffor-next)
             map))
          (request-resource-hook
           (reduce #'hooks:add-hook
@@ -123,6 +128,13 @@
                          'doi-link-dispatcher (match-scheme "doi")
                          (lambda (url)
                            (quri:uri (format nil "https://doi.org/~a"
+                                             (quri:uri-path url)))))
+
+                        ;; github://owner/repo -> https url
+                        (url-dispatching-handler
+                         'doi-link-dispatcher (match-scheme "github" "gh")
+                         (lambda (url)
+                           (quri:uri (format nil "https://github.com/~a"
                                              (quri:uri-path url)))))
 
                         ;; magnet:uri -> aria2
