@@ -1,3 +1,4 @@
+# lib.generators.toINI {} {}
 ''
 [Devices]
 0802500EAECB9CC556E78B38F5001943\CurrentProfile={BA7FC152-2D51-4C26-A7A6-A036CC93D924}

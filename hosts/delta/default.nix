@@ -80,7 +80,7 @@
   };
   systemd.services.srv-facl = {
     after = [ "srv.mount" ];
-    script = "setfacl -Rdm g:users:rwX /srv";
+    script = "${pkgs.acl}/bin/setfacl -Rdm g:users:rwX /srv";
     wantedBy = [ "local-fs.target" ];
   };
 
@@ -170,6 +170,11 @@
   nix.extraOptions = ''
     builders-use-substitutes = true
   '';
+
+  users.users.root.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIYNqRbITjMHmgD/UC87BISFTaw7Tq1jNd8X8i26x4b5 root@delta"
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvcvk1nLYImKqjhL8HdAb1sM2vXcEGu+rMZJ8XIG4H7 bao@delta"
+  ];
 
   environment.systemPackages = with pkgs; [
     clipmenu bitwarden bitwarden-cli pass protonmail-bridge
