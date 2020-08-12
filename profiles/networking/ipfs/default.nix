@@ -42,7 +42,7 @@ in {
       if { rm -f $1 }
       cp -Lr --reflink=auto ${cfg.ipfsMountDir}/$hash $1
     '';
-  in [ toipfs fromipfs ];
+  in [ pkgs.brig toipfs fromipfs ];
 
   services.ipfs = {
     enable = true;

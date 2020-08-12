@@ -65,7 +65,9 @@
   in {
     "/" = hdd // { options = [ "subvol=nixos" ]; };
     "/home" = hdd // { options = [ "subvol=home" ]; };
+    "/srv" = hdd // { options = [ "subvol=srv" ]; };
     "/nix" = ssd // { options = [ "subvol=nix" "noatime" "nodiratime" "discard=async" ]; };
+    "/gnu" = ssd // { options = [ "subvol=gnu" "noatime" "nodiratime" "discard=async" ]; };
     "/games" = hdd // { options = [ "subvol=games" ]; };
     "/var/lib/ipfs" = hdd // { options = [ "subvol=ipfs" ]; };
     "/var/run/hdd" = hdd // { options = [ "subvolid=0" ]; };
@@ -75,6 +77,11 @@
       device = "/dev/disk/by-uuid/4305-4121";
       fsType = "vfat";
     };
+  };
+  systemd.services.srv-facl = {
+    after = [ "srv.mount" ];
+    script = "setfacl -Rdm g:users:rwX /srv";
+    wantedBy = [ "local-fs.target" ];
   };
 
   swapDevices = [
