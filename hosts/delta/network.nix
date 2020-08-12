@@ -69,6 +69,7 @@
           #tcp dport 22 accept # SSH connections
 
           tcp dport 6667 accept # Weechat
+          tcp dport 4001 accept # IPFS
           ip saddr ${hosts.lan.theta} accept # Shells
 
           log
