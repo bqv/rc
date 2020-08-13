@@ -400,14 +400,18 @@
       })
     );
 
-    apps = forAllSystems ({ pkgs, ... }: {
+    apps = forAllSystems ({ pkgs, system, ... }: {
       nixos = {
         type = "app";
         program = pkgs.callPackage ./pkgs/lib/nixos.nix {} + "/bin/nixos";
       };
+      nixus = {
+        type = "app";
+        program = inputs.self.defaultPackage.${system}.outPath;
+      };
     });
 
-    defaultApp = forAllSystems ({ system, ... }: inputs.self.apps.${system}.nixos);
+    defaultApp = forAllSystems ({ system, ... }: inputs.self.apps.${system}.nixus);
 
     nixosModules = let
       mergeAll = lib.fold lib.recursiveUpdate {};
