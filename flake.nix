@@ -47,10 +47,12 @@
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
 
-    nixus = { url = "github:infinisil/nixus"; flake = false; };           # Nixus
-    mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; }; # Nixpkgs-mozilla
-    snack = { url = "github:nmattia/snack"; flake = false; };             # Snack
-    napalm = { url = "github:nmattia/napalm"; flake = false; };           # Napalm
+    nixus = { url = "github:infinisil/nixus"; flake = false; };                   # Nixus
+    impermanence = { url = "github:nix-community/impermanence"; flake = false; }; # Impermanence
+    mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };         # Nixpkgs-mozilla
+    baduk = { url = "github:dustinlacewell/baduk.nix"; flake = false; };          # Baduk
+    snack = { url = "github:nmattia/snack"; flake = false; };                     # Snack
+    napalm = { url = "github:nmattia/napalm"; flake = false; };                   # Napalm
   };
 
   outputs = inputs: with builtins; let
@@ -260,7 +262,15 @@
                 specialArgs = specialArgs // {
                   super = config;
                 };
-                modules = import ./modules/home-manager.nix;
+                modules = let
+                  flakeModules = import ./modules/home-manager.nix;
+                  baduk = {
+                    imports = [ (import inputs.baduk) ];
+                    baduk.sabaki.engines = lib.mkDefault [];
+                  };
+                in flakeModules ++ [
+                  baduk
+                ];
               });
             };
 
@@ -388,14 +398,12 @@
           ignoreFailingSystemdUnits = true;
         };
 
-        nodes = {
-          delta = {
-          };
-          zeta = {
-            hasFastConnection = true;
-          };
-          phi = {
-          };
+        nodes = let
+          hosts = builtins.attrNames (builtins.removeAttrs inputs.self.nixosConfigurations [
+            "image"
+          ]);
+        in (lib.genAttrs hosts (_: {})) // {
+          zeta.hasFastConnection = true;
         };
       })
     );

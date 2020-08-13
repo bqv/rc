@@ -192,6 +192,22 @@
         "type": "github"
       }
     },
+    "baduk": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1594052885,
+        "narHash": "sha256-zkbiHr4YSpxxKl/GkIB4fHoMHIllwW7jcBNVh8HyU+s=",
+        "owner": "dustinlacewell",
+        "repo": "baduk.nix",
+        "rev": "4b0eac637591aec00ad80d269e7adc0391d45e44",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dustinlacewell",
+        "repo": "baduk.nix",
+        "type": "github"
+      }
+    },
     "base16-shell": {
       "flake": false,
       "locked": {
@@ -882,6 +898,22 @@
         "owner": "rycee",
         "ref": "bqv-flakes",
         "repo": "home-manager",
+        "type": "github"
+      }
+    },
+    "impermanence": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1595101876,
+        "narHash": "sha256-DYDN3LNhS63hNXfcUmwav7PXrcwlmLvZMSmqT8NV9wA=",
+        "owner": "nix-community",
+        "repo": "impermanence",
+        "rev": "8fc761e8c348db5c31a53ae125ce29b23abfd872",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-community",
+        "repo": "impermanence",
         "type": "github"
       }
     },
@@ -2016,6 +2048,7 @@
     },
     "root": {
       "inputs": {
+        "baduk": "baduk",
         "construct": "construct",
         "dwarffs": "dwarffs",
         "emacs": "emacs",
@@ -2023,6 +2056,7 @@
         "hardware": "hardware",
         "haskell": "haskell",
         "home": "home",
+        "impermanence": "impermanence",
         "large": "large",
         "lg400": "lg400",
         "lg531": "lg531",
