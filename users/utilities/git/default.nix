@@ -100,6 +100,10 @@ in {
             required = true;
           };
         };
+
+        git-get = {
+          root = "/srv/git";
+        };
         inherit (import ../../../secrets/git.github.nix) git-bug;
       };
     };
