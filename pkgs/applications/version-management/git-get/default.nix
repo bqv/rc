@@ -13,6 +13,15 @@ buildGoModule rec {
     # date = 2020-07-31T14:23:22+02:00;
   };
 
+  nativeBuildInputs = [ makeWrapper ];
+  postInstall = ''
+    mkdir -p $out/bin
+    wrapProgram $out/bin/get
+    wrapProgram $out/bin/list
+    mv $out/bin/get  $out/bin/git-get 
+    mv $out/bin/list $out/bin/git-list
+  '';
+
   meta = with lib; {
     platforms = platforms.unix;
   };
