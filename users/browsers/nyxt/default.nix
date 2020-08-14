@@ -28,19 +28,19 @@
       (define-parenscript clear-shell-output ()
           (setf (ps:chain document body inner-h-t-m-l) ""))
 
-      (define-command clear-shell (shell-mode)
-        "Clear the output in the shell buffer."
-        (ipc-buffer-evaluate-javascript
-         (active-buffer *browser*)
-         (clear-shell-output)))
-
-      (define-parenscript append-output (output)
-        (setf (ps:chain document body inner-h-t-m-l)
-              (ps:chain document body inner-h-t-m-l
-                        (concat (ps:lisp
-                                 (format nil "<pre><code>~a</code></pre><br/>" output))))))
-
-      ;(define-command run-shell-command (shell-mode)
+      ;(define-command clear-shell (shell-mode)
+      ;  "Clear the output in the shell buffer."
+      ;  (ipc-buffer-evaluate-javascript
+      ;   (active-buffer *browser*)
+      ;   (clear-shell-output)))
+      ;
+      ;(define-parenscript append-output (output)
+      ;  (setf (ps:chain document body inner-h-t-m-l)
+      ;        (ps:chain document body inner-h-t-m-l
+      ;                  (concat (ps:lisp
+      ;                           (format nil "<pre><code>~a</code></pre><br/>" output))))))
+      ;
+      ;;(define-command run-shell-command (shell-mode)
       ;  "Run a shell command."
       ;  (with-result
       ;      (input (read-from-minibuffer
