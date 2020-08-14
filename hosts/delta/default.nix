@@ -63,15 +63,22 @@
       fsType = "btrfs";
     };
   in {
-    "/" = hdd // { options = [ "subvol=nixos" ]; };
+    "/" = {
+      device = "none";
+      fsType = "tmpfs";
+      options = [ "defaults" "size=2G" "mode=755" ];
+    };
+
+    "/var" = hdd // { options = [ "subvol=var" ]; };
     "/home" = hdd // { options = [ "subvol=home" ]; };
     "/srv" = hdd // { options = [ "subvol=srv" ]; };
     "/nix" = ssd // { options = [ "subvol=nix" "noatime" "nodiratime" "discard=async" ]; };
     "/gnu" = ssd // { options = [ "subvol=gnu" "noatime" "nodiratime" "discard=async" ]; };
     "/games" = hdd // { options = [ "subvol=games" ]; };
-    "/var/lib/ipfs" = hdd // { options = [ "subvol=ipfs" ]; };
-    "/var/run/hdd" = hdd // { options = [ "subvolid=0" ]; };
-    "/var/run/ssd" = ssd // { options = [ "subvolid=0" "noatime" "nodiratime" "discard=async" ]; };
+    "/run/hdd" = hdd // { options = [ "subvolid=0" ]; };
+    "/run/ssd" = ssd // { options = [ "subvolid=0" "noatime" "nodiratime" "discard=async" ]; };
+
+    ${config.services.ipfs.dataDir} = hdd // { options = [ "subvol=ipfs" ]; };
 
     "/boot" = {
       device = "/dev/disk/by-uuid/4305-4121";
