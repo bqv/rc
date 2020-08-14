@@ -16,7 +16,7 @@ in { # TODO: https://github.com/rycee/home-manager/pull/953
   environment.systemPackages = with pkgs; [ systemWeechat dtach ];
 
   systemd.services.weechat = {
-    after = [ "network.target" ];
+    after = [ "network-online.target" ];
     restartIfChanged = false;
     serviceConfig = {
       Type = "simple";
