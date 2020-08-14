@@ -1,4 +1,4 @@
-{ lib, buildGoModule, fetchFromGitHub, makeWrapper }:
+{ lib, buildGoModule, fetchFromGitHub, makeWrapper, git }:
 
 buildGoModule rec {
   pname = "git-remote-ipfs";
@@ -12,6 +12,11 @@ buildGoModule rec {
     sha256 = "0vckpkrcvcinrw92w67nx0fkfga3pj7g2z26hghhdr1kv0lgch21";
     # date = 2019-12-19T11:11:24+01:00;
   };
+
+  doCheck = false;
+  checkInputs = [
+    git
+  ];
 
   meta = with lib; {
     platforms = platforms.unix;

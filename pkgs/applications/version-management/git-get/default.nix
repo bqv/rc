@@ -22,6 +22,8 @@ buildGoModule rec {
     mv $out/bin/list $out/bin/git-list
   '';
 
+  doCheck = false;
+
   meta = with lib; {
     platforms = platforms.unix;
   };
