@@ -60,7 +60,10 @@ in {
       };
       Experimental.FilestoreEnabled = true;
     };
-    gatewayAddress = "/ip4/127.0.0.1/tcp/4501";
+    extraFlags = [ "--enable-pubsub-experiment" ];
+    serviceFdlimit = 999999;
+    apiAddress = "/ip4/0.0.0.0/tcp/5001";
+    gatewayAddress = "/ip4/0.0.0.0/tcp/4501";
   };
 
   systemd.services.ipfs = builtins.trace "ipfs config permissions still broken" {
