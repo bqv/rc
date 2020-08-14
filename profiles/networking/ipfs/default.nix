@@ -65,5 +65,6 @@ in {
 
   systemd.services.ipfs = builtins.trace "ipfs config permissions still broken" {
     serviceConfig.ExecStartPost = "${pkgs.coreutils}/bin/chmod g+r /var/lib/ipfs/config";
+    wantedBy = [ "local-fs.target" ];
   };
 }
