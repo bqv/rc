@@ -125,28 +125,28 @@
          (request-resource-hook
           (reduce #'hooks:add-hook
                   (list ;; doi://path -> https url
-                        (url-dispatching-handler
-                         'doi-link-dispatcher (match-scheme "doi")
-                         (lambda (url)
-                           (quri:uri (format nil "https://doi.org/~a"
-                                             (quri:uri-path url)))))
+                     ;;;(url-dispatching-handler
+                     ;;; 'doi-link-dispatcher (match-scheme "doi")
+                     ;;; (lambda (url)
+                     ;;;   (quri:uri (format nil "https://doi.org/~a"
+                     ;;;                     (quri:uri-path url)))))
 
-                        ;; github://owner/repo -> https url
-                        (url-dispatching-handler
-                         'doi-link-dispatcher (match-scheme "github" "gh")
-                         (lambda (url)
-                           (quri:uri (format nil "https://github.com/~a"
-                                             (quri:uri-path url)))))
+                     ;;;;; github://owner/repo -> https url
+                     ;;;(url-dispatching-handler
+                     ;;; 'doi-link-dispatcher (match-scheme "github" "gh")
+                     ;;; (lambda (url)
+                     ;;;   (quri:uri (format nil "https://github.com/~a"
+                     ;;;                     (quri:uri-path url)))))
 
-                        ;; magnet:uri -> aria2
-                        (url-dispatching-handler
-                         'aria2-magnet-links (match-scheme "magnet")
-                         (lambda (url)
-                           (uiop:launch-program
-                            (list "${pkgs.python3Packages.aria2p}/bin/aria2p"
-                                  "--secret" "${super.services.aria2.rpcSecret}"
-                                  "add-magnets" (object-string url)))
-                            nil))
+                     ;;;;; magnet:uri -> aria2
+                     ;;;(url-dispatching-handler
+                     ;;; 'aria2-magnet-links (match-scheme "magnet")
+                     ;;; (lambda (url)
+                     ;;;   (uiop:launch-program
+                     ;;;    (list "${pkgs.python3Packages.aria2p}/bin/aria2p"
+                     ;;;          "--secret" "${super.services.aria2.rpcSecret}"
+                     ;;;          "add-magnets" (object-string url)))
+                     ;;;    nil))
 
                         ;; youtube -> mpv
                         (url-dispatching-handler
