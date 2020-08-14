@@ -7,12 +7,10 @@
       secrets = import ../../../secrets/nyxt.autofill.nix;
     in ''
       (setq *swank-port* 4005)
-      (handler-case
-        (progn
-          (start-swank)
-          (uiop:launch-program (list "emacsclient" "--eval" "(nyxt-repl)"))
-          (uiop:launch-program (list "emacsclient" "--eval" "(setq slime-enable-evaluate-in-emacs t)")))
-        (error () nil))
+      (ignore-errors
+       (start-swank)
+       (uiop:launch-program (list "emacsclient" "--eval" "(nyxt-repl)"))
+                            (list "emacsclient" "--eval" "(setq slime-enable-evaluate-in-emacs t)"))
 
       (define-mode shell-mode ()
           "A basic shell prompt."
@@ -28,11 +26,11 @@
       (define-parenscript clear-shell-output ()
           (setf (ps:chain document body inner-h-t-m-l) ""))
 
-      (define-command clear-shell (shell-mode)
-        "Clear the output in the shell buffer."
-        (ipc-buffer-evaluate-javascript
-         (active-buffer *browser*)
-         (clear-shell-output)))
+      ;(define-command clear-shell (shell-mode)
+      ;  "Clear the output in the shell buffer."
+      ;  (ipc-buffer-evaluate-javascript
+      ;   (active-buffer *browser*)
+      ;   (clear-shell-output)))
 
       (define-parenscript append-output (output)
         (setf (ps:chain document body inner-h-t-m-l)
@@ -108,14 +106,13 @@
          (override-map
           (let ((map (make-keymap "override-map")))
            ;(define-key map "C-x s" 'shell)
-            (define-key map "C-r" 'reload-page)
             (define-key map
               "C-v" 'scroll-page-down
               "M-v" 'scroll-page-up)
             (define-key map
               "C-k" 'copy-to-emacs
               "C-y" 'paste-from-emacs)
-            (define-key map "M-h" 'buffer-history-tree)
+           ;(define-key map "M-h" 'buffer-history-tree)
            ;(define-key map "button4" 'history-backwards)
            ;(define-key map "button5" 'history-forwards)
            ;(define-key map "button6" 'delete-current-buffer)
