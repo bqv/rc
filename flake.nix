@@ -200,9 +200,8 @@
           core = ./profiles/core.nix;
 
           global = {
-            networking = {
-              inherit hostName;
-            };
+            environment.etc."machine-id".text = builtins.hashString "md5" hostName;
+            networking = { inherit hostName; };
 
             nix.registry = lib.mapAttrs (id: flake: {
               inherit flake;
