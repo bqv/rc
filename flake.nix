@@ -386,9 +386,9 @@
           in lib.dag.entryAfter ["switch"] ''
             systempath=$(basename "${system.build.toplevel.outPath}")
             systemnum=${name}/system-$id
-            echo Tagging $systempath
+            echo Tagging $systempath >&2
             ${pkgs.git}/bin/git tag $systempath ${system.configurationRevision} || true
-            echo Tagging $systemnum
+            echo Tagging $systemnum >&2
             ${pkgs.git}/bin/git tag $systemnum ${system.configurationRevision} || true
           '';
 
