@@ -105,7 +105,7 @@
       options = [ "subvol=srv" ];
     };
 
-  fileSystems."/var/run/btrfs" =
+  fileSystems."/run/btrfs" =
     { device = "/dev/sda3";
       fsType = "btrfs";
       options = [ "subvolid=0" ];

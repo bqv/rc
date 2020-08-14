@@ -2071,7 +2071,6 @@
         "pr93659": "pr93659",
         "small": "small_3",
         "snack": "snack_3",
-        "sops": "sops",
         "stable": "stable",
         "staged": "staged_3",
         "utils": "utils_3",
@@ -2268,26 +2267,6 @@
       "original": {
         "owner": "nmattia",
         "repo": "snack",
-        "type": "github"
-      }
-    },
-    "sops": {
-      "inputs": {
-        "nixpkgs": [
-          "large"
-        ]
-      },
-      "locked": {
-        "lastModified": 1596797372,
-        "narHash": "sha256-oi8GsgCjhLZhH9m9ZQBuVLlhnEWH+fpm8ZDMeXYqlGM=",
-        "owner": "mic92",
-        "repo": "sops-nix",
-        "rev": "d74c3163210bf2d5db8ed4113b16c343d1f4ed6b",
-        "type": "github"
-      },
-      "original": {
-        "owner": "mic92",
-        "repo": "sops-nix",
         "type": "github"
       }
     },
