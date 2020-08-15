@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   cfg = config.services.ipfs;
@@ -42,7 +42,22 @@ in {
       if { rm -f $1 }
       cp -Lr --reflink=auto ${cfg.ipfsMountDir}/$hash $1
     '';
-  in [ pkgs.brig toipfs fromipfs ];
+
+    brig = let
+      ipfs-api = pkgs.writeText "ipfs-api" config.services.ipfs.apiAddress;
+      api-addr = config.services.ipfs.apiAddress;
+    in pkgs.writeScriptBin "brig" ''
+      #!${pkgs.execline}/bin/execlineb -s0
+      export EXECLINE_STRICT 2
+      export NIX_REDIRECTS /var/lib/ipfs/api=${ipfs-api}
+      ${pkgs.utillinux}/bin/unshare -rm
+      if { mount -t tmpfs -o size=1K tmpfs /var/empty }
+      if { redirfd -w 1 /var/empty/api echo "${api-addr}" }
+      if { mount --bind /var/empty/api /var/lib/ipfs/api }
+      if { umount /var/empty }
+      ${pkgs.brig}/bin/brig $@
+    '';
+  in [ brig toipfs fromipfs ];
 
   services.ipfs = {
     enable = true;
@@ -69,5 +84,11 @@ in {
   systemd.services.ipfs = builtins.trace "ipfs config permissions still broken" {
     serviceConfig.ExecStartPost = "${pkgs.coreutils}/bin/chmod g+r /var/lib/ipfs/config";
     wantedBy = [ "local-fs.target" ];
+  };
+
+  security.wrappers.ipfs = {
+    source = "${pkgs.ipfs}/bin/ipfs";
+    owner = config.services.ipfs.user;
+    group = config.services.ipfs.group;
   };
 }
