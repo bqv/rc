@@ -42,7 +42,19 @@ in {
       if { rm -f $1 }
       cp -Lr --reflink=auto ${cfg.ipfsMountDir}/$hash $1
     '';
-  in [ pkgs.brig toipfs fromipfs ];
+
+    brig = let
+      ipfs-api = pkgs.writeText "ipfs-api" config.services.ipfs.apiAddress;
+    in pkgs.writeScriptBin "brig" ''
+      #!${pkgs.execline}/bin/execlineb -s0
+      export EXECLINE_STRICT 2
+      export NIX_REDIRECTS /var/lib/ipfs/api=${ipfs-api}
+      export LD_PRELOAD ${pkgs.libredirect.overrideAttrs (drv: {
+        postPatch = "sed -i -e /unsetenv/d libredirect.c";
+      })}/lib/libredirect.so
+      ${pkgs.brig}/bin/brig $@
+    '';
+  in [ brig toipfs fromipfs ];
 
   services.ipfs = {
     enable = true;
