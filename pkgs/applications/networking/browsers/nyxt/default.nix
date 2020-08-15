@@ -1,4 +1,10 @@
-{ callPackage, symlinkJoin, writeShellScriptBin, wrapLisp, clisp, sbcl }:
+{ callPackage, symlinkJoin, writeShellScriptBin, wrapLisp, clisp, sbcl,
+  lib, fetchgit, rev ? "8251d8b076e399d0e85ad75431f32ffdd452978f", src ? fetchgit {
+    url = "https://github.com/atlas-engineer/nyxt"; inherit rev;
+    sha256 = "lEY5qNhJayRmSjdCQuiS9COY7pVRHRwiq9iSCatdL78=";
+    fetchSubmodules = true;
+  }, version ? lib.substring 0 7 rev
+}:
 
 let
   nyxt = { pkgs,
@@ -25,14 +31,8 @@ let
                 if useClisp then "-x" else null;
     in stdenv.mkDerivation rec {
       pname = "nyxt";
-      version = lib.substring 0 7 src.rev;
 
-      src = fetchgit {
-        url = "https://github.com/atlas-engineer/nyxt";
-        rev = "8251d8b076e399d0e85ad75431f32ffdd452978f";
-        sha256 = "lEY5qNhJayRmSjdCQuiS9COY7pVRHRwiq9iSCatdL78=";
-        fetchSubmodules = true;
-      };
+      inherit version src;
 
       nativeBuildInputs = [ git cacert makeWrapper wrapGAppsHook ];
       buildInputs = [

@@ -272,6 +272,38 @@
         "type": "github"
       }
     },
+    "cl-webkit": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1594291805,
+        "narHash": "sha256-MKdrEPpzuBcLxMLT9wDrsMXC/XTuuFXkegtj6qSMJwA=",
+        "owner": "joachifm",
+        "repo": "cl-webkit",
+        "rev": "6c905a5550b58a5b7602da5a087d7dafc5337122",
+        "type": "github"
+      },
+      "original": {
+        "owner": "joachifm",
+        "repo": "cl-webkit",
+        "type": "github"
+      }
+    },
+    "cluffer": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1537757136,
+        "narHash": "sha256-coqpaqgz7KeZkJonRncsP1ajsGwwKlA+ym0sfN4Ij60=",
+        "owner": "robert-strandh",
+        "repo": "cluffer",
+        "rev": "4aad29c276a58a593064e79972ee4d77cae0af4a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "robert-strandh",
+        "repo": "cluffer",
+        "type": "github"
+      }
+    },
     "construct": {
       "inputs": {
         "nixpkgs": [
@@ -1438,6 +1470,22 @@
         "type": "github"
       }
     },
+    "nyxt": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1597430164,
+        "narHash": "sha256-hD6TcxCyKRYyKABDND3/6fHsSfuuWmeG5qEaAy9JjdA=",
+        "owner": "atlas-engineer",
+        "repo": "nyxt",
+        "rev": "9738b6bbf9a0e565175643e0601c467cb3c86e42",
+        "type": "github"
+      },
+      "original": {
+        "owner": "atlas-engineer",
+        "repo": "nyxt",
+        "type": "github"
+      }
+    },
     "output-search": {
       "flake": false,
       "locked": {
@@ -2049,6 +2097,8 @@
     "root": {
       "inputs": {
         "baduk": "baduk",
+        "cl-webkit": "cl-webkit",
+        "cluffer": "cluffer",
         "construct": "construct",
         "dwarffs": "dwarffs",
         "emacs": "emacs",
@@ -2066,6 +2116,7 @@
         "napalm": "napalm_3",
         "nix": "nix_3",
         "nixus": "nixus_3",
+        "nyxt": "nyxt",
         "pr75800": "pr75800_3",
         "pr93457": "pr93457",
         "pr93659": "pr93659",

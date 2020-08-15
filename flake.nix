@@ -36,10 +36,15 @@
     construct.url = "github:matrix-construct/construct"; #|- Construct
     construct.inputs.nixpkgs.follows = "large";          #|
 
+    emacs.url = "github:nix-community/emacs-overlay";   # Emacs-overlay
+
+    nyxt = { url = "github:atlas-engineer/nyxt"; flake = false; };       #|- Nyxt
+    cl-webkit = { url = "github:joachifm/cl-webkit"; flake = false; };   #|  | cl-webkit
+    cluffer = { url = "github:robert-strandh/cluffer"; flake = false; }; #|  | cluffer
+
     wayland.url = "github:colemickens/nixpkgs-wayland"; #|- Nixpkgs-wayland
     wayland.inputs.nixpkgs.follows = "large";           #|
 
-    emacs.url = "github:nix-community/emacs-overlay";   # Emacs-overlay
     haskell.url = "github:input-output-hk/haskell.nix"; # Haskell.nix
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
@@ -50,6 +55,7 @@
     baduk = { url = "github:dustinlacewell/baduk.nix"; flake = false; };          # Baduk
     snack = { url = "github:nmattia/snack"; flake = false; };                     # Snack
     napalm = { url = "github:nmattia/napalm"; flake = false; };                   # Napalm
+
   };
 
   outputs = inputs: with builtins; let
@@ -122,8 +128,33 @@
           inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird webkitgtk mitmproxy;
           inherit (inputs.stable.legacyPackages.${system}) home-assistant;
           graalvm8 = builtins.trace "graalvm8: suspended - too big and not cached" pkgs.hello;
-          nyxt = pkgs.lg531.nyxt.overrideAttrs (old: {
-            buildInputs = old.buildInputs ++ (with pkgs.gst_all_1; [
+          inherit (pkgs.lg531) azure-cli audacity nheko;
+          inherit (pkgs.lg400) catt;
+          inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils lvm2;
+        })
+        (final: prev: {
+          nyxt = (prev.nyxt.override {
+            src = final.runCommand "nyxt-source" rec {
+              inherit (final.lispPackages) quicklisp;
+            } ''
+              mkdir $out && cd $out && cp -r ${inputs.nyxt}/* .
+
+              chmod a+w quicklisp-client quicklisp-libraries
+              rm -rf quicklisp-client quicklisp-libraries
+
+              mkdir quicklisp-client
+              cp -r $quicklisp/lib/common-lisp/quicklisp/* quicklisp-client/
+
+              mkdir quicklisp-libraries
+              ln -s ${inputs.cl-webkit} quicklisp-libraries/cl-webkit
+              ln -s ${inputs.cluffer} quicklisp-libraries/cluffer
+            '';
+            version = let
+              rev = lib.substring 0 8 inputs.nyxt.rev;
+              date = lib.substring 0 8 (inputs.nyxt.lastModifiedDate or inputs.nyxt.lastModified);
+            in "${date}.${rev}";
+          }).overrideAttrs (old: {
+            buildInputs = old.buildInputs ++ (with final.gst_all_1; [
               gstreamer gst-libav
               gst-plugins-base
               gst-plugins-good
@@ -131,9 +162,6 @@
               gst-plugins-ugly
             ]);
           });
-          inherit (pkgs.lg531) azure-cli audacity nheko;
-          inherit (pkgs.lg400) catt;
-          inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils lvm2;
         })
       ];
     };
