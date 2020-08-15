@@ -110,8 +110,8 @@
         (flakeToOverlay { inherit system; flake = "lg531"; name = "delta/system-531-link"; })
         (flakeToOverlay { inherit system; flake = "lg400"; name = "delta/system-400-link"; })
         (import inputs.mozilla)
-        (pkgs: lib.const {
-          inherit inputs;
+        (pkgs: raw: {
+          inherit raw;
           naersk = inputs.naersk.lib.${system};
           snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
           napalm = pkgs.callPackage inputs.napalm;
@@ -125,12 +125,11 @@
         inputs.wayland.overlay
         inputs.self.overlay
         (pkgs: lib.const {
-          inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird webkitgtk mitmproxy;
-          inherit (inputs.stable.legacyPackages.${system}) home-assistant;
+          inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird webkitgtk; # slow
           graalvm8 = builtins.trace "graalvm8: suspended - too big and not cached" pkgs.hello;
-          inherit (pkgs.lg531) azure-cli audacity nheko;
-          inherit (pkgs.lg400) catt;
-          inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils lvm2;
+          inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils lvm2; # pullreq
+          inherit (pkgs.lg531) nheko; # broken?
+          inherit (pkgs.lg400) catt; # broken?
         })
         (final: prev: {
           nyxt = (prev.nyxt.override {
