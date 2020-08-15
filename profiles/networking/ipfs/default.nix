@@ -21,7 +21,7 @@ in {
       }
       importas -i hash hash
       if { touch ${cfg.ipfsMountDir}/$hash }
-      if -n { 
+      if -n {
         if { rm -rf $file } ln -sf ${cfg.ipfsMountDir}/$hash $file
       }
       foreground { ln -sf ${cfg.ipfsMountDir}/$hash /tmp/toipfs.$file }
@@ -57,7 +57,7 @@ in {
       if { umount /var/empty }
       ${pkgs.brig}/bin/brig $@
     '';
-  in [ brig toipfs fromipfs ];
+  in [ pkgs.ipfs-cluster brig toipfs fromipfs ];
 
   services.ipfs = {
     enable = true;

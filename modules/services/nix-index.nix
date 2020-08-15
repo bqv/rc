@@ -39,7 +39,9 @@ in
       };
     };
 
-    systemd.user.timers."nix-update-index" = renderTimer "Update nix packages metadata index" "1h" "12h" "";
+    systemd.user.timers."nix-update-index" = builtins.trace
+      "nix-update-index.timer: suspended cause it breaks my internet"
+      (renderTimer "Update nix packages metadata index" "1h" "12h" "");
 
   };
 }
