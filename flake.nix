@@ -125,7 +125,7 @@
         inputs.wayland.overlay
         inputs.self.overlay
         (pkgs: lib.const {
-          inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird webkitgtk; # slow
+          inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird; # slow
           graalvm8 = builtins.trace "graalvm8: suspended - too big and not cached" pkgs.hello;
           inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils lvm2; # pullreq
           inherit (pkgs.lg531) nheko; # broken?
