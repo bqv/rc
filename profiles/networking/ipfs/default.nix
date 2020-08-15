@@ -42,7 +42,21 @@ in {
       if { rm -f $1 }
       cp -Lr --reflink=auto ${cfg.ipfsMountDir}/$hash $1
     '';
-  in [ pkgs.brig toipfs fromipfs ];
+
+    brig = let
+      ipfs-api = pkgs.writeText "ipfs-api" config.services.ipfs.apiAddress;
+    in pkgs.writeScriptBin "brig" ''
+      #!${pkgs.execline}/bin/execlineb -s0
+      export EXECLINE_STRICT 2
+      export NIX_REDIRECTS /var/lib/ipfs/api=${ipfs-api}
+      ${pkgs.utillinux}/bin/unshare -rm
+      if { mount -t tmpfs -o size=1K tmpfs /var/empty }
+      if { redirfd -w 1 /var/empty/api echo "${config.services.ipfs.apiAddress}" }
+      if { mount --bind /var/empty/api /var/lib/ipfs/api }
+      if { umount /var/empty }
+      ${pkgs.brig}/bin/brig $@
+    '';
+  in [ brig toipfs fromipfs ];
 
   services.ipfs = {
     enable = true;
