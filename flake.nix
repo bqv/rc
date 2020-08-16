@@ -248,7 +248,8 @@
             }) (inputs // { nixpkgs = inputs.master; });
             nix.nixPath = [
               "nixpkgs=${channels.pkgs}"
-              "nixos-config=/etc/nixos/configuration.nix"
+              "nixos=${./configuration.nix}"
+              "config=/etc/nixos/configuration.nix"
             ];
 
             system.configurationRevision = inputs.self.rev or "dirty";
