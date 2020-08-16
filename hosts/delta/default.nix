@@ -191,7 +191,7 @@
     qutebrowser firefox thunderbird electronmail mpv apvlv
 
     dunst catt termite rxvt_unicode
-    steam obs-studio
+    steam obs-studio epsxe
 
     anbox #pmbootstrap
 

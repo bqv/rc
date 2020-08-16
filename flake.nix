@@ -130,6 +130,21 @@
           inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils lvm2; # pullreq
           inherit (pkgs.lg531) nheko; # broken?
           inherit (pkgs.lg400) catt; # broken?
+          epsxe = (import inputs.master {
+            inherit system;
+            config.allowUnfree = true;
+            config.permittedInsecurePackages = [ "openssl-1.0.2u" ];
+          }).epsxe.overrideAttrs ({ installPhase, ... }: {
+            installPhase = let
+              bios = pkgs.fetchurl {
+                url = "https://ps1emulator.com/SCPH1001.BIN";
+                hash = "sha256-ca+U0eR6aMEej9ufg2gEBgFRSkKlo5nNpIx9O/8emdM=";
+              };
+            in installPhase + ''
+              mkdir -p $out/share/bios/
+              ln -s ${bios} $out/share/bios/scph1001.bin
+            '';
+          });
         })
         (final: prev: {
           nyxt = (prev.nyxt.override {
@@ -224,6 +239,7 @@
 
           global = {
             environment.etc."machine-id".text = builtins.hashString "md5" hostName;
+            environment.pathsToLink = [ "/share/bios" ];
             networking = { inherit hostName; };
 
             nix.registry = lib.mapAttrs (id: flake: {
