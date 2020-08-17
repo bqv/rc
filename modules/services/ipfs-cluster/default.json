@@ -1,7 +1,7 @@
 {
   "cluster": {
-    "peername": "delta",
-    "secret": "fa2ceecf052a4755d31d405d671c7ff97f901e6ab799d36cb5a492687bf2cd6a",
+    "peername": "hostname",
+    "secret": "0000000000000000000000000000000000000000000000000000000000000000",
     "leave_on_shutdown": false,
     "listen_multiaddress": [
       "/ip4/0.0.0.0/tcp/9096",
