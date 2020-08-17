@@ -3,14 +3,7 @@
 let
   cfg = config.services.ipfs-cluster;
 
-  identity = pkgs.writeText "identity.json" (
-    (import ../../../secrets/ipfs.cluster.nix).${config.networking.hostName}
-  );
-
-  peerstore = pkgs.writeText "peerstore" "";
-
- #service = pkgs.writeText "services.json" ''
- #'';
+  jsonFormat = pkgs.formats.json {};
 in {
   options.services.ipfs-cluster = {
     enable = lib.mkEnableOption "ipfs cluster peer";
@@ -21,19 +14,26 @@ in {
       description = "The data dir for IPFS Cluster";
     };
 
+    identity = lib.mkOption {
+      type = lib.types.submodule {
+        config._module.freeformType = jsonFormat.type;
+
+        options.id = lib.mkOption { type = lib.types.str; };
+        options.private_key = lib.mkOption { type = lib.types.str; };
+      };
+      default = (import ../../../secrets/ipfs.cluster.nix).${config.networking.hostName};
+      description = "The IPFS Cluster node identity credentials";
+    };
+
     package = lib.mkOption {
       type = lib.types.package;
       default = pkgs.ipfs-cluster;
       description = "The package to use for IPFS Cluster";
     };
 
-    settings = let
-      jsonFormat = pkgs.formats.json {};
-    in lib.mkOption {
-      default = builtins.fromJSON (builtins.readFile ./service.json);
-      type = lib.types.submodule {
-        freeformType = jsonFormat.type;
-      };
+    settings = lib.mkOption {
+      default = builtins.fromJSON (builtins.readFile ./default.json);
+      type = jsonFormat.type;
     };
   };
 
@@ -44,10 +44,18 @@ in {
       enable = true;
       after = [ "network-online.target" ];
       description = "IPFS cluster peer";
+      environment.IPFS_CLUSTER_PATH = config.services.ipfs-cluster.dataDir;
       serviceConfig = {
         User = config.services.ipfs.user;
         Group = config.services.ipfs.group;
-        Environment.IPFS_CLUSTER_PATH = config.services.ipfs-cluster.dataDir;
+        ExecStartPre = pkgs.writeShellScript "ipfs-cluster-setup" ''
+          mkdir ${cfg.dataDir}
+          ln -s ${pkgs.writeText "services.json" (builtins.toJSON cfg.settings)} \
+            ${cfg.dataDir}/services.json
+          ln -s ${pkgs.writeText "identity.json" (builtins.toJSON cfg.identity)} \
+            ${cfg.dataDir}/identity.json
+          #touch peerstore
+        '';
         ExecStart = ''
           ${cfg.package}/bin/ipfs-cluster-service daemon
         '';
