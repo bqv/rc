@@ -149,6 +149,7 @@
   services.nix-index.enable = true;
   services.locate.enable = true;
   services.pcscd.enable = true;
+  services.ipfs-cluster.enable = true;
   services.nixos-git = {
     enable = false;
     github = { owner = "bqv"; repo = "nixos"; };

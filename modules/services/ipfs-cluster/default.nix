@@ -30,7 +30,7 @@ in {
     settings = let
       jsonFormat = pkgs.formats.json {};
     in lib.mkOption {
-      default = builtins.fromJSON (builtins.readFile ./service.json);
+      default = builtins.fromJSON (builtins.readFile ./default.json);
       type = lib.types.submodule {
         freeformType = jsonFormat.type;
       };
@@ -44,10 +44,10 @@ in {
       enable = true;
       after = [ "network-online.target" ];
       description = "IPFS cluster peer";
+      environment.IPFS_CLUSTER_PATH = config.services.ipfs-cluster.dataDir;
       serviceConfig = {
         User = config.services.ipfs.user;
         Group = config.services.ipfs.group;
-        Environment.IPFS_CLUSTER_PATH = config.services.ipfs-cluster.dataDir;
         ExecStart = ''
           ${cfg.package}/bin/ipfs-cluster-service daemon
         '';
