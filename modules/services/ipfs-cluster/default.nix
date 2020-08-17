@@ -30,7 +30,7 @@ in {
     settings = let
       jsonFormat = pkgs.formats.json {};
     in lib.mkOption {
-      default = builtins.fromJSON (builtins.readFile ./service.json);
+      default = builtins.fromJSON (builtins.readFile ./default.json);
       type = lib.types.submodule {
         freeformType = jsonFormat.type;
       };
