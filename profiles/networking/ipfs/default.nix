@@ -1,7 +1,9 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, hosts, ... }:
 
 let
   cfg = config.services.ipfs;
+
+  clusterSecrets = import ../../../secrets/ipfs.cluster.nix;
 in {
   environment.systemPackages = let
     # Replace a file(tree) with an ipfs symlink
@@ -79,6 +81,19 @@ in {
     serviceFdlimit = 999999;
     apiAddress = "/ip4/0.0.0.0/tcp/5001";
     gatewayAddress = "/ip4/0.0.0.0/tcp/4501";
+  };
+
+  services.ipfs-cluster = {
+    identity = clusterSecrets.${config.networking.hostName};
+    settings = {
+      cluster.secret = clusterSecrets.secret;
+      cluster.peer_addresses = let
+        inherit (import ../../../secrets/ipfs.repo.nix) peerID;
+      in [
+        "/ip4/${hosts.wireguard.delta}/tcp/9096/ipfs/${peerID.delta}"
+        "/ip4/${hosts.wireguard.zeta }/tcp/9096/ipfs/${peerID.zeta }"
+      ];
+    };
   };
 
   systemd.services.ipfs = builtins.trace "ipfs config permissions still broken" {
