@@ -2,6 +2,8 @@
 
 let
   cfg = config.services.ipfs;
+
+  clusterSecrets = import ../../../secrets/ipfs.cluster.nix;
 in {
   environment.systemPackages = let
     # Replace a file(tree) with an ipfs symlink
@@ -79,6 +81,11 @@ in {
     serviceFdlimit = 999999;
     apiAddress = "/ip4/0.0.0.0/tcp/5001";
     gatewayAddress = "/ip4/0.0.0.0/tcp/4501";
+  };
+
+  services.ipfs-cluster = {
+    identity = clusterSecrets.${config.networking.hostName};
+    settings.cluster.secret = clusterSecrets.secret;
   };
 
   systemd.services.ipfs = builtins.trace "ipfs config permissions still broken" {
