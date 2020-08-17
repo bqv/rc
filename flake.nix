@@ -417,8 +417,8 @@
             ${pkgs.git}/bin/git tag $systemnum ${system.configurationRevision} || true
           '';
 
-          successTimeout = 120;
-          switchTimeout = 120;
+          successTimeout = lib.mkDefault 120;
+          switchTimeout = lib.mkDefault 120;
 
           ignoreFailingSystemdUnits = true;
         };
@@ -429,6 +429,8 @@
           ]);
         in (lib.genAttrs hosts (_: {})) // {
           zeta.hasFastConnection = true;
+          zeta.successTimeout = 240;
+          zeta.switchTimeout = 240;
         };
       })
     );
