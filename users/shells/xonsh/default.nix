@@ -22,7 +22,7 @@ with lib; let
     nix-store = "echo disabled: nix-store"; # require nix-command
     nix-shell = "echo disabled: nix-shell"; # require nix-command
     sudo = pkgs.writeShellScript "sudo-discouraged" ''
-      echo warning: `sudo $@` should be `doas $@` >&2
+      echo warning: "sudo $@" should be "doas $@" >&2
       exec sudo $@
     ''; # discourage sudo
   };
