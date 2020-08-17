@@ -147,7 +147,7 @@
           });
         })
         (final: prev: {
-          nyxt = (prev.nyxt.override {
+          nyxt = prev.nyxt.override {
             src = final.runCommand "nyxt-source" rec {
               inherit (final.lispPackages) quicklisp;
             } ''
@@ -167,15 +167,7 @@
               rev = lib.substring 0 8 inputs.nyxt.rev;
               date = lib.substring 0 8 (inputs.nyxt.lastModifiedDate or inputs.nyxt.lastModified);
             in "${date}.${rev}";
-          }).overrideAttrs (old: {
-            buildInputs = old.buildInputs ++ (with final.gst_all_1; [
-              gstreamer gst-libav
-              gst-plugins-base
-              gst-plugins-good
-              gst-plugins-bad
-              gst-plugins-ugly
-            ]);
-          });
+          };
         })
       ];
     };

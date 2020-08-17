@@ -89,6 +89,7 @@
 
       button  left    mod                 window.begin_move:window.end_move
       button  left    mod,shift           window.begin_resize:window.end_resize
+      button  right   mod                 window.begin_resize:window.end_resize
     '';
   };
 }
