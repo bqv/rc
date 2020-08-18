@@ -119,6 +119,7 @@
            ;(define-key map "button7" 'switch-buffor-previous)
            ;(define-key map "button8" 'switch-buffor-next)
             map))
+         (default-modes (cons 'blocker-mode %slot-default))
          (request-resource-hook
           (reduce #'hooks:add-hook
                   (list ;; doi://path -> https url
