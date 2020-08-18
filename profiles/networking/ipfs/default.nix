@@ -45,6 +45,7 @@ in {
       cp -Lr --reflink=auto ${cfg.ipfsMountDir}/$hash $1
     '';
 
+    # Wrap brig to use the http api (breaks with unix sockets)
     brig = let
       ipfs-api = pkgs.writeText "ipfs-api" config.services.ipfs.apiAddress;
       api-addr = config.services.ipfs.apiAddress;
@@ -59,7 +60,24 @@ in {
       if { umount /var/empty }
       ${pkgs.brig}/bin/brig $@
     '';
-  in [ pkgs.ipfs-cluster brig toipfs fromipfs ];
+
+    # ipfs-cluster-pin <name> <path>
+    ipfs-cluster-pin = pkgs.writeScriptBin "ipfs-cluster-pin" ''
+      #!${pkgs.execline}/bin/execlineb -S2
+      export EXECLINE_STRICT 2
+      backtick -n -I dir { dirname $2 }
+      importas -i dir dir
+      cd $dir
+      backtick -n -I file { basename $2 }
+      importas -i file file
+      backtick -n -i hash {
+        pipeline { ${pkgs.ipfs}/bin/ipfs add -qr $file }
+        tail -n 1
+      }
+      importas -i hash hash
+      ${pkgs.ipfs-cluster}/bin/ipfs-cluster-ctl pin add -n $1 -w $hash
+    '';
+  in [ pkgs.ipfs-cluster brig toipfs fromipfs ipfs-cluster-pin ];
 
   services.ipfs = {
     enable = true;
