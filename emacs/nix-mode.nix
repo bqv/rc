@@ -4,7 +4,7 @@
   emacs-loader.nix-mode = {
     demand = true;
     config = ''
-      (setq nix-repl-executable-args '("repl" "${pkgs.path}"))
+      (setq nix-repl-executable-args '("repl" "<nixos>"))
     '' + ''
       (setq nix-indent-function 'nix-indent-line)
 
