@@ -396,16 +396,19 @@
             imports = nixos.modules;
           };
 
+          # Filter out "added to list of known hosts" spam from output
           deployScriptPhases.filter-known-hosts = lib.dag.entryBefore ["copy-closure"] ''
             exec 2> >(${pkgs.gnugrep}/bin/grep -v "list of known hosts")
           '';
 
+          # Replace all usage of nix-copy-closure with `nix-copy`
           deployScriptPhases.nix-copy-alias = lib.dag.entryBefore ["copy-closure"] ''
             PATH=${lib.makeBinPath [ pkgs.nixUnstable ]}:$PATH
             alias nix-copy-closure="nix copy"
             export NIX_REMOTE=""
           '';
 
+          # Git tag all systems and deployments
           deployScriptPhases.git-tag = let
             inherit (config.configuration) system;
           in lib.dag.entryAfter ["switch"] ''
@@ -429,8 +432,8 @@
           ]);
         in (lib.genAttrs hosts (_: {})) // {
           zeta.hasFastConnection = true;
-          zeta.successTimeout = 240;
-          zeta.switchTimeout = 240;
+          zeta.successTimeout = 240; # Zeta seems very slow...
+          zeta.switchTimeout = 240; # maybe due to wireguard reloading?
         };
       })
     );

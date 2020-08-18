@@ -69,7 +69,12 @@
           #tcp dport 22 accept # SSH connections
 
           tcp dport 6667 accept # Weechat
+
           tcp dport { 4001, 4501 } accept # IPFS
+          udp dport { 4001, 4501 } accept # IPFS
+          tcp dport { 9096 } accept # Cluster
+          udp dport { 9096 } accept # Cluster
+
           ip saddr ${hosts.lan.theta} accept # Shells
 
           log
