@@ -11,11 +11,11 @@
       "Alpha CA" = {
         certAuthority = true;
         hostNames = [ "*" ];
-        publicKeyFile = ../../secrets/delta.ssh_host-ca.pub;
+        publicKeyFile = ../../secrets/keys/deltassh/ssh_host-ca.pub;
       };
       "delta" = {
         hostNames = [ "localhost" "127.0.0.1" "::1" ];
-        publicKeyFile = ../../secrets/delta.ssh_host_ed25519_key.pub;
+        publicKeyFile = ../../secrets/keys/deltassh/ssh_host_ed25519_key.pub;
       };
     };
     hostKeys = [

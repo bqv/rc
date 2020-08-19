@@ -199,22 +199,21 @@
     wineWowPackages.staging
   ];
 
-  environment.etc."nix/id_zeta.ed25519".source = "/nix/keys/nix/id_zeta.ed25519";
-  environment.etc."ssh/ssh_host_rsa_key".source = "/nix/keys/ssh/ssh_host_rsa_key";
-  environment.etc."ssh/ssh_host_rsa_key.pub".source = "/nix/keys/ssh/ssh_host_rsa_key.pub";
-  environment.etc."ssh/ssh_host_ed25519_key".source = "/nix/keys/ssh/ssh_host_ed25519_key";
-  environment.etc."ssh/ssh_host_ed25519_key.pub".source = "/nix/keys/ssh/ssh_host_ed25519_key.pub";
-  environment.etc."ssh/ssh_host_dsa_key".source = "/nix/keys/ssh/ssh_host_dsa_key";
-  environment.etc."ssh/ssh_host_dsa_key-cert.pub".source = "/nix/keys/ssh/ssh_host_dsa_key-cert.pub";
-  environment.etc."ssh/ssh_host_dsa_key.pub".source = "/nix/keys/ssh/ssh_host_dsa_key.pub";
-  environment.etc."ssh/ssh_host_ecdsa_key".source = "/nix/keys/ssh/ssh_host_ecdsa_key";
-  environment.etc."ssh/ssh_host_ecdsa_key-cert.pub".source = "/nix/keys/ssh/ssh_host_ecdsa_key-cert.pub";
-  environment.etc."ssh/ssh_host_ecdsa_key.pub".source = "/nix/keys/ssh/ssh_host_ecdsa_key.pub";
-  environment.etc."ssh/ssh_host_ed25519_key-cert.pub".source = "/nix/keys/ssh/ssh_host_ed25519_key-cert.pub";
-  environment.etc."ssh/ssh_host_rsa_key-cert.pub".source = "/nix/keys/ssh/ssh_host_rsa_key-cert.pub";
-  environment.etc."ssh/ssh_revoked_keys".source = "/nix/keys/ssh/ssh_revoked_keys";
-  environment.etc."ssh/ssh_user-ca.pub".source = "/nix/keys/ssh/ssh_user-ca.pub";
-  environment.etc."ssh/ssh_host-ca.pub".source = "/nix/keys/ssh/ssh_host-ca.pub";
-  environment.etc."ssl/certs/mitmproxy.crt".source = "/nix/keys/ssl/certs/mitmproxy.crt";
-  environment.etc."wireguard/private.key".source = "/nix/keys/wireguard/private.key";
+  environment.etc."nix/id_zeta.ed25519".source = ../../secrets/keys/nix/id_zeta.ed25519;
+  environment.etc."ssh/ssh_host_rsa_key".source = ../../secrets/keys/deltassh/ssh_host_rsa_key;
+  environment.etc."ssh/ssh_host_rsa_key.pub".source = ../../secrets/keys/deltassh/ssh_host_rsa_key.pub;
+  environment.etc."ssh/ssh_host_ed25519_key".source = ../../secrets/keys/deltassh/ssh_host_ed25519_key;
+  environment.etc."ssh/ssh_host_ed25519_key.pub".source = ../../secrets/keys/deltassh/ssh_host_ed25519_key.pub;
+  environment.etc."ssh/ssh_host_dsa_key".source = ../../secrets/keys/deltassh/ssh_host_dsa_key;
+  environment.etc."ssh/ssh_host_dsa_key-cert.pub".source = ../../secrets/keys/deltassh/ssh_host_dsa_key-cert.pub;
+  environment.etc."ssh/ssh_host_dsa_key.pub".source = ../../secrets/keys/deltassh/ssh_host_dsa_key.pub;
+  environment.etc."ssh/ssh_host_ecdsa_key".source = ../../secrets/keys/deltassh/ssh_host_ecdsa_key;
+  environment.etc."ssh/ssh_host_ecdsa_key-cert.pub".source = ../../secrets/keys/deltassh/ssh_host_ecdsa_key-cert.pub;
+  environment.etc."ssh/ssh_host_ecdsa_key.pub".source = ../../secrets/keys/deltassh/ssh_host_ecdsa_key.pub;
+  environment.etc."ssh/ssh_host_ed25519_key-cert.pub".source = ../../secrets/keys/deltassh/ssh_host_ed25519_key-cert.pub;
+  environment.etc."ssh/ssh_host_rsa_key-cert.pub".source = ../../secrets/keys/deltassh/ssh_host_rsa_key-cert.pub;
+  environment.etc."ssh/ssh_revoked_keys".source = ../../secrets/keys/deltassh/ssh_revoked_keys;
+  environment.etc."ssh/ssh_user-ca.pub".source = ../../secrets/keys/deltassh/ssh_user-ca.pub;
+  environment.etc."ssh/ssh_host-ca.pub".source = ../../secrets/keys/deltassh/ssh_host-ca.pub;
+  environment.etc."wireguard/private.key".source = ../../secrets/keys/wireguard/delta.key;
 }
