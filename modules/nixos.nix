@@ -5,6 +5,7 @@
   ./services/hydroxide/default.nix
   ./services/ipfs-cluster/default.nix
   ./security/mitigations.nix
+  ./networking/nftables.nix
   ./networking/wireguard-mesh.nix
   ./networking/namespacing.nix
 ]

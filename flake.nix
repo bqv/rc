@@ -213,6 +213,8 @@
       };
       specialArgs = {
         inherit inputs usr;
+        dag = let dagLib = import "${inputs.nixus}/dag.nix" lib lib;
+        in dagLib.dag // { inherit (dagLib) types; };
         fetchPullRequest = fetchPullRequestForSystem system;
 
         domains = import ./secrets/domains.nix;

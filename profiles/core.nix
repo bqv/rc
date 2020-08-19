@@ -19,10 +19,6 @@ in {
       "net.ipv4.ip_forward" = "1";
       "kernel.pid_max" = "4194304";
     };
-
-    extraModprobeConfig = lib.mkIf config.networking.nftables.enable ''
-      install ip_tables ${pkgs.coreutils}/bin/true
-    '';
   };
 
   hardware.enableAllFirmware = true;

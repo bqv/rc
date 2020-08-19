@@ -1,4 +1,4 @@
-{ config, lib, pkgs, hosts, inputs, ... }:
+{ config, lib, pkgs, hosts, inputs, dag, ... }:
 
 {
   environment.systemPackages = with pkgs; [ dhcp dhcpcd ];
@@ -43,55 +43,58 @@
     useDHCP = true;
   }; systemd.services.network-link-enp0s20u3u1u2.before = [];
 
-  networking.firewall.enable = false;
   networking.nftables = {
     enable = true;
-    ruleset = ''
-      table inet filter {
-        chain input {
-          type filter hook input priority 0;
 
-          # accept any localhost traffic
-          iifname lo accept
-
-          # accept traffic originated from us
-          ct state {established, related} accept
-
-          # ICMP
-          # routers may also want: mld-listener-query, nd-router-solicit
-          ip6 nexthdr icmpv6 icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert } accept
-          ip protocol icmp icmp type { destination-unreachable, router-advertisement, time-exceeded, parameter-problem } accept
-
-          # allow "ping"
-          ip6 nexthdr icmpv6 icmpv6 type echo-request accept
-          ip protocol icmp icmp type echo-request accept
-
-          #tcp dport 22 accept # SSH connections
-
-          tcp dport 6667 accept # Weechat
-
-          tcp dport { 4001, 4501 } accept # IPFS
-          udp dport { 4001, 4501 } accept # IPFS
-          tcp dport { 9096 } accept # Cluster
-          udp dport { 9096 } accept # Cluster
-
-          ip saddr ${hosts.lan.theta} accept # Shells
-
-          log
-          drop
-        }
-
-        chain output {
-          type filter hook output priority 0;
-          accept
-        }
-
-        chain forward {
-          type filter hook forward priority 0;
-          accept
-        }
-      }
-    '';
+    rules = {
+      inet.filter.input = {
+        weechat = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = [ 6667 6697 ];
+          policy = "accept";
+        };
+        ipfs-api-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = 4001;
+          policy = "accept";
+        };
+        ipfs-api-udp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "udp"; field = "dport";
+          value = 4001;
+          policy = "accept";
+        };
+        ipfs-gw-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = 4501;
+          policy = "accept";
+        };
+        ipfs-gw-udp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "udp"; field = "dport";
+          value = 4501;
+          policy = "accept";
+        };
+        ipfs-cluster-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = 9096;
+          policy = "accept";
+        };
+        ipfs-cluster-udp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "udp"; field = "dport";
+          value = 9096;
+          policy = "accept";
+        };
+        mpd = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = 6600;
+          policy = "accept";
+        };
+        theta = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
+          protocol = "ip"; field = "saddr";
+          value = hosts.lan.theta;
+          policy = "accept";
+        };
+      };
+    };
   };
 
   assertions = [
