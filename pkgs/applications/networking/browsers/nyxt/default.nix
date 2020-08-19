@@ -35,19 +35,22 @@ let
       inherit version src;
 
       nativeBuildInputs = [ git cacert makeWrapper wrapGAppsHook ];
+      gstBuildInputs = with gst_all_1; [
+        gstreamer gst-libav
+        gst-plugins-base
+        gst-plugins-good
+        gst-plugins-bad
+        gst-plugins-ugly
+      ];
       buildInputs = [
         lisp openssl libfixposix mime-types
         glib gdk-pixbuf cairo
         pango gtk3 webkitgtk vivaldi-widevine
         glib-networking gsettings-desktop-schemas
         xclip notify-osd enchant
-      ] ++ (with gst_all_1; [
-        gstreamer gst-libav
-        gst-plugins-base
-        gst-plugins-good
-        gst-plugins-bad
-        gst-plugins-ugly
-      ]);
+      ] ++ gstBuildInputs;
+
+      GST_PLUGIN_SYSTEM_PATH_1_0 = lib.concatMapStringsSep ":" (p: "${p}/lib/gstreamer-1.0") gstBuildInputs;
 
       configurePhase = ''
         mkdir -p quicklisp-client/local-projects
@@ -89,6 +92,7 @@ let
         install -D -m0755 nyxt $out/libexec/nyxt
         mkdir -p $out/bin && makeWrapper $out/libexec/nyxt $out/bin/nyxt \
           --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath buildInputs}" \
+          --prefix GST_PLUGIN_SYSTEM_PATH_1_0 : "${GST_PLUGIN_SYSTEM_PATH_1_0}" \
           --argv0 nyxt "''${gappsWrapperArgs[@]}"
       '';
 
