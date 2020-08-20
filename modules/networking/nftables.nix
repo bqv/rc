@@ -221,5 +221,23 @@ in {
         };
       };
     };
+
+    assertions = let
+      ruleset = pkgs.writeText "nft-ruleset" cfg.ruleset;
+      check-results = pkgs.runCommand "check-nft-ruleset" {} ''
+        mkdir -p $out
+        ${pkgs.nftables}/bin/nft -c -f ${ruleset} 2>&1 > $out/message \
+          && echo false > $out/assertion \
+          || echo true > $out/assertion
+      '';
+    in [
+      {
+        message = ''
+          Bad config:
+          ${builtins.readFile "${check-results}/message"}
+        '';
+        assertion = import "${check-results}/assertion";
+      }
+    ];
   };
 }
