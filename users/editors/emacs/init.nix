@@ -233,8 +233,8 @@ let
     (defun toggle-input-method-back (&rest args)
       (run-at-time toggle-input-method-timeout nil
                    `(lambda ()
-                      (with-current-buffer ,(current-buffer)
-                        (activate-default-input-method)))))
+                      (ignore-errors (with-current-buffer ,(current-buffer)
+                                       (activate-default-input-method))))))
 
     (config-package custom
       :config
