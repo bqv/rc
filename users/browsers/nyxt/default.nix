@@ -100,63 +100,66 @@
           (containers:insert-item (clipboard-ring *browser*) uri))
         (swank::eval-in-emacs `(nyxt-pull)))
 
-      (define-mode dispatch-mode ()
-        "Mode to intercept and redirect URIs externally."
-        ((request-resource-hook
-          (reduce #'hooks:add-hook
-                  (list ;; doi://path -> https url
-                        (url-dispatching-handler
-                         'doi-link-dispatcher (match-scheme "doi")
-                         (lambda (url)
-                           (quri:uri (format nil "https://doi.org/~a"
-                                             (quri:uri-path url)))))
+      (let ((handlers (list ;; doi://path -> https url
+                       (url-dispatching-handler
+                        'doi-link-dispatcher (match-scheme "doi")
+                        (lambda (url)
+                          (quri:uri (format nil "https://doi.org/~a"
+                                            (quri:uri-path url)))))
 
-                        ;; github://owner/repo -> https url
-                        (url-dispatching-handler
-                         'doi-link-dispatcher (match-scheme "github" "gh")
-                         (lambda (url)
-                           (quri:uri (format nil "https://github.com/~a"
-                                             (quri:uri-path url)))))
+                       ;; github://owner/repo -> https url
+                       (url-dispatching-handler
+                        'github-link-dispatcher (match-scheme "github" "gh")
+                        (lambda (url)
+                          (quri:uri (format nil "https://github.com/~a"
+                                            (quri:uri-path url)))))
 
-                        ;; magnet:uri -> aria2
-                        (url-dispatching-handler
-                         'aria2-magnet-links (match-scheme "magnet")
-                         (lambda (url)
-                           (uiop:launch-program
-                            (list "${pkgs.python3Packages.aria2p}/bin/aria2p"
-                                  "--secret" "${super.services.aria2.rpcSecret}"
-                                  "add-magnets" (object-string url)))
-                            nil))
+                       ;; magnet:uri -> aria2
+                       (url-dispatching-handler
+                        'aria2-magnet-links (match-scheme "magnet")
+                        (lambda (url)
+                          (uiop:launch-program
+                           (list "${pkgs.python3Packages.aria2p}/bin/aria2p"
+                                 "--secret" "${super.services.aria2.rpcSecret}"
+                                 "add-magnets" (object-string url)))
+                          nil))
 
-                        ;; youtube -> mpv
-                        (url-dispatching-handler
-                         'mpv-youtube-links (match-domain "youtube.com" "m.youtube.com" "youtu.be")
-                         (lambda (url)
-                           (uiop:launch-program
-                            (list "${pkgs.mpv}/bin/mpv"
-                                  (object-string url)))
-                            nil))
+                       ;; youtube -> mpv
+                       (url-dispatching-handler
+                        'mpv-youtube-links (match-domain "youtube.com" "m.youtube.com" "youtu.be")
+                        (lambda (url)
+                          (uiop:launch-program
+                           (list "${pkgs.mpv}/bin/mpv"
+                                 (object-string url)))
+                          nil))
 
-                        ;; twitch -> mpv
-                        (url-dispatching-handler
-                         'mpv-twitch-links (match-domain "twitch.tv")
-                         (lambda (url)
-                           (uiop:launch-program
-                            (list "${pkgs.mpv}/bin/mpv"
-                                 ;"--no-cache" "--cache-secs=0" "--demuxer-readahead-secs=0" "--untimed"
-                                 ;"--cache-pause=no"
-                                  (object-string url)))
-                            nil))
-                  )
-                  :initial-value %slot-default))
-         (destructor
-          :initform
-          (lambda (mode)
-            (setf (request-resource-hook (buffer mode)) %slot-default)))
-         (constructor
-          :initform
-          (lambda (mode)
-            (setf (request-resource-hook (buffer mode)) (request-resource-hook mode))))))
+                       ;; twitch -> mpv
+                       (url-dispatching-handler
+                        'mpv-twitch-links (match-domain "twitch.tv")
+                        (lambda (url)
+                          (uiop:launch-program
+                           (list "${pkgs.mpv}/bin/mpv"
+                                 "--no-cache" "--cache-secs=0" "--demuxer-readahead-secs=0" "--untimed"
+                                 "--cache-pause=no"
+                                 (object-string url)))
+                          nil))
+                       )))
+        (define-mode dispatch-mode ()
+          "Mode to intercept and redirect URIs externally."
+          ((destructor
+            :initform
+            (lambda (mode)
+              (reduce (lambda (el acc) (hooks:remove-hook el) acc)
+                      handlers :initial-value (request-resource-hook (buffer mode)))))
+           (constructor
+            :initform
+            (lambda (mode)
+              (unless (request-resource-hook (buffer mode))
+                (make-hook-resource
+                 :combination #'combine-composed-hook-until-nil
+                 :handlers nil))
+              (reduce (lambda (el acc) (hooks:remove-hook el) acc)
+                      handlers :initial-value (request-resource-hook (buffer mode))))))))
 
       (define-configuration buffer
         ((keymap-scheme-name scheme:emacs)
