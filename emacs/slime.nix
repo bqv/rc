@@ -7,6 +7,10 @@
       (setq slime-auto-connect 'always)
       (setq slime-enable-evaluate-in-emacs t)
 
+      (defun nyxt-repl ()
+        (interactive)
+        (slime-connect "localhost" 4005))
+
       (defun nyxt-push (text)
         (interactive "sText: ")
         (slime-eval `(containers:insert-item (nyxt:clipboard-ring nyxt::*browser*) ,text)))

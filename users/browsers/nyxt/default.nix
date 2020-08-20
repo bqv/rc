@@ -100,27 +100,9 @@
           (containers:insert-item (clipboard-ring *browser*) uri))
         (swank::eval-in-emacs `(nyxt-pull)))
 
-      (define-configuration buffer
-        ((keymap-scheme-name scheme:emacs)
-         (default-new-buffer-url "about:blank")
-         (override-map
-          (let ((map (make-keymap "override-map")))
-           ;(define-key map "C-x s" 'shell)
-            (define-key map
-              "C-v" 'scroll-page-down
-              "M-v" 'scroll-page-up)
-            (define-key map
-              "C-k" 'copy-to-emacs
-              "C-y" 'paste-from-emacs)
-            (define-key map "M-h" 'nyxt/web-mode:buffer-history-tree)
-           ;(define-key map "button4" 'history-backwards)
-           ;(define-key map "button5" 'history-forwards)
-           ;(define-key map "button6" 'delete-current-buffer)
-           ;(define-key map "button7" 'switch-buffor-previous)
-           ;(define-key map "button8" 'switch-buffor-next)
-            map))
-         (default-modes (cons 'blocker-mode %slot-default))
-         (request-resource-hook
+      (define-mode dispatch-mode ()
+        "Mode to intercept and redirect URIs externally."
+        ((request-resource-hook
           (reduce #'hooks:add-hook
                   (list ;; doi://path -> https url
                         (url-dispatching-handler
@@ -167,6 +149,35 @@
                             nil))
                   )
                   :initial-value %slot-default))
+         (destructor
+          :initform
+          (lambda (mode)
+            (setf (request-resource-hook (buffer mode)) %slot-default)))
+         (constructor
+          :initform
+          (lambda (mode)
+            (setf (request-resource-hook (buffer mode)) (request-resource-hook mode))))))
+
+      (define-configuration buffer
+        ((keymap-scheme-name scheme:emacs)
+         (default-new-buffer-url "about:blank")
+         (override-map
+          (let ((map (make-keymap "override-map")))
+           ;(define-key map "C-x s" 'shell)
+            (define-key map
+              "C-v" 'scroll-page-down
+              "M-v" 'scroll-page-up)
+            (define-key map
+              "C-k" 'copy-to-emacs
+              "C-y" 'paste-from-emacs)
+            (define-key map "M-h" 'nyxt/web-mode:buffer-history-tree)
+           ;(define-key map "button4" 'history-backwards)
+           ;(define-key map "button5" 'history-forwards)
+           ;(define-key map "button6" 'delete-current-buffer)
+           ;(define-key map "button7" 'switch-buffor-previous)
+           ;(define-key map "button8" 'switch-buffor-next)
+            map))
+         (default-modes (append '(dispatch-mode blocker-mode) %slot-default))
          ))
 
       (define-configuration browser
