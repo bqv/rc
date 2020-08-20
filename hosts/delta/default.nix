@@ -212,7 +212,7 @@
   environment.etc."ssh/ssh_host_ecdsa_key.pub".source = ../../secrets/keys/deltassh/ssh_host_ecdsa_key.pub;
   environment.etc."ssh/ssh_host_ed25519_key-cert.pub".source = ../../secrets/keys/deltassh/ssh_host_ed25519_key-cert.pub;
   environment.etc."ssh/ssh_host_rsa_key-cert.pub".source = ../../secrets/keys/deltassh/ssh_host_rsa_key-cert.pub;
-  environment.etc."ssh/ssh_revoked_keys".source = ../../secrets/keys/deltassh/ssh_revoked_keys;
+  environment.etc."ssh/ssh_revoked_keys".text = "";
   environment.etc."ssh/ssh_user-ca.pub".source = ../../secrets/keys/deltassh/ssh_user-ca.pub;
   environment.etc."ssh/ssh_host-ca.pub".source = ../../secrets/keys/deltassh/ssh_host-ca.pub;
   environment.etc."wireguard/private.key".source = ../../secrets/keys/wireguard/delta.key;
