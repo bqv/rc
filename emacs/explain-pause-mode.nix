@@ -10,11 +10,11 @@
     });
     require = [ "explain-pause-mode" ];
     config = ''
-      (unless (fboundp 'explain-pause--seq-contains)
-        (defun explain-pause--seq-contains (&rest r) nil))
+     ;(unless (fboundp 'explain-pause--seq-contains)
+     ;  (defun explain-pause--seq-contains (&rest r) nil))
       (explain-pause-mode)
-      (setq explain-pause-logging-default-log-location "/dev/log")
-      (add-hook 'after-init-hook #'explain-pause-log-to-socket)
+     ;(setq explain-pause-logging-default-log-location "/dev/log")
+     ;(add-hook 'after-init-hook #'explain-pause-log-to-socket)
     '';
   };
 }
