@@ -196,12 +196,28 @@
         (unless (doom-modeline--active)
             '("" mode-line-misc-info)))
 
+      (defun bqv/frame-irc ()
+        (interactive)
+        (set-frame-font "Fixed-10")
+        (delete-other-windows)
+        (split-window-right)
+        (split-window-below)
+        (switch-to-buffer irc/1)
+        (windmove-down)
+        (switch-to-buffer irc/2)
+        (windmove-right)
+        (switch-to-buffer irc/3)
+        (split-window-below)
+        (switch-to-buffer irc/4))
+
       (defun set-frame-scale (n)
         (interactive "NFont Size: ")
         (set-frame-font (format "DejaVu Sans Mono-%s" n)))
       (define-key desktop-environment-mode-map (kbd "<65300>") #'set-frame-scale)
 
       (defun bqv/set-frame-fonts (&rest r)
+        (set-frame-scale 7)
+
         ;; Chinese, simplified
         (set-fontset-font t 'han "Noto Sans Mono CJK SC Regular")
         ;; Chinese, traditional (the former script does not have everything)
