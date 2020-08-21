@@ -6,11 +6,13 @@
     home.file.".config/nyxt/init.lisp".text = let
       secrets = import ../../../secrets/nyxt.autofill.nix;
     in ''
-      (setq *swank-port* 4005)
-      (ignore-errors
-       (start-swank)
-       (uiop:launch-program (list "emacsclient" "--eval" "(nyxt-repl)"))
-                            (list "emacsclient" "--eval" "(setq slime-enable-evaluate-in-emacs t)"))
+      (unless (and (boundp '*swank-started*) *swank-started*)
+        (setq *swank-port* 4005)
+        (ignore-errors
+         (start-swank)
+         (uiop:launch-program (list "emacsclient" "--eval" "(nyxt-repl)"))
+         (list "emacsclient" "--eval" "(setq slime-enable-evaluate-in-emacs t)")
+         (setq *swank-started* t)))
 
       (define-mode shell-mode ()
           "A basic shell prompt."
@@ -100,6 +102,40 @@
           (containers:insert-item (clipboard-ring *browser*) uri))
         (swank::eval-in-emacs `(nyxt-pull)))
 
+      (define-parenscript %bw-autofill (username password)
+        (defun is-visible (elem)
+          (ps:let ((style (ps:chain elem owner-document default-view (get-computed-style elem null))))
+            (ps:if (ps:or (ps:not (ps:eql (ps:chain style (get-property-value "visibility")) "visible"))
+                          (ps:eql (ps:chain style (get-property-value "display")) "none")
+                          (ps:eql (ps:chain style (get-property-value "opacity")) "0"))
+                   ps:f
+                   (ps:and (> (ps:@ elem offset-width) 0) (> (ps:@ elem offset-height) 0)))))
+
+        (defun has-password-field (form)
+          (ps:let ((inputs (ps:chain form (get-elements-by-tag-name "input"))))
+            (ps:dolist (input inputs)
+              (ps:when (ps:eql (ps:@ input type) "password")
+                (ps:return ps:t)))))
+
+        (defun update-form-data (form username password)
+          (ps:let ((inputs (ps:chain form (get-elements-by-tag-name "input"))))
+            (ps:dolist (input inputs)
+              (ps:when (ps:and (is-visible input)
+                               (ps:or (ps:= (ps:@ input 'type) "text")
+                                      (ps:= (ps:@ input 'type) "email")))
+                (ps:chain input (focus))
+                (setf (ps:@ input 'value) username)
+                (ps:chain input (blur)))
+              (ps:when (ps:= (ps:@ input 'type) "password")
+                (ps:chain input (focus))
+                (setf (ps:@ input 'value) password)
+                (ps:chain input (blur))))))
+
+        (ps:let ((forms (ps:chain document (get-elements-by-tag-name "form"))))
+          (ps:dolist (form forms)
+            (ps:if (has-password-field form)
+                   (update-form-data form (ps:lisp username) (ps:lisp password))))))
+
       (let ((handlers (list ;; doi://path -> https url
                        (url-dispatching-handler
                         'doi-link-dispatcher (match-scheme "doi")
@@ -161,48 +197,52 @@
               (reduce (lambda (hook el) (hooks:add-hook hook el))
                       handlers :initial-value (request-resource-hook (buffer mode))))))))
 
-      (define-configuration buffer
-        ((keymap-scheme-name scheme:emacs)
-         (default-new-buffer-url "about:blank")
-         (override-map
-          (let ((map (make-keymap "override-map")))
-           ;(define-key map "C-x s" 'shell)
-            (define-key map
-              "C-v" 'scroll-page-down
-              "M-v" 'scroll-page-up)
-            (define-key map
-              "C-k" 'copy-to-emacs
-              "C-y" 'paste-from-emacs)
-            (define-key map "M-h" 'nyxt/web-mode:buffer-history-tree)
-           ;(define-key map "button4" 'history-backwards)
-           ;(define-key map "button5" 'history-forwards)
-           ;(define-key map "button6" 'delete-current-buffer)
-           ;(define-key map "button7" 'switch-buffor-previous)
-           ;(define-key map "button8" 'switch-buffor-next)
-            map))
-         (default-modes (append '(dispatch-mode blocker-mode) %slot-default))
-         ))
+      (unless (and (boundp '*configured-buffer*) *configured-buffer*)
+        (define-configuration buffer
+          ((keymap-scheme-name scheme:emacs)
+           (default-new-buffer-url "about:blank")
+           (override-map
+            (let ((map (make-keymap "override-map")))
+             ;(define-key map "C-x s" 'shell)
+              (define-key map
+                "C-v" 'scroll-page-down
+                "M-v" 'scroll-page-up)
+              (define-key map
+                "C-k" 'copy-to-emacs
+                "C-y" 'paste-from-emacs)
+              (define-key map "M-h" 'nyxt/web-mode:buffer-history-tree)
+             ;(define-key map "button4" 'history-backwards)
+             ;(define-key map "button5" 'history-forwards)
+             ;(define-key map "button6" 'delete-current-buffer)
+             ;(define-key map "button7" 'switch-buffor-previous)
+             ;(define-key map "button8" 'switch-buffor-next)
+              map))
+           (default-modes (append '(dispatch-mode blocker-mode) %slot-default))
+           ))
+        (setq *configured-buffer* t))
 
-      (define-configuration browser
-        ((session-restore-prompt :always-restore)
-         (external-editor-program "gnvim")
-         (download-path (make-instance 'download-data-path :dirname "~/tmp/"))
-         (search-engines
-          (list (make-instance 'search-engine
-                               :shortcut "default"
-                               :search-url "https://qwant.com/?q=~a"
-                               :fallback-url "https://qwant.com/")
-                (make-instance 'search-engine
-                               :shortcut "qw"
-                               :search-url "https://qwant.com/?q=~a"
-                               :fallback-url "https://qwant.com/")
-                (make-instance 'search-engine
-                               :shortcut "gh"
-                               :search-url "https://github.com/?q=~a"
-                               :fallback-url "https://github.com/")
-                ))
-         (autofills (list (nyxt::make-autofill :key "Name" :fill "${secrets.name}")))
-         ))
+      (unless (and (boundp '*configured-browser*) *configured-browser*)
+        (define-configuration browser
+          ((session-restore-prompt :always-restore)
+           (external-editor-program "gnvim")
+           (download-path (make-instance 'download-data-path :dirname "~/tmp/"))
+           (search-engines
+            (list (make-instance 'search-engine
+                                 :shortcut "default"
+                                 :search-url "https://qwant.com/?q=~a"
+                                 :fallback-url "https://qwant.com/")
+                  (make-instance 'search-engine
+                                 :shortcut "qw"
+                                 :search-url "https://qwant.com/?q=~a"
+                                 :fallback-url "https://qwant.com/")
+                  (make-instance 'search-engine
+                                 :shortcut "gh"
+                                 :search-url "https://github.com/?q=~a"
+                                 :fallback-url "https://github.com/")
+                  ))
+           (autofills (list (nyxt::make-autofill :key "Name" :fill "${secrets.name}")))
+           ))
+        (setq *configured-browser* t))
     '';
     assertions = [
       {
