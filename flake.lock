@@ -306,21 +306,20 @@
     },
     "construct": {
       "inputs": {
-        "nixpkgs": [
-          "large"
-        ]
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1596694131,
-        "narHash": "sha256-xs1FMTXxdwb1CLF4p7WgTmPMSYodh4haPSX0O3AQyRk=",
+        "lastModified": 1589398203,
+        "narHash": "sha256-aeb9w2VgbITFO8JQ3gTbsmU6aGYoQ5nafliZ+GD1SMI=",
         "owner": "matrix-construct",
         "repo": "construct",
-        "rev": "59dd43917b38522c0797ba662401a9206d1668fc",
+        "rev": "95a0073101f03c22226c504d6fd21c18965ffd78",
         "type": "github"
       },
       "original": {
         "owner": "matrix-construct",
         "repo": "construct",
+        "rev": "95a0073101f03c22226c504d6fd21c18965ffd78",
         "type": "github"
       }
     },
@@ -1348,6 +1347,23 @@
         "type": "github"
       }
     },
+    "nix-ipfs": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1594678739,
+        "narHash": "sha256-wRGseCbIMMBJkZ2DxeJ5ICYfbMuihInYdWYcLWAwyDs=",
+        "owner": "obsidiansystems",
+        "repo": "nix",
+        "rev": "7c027d20a204592d23dde2d95d58d83ee197c681",
+        "type": "github"
+      },
+      "original": {
+        "owner": "obsidiansystems",
+        "ref": "ipfs-master",
+        "repo": "nix",
+        "type": "github"
+      }
+    },
     "nix_2": {
       "inputs": {
         "nixpkgs": [
@@ -1392,6 +1408,19 @@
     },
     "nixpkgs": {
       "locked": {
+        "lastModified": 1597596267,
+        "narHash": "sha256-NqEASA6tduP71BTfpIgPijmTS2DbPf84lhs4kp/NPm0=",
+        "path": "/nix/store/dmjagv977khd210b997qpa8szyjldjf6-source",
+        "rev": "bda86eee87658f25cc918adb4c821e482ff24249",
+        "type": "path"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
         "lastModified": 1590704227,
         "narHash": "sha256-J3R7j54tUBDGazke8/z3WD9YNSKglOuzM1785ZZc2cw=",
         "path": "/nix/store/pf4r4fs2ylvcj1h3h2ffyl1wlkbab189-source",
@@ -1403,7 +1432,7 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_2": {
+    "nixpkgs_3": {
       "locked": {
         "lastModified": 1592918978,
         "narHash": "sha256-Sk9v9kzYjNHMj4uzKINMzTq4y/14pHy7J5hNabJHjOI=",
@@ -1418,7 +1447,7 @@
     },
     "nixus": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "lastModified": 1591053277,
@@ -1437,7 +1466,7 @@
     },
     "nixus_2": {
       "inputs": {
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "lastModified": 1591053277,
@@ -2115,6 +2144,7 @@
         "naersk": "naersk_3",
         "napalm": "napalm_3",
         "nix": "nix_3",
+        "nix-ipfs": "nix-ipfs",
         "nixus": "nixus_3",
         "nyxt": "nyxt",
         "pr75800": "pr75800_3",
