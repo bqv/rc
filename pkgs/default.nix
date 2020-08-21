@@ -38,8 +38,6 @@ in {
 
   matrix-appservice-irc = prev.callPackage ./servers/matrix-appservice-irc { };
 
-  matrix-construct = prev.callPackage ./servers/matrix-construct { };
-
   mx-puppet-discord = prev.callPackage ./servers/mx-puppet-discord { };
 
   nyxt = prev.callPackage ./applications/networking/browsers/nyxt { };
