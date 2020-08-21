@@ -33,8 +33,8 @@
     guix.url = "github:bqv/guix";          #|- Guix
     guix.inputs.nixpkgs.follows = "large"; #|
 
-    construct.url = "github:matrix-construct/construct/95a0073101f03c22226c504d6fd21c18965ffd78"; #|- Construct
-   #construct.inputs.nixpkgs.follows = "large";          #|
+    construct.url = "github:matrix-construct/construct"; #|- Construct
+    construct.inputs.nixpkgs.follows = "large";          #|
 
     nix-ipfs = { url = "github:obsidiansystems/nix/ipfs-master"; flake = false; };
 
@@ -120,7 +120,25 @@
         })
         inputs.nix.overlay
         inputs.guix.overlay
-        inputs.construct.overlay (final: prev: { riot-web = final.element-web; })
+        inputs.construct.overlay (final: prev: {
+          riot-web = final.element-web;
+          matrix-construct = (final.callPackage "${inputs.construct}/default.nix" { pkgs = final; }).overrideAttrs (_: {
+            EXTRA_CXXFLAGS = "-mabm -mbmi";
+            patchPhase = '' sed '/RB_INC_EXECUTION/d' -i ./include/ircd/stdinc.h '';
+            preAutoreconf = let
+              VERSION_COMMIT_CMD = "git rev-parse --short HEAD";
+              VERSION_BRANCH_CMD = "git rev-parse --abbrev-ref HEAD";
+              VERSION_TAG_CMD = "git describe --tags --abbrev=0 --dirty --always";
+              VERSION_CMD = "git describe --tags --always";
+            in ''
+              substituteInPlace configure.ac --replace "${VERSION_COMMIT_CMD}" "echo ${inputs.construct.rev}"
+              substituteInPlace configure.ac --replace "${VERSION_BRANCH_CMD}" "echo ${inputs.construct.rev}"
+              substituteInPlace configure.ac --replace "${VERSION_TAG_CMD}" "echo ${inputs.construct.rev}"
+              substituteInPlace configure.ac --replace "${VERSION_CMD}" "echo ${inputs.construct.rev}"
+            '';
+            src = builtins.toPath "${inputs.construct}/.";
+          });
+        })
         inputs.emacs.overlay
         (final: prev: builtins.removeAttrs (inputs.haskell.overlay final prev) [ "harfbuzz" ])
         inputs.xontribs.overlay
