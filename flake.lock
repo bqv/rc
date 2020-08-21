@@ -306,20 +306,37 @@
     },
     "construct": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": [
+          "large"
+        ]
       },
       "locked": {
-        "lastModified": 1589398203,
-        "narHash": "sha256-aeb9w2VgbITFO8JQ3gTbsmU6aGYoQ5nafliZ+GD1SMI=",
+        "lastModified": 1596694131,
+        "narHash": "sha256-xs1FMTXxdwb1CLF4p7WgTmPMSYodh4haPSX0O3AQyRk=",
         "owner": "matrix-construct",
         "repo": "construct",
-        "rev": "95a0073101f03c22226c504d6fd21c18965ffd78",
+        "rev": "59dd43917b38522c0797ba662401a9206d1668fc",
         "type": "github"
       },
       "original": {
         "owner": "matrix-construct",
         "repo": "construct",
-        "rev": "95a0073101f03c22226c504d6fd21c18965ffd78",
+        "type": "github"
+      }
+    },
+    "construct-nix": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1596694131,
+        "narHash": "sha256-xs1FMTXxdwb1CLF4p7WgTmPMSYodh4haPSX0O3AQyRk=",
+        "owner": "matrix-construct",
+        "repo": "construct",
+        "rev": "59dd43917b38522c0797ba662401a9206d1668fc",
+        "type": "github"
+      },
+      "original": {
+        "owner": "matrix-construct",
+        "repo": "construct",
         "type": "github"
       }
     },
@@ -1408,19 +1425,6 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1597596267,
-        "narHash": "sha256-NqEASA6tduP71BTfpIgPijmTS2DbPf84lhs4kp/NPm0=",
-        "path": "/nix/store/dmjagv977khd210b997qpa8szyjldjf6-source",
-        "rev": "bda86eee87658f25cc918adb4c821e482ff24249",
-        "type": "path"
-      },
-      "original": {
-        "id": "nixpkgs",
-        "type": "indirect"
-      }
-    },
-    "nixpkgs_2": {
-      "locked": {
         "lastModified": 1590704227,
         "narHash": "sha256-J3R7j54tUBDGazke8/z3WD9YNSKglOuzM1785ZZc2cw=",
         "path": "/nix/store/pf4r4fs2ylvcj1h3h2ffyl1wlkbab189-source",
@@ -1432,7 +1436,7 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_2": {
       "locked": {
         "lastModified": 1592918978,
         "narHash": "sha256-Sk9v9kzYjNHMj4uzKINMzTq4y/14pHy7J5hNabJHjOI=",
@@ -1447,7 +1451,7 @@
     },
     "nixus": {
       "inputs": {
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
         "lastModified": 1591053277,
@@ -1466,7 +1470,7 @@
     },
     "nixus_2": {
       "inputs": {
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "lastModified": 1591053277,
@@ -2129,6 +2133,7 @@
         "cl-webkit": "cl-webkit",
         "cluffer": "cluffer",
         "construct": "construct",
+        "construct-nix": "construct-nix",
         "dwarffs": "dwarffs",
         "emacs": "emacs",
         "guix": "guix",

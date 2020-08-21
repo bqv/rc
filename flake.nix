@@ -33,8 +33,9 @@
     guix.url = "github:bqv/guix";          #|- Guix
     guix.inputs.nixpkgs.follows = "large"; #|
 
-    construct.url = "github:matrix-construct/construct/95a0073101f03c22226c504d6fd21c18965ffd78"; #|- Construct
-   #construct.inputs.nixpkgs.follows = "large";          #|
+    construct.url = "github:matrix-construct/construct"; #|- Construct
+    construct.inputs.nixpkgs.follows = "large";          #|
+    construct-nix = { url = "github:matrix-construct/construct"; flake = false; };
 
     nix-ipfs = { url = "github:obsidiansystems/nix/ipfs-master"; flake = false; };
 
@@ -120,7 +121,15 @@
         })
         inputs.nix.overlay
         inputs.guix.overlay
-        inputs.construct.overlay (final: prev: { riot-web = final.element-web; })
+        inputs.construct.overlay (final: prev: {
+          riot-web = final.element-web;
+          matrix-construct = (final.callPackage inputs.construct-nix { pkgs = final; }).overrideAttrs {
+            EXTRA_CXXFLAGS = "-mabm -mbmi";
+            patchPhase = ''
+              sed -i 'g/RB_INC_EXECUTION/d' ./include/ircd/stdinc.h
+            '';
+          };
+        })
         inputs.emacs.overlay
         (final: prev: builtins.removeAttrs (inputs.haskell.overlay final prev) [ "harfbuzz" ])
         inputs.xontribs.overlay
