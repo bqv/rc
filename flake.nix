@@ -128,11 +128,11 @@
             preAutoreconf = let
               VERSION_COMMIT_CMD = "git rev-parse --short HEAD";
               VERSION_BRANCH_CMD = "git rev-parse --abbrev-ref HEAD";
-              VERSION_TAG_CMD = "git describe --tags --abbrev=0 --dirty --always";
+              VERSION_TAG_CMD = "git describe --tags --abbrev=0 --dirty --always --broken";
               VERSION_CMD = "git describe --tags --always";
             in ''
               substituteInPlace configure.ac --replace "${VERSION_COMMIT_CMD}" "echo ${inputs.construct.rev}"
-              substituteInPlace configure.ac --replace "${VERSION_BRANCH_CMD}" "echo ${inputs.construct.rev}"
+              substituteInPlace configure.ac --replace "${VERSION_BRANCH_CMD}" "echo master"
               substituteInPlace configure.ac --replace "${VERSION_TAG_CMD}" "echo ${inputs.construct.rev}"
               substituteInPlace configure.ac --replace "${VERSION_CMD}" "echo ${inputs.construct.rev}"
             '';

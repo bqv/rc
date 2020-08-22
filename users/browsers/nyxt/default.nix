@@ -136,6 +136,54 @@
             (ps:if (has-password-field form)
                    (update-form-data form (ps:lisp username) (ps:lisp password))))))
 
+      (defvar *bw-session*
+        (ignore-errors
+         (string-right-trim '(#\newline) (uiop:read-file-string "~/.bwrc")))
+        "Bitwarden session key")
+
+      (defun bw-status (key)
+        (cdr (assoc :status
+                    (cl-json:decode-json-from-string
+                     (uiop:run-program
+                      (list "bw" "--session" key "status")
+                      :output :string
+                      :ignore-error-status t)))))
+
+      (defun bw-search (key term)
+        (cl-json:decode-json-from-string
+         (uiop:run-program
+          (list "bw" "--session" key "list" "items" "--search" term)
+          :output :string
+          :ignore-error-status t)))
+
+      (defun bw-item-filter (key term)
+        (lambda (minibuffer)
+          (let* ((search-json (bw-search key term))
+                 (item-displays (mapcar
+                                 (lambda (entry)
+                                   (let* ((name (cdr (assoc :name entry)))
+                                          (login (cdr (assoc :login entry)))
+                                          (user (cdr (assoc :username login))))
+                                     (format nil "~a:~a" user name)))
+                                 search-json)))
+            (fuzzy-match (input-buffer minibuffer) search-json :suggestions-display item-displays))))
+
+      (defun bw-copy-totp (totp)
+        nil)
+
+      (define-command bitwarden-select-password ()
+        (let ((term (quri:uri-host (url (current-buffer)))))
+          (with-result (password-item (read-from-minibuffer
+                                       (make-minibuffer :input-prompt "Bitwarden"
+                                                        :suggestion-function
+                                                        (bw-item-filter *bw-session* term))))
+            (let* ((login (cdr (assoc :login password-item)))
+                   (user (cdr (assoc :username login)))
+                   (pass (cdr (assoc :password login)))
+                   (totp (cdr (assoc :totp login))))
+              (%bw-autofill user pass)
+              (bw-copy-totp totp)))))
+
       (let ((handlers (list ;; doi://path -> https url
                        (url-dispatching-handler
                         'doi-link-dispatcher (match-scheme "doi")
