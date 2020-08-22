@@ -141,18 +141,31 @@
          (string-right-trim '(#\newline) (uiop:read-file-string "~/.bwrc")))
         "Bitwarden session key")
 
+      (defun bw-unlock ()
+        (case (bw-status *bw-session*)
+          (unlocked *bw-session*)
+          (locked (setq *bw-session*
+                        (with-result (password (read-from-minibuffer
+                                                (make-minibuffer :input-prompt "[Bitwarden] Master Password:")))
+                          (uiop:run-program
+                           (list "${pkgs.bitwarden-cli}/bin/bw" "unlock" password "--raw")
+                           :output :string))))))
+
       (defun bw-status (key)
-        (cdr (assoc :status
-                    (cl-json:decode-json-from-string
-                     (uiop:run-program
-                      (list "bw" "--session" key "status")
-                      :output :string
-                      :ignore-error-status t)))))
+        (let* ((output (uiop:run-program
+                        (list "${pkgs.bitwarden-cli}/bin/bw" "--session" key "status")
+                        :output :string
+                        :ignore-error-status t))
+               (status (cdr (assoc :status (ignore-errors
+                                            (cl-json:decode-json-from-string
+                                             output))))))
+          (unless (null status)
+            (intern (string-upcase status)))))
 
       (defun bw-search (key term)
         (cl-json:decode-json-from-string
          (uiop:run-program
-          (list "bw" "--session" key "list" "items" "--search" term)
+          (list "${pkgs.bitwarden-cli}/bin/bw" "--session" key "list" "items" "--search" term)
           :output :string
           :ignore-error-status t)))
 
@@ -176,7 +189,7 @@
           (with-result (password-item (read-from-minibuffer
                                        (make-minibuffer :input-prompt "Bitwarden"
                                                         :suggestion-function
-                                                        (bw-item-filter *bw-session* term))))
+                                                        (bw-item-filter (bw-unlock) term))))
             (let* ((login (cdr (assoc :login password-item)))
                    (user (cdr (assoc :username login)))
                    (pass (cdr (assoc :password login)))
