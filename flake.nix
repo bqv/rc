@@ -122,7 +122,7 @@
         inputs.guix.overlay
         inputs.construct.overlay (final: prev: {
           riot-web = final.element-web;
-          matrix-construct = (final.callPackage "${inputs.construct}/default.nix" { pkgs = final; }).overrideAttrs (_: {
+          matrix-construct = (final.callPackage "${inputs.construct}/default.nix" { pkgs = final; }).overrideAttrs (o: {
             EXTRA_CXXFLAGS = "-mabm -mbmi";
             patchPhase = '' sed '/RB_INC_EXECUTION/d' -i ./include/ircd/stdinc.h '';
             preAutoreconf = let
@@ -137,6 +137,8 @@
               substituteInPlace configure.ac --replace "${VERSION_CMD}" "echo ${inputs.construct.rev}"
             '';
             src = builtins.toPath "${inputs.construct}/.";
+            configureFlags = o.configureFlags ++ ["--enable-debug"];
+            dontStrip = true;
           });
         })
         inputs.emacs.overlay

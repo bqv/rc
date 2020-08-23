@@ -311,11 +311,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1596694131,
-        "narHash": "sha256-xs1FMTXxdwb1CLF4p7WgTmPMSYodh4haPSX0O3AQyRk=",
+        "lastModified": 1598181648,
+        "narHash": "sha256-QLUxzGVrjwW4/SuhNDxCF3pwMxb4KwyE2rs1YfVhJNw=",
         "owner": "matrix-construct",
         "repo": "construct",
-        "rev": "59dd43917b38522c0797ba662401a9206d1668fc",
+        "rev": "2381f07d2f2620cfb5e853439159c875d417ca33",
         "type": "github"
       },
       "original": {
