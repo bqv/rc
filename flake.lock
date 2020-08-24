@@ -1349,18 +1349,22 @@
       }
     },
     "nix-ipfs": {
-      "flake": false,
+      "inputs": {
+        "nixpkgs": [
+          "master"
+        ]
+      },
       "locked": {
-        "lastModified": 1594678739,
-        "narHash": "sha256-wRGseCbIMMBJkZ2DxeJ5ICYfbMuihInYdWYcLWAwyDs=",
+        "lastModified": 1597848238,
+        "narHash": "sha256-Mx6qMmIvi8o97xVR2QVbfJvFb5XU3Kz5Ajol1pFyZFI=",
         "owner": "obsidiansystems",
         "repo": "nix",
-        "rev": "7c027d20a204592d23dde2d95d58d83ee197c681",
+        "rev": "3d11a68b4c243d4444c683378c24b5f6f752bbf8",
         "type": "github"
       },
       "original": {
         "owner": "obsidiansystems",
-        "ref": "ipfs-master",
+        "ref": "ipfs-develop",
         "repo": "nix",
         "type": "github"
       }

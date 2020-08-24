@@ -36,7 +36,8 @@
     construct.url = "github:matrix-construct/construct"; #|- Construct
     construct.inputs.nixpkgs.follows = "large";          #|
 
-    nix-ipfs = { url = "github:obsidiansystems/nix/ipfs-master"; flake = false; };
+    nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; #|- NixIPFS
+    nix-ipfs.inputs.nixpkgs.follows = "master";               #|
 
     emacs.url = "github:nix-community/emacs-overlay";   # Emacs-overlay
 
@@ -118,6 +119,7 @@
           snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
           napalm = pkgs.callPackage inputs.napalm;
         })
+        (final: prev: { nix-ipfs = (inputs.nix-ipfs.overlay final prev).nix; })
         inputs.nix.overlay
         inputs.guix.overlay
         inputs.construct.overlay (final: prev: {

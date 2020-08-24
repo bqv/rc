@@ -54,6 +54,8 @@
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
 
+ #nix.package = lib.mkForce pkgs.nix-ipfs;
+
   nix.maxJobs = lib.mkDefault 4;
   nix.buildMachines = [ {
     hostName = "nix-zeta";
