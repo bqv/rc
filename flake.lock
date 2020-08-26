@@ -731,11 +731,11 @@
     },
     "haskell": {
       "locked": {
-        "lastModified": 1596849616,
-        "narHash": "sha256-VTMqQZPjPeuLHIBa+AIcmFLU29jsbh5i86v9TeWHQbQ=",
+        "lastModified": 1598318015,
+        "narHash": "sha256-U4YJFbdBcVGgGSEzU+EzX2YT5mMts9HL77Dyu9WPKFw=",
         "owner": "input-output-hk",
         "repo": "haskell.nix",
-        "rev": "1687b5d2a17d69a8dd756f73acc2570f2e117dd9",
+        "rev": "878121ff8e5a8a51ffb46f57d4b3b6d8e32bfb2e",
         "type": "github"
       },
       "original": {
@@ -877,16 +877,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1591751635,
-        "narHash": "sha256-KgGtyFlkI/fsp+j8VEgJ/ynY9B91aX35Xp04HlDLRTo=",
-        "owner": "rycee",
+        "lastModified": 1598474559,
+        "narHash": "sha256-bE+FApOLZiedTyqWZB3N35gyR1Qgq0qSQPKizU+1Ifw=",
+        "owner": "bqv",
         "repo": "home-manager",
-        "rev": "b3fee796fcd5531693d9b84ece76ad6836bb1cfa",
+        "rev": "609f0adf4e54c840a06a19528c3076a5bd0af85f",
         "type": "github"
       },
       "original": {
-        "owner": "rycee",
-        "ref": "bqv-flakes",
+        "owner": "bqv",
         "repo": "home-manager",
         "type": "github"
       }

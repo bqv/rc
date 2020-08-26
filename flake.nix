@@ -21,7 +21,7 @@
     dwarffs.inputs.nix.follows = "nix";        #|
     dwarffs.inputs.nixpkgs.follows = "master"; #|
 
-    home.url = "github:rycee/home-manager/bqv-flakes"; #|- Home-manager
+    home.url = "github:bqv/home-manager"; #|- Home-manager
     home.inputs.nixpkgs.follows = "large";             #|
 
     naersk.url = "github:nmattia/naersk";    #|- Naersk

@@ -27,7 +27,10 @@ in {
       ignores = [ ];
       delta = {
         enable = true;
-        options = [ "--dark --width=variable" ];
+        options = {
+          syntax-theme = "Monokai Extended";
+          background-color-extends-to-terminal-width = false;
+        };
       };
       signing = {
         gpgPath = "${pkgs.gnupg}/bin/gpg2";
