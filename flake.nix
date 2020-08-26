@@ -1,7 +1,7 @@
 {
   description = "A highly structured configuration database.";
 
-  inputs = rec {
+  inputs = {
     master.url = "github:nixos/nixpkgs/master";                        #|
     stable.url = "github:nixos/nixpkgs/nixos-20.03";                   #|\
     staged.url = "github:nixos/nixpkgs/staging";                       #| -- Nixpkgs
@@ -110,6 +110,10 @@
         (channelToOverlay { inherit system config; flake = "staged"; branch = "staging"; })
         (channelToOverlay { inherit system config; flake = "small"; branch = "nixos-unstable-small"; })
         (channelToOverlay { inherit system config; flake = "large"; branch = "nixos-unstable"; })
+        (final: prev: { broken = import channels.pkgs {
+          inherit system overlays;
+          config = config // { allowBroken = true; };
+        }; })
         (flakeToOverlay { inherit system; flake = "lg531"; name = "delta/system-531-link"; })
         (flakeToOverlay { inherit system; flake = "lg400"; name = "delta/system-400-link"; })
         (import inputs.mozilla)
@@ -246,13 +250,16 @@
       modulesFor = hostName: {
         inherit system specialArgs;
         modules = let
+          # External modules
           inherit (inputs.home.nixosModules) home-manager;
           inherit (inputs.dwarffs.nixosModules) dwarffs;
           inherit (inputs.guix.nixosModules) guix;
           inherit (inputs.construct.nixosModules) matrix-construct;
 
+          # Some common basic stuff
           core = ./profiles/core.nix;
 
+          # The flake-ier common basic stuff
           global = {
             environment.etc."machine-id".text = builtins.hashString "md5" hostName;
             environment.pathsToLink = [ "/share/bios" ];
@@ -311,6 +318,7 @@
             };
           };
 
+          # Amend home-manager (inject modules, set common stuff)
           home = { config, ... }: {
             options.home-manager.users = lib.mkOption {
               type = with lib.types; attrsOf (submoduleWith {
@@ -335,6 +343,7 @@
             };
           };
 
+          # Global options that hosts depend on
           local = { lib, ... }: {
             imports = [ "${toString ./hosts}/${hostName}" ];
 
@@ -346,14 +355,13 @@
             };
           };
 
-          apparmor = { ... }: {
-            environment.etc."ld-nix.so.preload".text = lib.mkDefault "";
-          };
-
+          # Hack in the gnupg secrets module
           gnupg = import "${inputs.pr93659}/nixos/modules/security/gnupg.nix";
 
+          # Plug in the impermanence module (not a flake :<)
           impermanence = import "${inputs.impermanence}/nixos.nix";
 
+          # Set up any other pull request modules
           pulls = { config, ... }: let
             iwdModule = "services/networking/iwd.nix";
           in {
@@ -364,19 +372,21 @@
             }) ];
           };
 
+          # Import this flake's defined nixos modules
           flakeModules = import ./modules/nixos.nix;
 
         in flakeModules ++ [
-          core global home local apparmor gnupg pulls
+          core global home local gnupg pulls
           home-manager dwarffs guix matrix-construct impermanence
         ];
       };
     in usr.utils.recImport {
+      # Build a nixos system for each dir in ./hosts using modulesFor
       dir = ./hosts;
       _import = host: let
         modules = modulesFor host;
       in channels.modules.lib.nixosSystem modules // {
-        inherit specialArgs modules;
+        inherit specialArgs modules; # This is extra spicy, but vaguely needed for nixus?
       };
     };
 
