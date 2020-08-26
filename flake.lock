@@ -877,15 +877,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1598474559,
-        "narHash": "sha256-bE+FApOLZiedTyqWZB3N35gyR1Qgq0qSQPKizU+1Ifw=",
-        "owner": "bqv",
+        "lastModified": 1598478552,
+        "narHash": "sha256-eU8+kpU4dRr+BG47IsQUBot5KtqfZdaLlfCur7pXxhg=",
+        "owner": "rycee",
         "repo": "home-manager",
-        "rev": "609f0adf4e54c840a06a19528c3076a5bd0af85f",
+        "rev": "6cf6b587b575493e7718bf08b209013d7dcf4d58",
         "type": "github"
       },
       "original": {
-        "owner": "bqv",
+        "owner": "rycee",
         "repo": "home-manager",
         "type": "github"
       }
