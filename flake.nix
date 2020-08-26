@@ -265,6 +265,7 @@
             environment.pathsToLink = [ "/share/bios" ];
             networking = { inherit hostName; };
 
+            nix.package = pkgs.nix;
             nix.registry = lib.mapAttrs (id: flake: {
               inherit flake;
               from = { inherit id; type = "indirect"; };
@@ -417,7 +418,9 @@
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }:
-      import inputs.nixus { deploySystem = system; } ({ lib, ... }: {
+      import inputs.nixus { deploySystem = system; } ({ config, lib, ... }: let
+        inherit (config) nodes;
+      in {
         defaults = { name, config, ... }: let
           nixos = inputs.self.nixosConfigurations.${name}.modules;
         in {
@@ -428,6 +431,18 @@
           configuration = {
             _module.args = nixos.specialArgs;
             imports = nixos.modules;
+
+            # Link raw hosts on each host (non-recursively)
+            system.extraSystemBuilderCmds = ''
+
+              mkdir -p $out/flake/hosts
+
+              # Link other hosts (nonrecursively)
+              ${lib.concatMapStringsSep "\n" ({ name, value }: ''
+                ln -s '${value.config.system.build.toplevel}' "$out/flake/hosts/${name}"
+              '') (lib.mapAttrsToList lib.nameValuePair inputs.self.nixosConfigurations)}
+
+            '';
           };
 
           # Filter out "added to list of known hosts" spam from output
