@@ -200,6 +200,7 @@
   ];
 
   environment.etc."nix/id_zeta.ed25519".source = ../../secrets/keys/nix/id_zeta.ed25519;
+  environment.etc."nix/id_zeta.ed25519".mode = "0400";
   environment.etc."ssh/ssh_host_rsa_key".source = ../../secrets/keys/deltassh/ssh_host_rsa_key;
   environment.etc."ssh/ssh_host_rsa_key".mode = "0400";
   environment.etc."ssh/ssh_host_rsa_key.pub".source = ../../secrets/keys/deltassh/ssh_host_rsa_key.pub;

@@ -87,6 +87,7 @@ in {
       show-trace = true
       builders-use-substitutes = true
       experimental-features = nix-command flakes ca-references recursive-nix
+      log-format = bar-with-logs
     '';
 
     binaryCaches = [
