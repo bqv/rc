@@ -11,8 +11,6 @@
     pr93457.url = "github:ju1m/nixpkgs/apparmor";                      #|
     pr93659.url = "github:ju1m/nixpkgs/security.pass";                 #|
 
-    lg400.url = "github:bqv/nixrc/c66055501d4ef83d5e392f29d4e951b1a8289668"; # Historical sys-400
-
     nix.url = "github:nixos/nix/master";   #|- Nix
     nix.inputs.nixpkgs.follows = "master"; #|
 
@@ -157,7 +155,6 @@
           inherit (inputs.stable.legacyPackages.${system}) nheko; # anticipating pr94942
           graalvm8 = builtins.trace "graalvm8: suspended - too big and not cached" pkgs.hello;
           inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils lvm2; # pullreq
-          inherit (pkgs.lg400) catt; # broken?
         })
         (final: prev: {
           nyxt = prev.nyxt.override {
