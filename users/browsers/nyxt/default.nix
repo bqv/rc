@@ -221,6 +221,17 @@
                                  "add-magnets" (object-string url)))
                           nil))
 
+                       ;; pdf file -> zathura
+                       (url-dispatching-handler
+                        'zathura-pdf-files (match-file-extension "pdf")
+                        (lambda (url)
+                          (uiop:launch-program
+                           (list "${pkgs.execline}/bin/pipeline"
+                                 "${pkgs.curl}/bin/curl" "-L" (object-string url)
+                                 ""
+                                 "${pkgs.zathura}/bin/zathura" "-"))
+                          nil))
+
                        ;; youtube -> mpv
                        (url-dispatching-handler
                         'mpv-youtube-links (match-domain "youtube.com" "m.youtube.com" "youtu.be")
