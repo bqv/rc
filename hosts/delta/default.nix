@@ -107,8 +107,8 @@
   headless = false;
 
   nix = {
-    gc.automatic = true;
-    gc.dates = "12:00";
+    gc.automatic = false; # We'll just use min-free instead
+    gc.dates = "12:00"; # I'm now conditioned to be scared of midday
     gc.options = "--delete-older-than 8d";
 
     autoOptimiseStore = false; # Disabled for speed
@@ -117,6 +117,30 @@
 
     maxJobs = 16;
     nrBuildUsers = 64;
+
+    extraOptions = let
+      kilobytes = b: b * 1024;
+      megabytes = k: k * 1024;
+      gigabytes = m: m * 1024;
+    in ''
+      min-free = ${toString (gigabytes 128)}
+      builders-use-substitutes = true
+    '';
+
+    buildMachines = lib.optionals true [
+      {
+        hostName = hosts.wireguard.zeta;
+        #sshUser = "nix-ssh";
+        sshKey = "/etc/nix/id_zeta.ed25519";
+        #system = "x86_64-linux";
+        systems = ["x86_64-linux" "i686-linux" "armv6l-linux" "armv7l-linux"];
+        maxJobs = 4;
+        speedFactor = 4;
+        supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+        mandatoryFeatures = [ ];
+      }
+    ];
+    distributedBuilds = true;
   };
 
   hardware.ckb-next.enable = true;
@@ -160,24 +184,6 @@
   };
   services.flatpak.enable = true;
   xdg.portal.enable = true;
-
-  nix.buildMachines = lib.optionals true [
-    {
-      hostName = hosts.wireguard.zeta;
-      #sshUser = "nix-ssh";
-      sshKey = "/etc/nix/id_zeta.ed25519";
-      #system = "x86_64-linux";
-      systems = ["x86_64-linux" "i686-linux" "armv6l-linux" "armv7l-linux"];
-      maxJobs = 4;
-      speedFactor = 4;
-      supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
-      mandatoryFeatures = [ ];
-    }
-  ];
-  nix.distributedBuilds = true;
-  nix.extraOptions = ''
-    builders-use-substitutes = true
-  '';
 
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIYNqRbITjMHmgD/UC87BISFTaw7Tq1jNd8X8i26x4b5 root@delta"
