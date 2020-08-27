@@ -116,6 +116,7 @@
     optimise.dates = [ "17:30" "02:00" ];
 
     maxJobs = 16;
+    nrBuildUsers = 64;
   };
 
   hardware.ckb-next.enable = true;
