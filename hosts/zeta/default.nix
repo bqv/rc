@@ -28,11 +28,6 @@
     ./certificate.nix
   ];
 
- #specialisation.delta = with inputs.self.nixosConfigurations; {
- #  configuration = delta.config;
- #  inheritParentConfig = false;
- #};
-
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ "btrfs" "ext4" ];
   boot.kernelModules = [ "kvm-intel" ];
@@ -195,7 +190,7 @@
       revokedkeys = "RevokedKeys /etc/ssh/ssh_revoked_keys";
     in builtins.concatStringsSep "\n" (certificates ++ [ userkeys revokedkeys ]);
   #services.openssh.startWhenNeeded = true;
-  
+
   # Bit meta but helps ensure sshd is bound to all addresses always
   # TODO: move to profile
   systemd.services.restart-openssh.script = "${pkgs.systemd}/bin/systemctl restart sshd";
