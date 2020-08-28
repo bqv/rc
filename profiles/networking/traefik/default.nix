@@ -77,9 +77,11 @@
           };
           construct-https = construct-http // {
             entryPoints = [ "https" "construct" ];
+            rule = "Host(`cs.${domains.srvc}`)";
             tls.domains = [
               { main = "cs.${domains.srvc}"; }
             ];
+            service = "construct";
           };
           certauth = {
             entryPoints = [ "http" "https" ];
@@ -90,6 +92,19 @@
             entryPoints = [ "http" "https" "anki" ];
             rule = "Host(`anki.${domains.home}`)";
             service = "anki";
+          };
+          vervis = {
+            entryPoints = [ "http" ];
+            rule = "Host(`dev.${domains.home}`)";
+            service = "vervis";
+          };
+          vervis-https = {
+            entryPoints = [ "https" ];
+            rule = "Host(`dev.${domains.home}`)";
+            tls.domains = [
+              { main = "dev.${domains.home}"; }
+            ];
+            service = "vervis";
           };
          #Router1 = {
          #  entryPoints = [ "foobar" "foobar" ];
@@ -374,6 +389,12 @@
           anki.loadBalancer = {
             servers = [
               { url = "http://10.9.0.2:27701"; }
+            ];
+          };
+          vervis.loadBalancer = {
+            passHostHeader = true;
+            servers = [
+              { url = "http://10.10.0.2:3000"; }
             ];
           };
          #mirror-sample.mirroring = {
