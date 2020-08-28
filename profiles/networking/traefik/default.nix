@@ -91,6 +91,11 @@
             rule = "Host(`anki.${domains.home}`)";
             service = "anki";
           };
+          vervis = {
+            entryPoints = [ "http" "https" ];
+            rule = "Host(`dev.${domains.home}`)";
+            service = "vervis";
+          };
          #Router1 = {
          #  entryPoints = [ "foobar" "foobar" ];
          #  middlewares = [ "foobar" "foobar" ];
@@ -374,6 +379,12 @@
           anki.loadBalancer = {
             servers = [
               { url = "http://10.9.0.2:27701"; }
+            ];
+          };
+          vervis.loadBalancer = {
+            passHostHeader = true;
+            servers = [
+              { url = "http://10.10.0.2:3000"; }
             ];
           };
          #mirror-sample.mirroring = {
