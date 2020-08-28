@@ -106,70 +106,17 @@ final: prev: {
         sha256 = "OlAphEd/x6kzYPAMHNvwXvDDs/5G4GJudc/+FWxyZQc=";
       } {};
     };
-    vervis = overrideCabal (doJailbreak (cabal2nix "vervis" fetchdarcs {
-      url = "https://dev.angeley.es/s/fr33domlover/r/vervis";
-     #rev = "eb7a1c26e489dd8ab8f6abc2a68b53278ccc2243";
-      sha256 = "hcovmtTHkxsQBN+PdoBHDWxpT1xfDjDewhKFZZxKU88=";
-    } deps)) (drv: {
-      preBuild = '' sed -i 's|\$localInstallRoot|"'$out'"|g' src/Vervis/Settings.hs '';
-    });
-    vervisPkgs = final.haskell-nix.project {
-      src = final.runCommand "vervis" {
-        vervis = vervis.src;
-        darcs_lights = deps.darcs-lights.src;
-        darcs_rev = deps.darcs-rev.src;
-        dvara = deps.dvara.src;
-        hit_graph = deps.hit-graph.src;
-        hit_harder = deps.hit-harder.src;
-        hit_network = deps.hit-network.src;
-        http_client_signature = deps.http-client-signature.src;
-        http_signature = deps.http-signature.src;
-        persistent_email_address = deps.persistent-email-address.src;
-        persistent_graph = deps.persistent-graph.src;
-        persistent_migration = deps.persistent-migration.src;
-        time_interval_aeson = deps.time-interval-aeson.src;
-        ssh = deps.ssh.src;
-        yesod_auth_account = deps.yesod-auth-account.src;
-        yesod_http_signature = deps.yesod-http-signature.src;
-        yesod_mail_send = deps.yesod-mail-send.src;
-      } ''
-        mkdir -p $out
-        cp -r $vervis/* $out/
-        mkdir -p $out/lib
-        cp -r $darcs_lights $out/lib/darcs-lights
-        cp -r $darcs_rev $out/lib/darcs-rev
-        cp -r $dvara $out/lib/dvara
-        cp -r $hit_graph $out/lib/hit-graph
-        cp -r $hit_harder $out/lib/hit-harder
-        cp -r $hit_network $out/lib/hit-network
-        cp -r $http_client_signature $out/lib/http-client-signature
-        cp -r $http_signature $out/lib/http-signature
-        cp -r $persistent_email_address $out/lib/persistent-email-address
-        cp -r $persistent_graph $out/lib/persistent-graph
-        cp -r $persistent_migration $out/lib/persistent-migration
-        cp -r $time_interval_aeson $out/lib/time-interval-aeson
-        cp -r $ssh $out/lib/ssh
-        cp -r $yesod_auth_account $out/lib/yesod-auth-account
-        cp -r $yesod_http_signature $out/lib/yesod-http-signature
-        cp -r $yesod_mail_send $out/lib/yesod-mail-send
-      '';
-      stack-sha256 = "nLMMb/tngIG6VU4kH7dPr9DCPTYYz9G9J9ko45l91x0=";
-      sha256map = {
-        "https://dev.angeley.es/s/fr33domlover/r/yesod-auth-account"."2d19eea0fae58897a02372a84cc48e7696a4e288" =
-          "/D7e+zMq/1bsHN3D8mNkoU/dZZIdiM4M7DC+GKUMKag=";
-      };
-      pkg-def-extras = [
-        (hackage: { hsc2hs = hackage.hsc2hs."0.68.4".revisions.default; })
-      ];
-      #compiler-nix-name = "ghc883";
-    };
-  in  vervis;
- #final.symlinkJoin {
- #  name = "vervis";
- #  buildInputs = [];
- #  paths = builtins.attrValues vervisPkgs.vervis.components.exes;
- #  postBuild = ''
- #    true
- #  '';
- #};
+  in overrideCabal (doJailbreak (dontHaddock (dontCheck (cabal2nix "vervis" fetchdarcs {
+    url = "https://dev.angeley.es/s/fr33domlover/r/vervis";
+   #rev = "eb7a1c26e489dd8ab8f6abc2a68b53278ccc2243";
+    sha256 = "hcovmtTHkxsQBN+PdoBHDWxpT1xfDjDewhKFZZxKU88=";
+  } deps)))) (drv: {
+    preBuild = ''
+      sed -i 's|\$localInstallRoot|"'$out'"|g' src/Vervis/Settings.hs
+      sed -i '254,255s/\<s\>/(T.unpack s)/' src/Vervis/Settings.hs
+      sed -i '498s/(unpack styleName)/styleName/' src/Vervis/Handler/Repo.hs
+
+      darcs init
+    '';
+  });
 }

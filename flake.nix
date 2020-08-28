@@ -526,6 +526,7 @@
             ${lib.optionalString (builtins.pathExists /etc/nix/nix.conf)
               (builtins.readFile /etc/nix/nix.conf)}
             experimental-features = nix-command flakes ca-references
+            log-format = bar-with-logs
           '';
         in linkFarm "nix-conf-dir" ( [
           { name = "nix.conf"; path = writeText "flakes-nix.conf" nixConf; }
