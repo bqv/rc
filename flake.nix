@@ -398,7 +398,7 @@
       inherit (pkgs) flarectl fsnoop git-pr-mirror greetd ipfscat;
       inherit (pkgs) matrix-appservice-irc mx-puppet-discord;
       inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
-      inherit (pkgs) nyxt pure sddm-chili shflags velox yacy;
+      inherit (pkgs) nyxt pure sddm-chili shflags velox vervis yacy;
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }:
