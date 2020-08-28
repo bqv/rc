@@ -19,6 +19,7 @@ in {
           user = "bao";
           extraOptions = {
             StrictHostKeyChecking = "no";
+            SetEnv = "DVTM off";
           };
         };
         theta = rec {
