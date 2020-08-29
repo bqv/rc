@@ -2,17 +2,17 @@
 
 {
   imports = [
-    ../../legacy/containers/secure.nix    # 10. 1.0.x
-    ../../legacy/containers/sandbox.nix   # 10. 2.0.x
-   #../../legacy/containers/certmon.nix   # 10. 3.0.x
-    ../../legacy/containers/authority.nix # 10. 4.0.x
-    ../../legacy/containers/search.nix    # 10. 5.0.x
-    ../../legacy/containers/mastodon.nix  # 10. 6.0.x
-    ../../legacy/containers/matrix.nix    # 10. 7.0.x
-    ../../legacy/containers/hydroxide.nix # 10. 8.0.x
-    ../../legacy/containers/anki.nix      # 10. 9.0.x
-    ../../legacy/containers/vervis.nix    # 10.10.0.x
-   #../../legacy/containers/lemmy.nix     # 10.11.0.x
+    ../../containers/secure.nix    # 10. 1.0.x
+    ../../containers/sandbox.nix   # 10. 2.0.x
+   #../../containers/certmon.nix   # 10. 3.0.x
+    ../../containers/authority.nix # 10. 4.0.x
+    ../../containers/search.nix    # 10. 5.0.x
+    ../../containers/mastodon.nix  # 10. 6.0.x
+    ../../containers/matrix.nix    # 10. 7.0.x
+    ../../containers/hydroxide.nix # 10. 8.0.x
+    ../../containers/anki.nix      # 10. 9.0.x
+    ../../containers/vervis.nix    # 10.10.0.x
+   #../../containers/lemmy.nix     # 10.11.0.x
     ../../profiles/meta/fatal-warnings.nix
     ../../profiles/misc/qemu.nix
     ../../profiles/security/sudo.nix
@@ -62,7 +62,7 @@
     '';
   };
 
-  qemu-user.arm = builtins.trace "pkgs.qemu-user-arm: disabled for now due to new build error" false;
+  qemu-user.arm = builtins.trace "${config.networking.hostName} - pkgs.qemu-user-arm: disabled for now due to new build error" false;
 
   fileSystems."/" =
     { device = "/dev/sda3";

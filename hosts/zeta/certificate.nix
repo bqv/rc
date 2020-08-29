@@ -23,7 +23,7 @@ in {
     certs = genAttrs (builtins.attrValues domains) mkCertFor;
   };
 
-  systemd.services.haproxy.serviceConfig = lib.mkIf config.services.haproxy.enable {
+  systemd.services.haproxy.serviceConfig = lib.mkIf config.services.traefik.enable {
     SupplementaryGroups = "keys";
   };
 }
