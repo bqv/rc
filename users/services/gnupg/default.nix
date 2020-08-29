@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ super, config, lib, pkgs, ... }:
 
 with lib; let
   cfg = config.services.gpg-agent;
@@ -27,7 +27,7 @@ in {
       extraConfig = ''
         allow-emacs-pinentry
         allow-preset-passphrase
-      '' + (builtins.trace "gpg-agent: disabled scdaemon due to weird behaviour" ''
+      '' + (builtins.trace "${super.networking.hostName} - gpg-agent: disabled scdaemon due to weird behaviour" ''
         disable-scdaemon
       '');
       verbose = true;

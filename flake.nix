@@ -153,7 +153,7 @@
         (pkgs: lib.const {
           inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird; # slow
           inherit (inputs.stable.legacyPackages.${system}) nheko; # anticipating pr94942
-          graalvm8 = builtins.trace "graalvm8: suspended - too big and not cached" pkgs.hello;
+          graalvm8 = builtins.trace "pkgs.graalvm8: suspended - too big and not cached" pkgs.hello;
           inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils lvm2; # pullreq
         })
         (final: prev: {

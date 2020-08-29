@@ -97,7 +97,7 @@
 
   virtualisation.libvirtd.enable = true;
   virtualisation.virtualbox.host.enable = false;
-  virtualisation.anbox.enable = builtins.trace "anbox: still f****d by kernel updates" false;
+  virtualisation.anbox.enable = builtins.trace "${config.networking.hostName} - anbox: still f****d by kernel updates" false;
   systemd.network.networks = {
     "40-anbox0".networkConfig.ConfigureWithoutCarrier = true;
   };

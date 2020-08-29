@@ -34,7 +34,7 @@ in
       serviceConfig = {
         Type = "oneshot";
         ExecStartPre = builtins.trace
-          "nix-update-index.timer: suspended cause it breaks my net"
+          "${config.networking.hostName} - nix-update-index.timer: suspended cause it breaks my net"
           "false";
         ExecStart = "${package}/bin/nix-index";
         StandardOutput = "journal";
