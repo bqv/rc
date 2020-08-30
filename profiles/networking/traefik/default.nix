@@ -438,6 +438,11 @@
             rule = "HostSNI(`*`)";
             service = "imap";
           };
+          gitssh = {
+            entryPoints = [ "ssh-alt" ];
+            rule = "HostSNI(`*`)";
+            service = "vervis";
+          };
          #irc = {
          #  entryPoints = [ "ircs" ];
          #  rule = "HostSNI(`*`)";
@@ -463,6 +468,12 @@
           imap.loadBalancer = {
             servers = [
               { address = "10.8.0.2:1143"; }
+            ];
+            terminationDelay = 100;
+          };
+          vervis.loadBalancer = {
+            servers = [
+              { address = "10.10.0.2:5022"; }
             ];
             terminationDelay = 100;
           };
@@ -631,6 +642,9 @@
         };
         construct = {
           address = ":4004/tcp";
+        };
+        ssh-alt = {
+          address = ":5022/tcp";
         };
         irc = {
           address = ":6667/tcp";
