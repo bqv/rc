@@ -73,6 +73,7 @@ in {
             };
 
             systemd.services.vervis = {
+              path = with pkgs; [ git darcs ];
               environment = {
                 HOME = config.vervis.dataDir;
 
