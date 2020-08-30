@@ -445,7 +445,7 @@
           deployScriptPhases.git-tag = let
             inherit (config.configuration) system;
           in lib.dag.entryAfter ["switch"] ''
-            systempath=$(basename "${system.build.toplevel.outPath}")
+            systempath=nix/store/$(basename "${system.build.toplevel.outPath}")
             systemnum=${name}/system-$id
             echo Tagging $systempath >&2
             ${pkgs.git}/bin/git tag $systempath ${system.configurationRevision} || true
