@@ -52,7 +52,7 @@ in {
             networking.firewall.enable = false;
 
             environment.systemPackages = with pkgs; [
-              vervis yq yj jq
+              vervis yq yj jq git darcs
             ];
 
             environment.etc = let
@@ -75,6 +75,7 @@ in {
             systemd.services.vervis = {
               path = with pkgs; [ git darcs ];
               environment = {
+                XDG_CACHE_HOME = config.vervis.dataDir;
                 HOME = config.vervis.dataDir;
 
                 PORT = "3000";
@@ -94,6 +95,9 @@ in {
                     ln -sf /etc/vervis ${config.vervis.dataDir}/config
                   fi
                   mkdir -p ${config.vervis.dataDir}/repos
+                  if [ ! -x ${config.vervis.dataDir}/vervis ]; then
+                    ln -sf ${config.vervis.dataDir} ${config.vervis.dataDir}/vervis
+                  fi
                 '';
                 ExecStart = "${pkgs.vervis}/bin/vervis";
                 WorkingDirectory = config.vervis.dataDir;
