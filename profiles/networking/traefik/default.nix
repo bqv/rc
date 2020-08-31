@@ -66,9 +66,7 @@
           };
           mastodon-https = mastodon-http // {
             entryPoints = [ "https" ];
-            tls.domains = [
-              { main = "u.${domains.srvc}"; }
-            ];
+            tls.domains = [{ main = "u.${domains.srvc}"; }];
           };
           construct-http = {
             entryPoints = [ "http" ];
@@ -78,9 +76,7 @@
           construct-https = construct-http // {
             entryPoints = [ "https" "construct" ];
             rule = "Host(`cs.${domains.srvc}`)";
-            tls.domains = [
-              { main = "cs.${domains.srvc}"; }
-            ];
+            tls.domains = [{ main = "cs.${domains.srvc}"; }];
             service = "construct";
           };
           certauth = {
@@ -95,16 +91,19 @@
           };
           vervis = {
             entryPoints = [ "http" ];
-            rule = "Host(`dev.${domains.home}`)";
+            rule = "Host(`dev.${domains.home}`) || Host(`rc.${domains.home}`)";
             service = "vervis";
+            middlewares = "redirect-nixrc";
           };
           vervis-https = {
             entryPoints = [ "https" ];
-            rule = "Host(`dev.${domains.home}`)";
+            rule = "Host(`dev.${domains.home}`) || Host(`rc.${domains.home}`)";
             tls.domains = [
               { main = "dev.${domains.home}"; }
+              { rc = "rc.${domains.home}"; }
             ];
             service = "vervis";
+            middlewares = "redirect-nixrc";
           };
          #Router1 = {
          #  entryPoints = [ "foobar" "foobar" ];
@@ -130,6 +129,15 @@
         };
 
         middlewares = {
+          redirect-nixrc = {
+            redirectRegex = let
+              gitcreds = import ../../../secrets/git.github.nix;
+            in {
+              permanent = false;
+              regex = "^(https?)://rc.${domains.home}/(.*)";
+              replacement = "\${1}://dev.${domains.home}/s/${gitcreds.user}/r/nixrc/s/live/\${2}";
+            };
+          };
          #Middleware00 = { addPrefix = { prefix = "foobar"; }; };
          #Middleware01 = {
          #  basicAuth = {
@@ -295,13 +303,6 @@
          #      requestHeaderName = "foobar";
          #      requestHost = true;
          #    };
-         #  };
-         #};
-         #Middleware15 = {
-         #  redirectRegex = {
-         #    permanent = true;
-         #    regex = "foobar";
-         #    replacement = "foobar";
          #  };
          #};
          #Middleware16 = {
