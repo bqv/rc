@@ -512,11 +512,11 @@
     "nixus": {
       "flake": false,
       "locked": {
-        "lastModified": 1597117051,
-        "narHash": "sha256-k5DaiODP9daUMFyfAGrlFHYeWPrtiiKAp8IF0uFLoeg=",
+        "lastModified": 1598401071,
+        "narHash": "sha256-QB0LJ5zncEFE8TzQ1Xxubj7J7i0sVGgTZgS3jFapEN0=",
         "owner": "infinisil",
         "repo": "nixus",
-        "rev": "b4b2dbde41cc46575108260e0c1363ee044edb62",
+        "rev": "491becc8c6a2b42bc02672163b8f3a326a126fc9",
         "type": "github"
       },
       "original": {
