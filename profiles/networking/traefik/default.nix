@@ -4,6 +4,12 @@
   systemd.services.traefik.serviceConfig.LimitNPROC = lib.mkForce null; # Ridiculous and broken
   users.users.traefik.extraGroups = [ "keys" ]; # For acme certificates
 
+ #ssl.servers = lib.flatten (
+ #  lib.mapAttrsToList (_: router: lib.mapAttrsToList (_: lib.id)
+ #                                 router.tls.domains)
+ #  config.services.traefik.dynamicConfigOptions.http.routers
+ #);
+
   services.traefik = {
     enable = true;
 
@@ -98,10 +104,11 @@
           vervis-https = {
             entryPoints = [ "https" ];
             rule = "Host(`dev.${domains.home}`) || Host(`rc.${domains.home}`)";
-            tls.domains = [
-              { main = "dev.${domains.home}"; }
-              { rc = "rc.${domains.home}"; }
-            ];
+            tls = {};
+           #tls.domains = [
+           #  { main = "dev.${domains.home}"; }
+           #  { main = "rc.${domains.home}"; }
+           #];
             service = "vervis";
             middlewares = "redirect-nixrc";
           };

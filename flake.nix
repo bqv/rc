@@ -426,6 +426,14 @@
                 ln -s '${value.config.system.build.toplevel}' "$out/flake/hosts/${name}"
               '') (lib.mapAttrsToList lib.nameValuePair inputs.self.nixosConfigurations)}
 
+              # Link host containers
+              ${lib.concatMapStringsSep "\n" (host@{ name, value }: ''
+                mkdir -p $out/flake/container/${name}
+                ${lib.concatMapStringsSep "\n" (container@{ name, value }: ''
+                  ln -s '${value.config.system.build.toplevel}' "$out/flake/container/${host.name}/${name}"
+                '') (lib.mapAttrsToList lib.nameValuePair value.config.containers)}
+              '') (lib.mapAttrsToList lib.nameValuePair inputs.self.nixosConfigurations)}
+
             '';
           };
 
