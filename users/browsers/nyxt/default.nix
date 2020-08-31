@@ -301,7 +301,7 @@
       (unless (and (boundp '*configured-browser*) *configured-browser*)
         (define-configuration browser
           ((session-restore-prompt :always-restore)
-           (external-editor-program "gnvim")
+           (external-editor-program "emacsclient")
            (download-path (make-instance 'download-data-path :dirname "~/tmp/"))
            (search-engines
             (list (make-instance 'search-engine
