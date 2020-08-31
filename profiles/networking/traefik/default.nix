@@ -55,10 +55,14 @@
             rule = "Host(`sync.${domains.home}`)";
             service = "sync";
           };
-          search = {
-            entryPoints = [ "http" "https" ];
+          search-http = {
+            entryPoints = [ "http" ];
             rule = "Host(`search.${domains.home}`)";
             service = "search";
+          };
+          search-https = search-http // {
+            entryPoints = [ "https" ];
+            tls = {};
           };
           gpx = {
             entryPoints = [ "http" "https" ];
@@ -81,9 +85,7 @@
           };
           construct-https = construct-http // {
             entryPoints = [ "https" "construct" ];
-            rule = "Host(`cs.${domains.srvc}`)";
             tls.domains = [{ main = "cs.${domains.srvc}"; }];
-            service = "construct";
           };
           certauth = {
             entryPoints = [ "http" "https" ];
@@ -95,21 +97,18 @@
             rule = "Host(`anki.${domains.home}`)";
             service = "anki";
           };
-          vervis = {
+          vervis-http = {
             entryPoints = [ "http" ];
             rule = "Host(`dev.${domains.home}`) || Host(`rc.${domains.home}`)";
             service = "vervis";
             middlewares = [ "redirect-nixrc" ];
           };
-          vervis-https = {
+          vervis-https = vervis-http // {
             entryPoints = [ "https" ];
-            rule = "Host(`dev.${domains.home}`) || Host(`rc.${domains.home}`)";
             tls.domains = [
               { main = "dev.${domains.home}"; }
               { main = "rc.${domains.home}"; }
             ];
-            service = "vervis";
-            middlewares = [ "redirect-nixrc" ];
           };
          #Router1 = {
          #  entryPoints = [ "foobar" "foobar" ];
