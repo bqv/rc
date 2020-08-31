@@ -130,6 +130,15 @@
         };
 
         middlewares = {
+          redirect-nixrc = {
+            redirectRegex = let
+              gitcreds = import ../../../secrets/git.github.nix;
+            in {
+              permanent = false;
+              regex = "^https?://rc.${domains.home}/(.*)";
+              replacement = "https://dev.${domains.home}/s/${gitcreds.user}/r/nixrc/s/live/\${1}";
+            };
+          };
          #Middleware00 = { addPrefix = { prefix = "foobar"; }; };
          #Middleware01 = {
          #  basicAuth = {
@@ -295,13 +304,6 @@
          #      requestHeaderName = "foobar";
          #      requestHost = true;
          #    };
-         #  };
-         #};
-         #Middleware15 = {
-         #  redirectRegex = {
-         #    permanent = true;
-         #    regex = "foobar";
-         #    replacement = "foobar";
          #  };
          #};
          #Middleware16 = {
