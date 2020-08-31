@@ -1,11 +1,16 @@
 final: prev: let
   inherit (final) fetchdarcs fetchgit;
   inherit (final.haskell.lib) dontHaddock unmarkBroken dontCheck doJailbreak;
-  inherit (final.haskell.lib) addBuildDepend overrideCabal addBuildTool;
+  inherit (final.haskell.lib) overrideCabal appendPatches;
   haskellPackages = final.haskell.packages.ghc865.override { overrides = _: super: {
     base-noprelude = super.callHackage "base-noprelude" "4.12.0.0" {};
 
-    git = unmarkBroken super.git; # not broken
+    git = appendPatches (unmarkBroken super.git) [ # not broken
+      (final.fetchpatch {
+        url = "https://github.com/oscoin/hs-git/commit/296fcbfb63b56fce50e266d304848cc192b05bca.diff";
+        sha256 = "vXi8dF7/q5IRfN1UOa24RlMbd6JjX8LGCjYYGR6neC0=";
+      })
+    ];
 
     network = dontCheck (haskellPackages.callHackage "network" "2.6.3.6" {});
     smtp-mail = haskellPackages.callHackage "smtp-mail" "0.1.4.6" {};
