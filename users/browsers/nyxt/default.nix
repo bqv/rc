@@ -169,6 +169,12 @@
           :output :string
           :ignore-error-status t)))
 
+      (defun bw-totp (key term)
+        (uiop:run-program
+         (list "${pkgs.bitwarden-cli}/bin/bw" "--session" key "get" "totp" term)
+         :output :string
+         :ignore-error-status t))
+
       (defun bw-item-filter (key term)
         (lambda (minibuffer)
           (let* ((search-json (bw-search key term))
@@ -181,21 +187,20 @@
                                  search-json)))
             (fuzzy-match (input-buffer minibuffer) search-json :suggestions-display item-displays))))
 
-      (defun bw-copy-totp (totp)
-        nil)
-
       (define-command bitwarden-select-password ()
-        (let ((term (quri:uri-host (url (current-buffer)))))
+        (let ((term (quri:uri-host (url (current-buffer))))
+              (key (bw-unlock)))
           (with-result (password-item (read-from-minibuffer
                                        (make-minibuffer :input-prompt "Bitwarden"
                                                         :suggestion-function
-                                                        (bw-item-filter (bw-unlock) term))))
+                                                        (bw-item-filter key term))))
             (let* ((login (cdr (assoc :login password-item)))
                    (user (cdr (assoc :username login)))
                    (pass (cdr (assoc :password login)))
-                   (totp (cdr (assoc :totp login))))
+                   (itemid (cdr (assoc :totp password-item))))
               (%bw-autofill user pass)
-              (bw-copy-totp totp)))))
+              (containers:insert-item (clipboard-ring *browser*)
+                                      (bw-totp key itemid))))))
 
       (let ((handlers (list ;; doi://path -> https url
                        (url-dispatching-handler
