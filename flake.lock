@@ -512,15 +512,15 @@
     "nixus": {
       "flake": false,
       "locked": {
-        "lastModified": 1598401071,
-        "narHash": "sha256-QB0LJ5zncEFE8TzQ1Xxubj7J7i0sVGgTZgS3jFapEN0=",
-        "owner": "infinisil",
+        "lastModified": 1599039514,
+        "narHash": "sha256-kN5CDpaF0uHpMEE2qnvoc6vPR3ObCBOR8RDUoQtTqEo=",
+        "owner": "bqv",
         "repo": "nixus",
-        "rev": "491becc8c6a2b42bc02672163b8f3a326a126fc9",
+        "rev": "3a5826663adcccda94ce7f8cf963a435107a0159",
         "type": "github"
       },
       "original": {
-        "owner": "infinisil",
+        "owner": "bqv",
         "repo": "nixus",
         "type": "github"
       }
