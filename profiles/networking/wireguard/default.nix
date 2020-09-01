@@ -57,7 +57,7 @@ in {
           ++ (hostcfg.routes.${config.networking.hostName} or []);
       } // (lib.optionalAttrs (builtins.length (endpointsOf hostcfg) > 0) {
         endpoint = "${builtins.head (endpointsOf hostcfg)}:${toString hostcfg.port or "51820"}";
-        persistentKeepalive = 60;
+        persistentKeepalive = 30;
       })) (lib.filterAttrs (hostname: _:
         peerable config.networking.hostName hostname
       ) peers);

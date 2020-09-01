@@ -49,7 +49,7 @@
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
 
-    nixus = { url = "github:infinisil/nixus"; flake = false; };                   # Nixus
+    nixus = { url = "github:bqv/nixus"; flake = false; };                   # Nixus
     impermanence = { url = "github:nix-community/impermanence"; flake = false; }; # Impermanence
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };         # Nixpkgs-mozilla
     baduk = { url = "github:dustinlacewell/baduk.nix"; flake = false; };          # Baduk
@@ -439,26 +439,35 @@
 
           # Filter out "added to list of known hosts" spam from output
           deployScriptPhases.filter-known-hosts = lib.dag.entryBefore ["copy-closure"] ''
-            exec 2> >(${pkgs.gnugrep}/bin/grep -v "list of known hosts")
+            # Remove known hosts spam
+            pipeline -w { ${pkgs.gnugrep}/bin/grep --line-buffered -v "list of known hosts" }
+            fdswap 1 2
+            pipeline -w { ${pkgs.gnugrep}/bin/grep --line-buffered -v "list of known hosts" }
+            fdswap 2 1
           '';
 
-          # Replace all usage of nix-copy-closure with `nix-copy`
-          deployScriptPhases.nix-copy-alias = lib.dag.entryBefore ["copy-closure"] ''
-            PATH=${lib.makeBinPath [ pkgs.nixUnstable ]}:$PATH
-            alias nix-copy-closure="nix copy"
-            export NIX_REMOTE=""
-          '';
+         ## Replace all usage of nix-copy-closure with `nix-copy`
+         #deployScriptPhases.nix-copy-alias = lib.dag.entryBefore ["copy-closure"] ''
+         #  alias nix-copy-closure="nix copy"
+         #'';
 
           # Git tag all systems and deployments
           deployScriptPhases.git-tag = let
             inherit (config.configuration) system;
-          in lib.dag.entryAfter ["switch"] ''
-            systempath=nix/store/$(basename "${system.build.toplevel.outPath}")
-            systemnum=${name}/system-$id
-            echo Tagging $systempath >&2
-            ${pkgs.git}/bin/git tag $systempath ${system.configurationRevision} || true
-            echo Tagging $systemnum >&2
-            ${pkgs.git}/bin/git tag $systemnum ${system.configurationRevision} || true
+          in lib.dag.entryAfter ["trigger-switch"] ''
+            foreground {
+              backtick -i -n systemstorepath { basename "${system.build.toplevel.outPath}" }
+              importas -i systemstorepath systemstorepath
+              define systempath "nix/store/''${systemstorepath}"
+              importas -i id ID
+              define systemnum "${name}/system-''${id}"
+              fdswap 1 2
+              foreground { echo Tagging $systempath }
+              foreground { ${pkgs.git}/bin/git tag $systempath "${system.configurationRevision}" }
+              foreground { echo Tagging $systemnum }
+              foreground { ${pkgs.git}/bin/git tag $systemnum "${system.configurationRevision}" }
+              exit 0
+            }
           '';
 
           successTimeout = lib.mkDefault 120;

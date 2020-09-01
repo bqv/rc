@@ -28,9 +28,6 @@ with lib; let
   };
 
   abbrevs = rec {
-    cat = "bat";
-    ps = "procs";
-
     gl = "git log --oneline --all --graph";
     gf = "git fetch --all --prune --tags";
     gc = "git commit -m ! ";
