@@ -1,20 +1,18 @@
 nixusArgs: conf: let
   nixpkgs = import ./nixpkgs.nix;
 
-  extendLib = lib:
+  extendLib = super:
     let
-      withDag = lib.extend (import ./dag.nix);
-      final = if nixusArgs ? libOverlay
-        then withDag.extend nixusArgs.libOverlay
-        else withDag;
-    in final;
+      lib = super.extend (import ./dag.nix);
+      self = if nixusArgs ? libOverlay
+             then lib.extend nixusArgs.libOverlay
+             else lib;
+    in self;
 
   nixusPkgs = import nixpkgs {
     config = {};
     overlays = [
-      (self: super: {
-        lib = extendLib super.lib;
-      })
+      (self: super: { lib = extendLib super.lib; })
     ];
     system = nixusArgs.deploySystem or builtins.currentSystem;
   };

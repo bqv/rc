@@ -1,25 +1,42 @@
 { nixus, lib, config, ... }:
+
 let
   inherit (lib) types;
 
-  nodeOptions = ({ name, pkgs, config, ... }:
-    let
-      switch = pkgs.runCommandNoCC "switch" {
-        inherit (config) switchTimeout successTimeout ignoreFailingSystemdUnits privilegeEscalationCommand;
-      } ''
-        mkdir -p $out/bin
-        substituteAll ${../scripts/switch} $out/bin/switch
-        chmod +x $out/bin/switch
-      '';
-      system = config.configuration.system.build.toplevel;
-    in {
+  nodeOptions = node@{ name, pkgs, config, ... }: let
+    switchScript = pkgs.runCommandNoCC "switch" {
+      inherit (config) switchTimeout successTimeout ignoreFailingSystemdUnits privilegeEscalationCommand;
+      inherit (nixus.pkgs) execline;
+    } ''
+      mkdir -p $out/bin
+      substituteAll ${../scripts/switch} $out/bin/switch
+      chmod +x $out/bin/switch
+    '';
+  in {
     options = {
       deployScriptPhases = lib.mkOption {
         type = types.dagOf types.lines;
         default = {};
       };
 
-      deployScript = lib.mkOption {
+      deployScriptPath = lib.mkOption {
+        type = types.listOf types.package;
+        default = (with nixus.pkgs; [
+          # Without bash being here deployments to localhost do not work. The
+          # reason for that is not yet known. Reported in #6.
+          bash
+          coreutils
+          execline
+          findutils
+          gnused
+          jq
+          openssh
+          procps
+          rsync
+        ]);
+      };
+
+      nodeDeployScript = lib.mkOption {
         type = types.package;
       };
 
@@ -79,123 +96,99 @@ let
           Derivation paths to copy to the host while deploying
         '';
       };
-
     };
 
-    config.closurePaths = [ system switch ];
+    config.closurePaths = [
+      config.configuration.system.build.toplevel
+      switchScript
+      nixus.pkgs.execline
+    ];
 
     config.deployScriptPhases = {
-      copy-closure = lib.dag.entryBefore ["switch"] ''
-        echo "Copying closure to host..." >&2
-        # TOOD: Prevent garbage collection until the end of the deploy
-        tries=3
-        while [ "$tries" -ne 0 ] &&
-          ! NIX_SSH_OPTS="-o ServerAliveInterval=15" nix-copy-closure ${lib.optionalString (!config.hasFastConnection) "-s"} --to "$HOST" ${lib.escapeShellArgs config.closurePaths}; do
-          tries=$(( $tries - 1 ))
-          echo "Failed to copy closure, $tries tries left"
-        done
+      copy-closure = lib.dag.entryBefore ["trigger-switch"] ''
+        foreground {
+          fdswap 1 2
+          echo "Copying closure to host..."
+        }
+
+        foreground {
+          define TRIES 3
+          if -n {
+            export NIX_SSH_OPTS "-o ServerAliveInterval=15"
+            importas -i host HOST
+            forbacktickx -x 0 tries { seq 1 $TRIES } # TOOD: Prevent garbage collection until the end of the deploy
+            foreground { fdswap 1 2 importas -i try tries echo -en "Attempt ''${try}..." }
+            nix-copy-closure ${lib.optionalString (!config.hasFastConnection) "-s"} --to $host
+              "${lib.concatStringsSep "\" \"" config.closurePaths}"
+          }
+          echo "Failed to copy closure after ''${TRIES}"
+        }
       '';
 
-      switch =
-        let
-          privilegeEscalation = builtins.concatStringsSep " " config.privilegeEscalationCommand;
-        in lib.dag.entryAnywhere ''
-        echo "Triggering system switcher..." >&2
-        id=$(ssh -o BatchMode=yes "$HOST" exec "${switch}/bin/switch" start "${system}")
+      trigger-switch = lib.dag.entryAnywhere ''
+        foreground {
+          fdswap 1 2
+          echo "Triggering system switcher..."
+        }
+        backtick -i -n ID {
+          importas -i host HOST
+          ssh -o BatchMode=yes $host
+            exec "${switchScript}/bin/switch" start "${config.configuration.system.build.toplevel}"
+        }
+        background {
+          importas -i id ID
+          foreground {
+            fdswap 1 2
+            echo "Observing system activation ''${id}..."
+          }
+          importas -i host HOST
+          loopwhilex -x 0
+          ssh -o BatchMode=yes $host
+            exec ${builtins.concatStringsSep " " config.privilegeEscalationCommand}
+              cat "/var/lib/system-switcher/system-''${id}/fifo"
+        }
 
-        echo "Trying to confirm success..." >&2
-        active=1
-        while [ "$active" != 0 ]; do
-          # TODO: Because of the imperative network-setup script, when e.g. the
-          # defaultGateway is removed, the previous entry is still persisted on
-          # a rebuild switch, even though with a reboot it wouldn't. Maybe use
-          # the more modern and declarative networkd to get around this
-          set +e
-          status=$(timeout --foreground 15 ssh -o ControlPath=none -o BatchMode=yes "$HOST" exec "${switch}/bin/switch" active "$id")
-          active=$?
-          set -e
-          sleep 1
-        done
+        foreground {
+          fdswap 1 2
+          echo "Trying to confirm success..."
+        }
+        if {
+          importas -i id ID
+          importas -i host HOST
+          loopwhilex -x 0,2
+          backtick -i -n STATUS {
+            foreground {
+              # TODO: Because of the imperative network-setup script, when e.g. the
+              # defaultGateway is removed, the previous entry is still persisted on
+              # a rebuild switch, even though with a reboot it wouldn't. Maybe use
+              # the more modern and declarative networkd to get around this
+              timeout --foreground 15
+              ssh -o ControlPath=none -o BatchMode=yes $host
+                exec "${switchScript}/bin/switch" active $id
+            }
+            sleep 1
+          }
 
-        case "$status" in
-          "success")
-            echo "Successfully activated new system!" >&2
-            ;;
-          "failure")
-            echo "Failed to activate new system! Rolled back to previous one" >&2
-            echo "Run the following command to see the logs for the switch:" >&2
-            echo "ssh ''${HOST@Q} ${privilegeEscalation} cat /var/lib/system-switcher/system-$id/log" >&2
-            # TODO: Try to better show what failed
-            ;;
-          *)
-            echo "This shouldn't occur, the status is $status!" >&2
-            ;;
-        esac
+          fdswap 1 2
+          importas -i status STATUS
+          ifelse { test $status = "success" } {
+            foreground {
+              echo "Successfully activated new system!"
+            } exit 0
+          }
+          ifelse { test $status = "failure" } {
+            foreground {
+              echo "Failed to activate new system! Rolled back to previous one"
+            } exit 2
+          }
+          exit 1
+        }
       '';
     };
 
-    config.deployScript =
-      let
-        sortedScripts = (lib.dag.topoSort config.deployScriptPhases).result or (throw "Cycle in DAG for deployScriptPhases");
-      in
-      nixus.pkgs.writeShellScript "deploy-${name}" (''
-        PATH=${lib.makeBinPath
-          (with nixus.pkgs; [
-            # Without bash being here deployments to localhost do not work. The
-            # reason for that is not yet known. Reported in #6.
-            bash
-            coreutils
-            findutils
-            gnused
-            jq
-            openssh
-            procps
-            rsync
-          ])}''${PATH:+:$PATH}
-
-        set -euo pipefail
-
-        # Kill all child processes when interrupting/exiting
-        trap exit INT TERM
-        trap 'for pid in $(jobs -p) ; do kill -- -$pid ; done' EXIT
-        # Be sure to use --foreground for all timeouts, therwise a Ctrl-C won't stop them!
-        # See https://unix.stackexchange.com/a/233685/214651
-
-        # Prefix all output with host name
-        # From https://unix.stackexchange.com/a/440439/214651
-        exec > >(sed "s/^/[${name}] /")
-        exec 2> >(sed "s/^/[${name}] /" >&2)
-      '' + (if config.host == null then ''
-        echo "Don't know how to reach node, you need to set a non-null value for nodes.\"$HOSTNAME\".host" >&2
-        exit 1
-      '' else ''
-        HOST=${config.host}
-
-        echo "Connecting to host..." >&2
-
-        if ! OLDSYSTEM=$(timeout --foreground 30 \
-            ssh -o ControlPath=none -o BatchMode=yes "$HOST" realpath /run/current-system\
-          ); then
-          echo "Unable to connect to host!" >&2
-          exit 1
-        fi
-
-        if [ "$OLDSYSTEM" == "${system}" ]; then
-          echo "No deploy necessary" >&2
-          #exit 0
-        fi
-
-        ${lib.concatMapStringsSep "\n\n" ({ name, data }: ''
-          # ======== PHASE: ${name} ========
-          ${data}
-        '') sortedScripts}
-
-        echo "Finished" >&2
-      ''));
-    });
-
+    config.nodeDeployScript = import ../scripts node;
+  };
 in {
-
   options = {
     defaults = lib.mkOption {
       type = lib.types.submodule nodeOptions;
@@ -208,15 +201,14 @@ in {
   };
 
   # TODO: What about requiring either all nodes to succeed or all get rolled back?
-  config.deployScript =
-    # TODO: Handle signals to kill the async command
-    nixus.pkgs.writeScript "deploy" ''
-      #!${nixus.pkgs.runtimeShell}
-      ${lib.concatMapStrings (node: lib.optionalString node.enabled ''
-
-        ${node.deployScript} &
-      '') (lib.attrValues config.nodes)}
-      wait
-    '';
-
+  config.deployScript = nixus.pkgs.writeScript "deploy" ''
+    #!${nixus.pkgs.execline}/bin/execlineb -Ws0
+    export EXECLINE_STRICT 2
+    forx -p script {
+      ${lib.concatMapStringsSep "\n  "
+        (node: lib.optionalString node.enabled node.nodeDeployScript)
+        (lib.attrValues config.nodes)}
+    } importas -i script script
+    execlineb $script
+  ''; # TODO: Handle signals to kill the async command
 }

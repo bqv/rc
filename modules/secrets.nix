@@ -56,7 +56,7 @@ let
         then "${baseDir}/active/${subdir}/${name}"
         else throw "nixus: secret.${name} can't have both a user and a group set";
     in ''
-      ln -s ${lib.escapeShellArg target} "$out"
+      ln -s "${target}" "$out"
     '');
 
   # Intersects the closure of a system with a set of secrets
@@ -188,34 +188,77 @@ in {
             # therefore ensuring it will be there
             rsync = builtins.unsafeDiscardStringContext "${pkgs.rsync}/bin/rsync";
             privilegeEscalation = builtins.concatStringsSep " " config.privilegeEscalationCommand;
-          in lib.dag.entryBefore ["switch"] ''
-            echo "Copying secrets..." >&2
+          in lib.dag.entryBefore ["trigger-switch"] ''
+            foreground {
+              fdswap 1 2
+              echo "Copying secrets..."
+            }
+            
+            if {
+              importas -i host HOST
+              foreground {
+                ssh $host
+                  exec ${privilegeEscalation}
+                    mkdir -p -m 755 ${baseDir}/pending/per-{user,group}
+              }
+              # TODO: I don't think this works if rsync isn't on the remote's shell.
+              # We really just need a single binary we can execute on the remote, like the switch script
+              rsync --perms --chmod=440 --rsync-path="${privilegeEscalation} ${rsync}"
+                "${includedSecrets}" "''${host}:${baseDir}/pending/included-secrets"
+            }
 
-            ssh "$HOST" ${privilegeEscalation} mkdir -p -m 755 ${baseDir}/pending/per-{user,group}
-            # TODO: I don't think this works if rsync isn't on the remote's shell.
-            # We really just need a single binary we can execute on the remote, like the switch script
-            rsync --perms --chmod=440 --rsync-path="${privilegeEscalation} ${rsync}" "${includedSecrets}" "$HOST:${baseDir}/pending/included-secrets"
+            if {
+              redirfd -r 0 "${includedSecrets}"
+              forstdin -n -d "\n" JSON
+              importas -i json JSON
 
-            while read -r json; do
-              name=$(echo "$json" | jq -r '.name')
-              source=$(echo "$json" | jq -r '.source')
-              user=$(echo "$json" | jq -r '.user')
-              group=$(echo "$json" | jq -r '.group')
+              backtick -i -n NAME {
+                heredoc 0 $json jq -r '.name'
+              } importas -i name NAME
 
-              echo "Copying secret $name..." >&2
+              backtick -i -n SOURCE {
+                heredoc 0 $json jq -r '.source'
+              } importas -i source SOURCE
 
+              backtick -i -n USER {
+                heredoc 0 $json jq -r '.user'
+              } importas -i user USER
+
+              backtick -i -n GROUP {
+                heredoc 0 $json jq -r '.group'
+              } importas -i group GROUP
+            
+              foreground {
+                fdswap 1 2
+                echo "Copying secret ''${name}..."
+              }
+            
               # If this is a per-user secret
-              if [[ "$user" != null ]]; then
+              importas -i host HOST
+              ifelse { test $user != null } {
                 # The -n is very important for ssh to not swallow stdin!
-                ssh -n "$HOST" ${privilegeEscalation} mkdir -p -m 500 "${baseDir}/pending/per-user/$user"
-                rsync --perms --chmod=400 --rsync-path="${privilegeEscalation} ${rsync}" "$source" "$HOST:${baseDir}/pending/per-user/$user/$name"
-              else
-                ssh -n "$HOST" ${privilegeEscalation} mkdir -p -m 050 "${baseDir}/pending/per-group/$group"
-                rsync --perms --chmod=040 --rsync-path="${privilegeEscalation} ${rsync}" "$source" "$HOST:${baseDir}/pending/per-group/$group/$name"
-              fi
-            done < "${includedSecrets}"
-
-            echo "Finished copying secrets" >&2
+                foreground {
+                  ssh -n $host
+                    exec ${privilegeEscalation}
+                      mkdir -p -m 500 "${baseDir}/pending/per-user/''${user}"
+                }
+                rsync --perms --chmod=400 --rsync-path="${privilegeEscalation} ${rsync}"
+                  $source "''${host}:${baseDir}/pending/per-user/''${user}/''${name}"
+              } {
+                foreground {
+                  ssh -n $host
+                    exec ${privilegeEscalation}
+                      mkdir -p -m 050 "${baseDir}/pending/per-group/''${group}"
+                }
+                rsync --perms --chmod=040 --rsync-path="${privilegeEscalation} ${rsync}"
+                  $source "''${host}:${baseDir}/pending/per-group/''${group}/''${name}"
+              }
+            }
+            
+            foreground {
+              fdswap 1 2
+              echo "Finished copying secrets"
+            }
           '';
         };
     });
