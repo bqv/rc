@@ -512,11 +512,11 @@
     "nixus": {
       "flake": false,
       "locked": {
-        "lastModified": 1599039514,
-        "narHash": "sha256-kN5CDpaF0uHpMEE2qnvoc6vPR3ObCBOR8RDUoQtTqEo=",
+        "lastModified": 1599074048,
+        "narHash": "sha256-ttET6R817fRiriJocig2Cichj/O64Tt+WU/Wlwn2Vtc=",
         "owner": "bqv",
         "repo": "nixus",
-        "rev": "3a5826663adcccda94ce7f8cf963a435107a0159",
+        "rev": "46de0b0202654713cd5fdef4b9be2bfdeb856e9f",
         "type": "github"
       },
       "original": {
@@ -528,11 +528,11 @@
     "nyxt": {
       "flake": false,
       "locked": {
-        "lastModified": 1598802726,
-        "narHash": "sha256-dvn+NLVbnOIu34lYz5l22PEn8YhPP+q10+OosZniQeY=",
+        "lastModified": 1599042278,
+        "narHash": "sha256-rWs8+huygNyZlwjUDAJDSkLArBQfRhYA8HVSi3/VNyo=",
         "owner": "atlas-engineer",
         "repo": "nyxt",
-        "rev": "96220bb3ef307411acc6a91351b1630590dbb48f",
+        "rev": "e83e1021e5ca62bf3c12ff3a69ddb850c1ab7e7a",
         "type": "github"
       },
       "original": {

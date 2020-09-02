@@ -49,7 +49,7 @@
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
 
-    nixus = { url = "github:bqv/nixus"; flake = false; };                   # Nixus
+    nixus = { url = "github:bqv/nixus"; flake = false; };                         # Nixus
     impermanence = { url = "github:nix-community/impermanence"; flake = false; }; # Impermanence
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };         # Nixpkgs-mozilla
     baduk = { url = "github:dustinlacewell/baduk.nix"; flake = false; };          # Baduk
