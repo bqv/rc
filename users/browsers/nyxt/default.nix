@@ -285,8 +285,8 @@
                 "C-v" 'scroll-page-down
                 "M-v" 'scroll-page-up)
               (define-key map
-                "C-k" 'copy-to-emacs
-                "C-y" 'paste-from-emacs)
+                "C-i" 'bitwarden-select-password
+                "C-y" 'paste-from-ring)
               (define-key map "M-h" 'nyxt/web-mode:buffer-history-tree)
              ;(define-key map "button4" 'history-backwards)
              ;(define-key map "button5" 'history-forwards)
