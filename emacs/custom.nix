@@ -237,6 +237,12 @@
         (set-fontset-font t 'unicode "Noto Sans Symbols2" nil 'append)
         (set-fontset-font t 'unicode "Symbola" nil 'append))
       (add-hook 'after-make-frame-functions #'bqv/set-frame-fonts)
+
+      (defun maybe-disable-background ()
+        (unless (display-graphic-p (selected-frame))
+          (set-face-background 'default "unspecified-bg" (selected-frame))))
+
+      (add-hook 'window-setup-hook 'maybe-disable-background)
     '';
   };
 }
