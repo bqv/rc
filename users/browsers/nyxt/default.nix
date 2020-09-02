@@ -285,6 +285,7 @@
                 "C-v" 'scroll-page-down
                 "M-v" 'scroll-page-up)
               (define-key map
+                "C-z" 'open-inspector
                 "C-i" 'bitwarden-select-password
                 "C-y" 'paste-from-ring)
               (define-key map "M-h" 'nyxt/web-mode:buffer-history-tree)
