@@ -14,8 +14,8 @@ A configuration.nix is provided for compatibility with `nix repl`
 * Build
 
 If you don't have direnv/lorri, there is a devShell (and a shell.nix shim).
-I use nixus to deploy to multiple systems coherently. The deploy script is 
-built by defaultPackage as well as run by defaultApp. E.g. `nix run`
+I use a fork of nixus to deploy to multiple systems coherently. The deploy script
+is built by defaultPackage as well as run by defaultApp. E.g. `nix run`
 
 If you're on NixOS but your system nix does not support flakes, you can bring a
 working version into scope, with the following:
@@ -33,40 +33,53 @@ Host specific config in hostname directories. I want to keep these thin.
 
 ** Profiles
 
-A module of nix code with few or no options, shared between hosts. Ideally 
+A module of nix code with few or no options, shared between hosts. Ideally
 always a default.nix, but I've broken this rule.
 
 ** Users
 
-User declarations on the toplevel, with home-manager "profiles" (as above) in 
+User declarations on the toplevel, with home-manager "profiles" (as above) in
 subtrees. (Perhaps I should separate these?)
+
+** Deploy
+
+This is my forked version of github.com/infinisil/nixus, amended to use execline
+for speed, stability, and extreme hackability.
 
 ** Lib
 
 Reserved...
 
-** Secrets and Legacy
+** Secrets
 
-_These are not the files you're looking for_. Everything in here encrypted with 
-[[https://github.com/AGWA/git-crypt][git-crypt]], for now. Legacy will ideally 
-eventually be assimilated, but for now things there contain a few too many 
+_These are not the files you're looking for_. Everything in here encrypted with
+[[https://github.com/AGWA/git-crypt][git-crypt]], for now. Legacy will ideally
+eventually be assimilated, but for now things there contain a few too many
 secrets and shameful code patterns
 
 ** Emacs
 
-Emacs package definitions modules, one file per package, auto-imported, for 
+Emacs package definitions modules, one file per package, auto-imported, for
 reference when building ~/.emacs.d/init.el
 
 ** Modules
 
-Module definitions for nixos, home-manager, emacs, and nixus, as collated in 
+Module definitions for nixos, home-manager, emacs, and nixus, as collated in
 the lists home.nix, nixos.nix, etc.
 
 ** Packages
 
 Package definitions a-la nixpkgs, collated into an overlay in default.nix
 
+** Containers
+
+Container machine definitions, for import in host definitions.
+
 ** Overlays
 
-Overlay definitions, all auto-imported, for simple package overrides and 
+Overlay definitions, all auto-imported, for simple package overrides and
 sketching new packages
+** Apparmor
+
+This contains a vast array of profiles for apparmor that I aim to port to my
+system and use, eventually so my system can be full-system apparmor enforced.

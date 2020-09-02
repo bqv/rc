@@ -54,7 +54,6 @@
     baduk = { url = "github:dustinlacewell/baduk.nix"; flake = false; };          # Baduk
     snack = { url = "github:nmattia/snack"; flake = false; };                     # Snack
     napalm = { url = "github:nmattia/napalm"; flake = false; };                   # Napalm
-
   };
 
   outputs = inputs: with builtins; let
