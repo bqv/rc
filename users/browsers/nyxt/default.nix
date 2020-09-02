@@ -294,7 +294,7 @@
              ;(define-key map "button7" 'switch-buffor-previous)
              ;(define-key map "button8" 'switch-buffor-next)
               map))
-           (default-modes (append '(dispatch-mode blocker-mode) %slot-default))
+           (default-modes (append '(dispatch-mode blocker-mode auto-mode) %slot-default))
            ))
         (setq *configured-buffer* t))
 
