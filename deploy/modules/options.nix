@@ -42,6 +42,7 @@ let
 
       nixpkgs = lib.mkOption {
         type = lib.types.path;
+        default = nixus.pkgs.path;
         example = lib.literalExample ''
           fetchTarball {
             url = "https://github.com/NixOS/nixpkgs/tarball/a06925d8c608d7ba1d4297dc996c187c37c6b7e9";

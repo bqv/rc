@@ -1,5 +1,5 @@
 nixusArgs: conf: let
-  nixpkgs = import ./nixpkgs.nix;
+  inherit (nixusArgs) nixpkgs;
 
   extendLib = super:
     let

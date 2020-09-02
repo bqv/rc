@@ -400,15 +400,16 @@
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }:
-      import ./deploy { deploySystem = system; } ({ config, lib, ... }: let
+      import ./deploy {
+        nixpkgs = channels.modules;
+        deploySystem = system;
+      } ({ config, lib, ... }: let
         inherit (config) nodes;
       in {
         defaults = { name, config, ... }: let
           inherit (inputs.self.nixosConfigurations.${name}) nixos;
         in {
           host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
-
-          nixpkgs = channels.modules;
 
           configuration = {
             _module.args = nixos.specialArgs;
