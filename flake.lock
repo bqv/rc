@@ -509,22 +509,6 @@
         "type": "github"
       }
     },
-    "nixus": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1599074048,
-        "narHash": "sha256-ttET6R817fRiriJocig2Cichj/O64Tt+WU/Wlwn2Vtc=",
-        "owner": "bqv",
-        "repo": "nixus",
-        "rev": "46de0b0202654713cd5fdef4b9be2bfdeb856e9f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "bqv",
-        "repo": "nixus",
-        "type": "github"
-      }
-    },
     "nyxt": {
       "flake": false,
       "locked": {
@@ -785,7 +769,6 @@
         "napalm": "napalm",
         "nix": "nix",
         "nix-ipfs": "nix-ipfs",
-        "nixus": "nixus",
         "nyxt": "nyxt",
         "pr75800": "pr75800",
         "pr93457": "pr93457",

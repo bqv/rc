@@ -3,7 +3,7 @@ nixusArgs: conf: let
 
   extendLib = super:
     let
-      lib = super.extend (import ./dag.nix);
+      lib = super.extend (import ../lib/dag.nix);
       self = if nixusArgs ? libOverlay
              then lib.extend nixusArgs.libOverlay
              else lib;

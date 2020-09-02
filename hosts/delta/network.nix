@@ -1,4 +1,4 @@
-{ config, lib, pkgs, hosts, inputs, dag, ... }:
+{ config, lib, pkgs, hosts, inputs, usr, ... }:
 
 {
   environment.systemPackages = with pkgs; [ dhcp dhcpcd ];
@@ -43,7 +43,9 @@
     useDHCP = true;
   }; systemd.services.network-link-enp0s20u3u1u2.before = [];
 
-  networking.nftables = {
+  networking.nftables = let
+    inherit (usr) dag;
+  in {
     enable = true;
 
     rules = {

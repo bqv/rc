@@ -49,7 +49,6 @@
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
 
-    nixus = { url = "github:bqv/nixus"; flake = false; };                         # Nixus
     impermanence = { url = "github:nix-community/impermanence"; flake = false; }; # Impermanence
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };         # Nixpkgs-mozilla
     baduk = { url = "github:dustinlacewell/baduk.nix"; flake = false; };          # Baduk
@@ -220,11 +219,11 @@
           inherit lib;
           pkgs = channels.lib.legacyPackages.${system};
         };
+        dag = let dagLib = import ./lib/dag.nix lib lib;
+        in dagLib.dag // { inherit (dagLib) types; };
       };
       specialArgs = {
         inherit inputs usr;
-        dag = let dagLib = import "${inputs.nixus}/dag.nix" lib lib;
-        in dagLib.dag // { inherit (dagLib) types; };
         fetchPullRequest = fetchPullRequestForSystem system;
 
         domains = import ./secrets/domains.nix;
@@ -371,7 +370,7 @@
       _import = host: let
         modules = modulesFor host;
       in channels.modules.lib.nixosSystem modules // {
-        inherit specialArgs modules; # This is extra spicy, but vaguely needed for nixus?
+        nixos = modules; # This is extra spicy, but vaguely needed for nixus?
       };
     };
 
@@ -402,11 +401,11 @@
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }:
-      import inputs.nixus { deploySystem = system; } ({ config, lib, ... }: let
+      import ./deploy { deploySystem = system; } ({ config, lib, ... }: let
         inherit (config) nodes;
       in {
         defaults = { name, config, ... }: let
-          nixos = inputs.self.nixosConfigurations.${name}.modules;
+          inherit (inputs.self.nixosConfigurations.${name}) nixos;
         in {
           host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
 

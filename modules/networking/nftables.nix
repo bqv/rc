@@ -1,7 +1,9 @@
-{ config, lib, pkgs, dag, hosts, ... }:
+{ config, lib, pkgs, usr, hosts, ... }:
 
 let
   cfg = config.networking.nftables;
+
+  inherit (usr) dag;
 
   mkTable = desc: body: lib.mkOption {
     default = {};
