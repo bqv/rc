@@ -98,7 +98,7 @@ let
       };
 
       systemSwitcherDir = lib.mkOption {
-        type = lib.types.string;
+        type = lib.types.str;
         default = "/var/lib/system-switcher/";
         description = ''
           Path that will contain the system switcher data

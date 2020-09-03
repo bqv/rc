@@ -53,6 +53,17 @@ in {
           };
         };
 
+        dev = {
+          host = "dev.${domains.home}";
+          port = 5022;
+          identityFile = "~/.ssh/id_rsa";
+          extraOptions = {
+            StrictHostKeyChecking = "no";
+            HostKeyAlgorithms = "ssh-rsa,ssh-dss";
+            KexAlgorithms = "+diffie-hellman-group1-sha1";
+            Ciphers = "aes128-ctr,aes192-ctr,aes256-ctr,aes128-cbc,3des-cbc";
+          };
+        };
         localhost = {
           host = "localhost";
           forwardAgent = true;
