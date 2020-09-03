@@ -15,6 +15,15 @@ with lib; let
 
   packageDeps = forEachPackage (p: p.package cfg.package.pkgs);
   systemDeps = forEachPackage (p: p.systemDeps);
+
+  emacsWrapper = pkgs.writeShellScriptBin "ec" ''
+    if test "$(systemctl --user show -p ActiveState --value emacs)" != "active"; then
+      systemctl --user stop emacs emacs.socket
+      systemctl --user start emacs.socket
+    fi
+
+    exec emacsclient $@
+  '';
 in {
   imports = [
     ../../../emacs
@@ -27,7 +36,7 @@ in {
     };
 
     home.packages = with pkgs; packageDeps ++ systemDeps ++ [
-      nixfmt w3m findutils cmake gnumake gcc libtool gtk3 age
+      nixfmt w3m findutils cmake gnumake gcc libtool gtk3 age emacsWrapper
     ] ++ (with cfg.package.pkgs; [
       leaf auto-compile gcmh diminish epkg log4e bug-hunter use-package
     ]);
