@@ -63,13 +63,14 @@ in {
                 ];
             in {
               "vervis/settings.yml".text = toYaml settings;
-              "vervis/ssh-host-key".source = "/etc/ssh/ssh_host_rsa_key";
+             #"vervis/ssh-host-key".source = "/etc/ssh/ssh_host_rsa_key";
             };
 
             vervis.settings = {
               registration = true;
               max-accounts = 1;
               federation = true;
+              ssh-key-file = "/etc/ssh/ssh_host_rsa_key";
             };
 
             systemd.services.vervis = {
