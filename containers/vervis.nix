@@ -64,6 +64,7 @@ in {
             in {
               "vervis/settings.yml".text = toYaml settings;
               "vervis/ssh-host-key".source = "/etc/ssh/ssh_host_rsa_key";
+              "vervis/ssh-host-key".mode = "600";
             };
 
             vervis.settings = {
