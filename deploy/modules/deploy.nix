@@ -5,7 +5,7 @@ let
 
   nodeOptions = node@{ name, pkgs, config, ... }: let
     switchScript = pkgs.runCommandNoCC "switch" {
-      inherit (config) switchTimeout successTimeout ignoreFailingSystemdUnits privilegeEscalationCommand;
+      inherit (config) switchTimeout successTimeout ignoreFailingSystemdUnits privilegeEscalationCommand systemSwitcherDir;
       inherit (nixus.pkgs) execline;
     } ''
       mkdir -p $out/bin
@@ -96,6 +96,14 @@ let
           Derivation paths to copy to the host while deploying
         '';
       };
+
+      systemSwitcherDir = lib.mkOption {
+        type = lib.types.string;
+        default = "/var/lib/system-switcher/";
+        description = ''
+          Path that will contain the system switcher data
+        '';
+      };
     };
 
     config.closurePaths = [
@@ -145,7 +153,7 @@ let
           loopwhilex -x 0
           ssh -o BatchMode=yes $host
             exec ${builtins.concatStringsSep " " config.privilegeEscalationCommand}
-              cat "/var/lib/system-switcher/system-''${id}/fifo"
+              cat "${config.systemSwitcherDir}/system-''${id}/fifo"
         }
 
         foreground {

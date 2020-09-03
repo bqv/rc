@@ -193,7 +193,7 @@ in {
               fdswap 1 2
               echo "Copying secrets..."
             }
-            
+
             if {
               importas -i host HOST
               foreground {
@@ -227,12 +227,12 @@ in {
               backtick -i -n GROUP {
                 heredoc 0 $json jq -r '.group'
               } importas -i group GROUP
-            
+
               foreground {
                 fdswap 1 2
                 echo "Copying secret ''${name}..."
               }
-            
+
               # If this is a per-user secret
               importas -i host HOST
               ifelse { test $user != null } {
@@ -254,7 +254,7 @@ in {
                   $source "''${host}:${baseDir}/pending/per-group/''${group}/''${name}"
               }
             }
-            
+
             foreground {
               fdswap 1 2
               echo "Finished copying secrets"

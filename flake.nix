@@ -415,6 +415,8 @@
             _module.args = nixos.specialArgs;
             imports = nixos.modules;
 
+            secrets.baseDirectory = "/var/lib/secrets";
+
             # Link raw hosts on each host (non-recursively)
             system.extraSystemBuilderCmds = ''
 
@@ -473,6 +475,7 @@
           switchTimeout = lib.mkDefault 120;
 
           ignoreFailingSystemdUnits = true;
+          systemSwitcherDir = "/nix/node/";
         };
 
         nodes = let

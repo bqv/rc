@@ -11,7 +11,7 @@
 # switch run -> does the actual switch, should be run asynchronously via systemd
 
 # We store state like this:
-# /var/lib/system-switcher
+# @systemSwitcherDir@
 #   /next: <n>
 #   /current -> system-<n> (optional)
 #   /system-<n>
@@ -29,9 +29,9 @@ if [[ "$EUID" -ne 0 ]]; then
         exec @privilegeEscalationCommand@ "$0" "$@"
 fi
 
-mkdir -p /var/lib/system-switcher
-chmod 770 /var/lib/system-switcher
-cd /var/lib/system-switcher
+mkdir -p @systemSwitcherDir@
+chmod 770 @systemSwitcherDir@
+cd @systemSwitcherDir@
 
 switch-start() {
   local system=$1
