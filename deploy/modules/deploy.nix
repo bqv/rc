@@ -211,7 +211,6 @@ in {
   # TODO: What about requiring either all nodes to succeed or all get rolled back?
   config.deployScript = nixus.pkgs.writeScript "deploy" ''
     #!${nixus.pkgs.execline}/bin/execlineb -Ws0
-    export EXECLINE_STRICT 2
     forx -p script {
       ${lib.concatMapStringsSep "\n  "
         (node: lib.optionalString node.enabled node.nodeDeployScript)

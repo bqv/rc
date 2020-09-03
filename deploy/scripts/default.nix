@@ -50,7 +50,6 @@ let
   '';
 in pkgs.writeScript "deploy-${name}" ''
   #!${pkgs.execline}/bin/execlineb -Ws0
-  export EXECLINE_STRICT 2
   importas -i syspath PATH
   export PATH "${lib.makeBinPath config.deployScriptPath}:''${syspath}"
 

@@ -8,8 +8,7 @@ in {
   environment.systemPackages = let
     # Replace a file(tree) with an ipfs symlink
     toipfs = pkgs.writeScriptBin "toipfs" ''
-      #!${pkgs.execline}/bin/execlineb -S1
-      export EXECLINE_STRICT 2
+      #!${pkgs.execline}/bin/execlineb -WS1
       backtick -n -I dir { dirname $1 }
       backtick -n -I file { basename $1 }
       importas -i dir dir
@@ -33,8 +32,7 @@ in {
 
     # Abuse CoW to realise an ipfs symlink
     fromipfs = pkgs.writeScriptBin "fromipfs" ''
-      #!${pkgs.execline}/bin/execlineb -S1
-      export EXECLINE_STRICT 2
+      #!${pkgs.execline}/bin/execlineb -WS1
       backtick -n -i hash {
         pipeline { realpath $1 }
         xargs basename
@@ -50,8 +48,7 @@ in {
       ipfs-api = pkgs.writeText "ipfs-api" config.services.ipfs.apiAddress;
       api-addr = config.services.ipfs.apiAddress;
     in pkgs.writeScriptBin "brig" ''
-      #!${pkgs.execline}/bin/execlineb -s0
-      export EXECLINE_STRICT 2
+      #!${pkgs.execline}/bin/execlineb -Ws0
       export NIX_REDIRECTS /var/lib/ipfs/api=${ipfs-api}
       ${pkgs.utillinux}/bin/unshare -rm
       if { mount -t tmpfs -o size=1K tmpfs /var/empty }
