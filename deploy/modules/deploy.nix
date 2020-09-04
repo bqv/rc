@@ -171,7 +171,7 @@ let
               # a rebuild switch, even though with a reboot it wouldn't. Maybe use
               # the more modern and declarative networkd to get around this
               timeout --foreground 15
-              ssh -o ControlPath=none -o BatchMode=yes $host
+              ssh -o VisualHostKey=no -o ControlPath=none -o BatchMode=yes $host
                 exec "${switchScript}/bin/switch" active $id
             }
             sleep 1
