@@ -255,7 +255,7 @@
             nix.nixPath = [
               "nixpkgs=${channels.pkgs}"
               "nixos=${inputs.self}/configuration.nix"
-              "config=/etc/nixos/configuration.nix"
+              "self=/run/current-system/flake/input/self/configuration.nix"
             ];
 
             system.configurationRevision = inputs.self.rev or "dirty";

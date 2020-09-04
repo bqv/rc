@@ -197,7 +197,7 @@ in {
             if {
               importas -i host HOST
               foreground {
-                ssh $host
+                ssh -o VisualHostKey=no $host
                   exec ${privilegeEscalation}
                     mkdir -p -m 755 ${baseDir}/pending/per-{user,group}
               }
@@ -238,19 +238,21 @@ in {
               ifelse { test $user != null } {
                 # The -n is very important for ssh to not swallow stdin!
                 foreground {
-                  ssh -n $host
+                  ssh -o VisualHostKey=no -n $host
                     exec ${privilegeEscalation}
                       mkdir -p -m 500 "${baseDir}/pending/per-user/''${user}"
                 }
-                rsync --perms --chmod=400 --rsync-path="${privilegeEscalation} ${rsync}"
+                rsync --perms --chmod=400 -e "ssh -o VisualHostKey=no"
+                  --rsync-path="${privilegeEscalation} ${rsync}"
                   $source "''${host}:${baseDir}/pending/per-user/''${user}/''${name}"
               } {
                 foreground {
-                  ssh -n $host
+                  ssh -o VisualHostKey=no -n $host
                     exec ${privilegeEscalation}
                       mkdir -p -m 050 "${baseDir}/pending/per-group/''${group}"
                 }
-                rsync --perms --chmod=040 --rsync-path="${privilegeEscalation} ${rsync}"
+                rsync --perms --chmod=040 -e "ssh -o VisualHostKey=no"
+                  --rsync-path="${privilegeEscalation} ${rsync}"
                   $source "''${host}:${baseDir}/pending/per-group/''${group}/''${name}"
               }
             }
