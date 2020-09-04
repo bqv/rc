@@ -12,7 +12,7 @@ let
       if -n -t {
         importas -i host HOST
         timeout --foreground 30
-        ssh -o ControlPath=none -o BatchMode=yes $host
+        ssh -o VisualHostKey=no -o ControlPath=none -o BatchMode=yes $host
           realpath /run/current-system
       }
       foreground {
