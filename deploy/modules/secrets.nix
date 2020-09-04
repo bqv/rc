@@ -197,7 +197,7 @@ in {
             if {
               importas -i host HOST
               foreground {
-                ssh $host
+                ssh -o VisualHostKey=no $host
                   exec ${privilegeEscalation}
                     mkdir -p -m 755 ${baseDir}/pending/per-{user,group}
               }
@@ -238,7 +238,7 @@ in {
               ifelse { test $user != null } {
                 # The -n is very important for ssh to not swallow stdin!
                 foreground {
-                  ssh -n $host
+                  ssh -o VisualHostKey=no -n $host
                     exec ${privilegeEscalation}
                       mkdir -p -m 500 "${baseDir}/pending/per-user/''${user}"
                 }
@@ -246,7 +246,7 @@ in {
                   $source "''${host}:${baseDir}/pending/per-user/''${user}/''${name}"
               } {
                 foreground {
-                  ssh -n $host
+                  ssh -o VisualHostKey=no -n $host
                     exec ${privilegeEscalation}
                       mkdir -p -m 050 "${baseDir}/pending/per-group/''${group}"
                 }
