@@ -12,6 +12,9 @@
       (setq compilation-buffer-name-function
             (lambda (mode)
               (concat "*" (downcase mode) ": " (projectile-project-name) "*")))
+      (put 'projectile-project-compilation-cmd 'safe-local-variable
+           (lambda (a) (and (stringp a) (or (not (boundp 'compilation-read-command))
+                                            compilation-read-command))))
     '';
   };
 }
