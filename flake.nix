@@ -11,7 +11,7 @@
     pr93457.url = "github:ju1m/nixpkgs/apparmor";                      #|
     pr93659.url = "github:ju1m/nixpkgs/security.pass";                 #|
 
-    nix.url = "github:nixos/nix";   #|- Nix
+    nix.url = "github:nixos/nix";          #|- Nix
     nix.inputs.nixpkgs.follows = "master"; #|
 
     dwarffs.url = "github:edolstra/dwarffs";   #|- Dwarffs

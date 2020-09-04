@@ -39,6 +39,7 @@ in {
       binutils
       coreutils
       curl
+      darcs
       disnixos
       (pkgs.lowPrio dosfstools)
       dnsutils
