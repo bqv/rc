@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, hosts, ... }:
 
 {
   programs.mosh.enable = true;
@@ -16,6 +16,10 @@
       "delta" = {
         hostNames = [ "localhost" "127.0.0.1" "::1" ];
         publicKeyFile = ../../secrets/keys/deltassh/ssh_host_ed25519_key.pub;
+      };
+      "zeta" = {
+        hostNames = [ hosts.wireguard.zeta ];
+        publicKeyFile = ../../secrets/keys/zetassh/ssh_host_ed25519_key.pub;
       };
     };
     hostKeys = [
