@@ -138,9 +138,9 @@
   ## Migrated
   services.postgresql.enable = true;
   services.postgresql.enableTCPIP = true;
-  services.postgresql.extraConfig = ''
-    work_mem = 16MB
-  '';
+  services.postgresql.settings = {
+    work_mem = ''16MB'';
+  };
   services.postgresql.authentication = lib.mkForce
     (let
       mastodon = config.services.mastodon.database;

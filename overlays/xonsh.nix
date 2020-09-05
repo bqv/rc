@@ -5,7 +5,7 @@ final: prev: let
         owner = "bobhy";
         repo = "python-prompt-toolkit";
         rev = "th-threadsafe-load-2";
-        sha256 = "sha256-P6/r07bifrib0Pti83d2q5cKYr1q6jxRpT44539kctE=";
+        sha256 = "sha256-hX+b277QWwcJY45j1Um1nYRW5c2qu34f0V0YhUs64tY=";
       };
     });
   };

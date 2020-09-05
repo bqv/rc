@@ -152,7 +152,7 @@
           inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird; # slow
           inherit (inputs.stable.legacyPackages.${system}) nheko; # anticipating pr94942
           graalvm8 = builtins.trace "pkgs.graalvm8: suspended - too big and not cached" pkgs.hello;
-          inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils lvm2; # pullreq
+          inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils lvm2 apparmor-kernel-patches apparmorRulesFromClosure; # pullreq
         })
         (final: prev: {
           nyxt = prev.nyxt.override {
@@ -293,6 +293,10 @@
               ln -sfn /run/current-system/flake/input/self /etc/nixos || \
               true
             '';
+
+            systemd.suppressedSystemUnits = [
+              "cryptsetup.target" # missing?!
+            ];
 
             nixpkgs = {
               pkgs = pkgs // {
