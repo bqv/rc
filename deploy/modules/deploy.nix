@@ -122,7 +122,7 @@ let
         foreground {
           define TRIES 3
           if -n {
-            export NIX_SSH_OPTS "-o ServerAliveInterval=15"
+            export NIX_SSH_OPTS "-o ServerAliveInterval=15 -o VisualHostKey=no"
             importas -i host HOST
             forbacktickx -x 0 tries { seq 1 $TRIES } # TOOD: Prevent garbage collection until the end of the deploy
             foreground { fdswap 1 2 importas -i try tries echo -en "Attempt ''${try}..." }
