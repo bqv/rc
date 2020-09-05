@@ -1,12 +1,16 @@
-{ config, lib, usr, pkgs, ... }:
+{ config, lib, usr, pkgs, inputs, ... }:
 
 {
   emacs-loader.nix-mode = {
     demand = true;
     config = ''
-      (setq nix-repl-executable-args '("repl" "${../configuration.nix}"))
-    '' + ''
+      (setq nix-repl-executable-args '("repl" "/run/current-system/flake/input/self/configuration.nix}"))
       (setq nix-indent-function 'nix-indent-line)
+
+      ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: path: ''
+        (defun flake-${name}-rg ()
+          (interactive)
+          (counsel-rg nil "/run/current-system/flake/input/${name}/" nil "[flake:${name}] rg: ")) '') inputs)}
 
       (defun nix-repl-complete ()
         (interactive)
@@ -121,38 +125,6 @@
         ["Garbage collection"
          (nixos:--delete-older-than)
          ("g" "collect garbage" nixos-garbage-collect)])
-
-      (define-infix-argument nixos-flake:host ()
-        :description "Host to build"
-        :class 'transient-option
-        :shortarg "H"
-        :argument "--host ")
-      (defun nixos-flake:withsudo ()
-        (interactive)
-        (nixos (unwords (cons "sudo nixos" (transient-args 'nixos-flake)))))
-      (defun nixos-flake:asuser ()
-        (interactive)
-        (nixos (unwords (cons "nixos" (transient-args 'nixos-flake)))))
-      (define-transient-command nixos-flake ()
-        "Execute nixos flake operations"
-        ["Arguments"
-         (nixos-flake:host)
-         ("T" "Show verbose traces" "--showtrace")
-         ("v" "Show verbose logs" "--verbose")
-         ("V" "Show noisy logs" "--verynoisy")
-         ("L" "Force only local building" "--local")
-         ("R" "Force disable local building" "--remote")
-         ("K" "Ignore errors" "--keepgoing")]
-        ["Operations"
-         ("c" "Run flake checks only" "--check")
-         ("b" "Attempt to build the system" "--build")
-         ("a" "Activate the system now" "--activate")
-         ("s" "Set default boot configuration" "--setdefault")
-         ("t" "Force tag current configuration only" "--tagactive")]
-        ["Execution"
-         ("$" "Run privileged" nixos-flake:withsudo)
-         ("#" "Run unprivileged" nixos-flake:asuser)]
-      )
     '';
   };
 }
