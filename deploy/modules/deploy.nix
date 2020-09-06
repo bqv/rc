@@ -5,7 +5,7 @@ let
 
   nodeOptions = node@{ name, pkgs, config, ... }: let
     switchScript = pkgs.runCommandNoCC "switch" {
-      inherit (config) switchTimeout successTimeout ignoreFailingSystemdUnits privilegeEscalationCommand systemSwitcherDir;
+      inherit (config) switchTimeout successTimeout ignoreFailingSystemdUnits privilegeEscalationCommand systemSwitcherDir panicAction;
       inherit (nixus.pkgs) execline;
     } ''
       mkdir -p $out/bin
@@ -102,6 +102,14 @@ let
         default = "/var/lib/system-switcher/";
         description = ''
           Path that will contain the system switcher data
+        '';
+      };
+
+      panicAction = lib.mkOption {
+        type = lib.types.str;
+        default = "reboot";
+        description = ''
+          Command to run in switcher emergencies
         '';
       };
     };

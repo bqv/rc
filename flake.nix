@@ -492,6 +492,7 @@
             "image"
           ]);
         in (lib.genAttrs hosts (_: {})) // {
+          zeta.panicAction = "false";
           zeta.hasFastConnection = true;
           zeta.successTimeout = 240; # Zeta seems very slow...
           zeta.switchTimeout = 240; # maybe due to wireguard reloading?
