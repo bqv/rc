@@ -1,4 +1,5 @@
 final: prev: {
+  # Nixpkgs version uses tsudoko's repo, which is woefully out of date
   ankisyncd = prev.ankisyncd.overrideAttrs (_: {
     src = final.fetchFromGitHub {
       owner = "ankicommunity";

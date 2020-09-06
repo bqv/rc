@@ -5,6 +5,8 @@ final: prev: let
     azure-functions-core-tools = prev.callPackage ./development/dotnet-modules/azure-functions-core-tools { };
   };
 in {
+  bottom = prev.callPackage ./tools/system/bottom { };
+
   emacsPackages = recurseIntoAttrs (prev.emacsPackages.overrideScope' emacsOverride);
   emacsPackagesFor = emacs: recurseIntoAttrs ((prev.emacsPackagesFor emacs).overrideScope' emacsOverride);
 
@@ -37,6 +39,8 @@ in {
   lispPackages = recurseIntoAttrs prev.lispPackages;
 
   matrix-appservice-irc = prev.callPackage ./servers/matrix-appservice-irc { };
+
+  miraclecast = prev.callPackage ./os-specific/linux/gnome-network-displays/default.nix { };
 
   mx-puppet-discord = prev.callPackage ./servers/mx-puppet-discord { };
 
