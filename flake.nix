@@ -24,8 +24,8 @@
     naersk.url = "github:nmattia/naersk";    #|- Naersk
     naersk.inputs.nixpkgs.follows = "large"; #|
 
-    xontribs.url = "github:bqv/xontribs";      #|- Xontribs
-    xontribs.inputs.nixpkgs.follows = "large"; #|
+    xontribs.url = "github:bqv/xontribs";       #|- Xontribs
+    xontribs.inputs.nixpkgs.follows = "master"; #|
 
     guix.url = "github:bqv/guix";          #|- Guix
     guix.inputs.nixpkgs.follows = "large"; #|

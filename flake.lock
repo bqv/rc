@@ -35,11 +35,11 @@
     "avox": {
       "flake": false,
       "locked": {
-        "lastModified": 1579720214,
-        "narHash": "sha256-Nb9IeJ4o/AxTv9CBmHDxbW3o7YyAgtBTfsRRn702vN8=",
+        "lastModified": 1598585835,
+        "narHash": "sha256-94NTgXD1mk/ymy286utG8fOH9zxquwzU2VhZFOxYLBY=",
         "owner": "astronouth7303",
         "repo": "xontrib-avox",
-        "rev": "c3a8ff30cd6faa9f5c88ddcb83f3037ce8bc47d2",
+        "rev": "72e7b6860d7b1f35d8caf5e25ded2482f7b7dfc9",
         "type": "github"
       },
       "original": {
@@ -237,11 +237,11 @@
     "fzf-widgets": {
       "flake": false,
       "locked": {
-        "lastModified": 1594058522,
-        "narHash": "sha256-ykkWfpIHobGfvArqHhZWOFtxlhSCfkKA/w2IceTAmJE=",
+        "lastModified": 1597872749,
+        "narHash": "sha256-N8wbeUeYPT/5lqXVtEYVl5CYI0lhM4QvBv+DKiKYZ68=",
         "owner": "laloch",
         "repo": "xontrib-fzf-widgets",
-        "rev": "6771d687b8cbe0c83997de00e397ff8b36c349f6",
+        "rev": "62aacd796c96b9ac9682b57d165105419c162c8d",
         "type": "github"
       },
       "original": {
@@ -528,11 +528,11 @@
     "output-search": {
       "flake": false,
       "locked": {
-        "lastModified": 1590323025,
-        "narHash": "sha256-4jyCwSfpsvfZC0QixfON8vx/DQ9o2+qrjNd8+UyOWU4=",
+        "lastModified": 1598953253,
+        "narHash": "sha256-zlfJlPFziQEhOGjvtnTAyy1088czmoaicytJ57oAfYk=",
         "owner": "tokenizer",
         "repo": "xontrib-output-search",
-        "rev": "b0af5e23bc021ac45c53b4dc487bfa89420ad2a1",
+        "rev": "3fcb68013c2c975a76ee57898a8369f36c3b13e8",
         "type": "github"
       },
       "original": {
@@ -560,11 +560,11 @@
     "pipeliner": {
       "flake": false,
       "locked": {
-        "lastModified": 1592462084,
-        "narHash": "sha256-pjq4fZu+qrQylWBYeHBKX11dbrDznqfvw63C5vYUkns=",
+        "lastModified": 1599322922,
+        "narHash": "sha256-i8OVUVTpxSGFe8gA1aQYPtVhuRdnBVi6qUUWwFST3wU=",
         "owner": "anki-code",
         "repo": "xontrib-pipeliner",
-        "rev": "da8591c3da47373a4862503094d092ece1746aaf",
+        "rev": "daccb6c8a67bbda799dfa2d6d8d829b5e9151c92",
         "type": "github"
       },
       "original": {
@@ -640,11 +640,11 @@
     "prompt-bar": {
       "flake": false,
       "locked": {
-        "lastModified": 1590561068,
-        "narHash": "sha256-TK2OsmTZaqGfhCuxs+KIlU//7i7ae/1P3iNRmNNBVlo=",
+        "lastModified": 1598865932,
+        "narHash": "sha256-YQA+1vHU/MPCRJI05WkiAnIVQPuX8GhOSWbPWwbd7dQ=",
         "owner": "anki-code",
         "repo": "xontrib-prompt-bar",
-        "rev": "233b0b0b841bd4157584944cbb8e9725b4e7e6e7",
+        "rev": "68b3487e156ed3dce80578ebe552b6afa94c7eb8",
         "type": "github"
       },
       "original": {
@@ -785,11 +785,11 @@
     "schedule": {
       "flake": false,
       "locked": {
-        "lastModified": 1498685227,
-        "narHash": "sha256-zVtNgdQDq5SL0B5V9NGlPkhzCGZjFu1YbXIRJXL7JLM=",
+        "lastModified": 1598585903,
+        "narHash": "sha256-oW/ff6hQqx7K/iN8Qg58dlnGvKGbr/Bo1RNwqkCTwx0=",
         "owner": "astronouth7303",
         "repo": "xontrib-schedule",
-        "rev": "d3999f1187f68e19ca0f2ab85fabfeb065ee3e3f",
+        "rev": "836e18fcf0f44b37dcf1f4288aaca4e9e6228143",
         "type": "github"
       },
       "original": {
@@ -897,11 +897,11 @@
     "tokenize-output": {
       "flake": false,
       "locked": {
-        "lastModified": 1590323269,
-        "narHash": "sha256-5+2L/JOBZJ/sYyNNGaByTN43RrVGzKVkLFcHrIqNpR4=",
+        "lastModified": 1598953314,
+        "narHash": "sha256-JSVAYgkx9a0rfJWIa+CeMQMbbGTsBIc+Rnxw/X7iMMo=",
         "owner": "tokenizer",
         "repo": "tokenize-output",
-        "rev": "e45e2ef3c5f32d183137862137dd44e6ec6eed65",
+        "rev": "3f42b3277be9cfa76954155d22bba3830e26bf6a",
         "type": "github"
       },
       "original": {
@@ -992,7 +992,7 @@
         "histcpy": "histcpy",
         "kitty": "kitty",
         "nixpkgs": [
-          "large"
+          "master"
         ],
         "output-search": "output-search",
         "pause": "pause",
@@ -1030,11 +1030,11 @@
     "z": {
       "flake": false,
       "locked": {
-        "lastModified": 1558447595,
-        "narHash": "sha256-ixpv23jXWH2W3QRQX38XocXYgkk8K0HtIsuzKYwtsb4=",
+        "lastModified": 1598586018,
+        "narHash": "sha256-rUuIeu6g31RKzoYF09fmdydxGQCZ8zs2afgEWBMPulM=",
         "owner": "astronouth7303",
         "repo": "xontrib-z",
-        "rev": "ef05c358ac71716aeae70b96006cb28b4bb73600",
+        "rev": "7bc369de403cd9f83237f2905be086eee2802558",
         "type": "github"
       },
       "original": {
