@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, hosts, ... }:
+{ config, lib, pkgs, usr, inputs, hosts, ... }:
 
 {
   imports = [
@@ -121,13 +121,18 @@
 
   headless = true;
 
-  nix.gc.automatic = true;
+  nix.gc.automatic = false;
   nix.gc.dates = "05:00";
   nix.gc.options = "";
-  nix.autoOptimiseStore = true;
+  nix.autoOptimiseStore = false;
   nix.optimise.automatic = true;
   nix.optimise.dates = [ "12:30" "00:30" ];
   nix.maxJobs = 8;
+  nix.extraOptions = with usr.units; ''
+    min-free = ${toString (gigabytes 128)}
+    builders-use-substitutes = true
+  '';
+
   #powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
 
   services.disnix.enable = true;

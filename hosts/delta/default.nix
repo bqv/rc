@@ -1,4 +1,4 @@
-{ inputs, config, lib, pkgs, system, hosts, ... }:
+{ inputs, config, lib, pkgs, usr, system, hosts, ... }:
 
 {
   imports = [
@@ -118,13 +118,8 @@
     maxJobs = 16;
     nrBuildUsers = 64;
 
-    extraOptions = let
-      kilobytes = b: b * 1024;
-      megabytes = k: k * 1024;
-      gigabytes = m: m * 1024;
-    in ''
+    extraOptions = with usr.units; ''
       min-free = ${toString (gigabytes 128)}
-      builders-use-substitutes = true
     '';
 
     buildMachines = lib.optionals true [

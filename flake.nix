@@ -220,6 +220,11 @@
         };
         dag = let dagLib = import ./lib/dag.nix lib lib;
         in dagLib.dag // { inherit (dagLib) types; };
+        units = {
+          kilobytes = b: b * 1024;
+          megabytes = k: k * 1024;
+          gigabytes = m: m * 1024;
+        };
       };
       specialArgs = {
         inherit inputs usr;
