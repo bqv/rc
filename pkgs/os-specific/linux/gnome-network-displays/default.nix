@@ -15,30 +15,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [ meson ninja pkg-config wrapGAppsHook ];
   buildInputs = [ gtk3 glib gsettings-desktop-schemas networkmanager libpulseaudio python3 desktop-file-utils ]
-  ++ (with gst_all_1; [ gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad ])
-  ++ [ (gst_all_1.gst-rtsp-server.overrideAttrs (super: {
-    patches = let
-      prefix = "\${prefix}";
-    in (super.patches or []) ++ [
-      (writeText "fix_pkgconfig_includedir.patch" ''
-        diff --git a/pkgconfig/meson.build b/pkgconfig/meson.build
-        index edb0586c2..7ed46dfce 100644
-        --- a/pkgconfig/meson.build
-        +++ b/pkgconfig/meson.build
-        @@ -2,8 +2,8 @@ pkgconf = configuration_data()
-
-         pkgconf.set('prefix', get_option('prefix'))
-         pkgconf.set('exec_prefix', '${prefix}')
-        -pkgconf.set('libdir', '${prefix}/@0@'.format(get_option('libdir')))
-        -pkgconf.set('includedir', '${prefix}/@0@'.format(get_option('includedir')))
-        +pkgconf.set('libdir', join_paths(get_option('prefix'), get_option('libdir')))
-        +pkgconf.set('includedir', join_paths(get_option('prefix'), get_option('includedir')))
-         pkgconf.set('GST_API_VERSION', api_version)
-         pkgconf.set('VERSION', gst_version)
-
-      '')
-    ];
-  })) ];
+  ++ (with gst_all_1; [ gstreamer gst-plugins-base gst-plugins-good gst-plugins-bad gst-rtsp-server ]);
 
   NIX_CFLAGS_COMPILE = "-I${glib.dev}/include/gio-unix-2.0";
   postPatch = ''

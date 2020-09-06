@@ -110,7 +110,7 @@ in rec {
   vervis = overrideCabal (doJailbreak (dontHaddock (dontCheck (cabal2nix "vervis" fetchdarcs {
     url = "https://dev.angeley.es/s/fr33domlover/r/vervis";
    #rev = "eb7a1c26e489dd8ab8f6abc2a68b53278ccc2243";
-    sha256 = "hcovmtTHkxsQBN+PdoBHDWxpT1xfDjDewhKFZZxKU88=";
+    sha256 = "V7rAsICw4LscqYOGEni4HEV0Pn8Z13fUdgOSp0mnRqI=";
   } deps)))) (drv: let
     dataDir = final.runCommand "svgfonts-fonts" {
       inherit (haskellPackages.SVGFonts) src;
