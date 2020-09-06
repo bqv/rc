@@ -2,7 +2,6 @@
 
 {
   emacs-loader.doc-view = {
-    defer = true;
     package = lib.const null;
     config = ''
       (add-hook 'doc-view-mode-hook
