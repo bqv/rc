@@ -67,7 +67,7 @@
     };
 
     channels = with inputs; {
-      pkgs = large;       # For packages
+      pkgs = small;       # For packages
       modules = pr93457;  # For nixos modules
       lib = master;       # For flake-wide lib
     }; inherit (channels.lib) lib; # this ^
@@ -152,7 +152,7 @@
           inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird; # slow
           inherit (inputs.stable.legacyPackages.${system}) nheko; # anticipating pr94942
           graalvm8 = builtins.trace "pkgs.graalvm8: suspended - too big and not cached" pkgs.hello;
-          inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils lvm2 apparmor-kernel-patches apparmorRulesFromClosure; # pullreq
+          inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils apparmor-kernel-patches apparmorRulesFromClosure; # pullreq
         })
         (final: prev: {
           nyxt = prev.nyxt.override {
@@ -299,8 +299,8 @@
               true
             '';
 
-            systemd.suppressedSystemUnits = [
-              "cryptsetup.target" # missing?!
+            systemd.suppressedSystemUnits = builtins.trace "cryptsetup.target was missing from systemd (Aaaa)" [
+              "cryptsetup.target"
             ];
 
             nixpkgs = {
