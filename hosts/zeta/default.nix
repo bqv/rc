@@ -65,7 +65,7 @@
   qemu-user.arm = builtins.trace "${config.networking.hostName} - pkgs.qemu-user-arm: disabled for now due to new build error" false;
 
   fileSystems."/" =
-    { device = "/dev/sda3";
+    { device = "/dev/disk/by-uuid/1bfcf62e-ed28-420d-b3f1-15a55115e72f";
       fsType = "btrfs";
       options = [ "subvol=nixos" ];
     };
@@ -76,7 +76,7 @@
     };
 
   fileSystems."/boot" =
-    { device = "/dev/sda2";
+    { device = "/dev/disk/by-uuid/75490708-7e0a-4ffa-8c79-6df36fc64fe2";
       fsType = "ext4";
       options = [ "rw" "data=ordered" ];
     };
@@ -91,30 +91,30 @@
   };
 
   fileSystems."/home" =
-    { device = "/dev/sda3";
+    { device = "/dev/disk/by-uuid/1bfcf62e-ed28-420d-b3f1-15a55115e72f";
       fsType = "btrfs";
       options = [ "subvol=home" ];
     };
 
   fileSystems."/srv" =
-    { device = "/dev/sda3";
+    { device = "/dev/disk/by-uuid/1bfcf62e-ed28-420d-b3f1-15a55115e72f";
       fsType = "btrfs";
       options = [ "subvol=srv" ];
     };
 
   fileSystems."/run/btrfs" =
-    { device = "/dev/sda3";
+    { device = "/dev/disk/by-uuid/1bfcf62e-ed28-420d-b3f1-15a55115e72f";
       fsType = "btrfs";
       options = [ "subvolid=0" ];
     };
 
   fileSystems."/var/lib/machines/sandbox" =
-    { device = "/dev/sda3";
+    { device = "/dev/disk/by-uuid/1bfcf62e-ed28-420d-b3f1-15a55115e72f";
       fsType = "btrfs";
       options = [ "subvol=arch" ];
     };
 
-  swapDevices = [ { device = "/dev/sda4"; } ];
+  swapDevices = [ { device = "/dev/disk/by-uuid/4ca68bc2-b0d4-4776-a36d-17dbfbe538c4"; } ];
 
   virtualisation.libvirtd.enable = false;
   virtualisation.virtualbox.host.enable = false;
