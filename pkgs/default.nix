@@ -18,6 +18,8 @@ in {
 
   electronmail = prev.callPackage ./applications/networking/mailreaders/electronmail { };
 
+  fetchdarcs = prev.callPackage ./build-support/fetchdarcs { };
+
   flarectl = prev.callPackage ./applications/misc/flarectl { };
 
   fsnoop = prev.callPackage ./tools/misc/fsnoop { };
@@ -54,12 +56,13 @@ in {
 
   rPackages = recurseIntoAttrs prev.rPackages;
 
-  sddm-chili =
-    prev.callPackage ./applications/display-managers/sddm/themes/chili { };
+  sddm-chili = prev.callPackage ./applications/display-managers/sddm/themes/chili { };
 
   shflags = prev.callPackage ./tools/misc/shflags { };
 
   velox = prev.callPackage ./applications/window-managers/velox { };
+
+  vervis = final.callPackage ./applications/version-management/vervis { };
 
   yacy = prev.callPackage ./servers/yacy { };
 }
