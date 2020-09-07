@@ -143,7 +143,7 @@ switch-run() {
     if waitConfirm; then
       echo "Success confirmation received, activating system" >&2
       if switch "$newsystem" boot; then
-        nix-env -p /nix/var/nix/profiles/system --set "$newsystem"
+        nix build --profile /nix/var/nix/profiles/system --no-link "$newsystem"
         # We need to run the boot switch again for the new system to be
         # available in the boot loader since it uses the system profiles to
         # generate that
