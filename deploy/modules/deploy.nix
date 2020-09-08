@@ -134,6 +134,7 @@ let
             importas -i host HOST
             forbacktickx -x 0 tries { seq 1 $TRIES } # TOOD: Prevent garbage collection until the end of the deploy
             foreground { fdswap 1 2 importas -i try tries echo -en "Attempt ''${try}..." }
+            export TERM xterm-256color # Have some nice copy output
             nix copy ${lib.optionalString (!config.hasFastConnection) "-s"} --to ssh://$host
               "${lib.concatStringsSep "\" \"" config.closurePaths}"
           }
