@@ -49,7 +49,7 @@ in {
       };
       peers = mkOption {
         default = {};
-        #type = with types; loaOf (submodule peerOpts);
+        #type = with types; attrsOf (submodule peerOpts);
         example = {
         };
         description = ''
@@ -107,5 +107,3 @@ in {
     networking.firewall.allowedUDPPorts = [ 6696 ];
   };
 }
-
-

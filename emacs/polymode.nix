@@ -25,7 +25,7 @@ let
 in {
   emacs-loader.polymode = { config, ... }: {
     options.polymodes = lib.mkOption {
-      type = with lib.types; loaOf (lines);
+      type = with lib.types; attrsOf (lines);
       default = [];
     };
 
