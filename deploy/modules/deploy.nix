@@ -134,7 +134,7 @@ let
             importas -i host HOST
             forbacktickx -x 0 tries { seq 1 $TRIES } # TOOD: Prevent garbage collection until the end of the deploy
             foreground { fdswap 1 2 importas -i try tries echo -en "Attempt ''${try}..." }
-            nix copy ${lib.optionalString (!config.hasFastConnection) "-s"} --to ssh://$host
+            nix copy ${lib.optionalString (!config.hasFastConnection) "-s"} --log-format bar --to ssh://$host
               "${lib.concatStringsSep "\" \"" config.closurePaths}"
           }
           echo "Failed to copy closure after ''${TRIES}"
