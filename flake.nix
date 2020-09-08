@@ -19,19 +19,19 @@
     dwarffs.inputs.nixpkgs.follows = "master"; #|
 
     home.url = "github:rycee/home-manager"; #|- Home-manager
-    home.inputs.nixpkgs.follows = "large";  #|
+    home.inputs.nixpkgs.follows = "small";  #|
 
     naersk.url = "github:nmattia/naersk";    #|- Naersk
-    naersk.inputs.nixpkgs.follows = "large"; #|
+    naersk.inputs.nixpkgs.follows = "small"; #|
 
     xontribs.url = "github:bqv/xontribs";       #|- Xontribs
     xontribs.inputs.nixpkgs.follows = "master"; #|
 
     guix.url = "github:bqv/guix";          #|- Guix
-    guix.inputs.nixpkgs.follows = "large"; #|
+    guix.inputs.nixpkgs.follows = "small"; #|
 
     construct.url = "github:matrix-construct/construct"; #|- Construct
-    construct.inputs.nixpkgs.follows = "large";          #|
+    construct.inputs.nixpkgs.follows = "small";          #|
 
     nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; #|- NixIPFS
     nix-ipfs.inputs.nixpkgs.follows = "master";               #|
@@ -43,7 +43,7 @@
     cluffer = { url = "github:robert-strandh/cluffer"; flake = false; }; #|  | cluffer
 
     wayland.url = "github:colemickens/nixpkgs-wayland"; #|- Nixpkgs-wayland
-    wayland.inputs.nixpkgs.follows = "large";           #|
+    wayland.inputs.nixpkgs.follows = "small";           #|
 
     haskell.url = "github:input-output-hk/haskell.nix"; # Haskell.nix
     utils.url = "github:numtide/flake-utils";           # Flake-utils

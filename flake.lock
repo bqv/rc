@@ -147,7 +147,7 @@
     "construct": {
       "inputs": {
         "nixpkgs": [
-          "large"
+          "small"
         ]
       },
       "locked": {
@@ -253,7 +253,7 @@
     "guix": {
       "inputs": {
         "nixpkgs": [
-          "large"
+          "small"
         ]
       },
       "locked": {
@@ -335,7 +335,7 @@
     "home": {
       "inputs": {
         "nixpkgs": [
-          "large"
+          "small"
         ]
       },
       "locked": {
@@ -435,7 +435,7 @@
     "naersk": {
       "inputs": {
         "nixpkgs": [
-          "large"
+          "small"
         ]
       },
       "locked": {
@@ -945,7 +945,7 @@
       "inputs": {
         "cachixpkgs": "cachixpkgs",
         "nixpkgs": [
-          "large"
+          "small"
         ]
       },
       "locked": {
