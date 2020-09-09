@@ -10,4 +10,6 @@
   bbc5live = ''http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio5live_mf_p'';
   bbc6music = ''http://bbcmedia.ic.llnwd.net/stream/bbcmedia_radio6music_mf_p'';
   lbc = ''http://media-ice.musicradio.com:80/LBCUKMP3Low'';
+  britcom1 = ''http://149.255.59.164:8132/stream'';
+  britcom2 = ''http://149.255.59.164:8078/stream'';
 }
