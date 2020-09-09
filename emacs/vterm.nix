@@ -7,7 +7,6 @@
       ;; banish ansi-term :)
       ;(defalias 'ansi-term (lambda (&rest _) (call-interactively #'vterm)))
       (setq vterm-shell "${pkgs.xonsh.pname}")
-    '' + ''
       (setq vterm-kill-buffer-on-exit t)
       (defun bqv/nested-emacs ()
         (interactive)
@@ -60,6 +59,9 @@
         (if with-sudo
           (vterm-run-sudo "htop")
           (vterm-run "htop")))
+      (defun tuir ()
+        (interactive)
+        (vterm-run "tuir"))
     '';
     systemDeps = with pkgs; [ cmake libtool libvterm ];
   };
