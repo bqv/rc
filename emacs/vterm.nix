@@ -12,7 +12,12 @@
         (interactive)
         (let ((vterm-shell "emacs -nw"))
           (vterm "*nested-emacs*")))
-      (defun vterm-run (command)
+      (defun vterm-run (with-sudo &rest r)
+        (interactive "P")
+        (if with-sudo
+          (apply #'call-interactively (cons #'vterm--run-sudo r))
+          (apply #'call-interactively (cons #'vterm--run r))))
+      (defun vterm--run (command)
         "Launch COMMAND in a vterm buffer."
         (interactive (list (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
         (let* ((executable (car (split-string command " ")))
@@ -22,7 +27,7 @@
           (assert (not (null executable)))
           (let ((vterm-shell command))
             (vterm buffer-name))))
-      (defun vterm-run-sudo (command)
+      (defun vterm--run-sudo (command)
         "Launch sudo COMMAND in a vterm buffer."
         (interactive (list (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
         (let* ((executable (car (split-string command " ")))
@@ -32,7 +37,12 @@
           (assert (not (null executable)))
           (let ((vterm-shell (concat "sudo " command)))
             (vterm buffer-name))))
-      (defun vterm-ssh-run (server command)
+      (defun vterm-ssh-run (with-sudo &rest r)
+        (interactive "P")
+        (if with-sudo
+          (apply #'call-interactively (cons #'vterm--ssh-run-sudo r))
+          (apply #'call-interactively (cons #'vterm--ssh-run r))))
+      (defun vterm--ssh-run (server command)
         "Launch COMMAND over ssh to SERVER, in a vterm buffer."
         (interactive (list (completing-read "Server" '("${hosts.wireguard.zeta}"))
                            (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
@@ -43,7 +53,7 @@
           (assert (not (null executable)))
           (let ((vterm-shell (concat "ssh " server " -t " command)))
             (vterm buffer-name))))
-      (defun vterm-ssh-run-sudo (server command)
+      (defun vterm--ssh-run-sudo (server command)
         "Launch sudo COMMAND over ssh to SERVER, in a vterm buffer."
         (interactive (list (completing-read "Server" '("${hosts.wireguard.zeta}"))
                            (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
@@ -57,11 +67,11 @@
       (defun htop (with-sudo)
         (interactive "P")
         (if with-sudo
-          (vterm-run-sudo "htop")
-          (vterm-run "htop")))
+          (vterm--run-sudo "htop")
+          (vterm--run "htop")))
       (defun tuir ()
         (interactive)
-        (vterm-run "tuir"))
+        (vterm--run "tuir"))
     '';
     systemDeps = with pkgs; [ cmake libtool libvterm ];
   };
