@@ -400,6 +400,23 @@
         "type": "github"
       }
     },
+    "lowdown-src": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1598296217,
+        "narHash": "sha256-ha7lyNY1d8m+osmDpPc9f/bfZ3ZC1IVIXwfyklSWg8I=",
+        "owner": "edolstra",
+        "repo": "lowdown",
+        "rev": "c7a4e715af1e233080842db82d15b261cb74cb28",
+        "type": "github"
+      },
+      "original": {
+        "owner": "edolstra",
+        "ref": "no-structs-in-anonymous-unions",
+        "repo": "lowdown",
+        "type": "github"
+      }
+    },
     "master": {
       "locked": {
         "lastModified": 1599259474,
@@ -490,16 +507,15 @@
     },
     "nix-ipfs": {
       "inputs": {
-        "nixpkgs": [
-          "master"
-        ]
+        "lowdown-src": "lowdown-src",
+        "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1597848238,
-        "narHash": "sha256-Mx6qMmIvi8o97xVR2QVbfJvFb5XU3Kz5Ajol1pFyZFI=",
+        "lastModified": 1599678855,
+        "narHash": "sha256-tfqnzKM4o/JBaDKqB+D+QiXyP5EXKxBfPRQD5PCMM7s=",
         "owner": "obsidiansystems",
         "repo": "nix",
-        "rev": "3d11a68b4c243d4444c683378c24b5f6f752bbf8",
+        "rev": "c0dab0f6197d8b9bd0e82ed3810d04cff8de0d78",
         "type": "github"
       },
       "original": {
@@ -507,6 +523,21 @@
         "ref": "ipfs-develop",
         "repo": "nix",
         "type": "github"
+      }
+    },
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1591633336,
+        "narHash": "sha256-oVXv4xAnDJB03LvZGbC72vSVlIbbJr8tpjEW5o/Fdek=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "70717a337f7ae4e486ba71a500367cad697e5f09",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-20.03-small",
+        "type": "indirect"
       }
     },
     "nyxt": {

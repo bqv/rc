@@ -33,8 +33,7 @@
     construct.url = "github:matrix-construct/construct"; #|- Construct
     construct.inputs.nixpkgs.follows = "small";          #|
 
-    nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; #|- NixIPFS
-    nix-ipfs.inputs.nixpkgs.follows = "master";               #|
+    nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; # NixIPFS
 
     emacs.url = "github:nix-community/emacs-overlay";   # Emacs-overlay
 
@@ -122,7 +121,7 @@
           napalm = pkgs.callPackage inputs.napalm;
           inherit (inputs.haskell.legacyPackages.${system}) haskell-nix; # ignore overlay, we want cache hits
         })
-        (final: prev: { nix-ipfs = (inputs.nix-ipfs.overlay final prev).nix; })
+        (final: prev: { nix-ipfs = inputs.nix-ipfs.defaultPackage.${system}; })
         inputs.nix.overlay
         inputs.guix.overlay
         inputs.construct.overlay (final: prev: {
