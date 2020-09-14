@@ -12,4 +12,5 @@
   lbc = ''http://media-ice.musicradio.com:80/LBCUKMP3Low'';
   britcom1 = ''http://149.255.59.164:8132/stream'';
   britcom2 = ''http://149.255.59.164:8078/stream'';
+  rokbc2 = ''http://149.255.59.164:8009/stream'';
 }
