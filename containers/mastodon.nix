@@ -5,6 +5,10 @@ let
   securityLimits = config.environment.etc.limits;
   hostAddress = "10.6.0.1";
   localAddress = "10.6.0.2";
+  twittercfg = {
+    hostAddress = "10.6.0.3";
+    localAddress = "10.6.0.4";
+  };
 in {
   services.postgresql.enable = true;
   services.postgresql.ensureUsers = [
@@ -37,7 +41,7 @@ in {
 
           environment.etc.limits = securityLimits;
           environment.systemPackages = with pkgs; [
-            postgresql redis postfix config.services.mastodon.package twitterpub
+            postgresql redis postfix config.services.mastodon.package vim wget
           ];
 
           services.elasticsearch.enable = true;
@@ -96,9 +100,39 @@ in {
 
           networking.firewall.enable = false;
           networking.nameservers = [ "62.210.16.6" "62.210.16.7" ];
+          networking.extraHosts = ''${twittercfg.localAddress} twitter.com'';
 
           security.acme.acceptTerms = true;
           security.acme.email = "ssl@${domains.home}";
+
+          boot.enableContainers = true;
+          containers.twitterpub =
+            {
+              autoStart = true;
+              enableTun = true;
+              privateNetwork = true;
+              inherit (twittercfg) hostAddress localAddress;
+
+              config =
+                { config, stdenv, ... }:
+
+                {
+                  nixpkgs.pkgs = pkgs;
+                  nixpkgs.config.allowUnfree = true;
+
+                  environment.systemPackages = with pkgs; [
+                    twitterpub vim wget
+                  ];
+
+                  networking.firewall.enable = false;
+                };
+              bindMounts = {
+                "/var/lib/twitterpub" = {
+                  hostPath = "/var/lib/mastodon/twitterpub";
+                  isReadOnly = false;
+                };
+              };
+            };
         };
       bindMounts = {
         "/var/lib/mastodon" = {
