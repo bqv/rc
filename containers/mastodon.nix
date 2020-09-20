@@ -26,9 +26,9 @@ in {
 
       config =
         { config, stdenv, ... }:
- 
+
         {
-          imports = [ 
+          imports = [
             ../profiles/services/mastodon
           ];
 
@@ -37,7 +37,7 @@ in {
 
           environment.etc.limits = securityLimits;
           environment.systemPackages = with pkgs; [
-            postgresql redis postfix config.services.mastodon.package
+            postgresql redis postfix config.services.mastodon.package twitterpub
           ];
 
           services.elasticsearch.enable = true;
@@ -93,7 +93,7 @@ in {
               ];
             };
           };
- 
+
           networking.firewall.enable = false;
           networking.nameservers = [ "62.210.16.6" "62.210.16.7" ];
 

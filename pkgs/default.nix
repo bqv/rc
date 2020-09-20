@@ -60,6 +60,8 @@ in {
 
   shflags = prev.callPackage ./tools/misc/shflags { };
 
+  twitterpub = prev.callPackage ./servers/twitterpub { };
+
   velox = prev.callPackage ./applications/window-managers/velox { };
 
   vervis = final.callPackage ./applications/version-management/vervis { };
