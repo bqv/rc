@@ -112,8 +112,6 @@ in {
           containers.twitterpub =
             {
               autoStart = true;
-             #enableTun = true;
-             #privateNetwork = true;
               inherit (twittercfg) hostAddress localAddress;
 
               config =
@@ -128,6 +126,25 @@ in {
                   ];
 
                   networking.firewall.enable = false;
+
+                  systemd.services.twitterpub = {
+                    serviceConfig = rec {
+                      WorkingDirectory = "/var/lib/twitterpub";
+                      ExecStartPre = let
+                        configToml = pkgs.writeText "twitterpub.toml" ''
+                          Domain = "twitter.com"
+                          Listen = 80
+                        '';
+                      in pkgs.writeScript "setup-twitterpub" ''
+                        mkdir -p ${WorkingDirectory}
+                        cd ${WorkingDirectory}
+                        ln -sf ${configToml} twitterpub.toml
+                      '';
+                      ExecStart = "${pkgs.twitterpub}/bin/twitterpub";
+                      Restart = "always";
+                    };
+                    wantedBy = [ "default.target" ];
+                  };
                 };
               bindMounts = {
                 "/var/lib/twitterpub" = {
