@@ -132,7 +132,7 @@ in {
                   systemd.services.twitterpub = {
                     serviceConfig = let
                       configToml = pkgs.writeText "twitterpub.toml" ''
-                        Domain = "tw.${domains.srvc}"
+                        Domain = "twitter.com"
                         Listen = ":443"
                         TLS = true
                         CertFile = "${twitterCfg.crtFile}"
