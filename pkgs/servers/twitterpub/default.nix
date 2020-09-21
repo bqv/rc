@@ -9,9 +9,7 @@ buildGoModule rec {
   src = fetchFromGitHub {
     owner = "bqv";
     repo = "twitterpub";
-    rev = "5ef96de25a0d77f815564e35bccd330403dc32e7";
-    sha256 = "ypMfbs+61oxAbpN0vCzMCxJ3ZgNHhq+Km9m656HuYdk=";
+    rev = "fb0a21efd27d2c80cdf807ca9439eb8f7a52df6b";
+    sha256 = "06c508m4ylx5k3pfgwm688c8kwkydkwni7df4ncyx135clhwcl79";
   };
-
-  patches = [ ./tls.patch ];
 }
