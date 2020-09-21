@@ -12,4 +12,6 @@ buildGoModule rec {
     rev = "5ef96de25a0d77f815564e35bccd330403dc32e7";
     sha256 = "ypMfbs+61oxAbpN0vCzMCxJ3ZgNHhq+Km9m656HuYdk=";
   };
+
+  patches = [ ./tls.patch ];
 }
