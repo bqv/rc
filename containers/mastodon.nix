@@ -5,10 +5,6 @@ let
   securityLimits = config.environment.etc.limits;
   hostAddress = "10.6.0.1";
   localAddress = "10.6.0.2";
-  twittercfg = {
-    hostAddress = "10.6.0.3";
-    localAddress = "10.6.0.4";
-  };
 in {
   services.postgresql.enable = true;
   services.postgresql.ensureUsers = [
@@ -100,7 +96,7 @@ in {
 
           networking.firewall.enable = false;
           networking.nameservers = [ "62.210.16.6" "62.210.16.7" ];
-          networking.extraHosts = ''${twittercfg.localAddress} twitter.com'';
+          networking.extraHosts = ''${localAddress} twitter.com'';
 
           security.acme.acceptTerms = true;
           security.acme.email = "ssl@${domains.home}";
@@ -112,9 +108,6 @@ in {
           containers.twitterpub =
             {
               autoStart = true;
-             #enableTun = true;
-             #privateNetwork = true;
-              inherit (twittercfg) hostAddress localAddress;
 
               config =
                 { config, stdenv, ... }:
@@ -128,6 +121,25 @@ in {
                   ];
 
                   networking.firewall.enable = false;
+
+                  systemd.services.twitterpub = {
+                    serviceConfig = rec {
+                      WorkingDirectory = "/var/lib/twitterpub";
+                      ExecStartPre = let
+                        configToml = pkgs.writeText "twitterpub.toml" ''
+                          Domain = "twitter.com"
+                          Listen = 80
+                        '';
+                      in pkgs.writeScript "setup-twitterpub" ''
+                        mkdir -p ${WorkingDirectory}
+                        cd ${WorkingDirectory}
+                        ln -sf ${configToml} twitterpub.toml
+                      '';
+                      ExecStart = "${pkgs.twitterpub}/bin/twitterpub";
+                      Restart = "always";
+                    };
+                    wantedBy = [ "default.target" ];
+                  };
                 };
               bindMounts = {
                 "/var/lib/twitterpub" = {
