@@ -78,6 +78,15 @@
             entryPoints = [ "https" ];
             tls.domains = [{ main = "u.${domains.srvc}"; }];
           };
+          twitterpub-http = {
+            entryPoints = [ "http" ];
+            rule = "Host(`tw.${domains.srvc}`)";
+            service = "twitterpub";
+          };
+          twitterpub-https = twitterpub-http // {
+            entryPoints = [ "https" ];
+            tls.domains = [{ main = "tw.${domains.srvc}"; }];
+          };
           construct-http = {
             entryPoints = [ "http" ];
             rule = "Host(`cs.${domains.srvc}`)";
@@ -380,6 +389,11 @@
           mastodon.loadBalancer = {
             servers = [
               { url = "https://10.6.0.2:8443"; }
+            ];
+          };
+          twitterpub.loadBalancer = {
+            servers = [
+              { url = "https://10.6.0.2:443"; }
             ];
           };
           construct.loadBalancer = {
