@@ -379,7 +379,7 @@
           };
           mastodon.loadBalancer = {
             servers = [
-              { url = "https://10.6.0.2:443"; }
+              { url = "https://10.6.0.2:8443"; }
             ];
           };
           construct.loadBalancer = {
