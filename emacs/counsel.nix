@@ -18,7 +18,8 @@
 
       (defun suppress-messages (func &rest args)
         (let ((save-silently t))
-          (apply func args)))
+          (apply func args))
+        (message nil))
       (advice-add 'recentf-save-list :around #'suppress-messages)
     '';
     systemDeps = with pkgs; [ ag ];

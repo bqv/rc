@@ -35,7 +35,9 @@
 
     nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; # NixIPFS
 
-    emacs.url = "github:nix-community/emacs-overlay";   # Emacs-overlay
+    emacs.url = "github:nix-community/emacs-overlay";           # Emacs-overlay
+    nativecomp.url = "github:fejfighter/emacs/pgtk-nativecomp"; # Emacs-nativecomp
+    nativecomp.flake = false;
 
     nyxt = { url = "github:atlas-engineer/nyxt"; flake = false; };       #|- Nyxt
     cl-webkit = { url = "github:joachifm/cl-webkit"; flake = false; };   #|  | cl-webkit
@@ -143,7 +145,22 @@
             src = builtins.toPath "${inputs.construct}/.";
           });
         })
-        inputs.emacs.overlay
+        inputs.emacs.overlay (final: prev: rec {
+          gccEmacs = let
+            version = inputs.nativecomp.shortRev;
+            src = inputs.nativecomp;
+          in final.emacsGcc.overrideAttrs (old: {
+            name = "${old.name}-${version}";
+            inherit src version;
+            buildInputs = old.buildInputs ++ [ final.cairo ];
+            configureFlags = old.configureFlags ++ [ "--with-pgtk" "--with-cairo" "--with-modules" ];
+          });
+
+          gccEmacsPackages = lib.dontRecurseIntoAttrs (final.emacsPackagesFor gccEmacs);
+
+          # Overridden for exwm
+          emacsWithPackages = gccEmacsPackages.emacsWithPackages;
+        })
         inputs.xontribs.overlay
         inputs.wayland.overlay
         inputs.self.overlay
