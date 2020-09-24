@@ -2,6 +2,7 @@
 
 {
   programs.mosh.enable = true;
+  programs.x2goserver.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh = {
