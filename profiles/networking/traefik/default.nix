@@ -87,6 +87,15 @@
             entryPoints = [ "https" ];
             tls.domains = [{ main = "tw.${domains.srvc}"; }];
           };
+          synapse-http = {
+            entryPoints = [ "http" ];
+            rule = "Host(`sn.${domains.srvc}`)";
+            service = "synapse";
+          };
+          synapse-https = synapse-http // {
+            entryPoints = [ "https" "synapse" ];
+            tls.domains = [{ main = "sn.${domains.srvc}"; }];
+          };
           construct-http = {
             entryPoints = [ "http" ];
             rule = "Host(`cs.${domains.srvc}`)";
@@ -396,6 +405,11 @@
               { url = "https://10.6.0.2:443"; }
             ];
           };
+          synapse.loadBalancer = {
+            servers = [
+              { url = "https://10.7.0.2:8448"; }
+            ];
+          };
           construct.loadBalancer = {
             servers = [
               { url = "https://10.7.0.2:4004"; }
@@ -671,6 +685,9 @@
         };
         ircs = {
           address = ":6697/tcp";
+        };
+        synapse = {
+          address = ":8448/tcp";
         };
         anki = {
           address = ":27701/tcp";
