@@ -34,7 +34,8 @@ in {
           services.matrix-synapse = rec {
             enable = true;
             server_name = "sn.${domains.srvc}";
-            registration_shared_secret = "11e7c94e01a74ed4adbc5837b4b478d8";
+            enable_registration = true;
+            inherit (import ../secrets/matrix.synapse.nix) registration_shared_secret;
             public_baseurl = "https://matrix.${domains.srvc}/";
             tls_certificate_path = "/var/lib/acme/${domains.srvc}/fullchain.pem";
             tls_private_key_path = "/var/lib/acme/${domains.srvc}/key.pem";
