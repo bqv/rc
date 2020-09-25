@@ -58,9 +58,9 @@ in lib.recurseIntoAttrs rec {
     src = fetchFromGitHub {
       owner = "purcell";
       repo = "envrc";
-      rev = "19b4d6a8384a8e2a52caa496315377797fa8a062";
-      sha256 = "0fkld36r4fc6anqyq1hj6ak2vxal77aligyqw04g22j9c3l4l1rx";
-      # date = 2020-07-14T14:01:25+12:00;
+      rev = "da8e306b0a562af05c5e990aced968d7fda06296";
+      sha256 = "0h6zaxwf1wx831qfp3mahw7ir7l236a6f04dz54qzvqsx9593pfb";
+      # date = 2020-09-15T10:03:07+12:00;
     };
     buildInputs = with emacsPackages; [
       seq
@@ -73,8 +73,9 @@ in lib.recurseIntoAttrs rec {
     src = fetchFromGitHub {
       owner = "aardsoft";
       repo = "emacsbridge";
-      rev = "c11e18940f5e662ddd79519ab043d30114f4a7c6";
-      sha256 = "1lkipb4x57pscy62qc3r3zacpmyd85frq7rld2v3psfayxrsb9l6";
+      rev = "617eb8fa4e75da40749a313544670052ed1f12f5";
+      sha256 = "11y029fg4qar0ajpqphbqlsx0pnd547d0rlrif4x4q8147s0c9h2";
+      # date = 2020-06-15T13:46:19+03:00;
     };
     preBuild = "cp lisp/* .";
     postInstall = "cp -r qml $out";
@@ -91,6 +92,7 @@ in lib.recurseIntoAttrs rec {
       repo = "font-lock-ext";
       rev = "b6c82e8ac7996d96494a54454015a98ceb883feb";
       sha256 = "19wywl3y5schs9yzvrnngamajvgbbvajxhgpzfprwwv660phdsvl";
+      # date = 2017-10-30T15:45:42+01:00;
     };
     buildInputs = with emacsPackages; [
     ];
@@ -104,6 +106,7 @@ in lib.recurseIntoAttrs rec {
       repo = "sln-mode";
       rev = "0f91d1b957c7d2a7bab9278ec57b54d57f1dbd9c";
       sha256 = "1ahrripvlrislw3b40zkvxnsbwkzagxdbcskn92kpf8944zjmaay";
+      # date = 2015-02-12T08:52:08+01:00;
     };
     buildInputs = with emacsPackages; [
       font-lock-ext
