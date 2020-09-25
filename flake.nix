@@ -2,14 +2,14 @@
   description = "A highly structured configuration database.";
 
   inputs = {
-    master.url = "github:nixos/nixpkgs/master";                        #|
-    stable.url = "github:nixos/nixpkgs/nixos-20.03";                   #|\
-    staged.url = "github:nixos/nixpkgs/staging";                       #| -- Nixpkgs
-    small.url  = "github:nixos/nixpkgs/nixos-unstable-small";          #|/
-    large.url  = "github:nixos/nixpkgs/nixos-unstable";                #|
-    pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd"; #|
-    pr93457.url = "github:ju1m/nixpkgs/apparmor";                      #|
-    pr93659.url = "github:ju1m/nixpkgs/security.pass";                 #|
+    master.url = "github:nixos/nixpkgs/master";                        #|.
+    stable.url = "github:nixos/nixpkgs/nixos-20.03";                   #| \
+    staged.url = "github:nixos/nixpkgs/staging";                       #|  |-- Nixpkgs
+    small.url  = "github:nixos/nixpkgs/nixos-unstable-small";          #| /
+    large.url  = "github:nixos/nixpkgs/nixos-unstable";                #|'
+    pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd"; #|\
+    pr93457.url = "github:ju1m/nixpkgs/apparmor";                      #| |-- PullReqs
+    pr93659.url = "github:ju1m/nixpkgs/security.pass";                 #|/
 
     nix.url = "github:nixos/nix";          #|- Nix
     nix.inputs.nixpkgs.follows = "master"; #|
