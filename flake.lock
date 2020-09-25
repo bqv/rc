@@ -151,11 +151,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1596694131,
-        "narHash": "sha256-xs1FMTXxdwb1CLF4p7WgTmPMSYodh4haPSX0O3AQyRk=",
+        "lastModified": 1600956245,
+        "narHash": "sha256-8bxNRfSmd4Qi31WKypfYeEMnZreT+2uL7t0NCnneTp0=",
         "owner": "matrix-construct",
         "repo": "construct",
-        "rev": "59dd43917b38522c0797ba662401a9206d1668fc",
+        "rev": "563f833ab325f27ff9e71af61af427fb02812f90",
         "type": "github"
       },
       "original": {
