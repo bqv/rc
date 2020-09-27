@@ -2,14 +2,15 @@
   description = "A highly structured configuration database.";
 
   inputs = {
-    master.url = "github:nixos/nixpkgs/master";                        #|.
-    stable.url = "github:nixos/nixpkgs/nixos-20.03";                   #| \
-    staged.url = "github:nixos/nixpkgs/staging";                       #|  |-- Nixpkgs
-    small.url  = "github:nixos/nixpkgs/nixos-unstable-small";          #| /
-    large.url  = "github:nixos/nixpkgs/nixos-unstable";                #|'
-    pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd"; #|\
-    pr93457.url = "github:ju1m/nixpkgs/apparmor";                      #| |-- PullReqs
-    pr93659.url = "github:ju1m/nixpkgs/security.pass";                 #|/
+    master.url = "github:nixos/nixpkgs/master";               #|.
+    stable.url = "github:nixos/nixpkgs/nixos-20.03";          #| \
+    staged.url = "github:nixos/nixpkgs/staging";              #|  |-- Nixpkgs
+    small.url  = "github:nixos/nixpkgs/nixos-unstable-small"; #| /
+    large.url  = "github:nixos/nixpkgs/nixos-unstable";       #|'
+    pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd"; #|\ Pull
+    pr93659.url = "github:ju1m/nixpkgs/security.pass";                 #|/ Reqs
+
+    super.url = "github:bqv/nixrc/a134f52"; #- Recurse
 
     nix.url = "github:nixos/nix";          #|- Nix
     nix.inputs.nixpkgs.follows = "master"; #|
@@ -18,20 +19,20 @@
     dwarffs.inputs.nix.follows = "nix";        #|
     dwarffs.inputs.nixpkgs.follows = "master"; #|
 
-    home.url = "github:rycee/home-manager"; #|- Home-manager
-    home.inputs.nixpkgs.follows = "small";  #|
+    home.url = "github:nix-community/home-manager"; #|- Home-manager
+    home.inputs.nixpkgs.follows = "master";         #|
 
-    naersk.url = "github:nmattia/naersk";    #|- Naersk
-    naersk.inputs.nixpkgs.follows = "small"; #|
+    naersk.url = "github:nmattia/naersk";     #|- Naersk
+    naersk.inputs.nixpkgs.follows = "master"; #|
 
     xontribs.url = "github:bqv/xontribs";       #|- Xontribs
     xontribs.inputs.nixpkgs.follows = "master"; #|
 
-    guix.url = "github:bqv/guix";          #|- Guix
-    guix.inputs.nixpkgs.follows = "small"; #|
+    guix.url = "github:bqv/guix";           #|- Guix
+    guix.inputs.nixpkgs.follows = "master"; #|
 
     construct.url = "github:matrix-construct/construct"; #|- Construct
-    construct.inputs.nixpkgs.follows = "small";          #|
+    construct.inputs.nixpkgs.follows = "large";          #|
 
     nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; # NixIPFS
 
@@ -67,9 +68,35 @@
       android_sdk.accept_license = true;
     };
 
+    composite = let
+      src = inputs.nixpkgs;
+      system = builtins.currentSystem;
+      basePkgs = src.legacyPackages.${system};
+      patches = [
+        {
+          meta.description = "nixos/iwd: add `networks` and `interfaces` option";
+          url = "https://github.com/NixOS/nixpkgs/pull/75800.diff";
+          sha256 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+        } {
+          meta.description = "nixos/security.gnupg: provisioning GnuPG-protected secrets through the Nix store";
+          url = "https://github.com/NixOS/nixpkgs/pull/93659.diff";
+          sha256 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+        }
+      ];
+    in basePkgs.applyPatches {
+      name = "nixpkgs-patched";
+      inherit src;
+      patches = map basePkgs.fetchpatch patches;
+      postPatch = ''
+        patch=$(printf '%s\n' ${builtins.concatStringsSep " " (map (p: p.sha256) patches)} |
+          sort | sha256sum | cut -c -7)
+        echo "+patch-$patch" >.version-suffix
+      '';
+    };
+
     channels = with inputs; {
       pkgs = small;       # For packages
-      modules = pr93457;  # For nixos modules
+      modules = master;   # For nixos modules
       lib = master;       # For flake-wide lib
     }; inherit (channels.lib) lib; # this ^
 
@@ -165,10 +192,13 @@
         inputs.wayland.overlay
         inputs.self.overlay
         (pkgs: lib.const {
+          inherit (channels.modules.legacyPackages.${system}) apparmor apparmor-utils apparmor-kernel-patches apparmorRulesFromClosure iputils inetutils;
           inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird; # slow
           inherit (inputs.stable.legacyPackages.${system}) nheko; # anticipating pr94942
           graalvm8 = builtins.trace "pkgs.graalvm8: suspended - too big and not cached" pkgs.hello;
-          inherit (inputs.pr93457.legacyPackages.${system}) apparmor apparmor-utils apparmor-kernel-patches apparmorRulesFromClosure; # pullreq
+          obs-studio = builtins.trace "pkgs.obs-studio: suspended - vlc is broken" pkgs.hello;
+          inherit (inputs.super.packages.${system}) vervis; # broken by update
+         #xonsh = inputs.super.legacyPackages.${system}.xonsh; # broken by update
         })
         (final: prev: {
           nyxt = prev.nyxt.override {
@@ -243,7 +273,9 @@
         };
       };
       specialArgs = {
-        inherit inputs usr;
+        inherit usr;
+        inputs = builtins.trace "inputs: renamed to 'flakes'" inputs;
+        flakes = inputs;
         fetchPullRequest = fetchPullRequestForSystem system;
 
         domains = import ./secrets/domains.nix;
@@ -370,13 +402,19 @@
           impermanence = import "${inputs.impermanence}/nixos.nix";
 
           # Set up any other pull request modules
-          pulls = { config, ... }: let
+          iwd = { config, ... }: let
             iwdModule = "services/networking/iwd.nix";
           in {
             disabledModules = [ iwdModule ];
             imports = [ (import "${inputs.pr75800}/nixos/modules/${iwdModule}" {
               inherit config pkgs;
-              lib = import "${inputs.pr75800}/lib/default.nix";
+              lib = let
+                iwdLib = import "${inputs.pr75800}/lib/default.nix";
+              in lib // {
+                types = {
+                  inherit (iwdLib.types) fixedLengthString lengthCheckedString;
+                } // lib.types;
+              };
             }) ];
           };
 
@@ -384,7 +422,7 @@
           flakeModules = import ./modules/nixos.nix;
 
         in flakeModules ++ [
-          core global home local gnupg pulls
+          core global home local gnupg iwd
           home-manager dwarffs guix matrix-construct impermanence
         ];
       };
@@ -400,7 +438,29 @@
 
     # convenience...
     homeConfigurations = lib.genAttrs (builtins.attrNames inputs.self.nixosConfigurations)
-      (host: inputs.self.nixosConfigurations.${host}.config.home-manager.users);
+      (host: inputs.self.nixosConfigurations.${host}.config.home-manager.users) //
+    {
+      epsilon = forAllSystems ({ pkgs, system, ... }:
+        inputs.home.lib.homeManagerConfiguration {
+          configuration = {
+            _module.args = rec {
+              pkgsPath = pkgs.path;
+              inherit pkgs;
+              super.services.aria2.rpcSecret = "";
+              super.networking.hostName = "epsilon";
+            };
+            nixpkgs = {
+              inherit config system;
+            };
+            imports = [ ./users/aion.nix ];
+          };
+          inherit system;
+          homeDirectory = "/home/bao";
+          username = "bao";
+          inherit pkgs;
+        }
+      );
+    };
 
     legacyPackages = forAllSystems ({ pkgs, ... }: pkgs);
 

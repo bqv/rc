@@ -6,12 +6,9 @@ let
   email = "ssl+${config.networking.hostName}@${domains.home}";
   mkCertFor = domain: rec {
     inherit email;
-    allowKeysForGroup = true;
+    #inherit domain;
     #directory = "/var/lib/acme/${domain}/";
-    #domain = domain;
-    extraDomains = genAttrs [
-      "*.${domain}"
-    ] (const null);
+    extraDomainNames = [ "*.${domain}" ];
     group = "keys";
 
     dnsProvider = "cloudflare";

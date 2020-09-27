@@ -4,7 +4,7 @@ final: prev: let
   dotnetOverride = {
     azure-functions-core-tools = prev.callPackage ./development/dotnet-modules/azure-functions-core-tools { };
   };
-in {
+in rec {
   bottom = prev.callPackage ./tools/system/bottom { };
 
   emacsPackages = recurseIntoAttrs (prev.emacsPackages.overrideScope' emacsOverride);
@@ -64,7 +64,7 @@ in {
 
   velox = prev.callPackage ./applications/window-managers/velox { };
 
-  vervis = final.callPackage ./applications/version-management/vervis { };
+  vervis = final.stable.callPackage ./applications/version-management/vervis { inherit fetchdarcs; };
 
   yacy = prev.callPackage ./servers/yacy { };
 }

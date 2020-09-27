@@ -2,7 +2,7 @@
 
 {
   imports = [
-    ../../profiles/meta/fatal-warnings.nix
+   #../../profiles/meta/fatal-warnings.nix
     ../../profiles/misc/disable-mitigations.nix
     ../../profiles/misc/adblocking.nix
     ../../profiles/security/sudo.nix
