@@ -7,6 +7,10 @@ let
   databaseUser = "vervis";
   databaseName = "vervis";
 in {
+  environment.systemPackages = with pkgs; [
+    vervis 
+  ];
+
   services.postgresql.enable = true;
   services.postgresql.ensureUsers = [
     {
