@@ -196,9 +196,7 @@
           inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird; # slow
           inherit (inputs.stable.legacyPackages.${system}) nheko; # anticipating pr94942
           graalvm8 = builtins.trace "pkgs.graalvm8: suspended - too big and not cached" pkgs.hello;
-          obs-studio = builtins.trace "pkgs.obs-studio: suspended - vlc is broken" pkgs.hello;
           inherit (inputs.super.packages.${system}) vervis; # broken by update
-         #xonsh = inputs.super.legacyPackages.${system}.xonsh; # broken by update
         })
         (final: prev: {
           nyxt = prev.nyxt.override {
@@ -345,10 +343,6 @@
               ln -sfn /run/current-system/flake/input/self /etc/nixos || \
               true
             '';
-
-           #systemd.suppressedSystemUnits = builtins.trace "cryptsetup.target was missing from systemd (Aaaa)" [
-           #  "cryptsetup.target"
-           #];
 
             nixpkgs = {
               pkgs = pkgs // {
