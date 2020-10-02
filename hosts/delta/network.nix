@@ -1,4 +1,4 @@
-{ config, lib, pkgs, hosts, inputs, usr, ... }:
+{ config, lib, pkgs, hosts, flakes, usr, ... }:
 
 {
   environment.systemPackages = with pkgs; [ dhcp dhcpcd ];

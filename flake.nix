@@ -274,7 +274,6 @@
       };
       specialArgs = {
         inherit usr;
-        inputs = builtins.trace "inputs: renamed to 'flakes'" inputs;
         flakes = inputs;
         fetchPullRequest = fetchPullRequestForSystem system;
 

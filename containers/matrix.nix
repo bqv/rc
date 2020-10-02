@@ -1,4 +1,4 @@
-{ config, pkgs, lib, domains, inputs, ... }:
+{ config, pkgs, lib, domains, flakes, ... }:
 
 let
   hostAddress = "10.7.0.1";
@@ -22,7 +22,7 @@ in {
  
         {
           imports = [
-            inputs.construct.nixosModules.matrix-construct
+            flakes.construct.nixosModules.matrix-construct
           ];
 
           environment.memoryAllocator.provider = "jemalloc";

@@ -1,4 +1,4 @@
-{ config, lib, usr, pkgs, inputs, ... }:
+{ config, lib, usr, pkgs, flakes, ... }:
 
 {
   emacs-loader.nix-mode = {
@@ -10,7 +10,7 @@
       ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: path: ''
         (defun flake-${name}-rg ()
           (interactive)
-          (counsel-rg nil "/run/current-system/flake/input/${name}/" nil "[flake:${name}] rg: ")) '') inputs)}
+          (counsel-rg nil "/run/current-system/flake/input/${name}/" nil "[flake:${name}] rg: ")) '') flakes)}
 
       (defun nix-repl-complete ()
         (interactive)
