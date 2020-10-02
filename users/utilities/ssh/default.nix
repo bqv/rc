@@ -6,6 +6,9 @@ in {
   config = mkIf cfg.enable {
     programs.ssh = {
       userKnownHostsFile = "/dev/null";
+      extraOptionOverrides = {
+        Include = "config.*";
+      };
       extraConfig = ''
         VerifyHostKeyDNS yes
         VisualHostKey yes
@@ -44,12 +47,19 @@ in {
           };
         };
 
-        leo = {
-          host = "${hosts.lan.leo}";
-          user = "jas";
+        epsilon = {
+          host = "${hosts.lan.epsilon}";
+          user = "aion";
           extraOptions = {
             StrictHostKeyChecking = "no";
-            PubkeyAuthentication = "no";
+          };
+        };
+
+        leo = {
+          host = "${hosts.lan.leo}";
+          user = "kani";
+          extraOptions = {
+            StrictHostKeyChecking = "no";
           };
         };
 
