@@ -455,8 +455,8 @@
             imports = [ ./users/aion.nix ];
           };
           inherit system;
-          homeDirectory = "/home/bao";
-          username = "bao";
+          homeDirectory = "/home/aion";
+          username = "aion";
           inherit pkgs;
         }
       );

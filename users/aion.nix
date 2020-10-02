@@ -4,7 +4,6 @@
   imports = [
     ./shells/fish
     ./shells/xonsh
-    ./browsers/firefox
     ./browsers/nyxt
     ./editors/vim
    #./media/radio
@@ -38,22 +37,15 @@
 
   programs.home-manager.enable = true;
   programs.command-not-found.enable = false;
-  programs.qutebrowser.enable = true;
-  programs.firefox.enable = true;
   programs.xonsh.enable = true;
   programs.fish.enable = true;
   programs.htop.enable = true;
   programs.bat.enable = true;
   programs.fzf.enable = true;
   programs.tmux.enable = true;
-  programs.emacs.enable = true;
   programs.neovim.enable = true;
   programs.jq.enable = true;
   programs.direnv.enable = true;
-  programs.texlive.enable = true;
-  programs.taskwarrior.enable = true;
-  programs.neomutt.enable = true;
-  programs.obs-studio.enable = true;
   programs.mpv.enable = true;
   programs.feh.enable = true;
   programs.git.enable = true;
@@ -61,22 +53,16 @@
 
   services.lorri.enable = true;
   services.gpg-agent.enable = true;
-  services.spotifyd.enable = false;
-  services.mpd.enable = true;
-  services.mpdris2.enable = true;
-  services.taskwarrior-sync.enable = false;
-  services.dunst.enable = true;
-  services.emacs.enable = true;
 
   #systemd.user.startServices = true; # broken by the [nix-env -> nix profile] move
 
   home.packages = with pkgs; [
-    appimage-run # Package Tools
-    abduco dvtm # Terminal Multiplexing
-    pstree bottom # Process Monitoring
-    pv pup # Pipe Management
-    nmap wget curl mitmproxy aria2 # Network Utilities
-    ipfscat onionshare nyxt tuir redditgtk # Communication Tools
-    file exa unrar unzip ncdu tree # File Management
+   #appimage-run # Package Tools
+   #abduco dvtm # Terminal Multiplexing
+   #pstree bottom # Process Monitoring
+   #pv pup # Pipe Management
+   #nmap wget curl mitmproxy aria2 # Network Utilities
+   #ipfscat onionshare nyxt tuir redditgtk # Communication Tools
+   #file exa unrar unzip ncdu tree # File Management
   ];
 }
