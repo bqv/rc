@@ -111,6 +111,7 @@
   services.mosquitto.users = {};
 
   services.home-assistant.enable = true;
+  services.home-assistant.autoExtraComponents = false; # this is so broken :|
   services.home-assistant.config = {
     homeassistant = {
       latitude = 53.959860;
@@ -127,9 +128,9 @@
       input = "/dev/video0";
     };
     http = {
-      base_url = "https://home.${domains.home}:80";
+      base_url = "https://home.${domains.home}:443";
     };
-    media_player = {
+    media_player = [{
       platform = "androidtv";
       name = "Omega";
       host = "192.168.0.128";
@@ -139,13 +140,39 @@
         com.google.android.apps.mediashell = "Chromecast";
         com.amazon.amazonvideo.livingroom = "Amazon Prime Video";
       };
-    };
+    } {
+      platform = "cast";
+      host = "192.168.0.128";
+    }];
+    notify = [{
+      platform = "nfandroidtv";
+      name = "AndroidTV";
+      host = "192.168.0.128";
+    }];
+    tuya = import ../../secrets/hass.tuya.nix;
   };
   services.home-assistant.package = pkgs.home-assistant.override {
-    extraPackages = py: with pkgs; [
-      ffmpeg
-      picotts
+    extraComponents = [
+      "homeassistant"
+      "frontend"
+      "http"
+      "camera"
+      "ffmpeg"
+      "ffmpeg_motion"
+      "ffmpeg_noise"
+      "cast"
+      "media_player"
+      "notify"
+      "nfandroidtv"
+      "tuya"
+    ];
+    extraPackages = py: [
+      pkgs.ffmpeg
+      py.ha-ffmpeg
+      pkgs.picotts
       py.adb-homeassistant
+      py.pip
+      py.pyotp
     ];
   };
   # read /etc/hass/configuration.yaml
@@ -155,7 +182,7 @@
     serviceConfig.Type = "forking";
     serviceConfig.ExecStart = "${pkgs.androidsdk_9_0}/bin/adb start-server";
     serviceConfig.ExecStop = "${pkgs.androidsdk_9_0}/bin/adb kill-server";
-    wantedBy = [ "default.target" ];
+    wantedBy = [ "default.target" "home-assistant.target" ];
   };
 
   networking.firewall.enable = false;
