@@ -140,6 +140,7 @@
         com.amazon.amazonvideo.livingroom = "Amazon Prime Video";
       };
     };
+    tuya = import ../../secrets/hass.tuya.nix;
   };
   services.home-assistant.package = pkgs.home-assistant.override {
     extraPackages = py: with pkgs; [
