@@ -145,16 +145,18 @@
     extraPackages = py: with pkgs; [
       ffmpeg
       picotts
-      #py.adb-homeassistant
+      py.adb-homeassistant
     ];
-    packageOverrides = self: super: {
-      aiohttp = super.aiohttp.overrideAttrs (oldAttrs: {
-        doInstallCheck = false;
-        #nativeBuildInputs = [ pkgs.pythonPackages.adb-homeassistant ];
-      });
-    };
   };
   # read /etc/hass/configuration.yaml
+
+  systemd.services.adb = rec {
+    description = "Android Debug Server Daemon";
+    serviceConfig.Type = "forking";
+    serviceConfig.ExecStart = "${pkgs.androidsdk_9_0}/bin/adb start-server";
+    serviceConfig.ExecStop = "${pkgs.androidsdk_9_0}/bin/adb kill-server";
+    wantedBy = [ "default.target" ];
+  };
 
   networking.firewall.enable = false;
 
