@@ -9,6 +9,7 @@
     large.url  = "github:nixos/nixpkgs/nixos-unstable";       #|'
     pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd"; #|\ Pull
     pr93659.url = "github:ju1m/nixpkgs/security.pass";                 #|/ Reqs
+    pr99188.url = "github:atemu/nixpkgs/giara-init";                   #||
 
     super.url = "github:bqv/nixrc/a134f52"; #- Recurse
 
@@ -197,6 +198,19 @@
           inherit (inputs.stable.legacyPackages.${system}) nheko; # anticipating pr94942
           graalvm8 = builtins.trace "pkgs.graalvm8: suspended - too big and not cached" pkgs.hello;
           inherit (inputs.super.packages.${system}) vervis; # broken by update
+          inherit (inputs.pr99188.legacyPackages.${system}) libhandy;
+          giara = (inputs.pr99188.legacyPackages.${system}.giara.overrideAttrs (old: {
+            src = pkgs.fetchFromGitLab {
+              domain = "gitlab.gnome.org";
+              owner = "GabMus";
+              repo = "giara";
+              rev = "f6acd6228bd49ab6e45dc45b33cb9ae982cfc0f2";
+              sha256 = "cDUjkhaj2nkkAX0jIZp+T6bHa1EzwmsO8lC24ZtiR9E=";
+            };
+            nativeBuildInputs = old.nativeBuildInputs ++ [ (pkgs.python3.withPackages (py: [ py.setuptools ])) ];
+          })).override {
+            pkgs = pkgs // { inherit (inputs.pr99188.legacyPackages.${system}) libhandy; };
+          };
         })
         (final: prev: {
           nyxt = prev.nyxt.override {

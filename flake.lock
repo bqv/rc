@@ -1354,6 +1354,22 @@
         "type": "github"
       }
     },
+    "pr99188": {
+      "locked": {
+        "lastModified": 1601487302,
+        "narHash": "sha256-/yPdQZDNUPDNzgY7thN+7yC6H7c75o3uiuLSyqt/mrs=",
+        "owner": "atemu",
+        "repo": "nixpkgs",
+        "rev": "bc187135ae9359675e1f86f760f9e625a8b945c5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "atemu",
+        "ref": "giara-init",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "prompt-bar": {
       "flake": false,
       "locked": {
@@ -1602,6 +1618,7 @@
         "nyxt": "nyxt",
         "pr75800": "pr75800",
         "pr93659": "pr93659",
+        "pr99188": "pr99188",
         "small": "small",
         "snack": "snack",
         "stable": "stable",
