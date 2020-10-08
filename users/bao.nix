@@ -131,7 +131,7 @@
         ${home-config.programs.emacs.package}/bin/emacsclient --eval "(emms-play-file \"$@\")"
       '';
     in [
-      appimage-run # Package Tools
+      appimage-run steam-run manix # Package Tools
       abduco dvtm # Terminal Multiplexing
       yadm # Dotfile Management
       pstree bottom # Process Monitoring
@@ -145,6 +145,14 @@
       xpra xsel xclip scrot # X11 Utilities
       gdb lldb radare2 radare2-cutter jadx stress # Debug Utilities
     ] ++ lib.optional home-config.programs.emacs.enable emms-play-file;
+
+    home.activation.preloadNixSearch = home-config.lib.dag.entryAnywhere ''
+      function preloadNixSearch() {
+        systemd-run --user -G --no-block nix search self ""
+      }
+
+      preloadNixSearch || exit 1
+    '';
 
     home.file."mimeapps.list".force = lib.mkForce true;
     xdg = let
