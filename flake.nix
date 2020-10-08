@@ -211,12 +211,19 @@
           })).override {
             pkgs = pkgs // { inherit (inputs.pr99188.legacyPackages.${system}) libhandy; };
           };
-          postman = pkgs.writeScriptBin "postman" ''
-            #!${pkgs.execline}/bin/execlineb -S0
-            export DISPLAY :0
-            exec -a postman
-            ${pkgs.stable.postman}/bin/postman
-          '';
+          inherit (inputs.master.legacyPackages.${system}) nextcloud20; # doc eval problem
+          postman = (pkgs.symlinkJoin {
+            name = "postman";
+            paths = [
+              (pkgs.writeScriptBin "postman-x11" ''
+                #!${pkgs.execline}/bin/execlineb -S0
+                export DISPLAY :0
+                exec -a postman
+                ${pkgs.stable.postman}/bin/postman
+              '')
+              pkgs.stable.postman
+            ];
+          }).overrideAttrs (_: { inherit (pkgs.stable.postman) meta; });
         })
         (final: prev: {
           nyxt = prev.nyxt.override {

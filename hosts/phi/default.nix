@@ -150,7 +150,7 @@
     }];
     tuya = import ../../secrets/hass.tuya.nix;
   };
-  services.home-assistant.package = pkgs.home-assistant.override {
+  services.home-assistant.package = pkgs.master.home-assistant.override {
     extraComponents = [
       "homeassistant"
       "frontend"
@@ -162,6 +162,7 @@
       "cast"
       "media_player"
       "notify"
+      "androidtv"
       "nfandroidtv"
       "tuya"
     ];
@@ -172,18 +173,9 @@
       py.adb-homeassistant
       py.pip
       py.pyotp
-      (py.buildPythonPackage rec {
-        pname = "adb-shell";
-        version = "0.2.3";
-        src = py.fetchPypi {
-          pname = "adb_shell";
-          inherit version;
-          sha256 = "kf0GhFZHQnKIZPZTBF20SswZ20dEg6P04MTgoqHH1/Q=";
-        };
-        nativeBuildInputs = with py; [ setuptools ];
-        propogatedBuildInputs = with py; [ pycryptodome pyasn1 rsa aiofiles ];
-        checkInputs = with py; [ libusb1 ];
-      })
+      py.pure-python-adb
+      py.androidtv
+      py.adb-shell
     ];
   };
   # read /etc/hass/configuration.yaml

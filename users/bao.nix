@@ -138,9 +138,9 @@
       pv pup # Pipe Management
       timewarrior # Time Management
       nmap wget curl mitmproxy aria2 # Network Utilities
-      ipfscat onionshare nyxt tuir # Communication Tools
+      ipfscat onionshare nyxt tuir gomuks # Communication Tools
       bitwarden-cli protonvpn-cli # Password Management
-      file exa unrar unzip ncdu tree # File Management
+      file exa unrar unzip ncdu tree mimeo # File Management
       audacity # Audio Utilities
       xpra xsel xclip scrot # X11 Utilities
       gdb lldb radare2 radare2-cutter jadx stress # Debug Utilities
