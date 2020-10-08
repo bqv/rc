@@ -6,6 +6,7 @@
     ../../profiles/misc/disable-mitigations.nix
     ../../profiles/misc/udev-nosettle.nix
     ../../profiles/misc/adblocking.nix
+    ../../profiles/misc/odbc.nix
     ../../profiles/security/sudo.nix
     ../../profiles/security/apparmor
    #../../profiles/security/selinux
