@@ -211,6 +211,12 @@
           })).override {
             pkgs = pkgs // { inherit (inputs.pr99188.legacyPackages.${system}) libhandy; };
           };
+          postman = pkgs.writeScriptBin "postman" ''
+            #!${pkgs.execline}/bin/execlineb -S0
+            export DISPLAY :0
+            exec -a postman
+            ${pkgs.stable.postman}/bin/postman
+          '';
         })
         (final: prev: {
           nyxt = prev.nyxt.override {

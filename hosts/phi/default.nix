@@ -172,6 +172,18 @@
       py.adb-homeassistant
       py.pip
       py.pyotp
+      (py.buildPythonPackage rec {
+        pname = "adb-shell";
+        version = "0.2.3";
+        src = py.fetchPypi {
+          pname = "adb_shell";
+          inherit version;
+          sha256 = "kf0GhFZHQnKIZPZTBF20SswZ20dEg6P04MTgoqHH1/Q=";
+        };
+        nativeBuildInputs = with py; [ setuptools ];
+        propogatedBuildInputs = with py; [ pycryptodome pyasn1 rsa aiofiles ];
+        checkInputs = with py; [ libusb1 ];
+      })
     ];
   };
   # read /etc/hass/configuration.yaml
