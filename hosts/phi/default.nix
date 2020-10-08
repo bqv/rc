@@ -136,9 +136,9 @@
       host = "192.168.0.128";
       adb_server_ip = "127.0.0.1";
       apps = {
-        com.google.android.leanbacklauncher = "Home Screen";
-        com.google.android.apps.mediashell = "Chromecast";
-        com.amazon.amazonvideo.livingroom = "Amazon Prime Video";
+        "com.google.android.leanbacklauncher" = "Home Screen";
+        "com.google.android.apps.mediashell" = "Chromecast";
+        "com.amazon.amazonvideo.livingroom" = "Amazon Prime Video";
       };
     } {
       platform = "cast";
@@ -176,6 +176,16 @@
       py.pure-python-adb
       py.androidtv
       py.adb-shell
+      (py.buildPythonPackage rec {
+        pname = "tuyaha";
+        version = "0.0.8";
+        src = py.fetchPypi {
+          inherit pname version;
+          sha256 = "YspQADM6o50XjKxQ7/pwgIjNAgy0B11g94yEqfpwad8=";
+        };
+        nativeBuildInputs = with py; [ setuptools ];
+        checkInputs = with py; [ requests ];
+      })
     ];
   };
   # read /etc/hass/configuration.yaml
