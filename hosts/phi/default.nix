@@ -128,12 +128,12 @@
       input = "/dev/video0";
     };
     http = {
-      base_url = "https://home.${domains.home}:443";
+      base_url = "home.${domains.home}";
     };
     media_player = [{
       platform = "androidtv";
       name = "Omega";
-      host = "192.168.0.128";
+      host = "192.168.178.128";
       adb_server_ip = "127.0.0.1";
       apps = {
         "com.google.android.leanbacklauncher" = "Home Screen";
@@ -146,10 +146,14 @@
     notify = [{
       platform = "nfandroidtv";
       name = "AndroidTV";
-      host = "192.168.0.128";
+      host = "192.168.178.128";
     }];
     tuya = import ../../secrets/hass.tuya.nix;
+    zeroconf = {};
+    frontend = {};
+    mobile_app = {};
   };
+  services.home-assistant.configWritable = true;
   services.home-assistant.package = pkgs.master.home-assistant.override {
     extraComponents = [
       "homeassistant"
@@ -165,6 +169,8 @@
       "androidtv"
       "nfandroidtv"
       "tuya"
+      "zeroconf"
+      "mobile_app"
     ];
     extraPackages = py: [
       pkgs.ffmpeg
@@ -176,6 +182,7 @@
       py.pure-python-adb
       py.androidtv
       py.adb-shell
+      py.spotipy
       (py.buildPythonPackage rec {
         pname = "tuyaha";
         version = "0.0.8";
@@ -198,7 +205,8 @@
     wantedBy = [ "default.target" "home-assistant.target" ];
   };
 
-  networking.firewall.enable = false;
+  networking.firewall.enable = lib.mkForce false;
+  networking.nftables.enable = false;
 
   services.xserver.enable = true;
   services.xserver.layout = "gb";
