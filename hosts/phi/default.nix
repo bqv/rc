@@ -164,7 +164,7 @@
       "notify"
       "androidtv"
       "nfandroidtv"
-      "tuya"
+     #"tuya"
     ];
     extraPackages = py: [
       pkgs.ffmpeg
