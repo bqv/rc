@@ -128,12 +128,12 @@
       input = "/dev/video0";
     };
     http = {
-      base_url = "https://home.${domains.home}:443";
+      base_url = "home.${domains.home}";
     };
     media_player = [{
       platform = "androidtv";
       name = "Omega";
-      host = "192.168.0.128";
+      host = "192.168.178.128";
       adb_server_ip = "127.0.0.1";
       apps = {
         "com.google.android.leanbacklauncher" = "Home Screen";
@@ -146,9 +146,9 @@
     notify = [{
       platform = "nfandroidtv";
       name = "AndroidTV";
-      host = "192.168.0.128";
+      host = "192.168.178.128";
     }];
-    tuya = import ../../secrets/hass.tuya.nix;
+   #tuya = import ../../secrets/hass.tuya.nix;
   };
   services.home-assistant.package = pkgs.master.home-assistant.override {
     extraComponents = [
