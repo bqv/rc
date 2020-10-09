@@ -148,7 +148,7 @@
       name = "AndroidTV";
       host = "192.168.0.128";
     }];
-    tuya = import ../../secrets/hass.tuya.nix;
+   #tuya = import ../../secrets/hass.tuya.nix;
   };
   services.home-assistant.package = pkgs.master.home-assistant.override {
     extraComponents = [
@@ -164,7 +164,7 @@
       "notify"
       "androidtv"
       "nfandroidtv"
-      "tuya"
+     #"tuya"
     ];
     extraPackages = py: [
       pkgs.ffmpeg
