@@ -128,7 +128,7 @@
       input = "/dev/video0";
     };
     http = {
-      base_url = "https://home.${domains.home}:443";
+      base_url = "home.${domains.home}";
     };
     media_player = [{
       platform = "androidtv";
@@ -148,7 +148,7 @@
       name = "AndroidTV";
       host = "192.168.0.128";
     }];
-    tuya = import ../../secrets/hass.tuya.nix;
+   #tuya = import ../../secrets/hass.tuya.nix;
   };
   services.home-assistant.package = pkgs.master.home-assistant.override {
     extraComponents = [
