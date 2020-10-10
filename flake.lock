@@ -1354,6 +1354,22 @@
         "type": "github"
       }
     },
+    "pr96368": {
+      "locked": {
+        "lastModified": 1600878139,
+        "narHash": "sha256-HAVsw2AP5CYQL8N8We9PbdLjuBmB5wYZ+VRPpDf/t8s=",
+        "owner": "islandusurper",
+        "repo": "nixpkgs",
+        "rev": "127bf7fbffefe4ed8a9a46afddfa2433e5e3c6f2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "islandusurper",
+        "ref": "lbry-desktop",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "pr99188": {
       "locked": {
         "lastModified": 1601487302,
@@ -1618,6 +1634,7 @@
         "nyxt": "nyxt",
         "pr75800": "pr75800",
         "pr93659": "pr93659",
+        "pr96368": "pr96368",
         "pr99188": "pr99188",
         "small": "small",
         "snack": "snack",

@@ -10,6 +10,7 @@
     pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd"; #|\ Pull
     pr93659.url = "github:ju1m/nixpkgs/security.pass";                 #|/ Reqs
     pr99188.url = "github:atemu/nixpkgs/giara-init";                   #||
+    pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";         #||
 
     super.url = "github:bqv/nixrc/a134f52"; #- Recurse
 
@@ -198,7 +199,17 @@
           inherit (inputs.stable.legacyPackages.${system}) nheko; # anticipating pr94942
           graalvm8 = builtins.trace "pkgs.graalvm8: suspended - too big and not cached" pkgs.hello;
           inherit (inputs.super.packages.${system}) vervis; # broken by update
-          inherit (inputs.pr99188.legacyPackages.${system}) libhandy;
+          lbry = (pkgs.symlinkJoin {
+            name = "lbry";
+            paths = [
+              (pkgs.writeScriptBin "lbry-x11" ''
+                #!${pkgs.runtimeShell}
+                export DISPLAY=:0
+                exec -a lbry ${inputs.pr96368.legacyPackages.${system}.lbry}/bin/lbry $@
+              '')
+              inputs.pr96368.legacyPackages.${system}.lbry
+            ];
+          }).overrideAttrs (_: { inherit (inputs.pr96368.legacyPackages.${system}.lbry) meta; });
           giara = (inputs.pr99188.legacyPackages.${system}.giara.overrideAttrs (old: {
             src = pkgs.fetchFromGitLab {
               domain = "gitlab.gnome.org";
