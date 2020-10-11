@@ -201,6 +201,8 @@
 
     (with hunspellDicts; hunspellWithDicts [ en_GB-large ])
     wineWowPackages.staging
+
+    giara lbry
   ];
 
   environment.etc."nix/id_zeta.ed25519".source = ../../secrets/keys/nix/id_zeta.ed25519;
