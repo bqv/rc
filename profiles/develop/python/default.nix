@@ -1,9 +1,12 @@
-{ pkgs, ... }:
+{ pkgs, flakes, ... }:
 
 {
   environment.systemPackages = let
     packages = pythonPackages:
-      with pythonPackages; [
+      with pythonPackages; let
+        nixpkgs = builtins.trace "python.nixpkgs pinned to nixpkgs/stable"
+        flakes.stable.legacyPackages.${pkgs.system}.python3Packages.nixpkgs;
+      in [
         nixpkgs
         numpy
         pandas

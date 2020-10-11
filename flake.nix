@@ -7,10 +7,11 @@
     staged.url = "github:nixos/nixpkgs/staging";              #|  |-- Nixpkgs
     small.url  = "github:nixos/nixpkgs/nixos-unstable-small"; #| /
     large.url  = "github:nixos/nixpkgs/nixos-unstable";       #|'
-    pr75800.url = "github:ma27/nixpkgs/declarative-networks-with-iwd"; #|\ Pull
-    pr93659.url = "github:ju1m/nixpkgs/security.pass";                 #|/ Reqs
-    pr99188.url = "github:atemu/nixpkgs/giara-init";                   #||
-    pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";         #||
+
+    pr75800.url = "github:nixos/nixpkgs/517b290754f6a7cc487ce11932a8b750f868324d"; #|\ Pull
+    pr93659.url = "github:ju1m/nixpkgs/security.pass";                             #|/ Reqs
+    pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
+    pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
 
     super.url = "github:bqv/nixrc/a134f52"; #- Recurse
 
@@ -29,6 +30,12 @@
 
     xontribs.url = "github:bqv/xontribs";       #|- Xontribs
     xontribs.inputs.nixpkgs.follows = "master"; #|
+    xontribs.inputs.prompt-bar.follows = "prompt-bar";
+    prompt-bar.url = "github:anki-code/xontrib-prompt-bar/68b3487e156ed3dce80578ebe552b6afa94c7eb8";
+    prompt-bar.flake = false;
+    xontribs.inputs.pipeliner.follows = "pipeliner";
+    pipeliner.url = "github:anki-code/xontrib-pipeliner/daccb6c8a67bbda799dfa2d6d8d829b5e9151c92";
+    pipeliner.flake = false;
 
     guix.url = "github:bqv/guix";           #|- Guix
     guix.inputs.nixpkgs.follows = "master"; #|
@@ -196,7 +203,6 @@
         (pkgs: lib.const {
           inherit (channels.modules.legacyPackages.${system}) apparmor apparmor-utils apparmor-kernel-patches apparmorRulesFromClosure iputils inetutils;
           inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird; # slow
-          inherit (inputs.stable.legacyPackages.${system}) nheko; # anticipating pr94942
           graalvm8 = builtins.trace "pkgs.graalvm8: suspended - too big and not cached" pkgs.hello;
           inherit (inputs.super.packages.${system}) vervis; # broken by update
           lbry = (pkgs.symlinkJoin {
