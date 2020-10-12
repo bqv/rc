@@ -1,4 +1,7 @@
 final: prev: let
+  super = {
+    inherit (final.master.xonsh) overridePythonAttrs propagatedBuildInputs;
+  };
   pythonOverrides = self: super: {
     prompt_toolkit = super.prompt_toolkit.overridePythonAttrs (_: {
       src = final.fetchFromGitHub {
@@ -9,12 +12,12 @@ final: prev: let
       };
     });
   };
-  python = final.python3.override {
+  python = (prev.lib.last super.propagatedBuildInputs).pkgs.python.override {
     self = python;
     packageOverrides = pythonOverrides;
   };
 in with final.xontribs; rec {
-  xonsh = prev.xonsh.overridePythonAttrs (o: rec {
+  xonsh = super.overridePythonAttrs (o: rec {
     doCheck = false;
     propagatedBuildInputs = [
       python.pkgs.ply

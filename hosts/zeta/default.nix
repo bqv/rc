@@ -15,6 +15,7 @@
    #../../containers/lemmy.nix     # 10.11.0.x
     ../../profiles/meta/fatal-warnings.nix
     ../../profiles/misc/qemu.nix
+    ../../profiles/misc/restartssh.nix
     ../../profiles/security/sudo.nix
     ../../profiles/networking/wireguard
     ../../profiles/networking/ipfs
@@ -197,17 +198,8 @@
       userkeys = "TrustedUserCAKeys /etc/ssh/ssh_user-ca.pub";
       revokedkeys = "RevokedKeys /etc/ssh/ssh_revoked_keys";
     in builtins.concatStringsSep "\n" (certificates ++ [ userkeys revokedkeys ]);
+  services.openssh.restartPeriod = "Hourly";
   #services.openssh.startWhenNeeded = true;
-
-  # Bit meta but helps ensure sshd is bound to all addresses always
-  # TODO: move to profile
-  systemd.services.restart-openssh.script = "${pkgs.systemd}/bin/systemctl restart sshd";
-  systemd.timers.restart-openssh = {
-    timerConfig = {
-      OnCalendar = "Hourly";
-      Unit = "restart-openssh.service";
-    };
-  };
 
   programs.x2goserver.enable = true;
   programs.mosh.enable = true;

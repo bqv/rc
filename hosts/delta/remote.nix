@@ -1,6 +1,10 @@
 { config, lib, pkgs, hosts, ... }:
 
 {
+  imports = [
+    ../../profiles/misc/restartssh.nix
+  ];
+
   programs.mosh.enable = true;
   programs.x2goserver.enable = true;
 
@@ -8,6 +12,7 @@
   services.openssh = {
     enable = true;
     startWhenNeeded = true;
+    restartPeriod = "*-*-* *:00,10,20,30,40,50:00";
     knownHosts = {
       "Alpha CA" = {
         certAuthority = true;
