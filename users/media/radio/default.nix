@@ -27,8 +27,8 @@ in {
         (interactive (list (intern (ivy-read "Station" (bqv/verbose-radio-stations)
                                              :require-match t
                                              :sort t))))
-        (let* ((name (split-string station "\t" t " "))
-               (url (map-elt bqv/radio-stations name)))
+        (let* ((name (car (split-string (if (symbolp station) (symbol-name station) station) "\t" t " ")))
+               (url (map-elt bqv/radio-stations (intern name))))
           (assert (not (null url)))
           (emms-play-url url)))
 
@@ -57,3 +57,7 @@ in {
     '';
   };
 }
+
+## Local Variables: ***
+## mode: nix-dsquoted-emacslisp ***
+## End: ***
