@@ -243,7 +243,7 @@
           }).overrideAttrs (_: { inherit (pkgs.stable.postman) meta; });
         })
         (final: prev: {
-          nyxt = prev.nyxt.override {
+          nyxt-next = prev.nyxt.override {
             src = final.runCommand "nyxt-source" rec {
               inherit (final.lispPackages) quicklisp;
             } ''
@@ -264,6 +264,7 @@
               date = lib.substring 0 8 (inputs.nyxt.lastModifiedDate or inputs.nyxt.lastModified);
             in "${date}.${rev}";
           };
+          inherit (inputs.super.packages.${system}) nyxt; # broken by update
         })
       ];
     };
