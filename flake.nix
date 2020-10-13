@@ -265,6 +265,9 @@
             in "${date}.${rev}";
           };
         })
+        (final: prev: {
+          inherit (inputs.super.packages.${system}) nyxt; # broken by update
+        })
       ];
     };
 
