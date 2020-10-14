@@ -188,9 +188,9 @@
           in final.emacsGcc.overrideAttrs (old: {
             name = "${old.name}-${version}";
             inherit src version;
-            prePatch = ''
-              sed -i '/comp_deferred_compilation = true;/s/true/false/' src/comp.c
-            '';
+           #prePatch = ''
+           #  sed -i '/comp_deferred_compilation = true;/s/true/false/' src/comp.c
+           #'';
             buildInputs = old.buildInputs ++ [ final.cairo ];
             configureFlags = old.configureFlags ++ [ "--with-pgtk" "--with-cairo" "--with-modules" ];
           });
@@ -418,6 +418,7 @@
                     home.activation.disableNixEnv = lib.hm.dag.entryBefore ["installPackages"] ''
                       alias nix-env=true
                     '';
+                    home.activation.installPackages = lib.mapAttrs (k: v: lib.mkForce v) (lib.hm.dag.entryAnywhere "true");
                   };
                   baduk = {
                     imports = [ (import inputs.baduk) ];

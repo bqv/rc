@@ -148,10 +148,11 @@
 
     home.activation.preloadNixSearch = home-config.lib.dag.entryAnywhere ''
       function preloadNixSearch() {
-        systemd-run --user -G --no-block nix search self ""
+        env DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${toString config.users.users.bao.uid}/bus \
+          systemd-run --user -G --no-block nix search self ""
       }
 
-      preloadNixSearch || exit 1
+      preloadNixSearch || exit 0
     '';
 
     home.file."mimeapps.list".force = lib.mkForce true;
