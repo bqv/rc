@@ -1,0 +1,15 @@
+diff --git a/src/hydra.rs b/src/hydra.rs
+index 1cde305..21d7b06 100644
+--- a/src/hydra.rs
++++ b/src/hydra.rs
+@@ -342,8 +342,8 @@ impl Fetcher {
+         &'a self,
+         path: &StorePath,
+     ) -> Box<dyn Future<Item = Option<FileTree>, Error = Error> + 'a> {
+-        let url_xz = format!("{}/{}.ls.xz", self.cache_url, path.hash());
+-        let url_generic = format!("{}/{}.ls", self.cache_url, path.hash());
++        let url_xz = format!("{}/{}-{}.ls.xz", self.cache_url, path.hash(), path.name());
++        let url_generic = format!("{}/{}-{}.ls", self.cache_url, path.hash(), path.name());
+         let name = format!("{}.json", path.hash());
+
+         let fetched = self.fetch(url_generic, None).and_then(

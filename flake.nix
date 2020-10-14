@@ -513,7 +513,7 @@
     overlays = listToAttrs (map (name: {
       name = lib.removeSuffix ".nix" name;
       value = import (./overlays + "/${name}");
-    }) (attrNames (readDir ./overlays)));
+    }) (builtins.filter (file: lib.hasSuffix ".nix" file) (attrNames (readDir ./overlays))));
 
     packages = forAllSystems ({ pkgs, ... }: lib.filterAttrs (_: p: (p.meta.broken or null) != true) {
       inherit (pkgs.emacsPackages) bitwarden ivy-exwm;
