@@ -414,12 +414,18 @@
                 };
                 modules = let
                   flakeModules = import ./modules/home-manager.nix;
+                  nixProfile = { lib, ... }: {
+                    home.activation.disableNixEnv = lib.hm.dag.entryBefore ["installPackages"] ''
+                      alias nix-env=true
+                    '';
+                  };
                   baduk = {
                     imports = [ (import inputs.baduk) ];
                     baduk.sabaki.engines = lib.mkDefault [];
                   };
                   impermanence = import "${inputs.impermanence}/home-manager.nix";
                 in flakeModules ++ [
+                  nixProfile
                   baduk
                 ];
               });
@@ -427,6 +433,7 @@
 
             config = {
               home-manager.useGlobalPkgs = true;
+              home-manager.verbose = true;
             };
           };
 
