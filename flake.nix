@@ -263,6 +263,15 @@
               rev = lib.substring 0 8 inputs.nyxt.rev;
               date = lib.substring 0 8 (inputs.nyxt.lastModifiedDate or inputs.nyxt.lastModified);
             in "${date}.${rev}";
+            sbcl = final.sbcl.overrideAttrs (drv: with drv; rec {
+              version = "2.0.8";
+              src = final.fetchurl {
+                url    = "mirror://sourceforge/project/sbcl/sbcl/${version}/${pname}-${version}-source.tar.bz2";
+                sha256 = "II1G97lNJW0Dbw78lzTms0qFxRuwPD64vzm3o+/mmfc=";
+              };
+              postPatch = '' echo '"${version}.nixos"' > version.lisp-expr '';
+              meta = drv.meta // { inherit version; };
+            });
           };
           inherit (inputs.super.packages.${system}) nyxt; # broken by update
         })

@@ -296,7 +296,7 @@
               map))
            (default-modes (append '(dispatch-mode blocker-mode auto-mode) %slot-default))
            ))
-        (setq *configured-buffer* t))
+        (defvar *configured-buffer* t))
 
       (unless (and (boundp '*configured-browser*) *configured-browser*)
         (define-configuration browser
@@ -319,7 +319,7 @@
                   ))
            (autofills (list (nyxt::make-autofill :key "Name" :fill "${secrets.name}")))
            ))
-        (setq *configured-browser* t))
+        (defvar *configured-browser* t))
     '';
     assertions = [
       {
