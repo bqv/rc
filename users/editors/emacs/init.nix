@@ -89,7 +89,7 @@ let
       (with-timeout (10)
         (sd_notify '("READY" . 1)
                    );;(`("WATCHDOG_USEC" . ,(* 120 1000000)))
-        (log--trace "Notified at %s" (time-stamp-string))))
+        (log--trace "Notified at %s" (format-time-string "%D %T"))))
     (defun config-end ()
       (message
         "Configuring...done (%.3fs) [after-init]"
