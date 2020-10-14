@@ -387,10 +387,7 @@
                 ln -s '${value}' "$out/flake/input/${name}"
               '') inputMap.n3}
 
-            '') + (if ! (inputs.self ? rev) then ''
-              echo "Cannot complete a dirty configuration"
-              exit 1
-            '' else "");
+            '');
 
             system.activationScripts.etcnixos = ''
               rm -f /etc/nixos && \
@@ -551,7 +548,6 @@
 
             # Link raw hosts on each host (non-recursively)
             system.extraSystemBuilderCmds = ''
-
               mkdir -p $out/flake/hosts
 
               # Link other hosts (nonrecursively)
@@ -566,7 +562,6 @@
                   ln -s '${value.config.system.build.toplevel}' "$out/flake/container/${host.name}/${name}"
                 '') (lib.mapAttrsToList lib.nameValuePair value.config.containers)}
               '') (lib.mapAttrsToList lib.nameValuePair inputs.self.nixosConfigurations)}
-
             '';
           };
 
@@ -608,6 +603,8 @@
 
           ignoreFailingSystemdUnits = true;
           systemSwitcherDir = "/nix/node/";
+
+          dirty = ! (inputs.self ? rev);
         };
 
         nodes = let

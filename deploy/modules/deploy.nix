@@ -36,6 +36,11 @@ let
         ]);
       };
 
+      dirty = lib.mkOption {
+        type = lib.types.bool;
+        default = false;
+      };
+
       nodeDeployScript = lib.mkOption {
         type = types.package;
       };
@@ -218,13 +223,19 @@ in {
   };
 
   # TODO: What about requiring either all nodes to succeed or all get rolled back?
-  config.deployScript = nixus.pkgs.writeScript "deploy" ''
+  config.deployScript = nixus.pkgs.writeScript "deploy" (''
     #!${nixus.pkgs.execline}/bin/execlineb -Ws0
+  '' + (
+    if lib.any (node: node.dirty) (lib.attrValues config.nodes) then ''
+      foreground { echo Cannot complete a dirty deployment }
+      exit 41
+    '' else ""
+  ) + ''
     forx -p script {
       ${lib.concatMapStringsSep "\n  "
         (node: lib.optionalString node.enabled node.nodeDeployScript)
         (lib.attrValues config.nodes)}
     } importas -i script script
     execlineb $script
-  ''; # TODO: Handle signals to kill the async command
+  ''); # TODO: Handle signals to kill the async command
 }
