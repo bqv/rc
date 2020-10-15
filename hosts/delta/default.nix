@@ -182,10 +182,10 @@
   services.flatpak.enable = true;
   xdg.portal.enable = true;
 
-  security.pam.loginLimits = [
-    { domain = "@wheel"; item = "nofile"; type = "hard"; value = "unlimited"; }
-    { domain = "@wheel"; item = "nofile"; type = "soft"; value = "1048576"; }
-  ];
+ #security.pam.loginLimits = [
+ #  { domain = "@wheel"; item = "nofile"; type = "hard"; value = "unlimited"; }
+ #  { domain = "@wheel"; item = "nofile"; type = "soft"; value = "1048576"; }
+ #];
 
   users.users.root.openssh.authorizedKeys.keys = [
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIYNqRbITjMHmgD/UC87BISFTaw7Tq1jNd8X8i26x4b5 root@delta"
