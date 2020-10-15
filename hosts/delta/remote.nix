@@ -11,7 +11,7 @@
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
-    startWhenNeeded = true;
+    #startWhenNeeded = true;
     restartPeriod = "*-*-* *:00,10,20,30,40,50:00";
     knownHosts = {
       "Alpha CA" = {
