@@ -12,13 +12,13 @@
           (interactive)
           (counsel-rg nil "/run/current-system/flake/input/${name}/" nil "[flake:${name}] rg: ")) '') flakes)}
 
-      ;(defun nix-repl-complete ()
-      ;  (interactive)
-      ;  (save-excursion
-      ;    (term-send-raw-string
-      ;     (concat (substring-no-properties (buffer-substring (point-at-bol) (point)))
-      ;             "\C-i\C-a\C-k"))))
-      ;(define-key nix-repl-mode-map (kbd "<tab>") #'nix-repl-complete)
+      (defun nix-repl-complete ()
+        (interactive)
+        (save-excursion
+          (term-send-raw-string
+           (concat (substring-no-properties (buffer-substring (point-at-bol) (point)))
+                   "\C-i\C-a\C-k"))))
+      (define-key nix-repl-mode-map (kbd "<tab>") #'nix-repl-complete)
 
       (defmacro defcmd (name body &rest cdr)
         `(defun ,name () (interactive) ,body ,@cdr))
