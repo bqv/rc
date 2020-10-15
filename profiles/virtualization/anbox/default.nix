@@ -2,7 +2,7 @@
 
 {
   config = lib.mkIf config.virtualisation.anbox.enable {
-    boot.kernelPatches = lib.mkIf (lib.versionOlder "5.7.0" config.boot.kernelPackages.kernel.version) [{
+    boot.kernelPatches = [{
       name = "ashmem-binder";
       patch = null;
       extraConfig = ''
