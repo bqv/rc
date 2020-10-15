@@ -1041,11 +1041,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1602434980,
-        "narHash": "sha256-Ufp2l9r0sY7SdFZHc9tlhDGP16+Mq8gc4bXsLzpAAwc=",
+        "lastModified": 1602226118,
+        "narHash": "sha256-iCh6EgXsMR9tsLhsHaCor1Ilu0YU3775v58uyxu7d9A=",
         "owner": "nixos",
         "repo": "nix",
-        "rev": "b0fbf3a6530c9421d9dc7fdef0c75e432c256980",
+        "rev": "746b4bded8c24db5b36c0dba95f2d45882cd2949",
         "type": "github"
       },
       "original": {
