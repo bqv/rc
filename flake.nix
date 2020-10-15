@@ -409,9 +409,7 @@
           home = { config, ... }: {
             options.home-manager.users = lib.mkOption {
               type = with lib.types; attrsOf (submoduleWith {
-                specialArgs = specialArgs // {
-                  super = config;
-                };
+                inherit specialArgs;
                 modules = let
                   flakeModules = import ./modules/home-manager.nix;
                   nixProfile = { lib, ... }: {

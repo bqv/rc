@@ -1,4 +1,4 @@
-{ super, config, lib, pkgs, ... }:
+{ nixosConfig, config, lib, pkgs, ... }:
 
 with lib; let
   cfg = config.programs.aria2p;
@@ -17,7 +17,7 @@ in {
     emacs-loader.aria2 = {
       enable = lib.mkDefault false;
       config = ''
-        (setq aria2-rcp-secret "${super.services.aria2.rpcSecret}")
+        (setq aria2-rcp-secret "${nixosConfig.services.aria2.rpcSecret}")
       '';
     };
   };

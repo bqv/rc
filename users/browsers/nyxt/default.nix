@@ -1,4 +1,4 @@
-{ super, config, lib, pkgs, ... }:
+{ nixosConfig, config, lib, pkgs, ... }:
 
 {
   config = {
@@ -222,7 +222,7 @@
                         (lambda (url)
                           (uiop:launch-program
                            (list "${pkgs.python3Packages.aria2p}/bin/aria2p"
-                                 "--secret" "${super.services.aria2.rpcSecret}"
+                                 "--secret" "${nixosConfig.services.aria2.rpcSecret}"
                                  "add-magnets" (object-string url)))
                           nil))
 
