@@ -6,7 +6,9 @@ in {
   nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
   boot = {
-    kernelPackages = lib.mkDefault pkgs.large.linuxPackages_latest;
+    kernelPackages = lib.mkDefault (pkgs.large.linuxPackages_latest.extend (_: _: {
+      anbox = pkgs.large.linuxPackages_latest.virtualboxGuestAdditions; # harmless
+    }));
 
     tmpOnTmpfs = true;
     cleanTmpDir = true;
