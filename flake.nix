@@ -159,8 +159,18 @@
           napalm = pkgs.callPackage inputs.napalm;
           inherit (inputs.haskell.legacyPackages.${system}) haskell-nix; # ignore overlay, we want cache hits
         })
-        (final: prev: { nix-ipfs = inputs.nix-ipfs.defaultPackage.${system}; })
-        inputs.nix.overlay
+        inputs.nix.overlay (final: prev: {
+          nix-ipfs = inputs.nix-ipfs.defaultPackage.${system};
+          nix3 = final.nix.overrideAttrs (drv: {
+            patches = (drv.patches or []) ++ [
+              (final.fetchpatch {
+                name = "libfetcher-file.patch";
+                url = "https://github.com/nixos/nix/pull/4153.diff";
+                sha256 = "JfcswqOG0V5qlolxxYFOpqXJgENC4Adfk4J8r//tgfA=";
+              })
+            ];
+          });
+        })
         inputs.guix.overlay
         inputs.construct.overlay (final: prev: {
           riot-web = final.element-web;
@@ -354,7 +364,7 @@
             environment.pathsToLink = [ "/share/bios" ];
             networking = { inherit hostName; };
 
-            nix.package = pkgs.nix;
+            nix.package = pkgs.nix3;
             nix.registry = lib.mapAttrs (id: flake: {
               inherit flake;
               from = { inherit id; type = "indirect"; };
