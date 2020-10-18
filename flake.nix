@@ -76,8 +76,8 @@
     };
 
     patchNixpkgs = basePkgs: let
-      patches = map (meta: {
-        url = "https://github.com/NixOS/nixpkgs/pull/${toString meta.id}.diff";
+      pullReqs = map (meta: {
+        url = meta.url or "https://github.com/nixos/nixpkgs/pull/${toString meta.id}.diff";
         name = "nixpkgs-pull-request-${toString meta.id}";
         inherit meta;
         sha256 = meta.hash;
@@ -86,24 +86,28 @@
           description = "nixos/iwd: add `networks` and `interfaces` option";
           id = 75800;
           hash = "ptMLTVfCwd3N3kWQwDMn7dIJ2DYtijSohGGep+OuT24=";
-        } {
+        }
+        {
+          url = "https://github.com/ju1m/nixpkgs/commit/fb6d63f3fdd95a5468d43a0693c8ca7c1894363f.diff";
           description = "apparmor: fix and improve the service";
           id = 93457;
-          hash = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-        } {
+          hash = "fJFck5f64pYH9suYyu1+rsRO40YECG5yZxNeHCF/xUo=";
+        }
+        {
           description = "nixos/security.gnupg: provisioning GnuPG-protected secrets through the Nix store";
           id = 93659;
-          hash = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+          hash = "3im5nSrlM32DQUeq0Yp1MHkUcQyLdCGbxfJjgcc9e78=";
         }
       ];
+      patches = map basePkgs.fetchpatch pullReqs;
       patchedTree = basePkgs.applyPatches {
         name = "nixpkgs-patched";
         src = basePkgs.path;
-        patches = map basePkgs.fetchpatch patches;
+        inherit patches;
         postPatch = ''
-            patch=$(printf '%s\n' ${builtins.concatStringsSep " " (map (p: p.sha256) patches)} |
-            sort | sha256sum | cut -c -7)
-            echo "+patch-$patch" >.version-suffix
+          patch=$(printf '%s\n' ${builtins.concatStringsSep " " (map (p: p.outputHash) patches)} |
+          sort | sha256sum | cut -c -7)
+          echo "+patch-$patch" >.version-suffix
         '';
       };
 
@@ -114,7 +118,7 @@
         legacyPackages = basePkgs.lib.mapAttrs (system: _: import_nixpkgs { inherit system; })
           (baseFlake fakeFlake).legacyPackages;
       };
-    in baseFlake fakeFlake // fakeFlake;
+    in patchedTree // baseFlake fakeFlake // fakeFlake;
 
     channels = with inputs; {
       pkgs = small;       # For packages
