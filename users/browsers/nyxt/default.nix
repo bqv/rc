@@ -274,11 +274,15 @@
               (reduce (lambda (hook el) (hooks:add-hook hook el))
                       handlers :initial-value (request-resource-hook (buffer mode))))))))
 
+      (unless (and (boundp '*configured-web*) *configured-web*)
+        (define-configuration (buffer web-buffer)
+           (default-modes (append '(dispatch-mode blocker-mode auto-mode emacs-mode) %slot-default))
+           ))
+        (defvar *configured-web* t))
+
       (unless (and (boundp '*configured-buffer*) *configured-buffer*)
         (define-configuration buffer
-          ((keymap-scheme-name scheme:emacs)
-           (default-new-buffer-url "about:blank")
-           (override-map
+          ((override-map
             (let ((map (make-keymap "override-map")))
              ;(define-key map "C-x s" 'shell)
               (define-key map
@@ -294,14 +298,7 @@
              ;(define-key map "button7" 'switch-buffor-previous)
              ;(define-key map "button8" 'switch-buffor-next)
               map))
-           (default-modes (append '(dispatch-mode blocker-mode auto-mode) %slot-default))
-           ))
-        (defvar *configured-buffer* t))
-
-      (unless (and (boundp '*configured-browser*) *configured-browser*)
-        (define-configuration browser
-          ((session-restore-prompt :always-restore)
-           (external-editor-program "emacsclient")
+           (default-new-buffer-url "about:blank")
            (download-path (make-instance 'download-data-path :dirname "~/tmp/"))
            (search-engines
             (list (make-instance 'search-engine
@@ -317,6 +314,13 @@
                                  :search-url "https://github.com/?q=~a"
                                  :fallback-url "https://github.com/")
                   ))
+           ))
+        (defvar *configured-buffer* t))
+
+      (unless (and (boundp '*configured-browser*) *configured-browser*)
+        (define-configuration browser
+          ((session-restore-prompt :always-restore)
+           (external-editor-program "emacsclient")
            (autofills (list (nyxt::make-autofill :key "Name" :fill "${secrets.name}")))
            ))
         (defvar *configured-browser* t))
