@@ -118,8 +118,6 @@ in overrideCabal (doJailbreak (dontHaddock (dontCheck (cabal2nix "vervis" fetchd
   in {
     preBuild = ''
       sed -i 's|\$localInstallRoot|"'$out'"|g' src/Vervis/Settings.hs
-      sed -i '254,255s/\<s\>/(T.unpack s)/' src/Vervis/Settings.hs
-      sed -i '498s/(unpack styleName)/styleName/' src/Vervis/Handler/Repo.hs
       sed -i 's@data/LinLibertineCut.svg@${dataDir}/LinLibertineCut.svg@' src/Vervis/Application.hs
 
       darcs init

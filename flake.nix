@@ -13,8 +13,6 @@
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
     pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
 
-    super.url = "github:bqv/nixrc/a134f52"; #- Recurse
-
     nix.url = "github:nixos/nix";          #|- Nix
     nix.inputs.nixpkgs.follows = "master"; #|
 
@@ -77,31 +75,46 @@
       android_sdk.accept_license = true;
     };
 
-    composite = let
-      src = inputs.nixpkgs;
-      system = builtins.currentSystem;
-      basePkgs = src.legacyPackages.${system};
-      patches = [
+    patchNixpkgs = basePkgs: let
+      patches = map (meta: {
+        url = "https://github.com/NixOS/nixpkgs/pull/${toString meta.id}.diff";
+        name = "nixpkgs-pull-request-${toString meta.id}";
+        inherit meta;
+        sha256 = meta.hash;
+      }) [
         {
-          meta.description = "nixos/iwd: add `networks` and `interfaces` option";
-          url = "https://github.com/NixOS/nixpkgs/pull/75800.diff";
-          sha256 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+          description = "nixos/iwd: add `networks` and `interfaces` option";
+          id = 75800;
+          hash = "ptMLTVfCwd3N3kWQwDMn7dIJ2DYtijSohGGep+OuT24=";
         } {
-          meta.description = "nixos/security.gnupg: provisioning GnuPG-protected secrets through the Nix store";
-          url = "https://github.com/NixOS/nixpkgs/pull/93659.diff";
-          sha256 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+          description = "apparmor: fix and improve the service";
+          id = 93457;
+          hash = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+        } {
+          description = "nixos/security.gnupg: provisioning GnuPG-protected secrets through the Nix store";
+          id = 93659;
+          hash = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
         }
       ];
-    in basePkgs.applyPatches {
-      name = "nixpkgs-patched";
-      inherit src;
-      patches = map basePkgs.fetchpatch patches;
-      postPatch = ''
-        patch=$(printf '%s\n' ${builtins.concatStringsSep " " (map (p: p.sha256) patches)} |
-          sort | sha256sum | cut -c -7)
-        echo "+patch-$patch" >.version-suffix
-      '';
-    };
+      patchedTree = basePkgs.applyPatches {
+        name = "nixpkgs-patched";
+        src = basePkgs.path;
+        patches = map basePkgs.fetchpatch patches;
+        postPatch = ''
+            patch=$(printf '%s\n' ${builtins.concatStringsSep " " (map (p: p.sha256) patches)} |
+            sort | sha256sum | cut -c -7)
+            echo "+patch-$patch" >.version-suffix
+        '';
+      };
+
+      import_nixpkgs = args: import patchedTree ({ inherit (basePkgs) system; } // args);
+      baseFlake = self: (import "${basePkgs.path}/flake.nix").outputs { inherit self; };
+      fakeFlake = {
+        lib = (import_nixpkgs {}).lib;
+        legacyPackages = basePkgs.lib.mapAttrs (system: _: import_nixpkgs { inherit system; })
+          (baseFlake fakeFlake).legacyPackages;
+      };
+    in baseFlake fakeFlake // fakeFlake;
 
     channels = with inputs; {
       pkgs = small;       # For packages
@@ -163,6 +176,11 @@
           nix-ipfs = inputs.nix-ipfs.defaultPackage.${system};
           nix3 = final.nix.overrideAttrs (drv: {
             patches = (drv.patches or []) ++ [
+             #(final.fetchpatch {
+             #  name = "logformat-option.patch";
+             #  url = "https://github.com/nixos/nix/pull/3961.diff";
+             #  sha256 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+             #})
               (final.fetchpatch {
                 name = "libfetcher-file.patch";
                 url = "https://github.com/nixos/nix/pull/4153.diff";
@@ -217,7 +235,6 @@
           inherit (channels.modules.legacyPackages.${system}) apparmor apparmor-utils apparmor-kernel-patches apparmorRulesFromClosure iputils inetutils;
           inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird; # slow
           graalvm8 = builtins.trace "pkgs.graalvm8: suspended - too big and not cached" pkgs.hello;
-          inherit (inputs.super.packages.${system}) vervis; # broken by update
           lbry = (pkgs.symlinkJoin {
             name = "lbry";
             paths = [
@@ -256,7 +273,7 @@
           }).overrideAttrs (_: { inherit (pkgs.stable.postman) meta; });
         })
         (final: prev: {
-          nyxt-next = prev.nyxt.override {
+          nyxt = prev.nyxt.override {
             src = final.runCommand "nyxt-source" rec {
               inherit (final.lispPackages) quicklisp;
             } ''
@@ -276,7 +293,7 @@
               rev = lib.substring 0 8 inputs.nyxt.rev;
               date = lib.substring 0 8 (inputs.nyxt.lastModifiedDate or inputs.nyxt.lastModified);
             in "${date}.${rev}";
-            sbcl = final.sbcl.overrideAttrs (drv: with drv; rec {
+            sbcl = final.sbcl_2_0_2.overrideAttrs (drv: with drv; rec {
               version = "2.0.8";
               src = final.fetchurl {
                 url    = "mirror://sourceforge/project/sbcl/sbcl/${version}/${pname}-${version}-source.tar.bz2";
@@ -286,7 +303,6 @@
               meta = drv.meta // { inherit version; };
             });
           };
-          inherit (inputs.super.packages.${system}) nyxt; # broken by update
         })
       ];
     };
@@ -705,7 +721,7 @@
     );
 
     passthru = rec {
-      inherit inputs channels config allSystems inputMap;
+      inherit inputs channels config allSystems inputMap patchNixpkgs;
 
       #$ git config secrets.providers "nix eval --raw .#passthru.secrets"
       secrets = with lib.strings; concatMapStringsSep "\n" (replaceStrings [" "] ["\\s"]) ([
