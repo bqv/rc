@@ -81,6 +81,11 @@ in {
           # accept SSL connections
           tcp dport 80 accept
           tcp dport 443 accept
+
+          # restrict imap to vpn
+          ip saddr 10.0.0.0/24 accept
+          tcp dport { 143, 993 } drop
+
           tcp dport 4004 accept
           tcp dport 5432 accept
           tcp dport 8090 accept
