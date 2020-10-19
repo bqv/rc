@@ -244,18 +244,7 @@
               inputs.pr96368.legacyPackages.${system}.lbry
             ];
           }).overrideAttrs (_: { inherit (inputs.pr96368.legacyPackages.${system}.lbry) meta; });
-          giara = (inputs.pr99188.legacyPackages.${system}.giara.overrideAttrs (old: {
-            src = pkgs.fetchFromGitLab {
-              domain = "gitlab.gnome.org";
-              owner = "GabMus";
-              repo = "giara";
-              rev = "f6acd6228bd49ab6e45dc45b33cb9ae982cfc0f2";
-              sha256 = "cDUjkhaj2nkkAX0jIZp+T6bHa1EzwmsO8lC24ZtiR9E=";
-            };
-            nativeBuildInputs = old.nativeBuildInputs ++ [ (pkgs.python3.withPackages (py: [ py.setuptools ])) ];
-          })).override {
-            pkgs = pkgs // { inherit (inputs.pr99188.legacyPackages.${system}) libhandy; };
-          };
+          inherit (inputs.pr99188.legacyPackages.${system}) giara;
           inherit (inputs.master.legacyPackages.${system}) nextcloud20; # doc eval problem
           postman = (pkgs.symlinkJoin {
             name = "postman";

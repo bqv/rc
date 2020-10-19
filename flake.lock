@@ -720,11 +720,11 @@
     },
     "pr99188": {
       "locked": {
-        "lastModified": 1601487302,
-        "narHash": "sha256-/yPdQZDNUPDNzgY7thN+7yC6H7c75o3uiuLSyqt/mrs=",
+        "lastModified": 1602890557,
+        "narHash": "sha256-nvor74g8t6a85wVbZtHj6gvXtyT00u13WWd9nOHsZbo=",
         "owner": "atemu",
         "repo": "nixpkgs",
-        "rev": "bc187135ae9359675e1f86f760f9e625a8b945c5",
+        "rev": "d07fb79522cc9070479318bc2a9c50bb87f68b64",
         "type": "github"
       },
       "original": {
