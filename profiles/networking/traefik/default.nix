@@ -356,19 +356,19 @@
 
         services = {
           auth.loadBalancer = {
-            healthCheck = {
-             #followRedirects = true;
-             #headers = {
-             #  name0 = "foobar";
-             #  name1 = "foobar";
-             #};
-             #hostname = "foobar";
-             #interval = "foobar";
-             #path = "foobar";
-             #port = 42;
-             #scheme = "foobar";
-             #timeout = "foobar";
-            };
+           #healthCheck = {
+           #  followRedirects = true;
+           #  headers = {
+           #    name0 = "foobar";
+           #    name1 = "foobar";
+           #  };
+           #  hostname = "foobar";
+           #  interval = "foobar";
+           #  path = "foobar";
+           #  port = 42;
+           #  scheme = "foobar";
+           #  timeout = "foobar";
+           #};
             passHostHeader = true;
             responseForwarding = { flushInterval = "100ms"; };
             servers = [
@@ -528,39 +528,39 @@
         };
       };
 
-      udp = {
-        routers = {
-         #UDPRouter0 = {
-         #  entryPoints = [ "foobar" "foobar" ];
-         #  service = "foobar";
-         #};
-         #UDPRouter1 = {
-         #  entryPoints = [ "foobar" "foobar" ];
-         #  service = "foobar";
-         #};
-        };
-        services = {
-         #UDPService01 = {
-         #  loadBalancer = {
-         #    servers = [ { address = "foobar"; } { address = "foobar"; } ];
-         #  };
-         #};
-         #UDPService02 = {
-         #  weighted = {
-         #    services = [
-         #      {
-         #        name = "foobar";
-         #        weight = 42;
-         #      }
-         #      {
-         #        name = "foobar";
-         #        weight = 42;
-         #      }
-         #    ];
-         #  };
-         #};
-        };
-      };
+     #udp = {
+     #  routers = {
+     #    UDPRouter0 = {
+     #      entryPoints = [ "foobar" "foobar" ];
+     #      service = "foobar";
+     #    };
+     #    UDPRouter1 = {
+     #      entryPoints = [ "foobar" "foobar" ];
+     #      service = "foobar";
+     #    };
+     #  };
+     #  services = {
+     #    UDPService01 = {
+     #      loadBalancer = {
+     #        servers = [ { address = "foobar"; } { address = "foobar"; } ];
+     #      };
+     #    };
+     #    UDPService02 = {
+     #      weighted = {
+     #        services = [
+     #          {
+     #            name = "foobar";
+     #            weight = 42;
+     #          }
+     #          {
+     #            name = "foobar";
+     #            weight = 42;
+     #          }
+     #        ];
+     #      };
+     #    };
+     #  };
+     #};
 
       tls = with config.security.acme; {
         certificates = lib.mapAttrsToList (_: { directory, ... }: {
@@ -594,14 +594,14 @@
          #  sniStrict = true;
          #};
         };
-        stores = {
-          default = {
-           #defaultCertificate = {
-           #  certFile = "foobar";
-           #  keyFile = "foobar";
-           #};
-          };
-        };
+       #stores = {
+       #  default = {
+       #    defaultCertificate = {
+       #      certFile = "foobar";
+       #      keyFile = "foobar";
+       #    };
+       #  };
+       #};
       };
     };
 
