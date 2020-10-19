@@ -302,17 +302,13 @@
            (download-path (make-instance 'download-data-path :dirname "~/tmp/"))
            (search-engines
             (list (make-instance 'search-engine
-                                 :shortcut "default"
-                                 :search-url "https://qwant.com/?q=~a"
-                                 :fallback-url "https://qwant.com/")
+                                 :shortcut "gh"
+                                 :search-url "https://github.com/?q=~a"
+                                 :fallback-url "https://github.com/")
                   (make-instance 'search-engine
                                  :shortcut "qw"
                                  :search-url "https://qwant.com/?q=~a"
                                  :fallback-url "https://qwant.com/")
-                  (make-instance 'search-engine
-                                 :shortcut "gh"
-                                 :search-url "https://github.com/?q=~a"
-                                 :fallback-url "https://github.com/")
                   ))
            ))
         (defvar *configured-buffer* t))

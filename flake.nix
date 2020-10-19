@@ -84,29 +84,18 @@
       }) [
         {
           description = "nixos/iwd: add `networks` and `interfaces` option";
-          id = 75800;
-          hash = "ptMLTVfCwd3N3kWQwDMn7dIJ2DYtijSohGGep+OuT24=";
+          id = 75800; hash = "ptMLTVfCwd3N3kWQwDMn7dIJ2DYtijSohGGep+OuT24=";
         }
         {
-          url = "https://github.com/ju1m/nixpkgs/commit/fb6d63f3fdd95a5468d43a0693c8ca7c1894363f.diff";
           description = "apparmor: fix and improve the service";
-          id = 93457;
-          hash = "fJFck5f64pYH9suYyu1+rsRO40YECG5yZxNeHCF/xUo=";
+          id = 101071; hash = "RSaeEMLFJ41z50Fhk6TKSqLfcaNZ2uUF276EfEGxBvA=";
         }
        #{
-       #  description = "apparmor: fix and improve the service";
-       #  id = 101071;
-       #  hash = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-       #}
-       #{
        #  description = "nixos/security.gnupg: provisioning GnuPG-protected secrets through the Nix store";
-       #  id = 93659;
-       #  hash = "3im5nSrlM32DQUeq0Yp1MHkUcQyLdCGbxfJjgcc9e78=";
+       #  id = 93659; hash = "3im5nSrlM32DQUeq0Yp1MHkUcQyLdCGbxfJjgcc9e78=";
        #}
       ];
-      patches = map basePkgs.fetchpatch pullReqs ++ [
-        { outPath = ./fix-apparmor-patch.diff; outputHash = "FixApparmorPatch"; }
-      ];
+      patches = map basePkgs.fetchpatch pullReqs;
       patchedTree = basePkgs.applyPatches {
         name = "nixpkgs-patched";
         src = basePkgs.path;
