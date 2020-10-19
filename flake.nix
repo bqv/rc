@@ -93,13 +93,20 @@
           id = 93457;
           hash = "fJFck5f64pYH9suYyu1+rsRO40YECG5yZxNeHCF/xUo=";
         }
-        {
-          description = "nixos/security.gnupg: provisioning GnuPG-protected secrets through the Nix store";
-          id = 93659;
-          hash = "3im5nSrlM32DQUeq0Yp1MHkUcQyLdCGbxfJjgcc9e78=";
-        }
+       #{
+       #  description = "apparmor: fix and improve the service";
+       #  id = 101071;
+       #  hash = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
+       #}
+       #{
+       #  description = "nixos/security.gnupg: provisioning GnuPG-protected secrets through the Nix store";
+       #  id = 93659;
+       #  hash = "3im5nSrlM32DQUeq0Yp1MHkUcQyLdCGbxfJjgcc9e78=";
+       #}
       ];
-      patches = map basePkgs.fetchpatch pullReqs;
+      patches = map basePkgs.fetchpatch pullReqs ++ [
+        { outPath = ./fix-apparmor-patch.diff; outputHash = "FixApparmorPatch"; }
+      ];
       patchedTree = basePkgs.applyPatches {
         name = "nixpkgs-patched";
         src = basePkgs.path;
@@ -112,13 +119,10 @@
       };
 
       import_nixpkgs = args: import patchedTree ({ inherit (basePkgs) system; } // args);
-      baseFlake = self: (import "${basePkgs.path}/flake.nix").outputs { inherit self; };
-      fakeFlake = {
-        lib = (import_nixpkgs {}).lib;
-        legacyPackages = basePkgs.lib.mapAttrs (system: _: import_nixpkgs { inherit system; })
-          (baseFlake fakeFlake).legacyPackages;
-      };
-    in patchedTree // baseFlake fakeFlake // fakeFlake;
+    in patchedTree // {
+      lib = (import_nixpkgs {}).lib;
+      legacyPackages = basePkgs.lib.genAttrs allSystems (system: _: import_nixpkgs { inherit system; });
+    };
 
     channels = with inputs; {
       pkgs = small;       # For packages
@@ -236,7 +240,8 @@
         inputs.wayland.overlay
         inputs.self.overlay
         (pkgs: lib.const {
-          inherit (channels.modules.legacyPackages.${system}) apparmor apparmor-utils apparmor-kernel-patches apparmorRulesFromClosure iputils inetutils;
+          inherit ((import (patchNixpkgs channels.modules.legacyPackages.${system}) { inherit system; }).pkgs)
+            apparmor apparmor-utils apparmor-kernel-patches apparmorRulesFromClosure iputils inetutils;
           inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird; # slow
           graalvm8 = builtins.trace "pkgs.graalvm8: suspended - too big and not cached" pkgs.hello;
           lbry = (pkgs.symlinkJoin {
@@ -514,7 +519,9 @@
       dir = ./hosts;
       _import = host: let
         modules = modulesFor host;
-      in channels.modules.lib.nixosSystem modules // {
+        pkgs = channels.modules.legacyPackages.${system};
+        nixosSystem = import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix" modules;
+      in nixosSystem // {
         nixos = modules; # This is extra spicy, but vaguely needed for nixus?
       };
     };
@@ -568,8 +575,8 @@
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }:
-      import ./deploy {
-        nixpkgs = channels.modules;
+      import ./deploy rec {
+        nixpkgs = patchNixpkgs (channels.modules.legacyPackages.${system});
         deploySystem = system;
       } ({ config, lib, ... }: let
         inherit (config) nodes;
@@ -726,6 +733,7 @@
 
     passthru = rec {
       inherit inputs channels config allSystems inputMap patchNixpkgs;
+      patchedPkgs = patchNixpkgs (channels.modules.legacyPackages.x86_64-linux);
 
       #$ git config secrets.providers "nix eval --raw .#passthru.secrets"
       secrets = with lib.strings; concatMapStringsSep "\n" (replaceStrings [" "] ["\\s"]) ([
