@@ -356,19 +356,19 @@
 
         services = {
           auth.loadBalancer = {
-            healthCheck = {
-             #followRedirects = true;
-             #headers = {
-             #  name0 = "foobar";
-             #  name1 = "foobar";
-             #};
-             #hostname = "foobar";
-             #interval = "foobar";
-             #path = "foobar";
-             #port = 42;
-             #scheme = "foobar";
-             #timeout = "foobar";
-            };
+           #healthCheck = {
+           # #followRedirects = true;
+           # #headers = {
+           # #  name0 = "foobar";
+           # #  name1 = "foobar";
+           # #};
+           # #hostname = "foobar";
+           # #interval = "foobar";
+           # #path = "foobar";
+           # #port = 42;
+           # #scheme = "foobar";
+           # #timeout = "foobar";
+           #};
             passHostHeader = true;
             responseForwarding = { flushInterval = "100ms"; };
             servers = [
