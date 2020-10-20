@@ -17,8 +17,9 @@ in {
         Ciphers +aes256-cbc
       '';
       matchBlocks = {
-        zeta = {
-          host = "${hosts.wireguard.zeta} zeta.${domains.home}";
+        zeta = rec {
+          host = "${hostname} zeta.${domains.home} zeta";
+          hostname = hosts.wireguard.zeta;
           user = "bao";
           extraOptions = {
             StrictHostKeyChecking = "no";
@@ -26,21 +27,21 @@ in {
           };
         };
         theta = rec {
-          host = "${hosts.wireguard.theta} ${hostname} theta.${domains.home}";
+          host = "${hosts.wireguard.theta} ${hostname} theta";
           hostname = hosts.lan.phi;
           user = "leaf";
           extraOptions = {
             StrictHostKeyChecking = "no";
           };
         };
-        delta = {
-          host = "${hosts.wireguard.delta}";
+        delta = rec {
+          host = "${hosts.wireguard.delta} delta";
           extraOptions = {
             StrictHostKeyChecking = "no";
           };
         };
-        phi = {
-          host = "${hosts.wireguard.phi} ${hosts.lan.phi} phi";
+        phi = rec {
+          host = "${hosts.wireguard.phi} ${hostname} phi";
           hostname = hosts.lan.phi;
           user = "leaf";
           extraOptions = {
@@ -48,8 +49,8 @@ in {
           };
         };
 
-        epsilon = {
-          host = "${hosts.lan.epsilon} epsilon";
+        epsilon = rec {
+          host = "${hostname} epsilon";
           hostname = hosts.lan.epsilon;
           user = "aion";
           extraOptions = {
@@ -57,8 +58,8 @@ in {
           };
         };
 
-        leo = {
-          host = "${hosts.lan.leo} leo";
+        leo = rec {
+          host = "${hostname} leo";
           hostname = hosts.lan.leo;
           user = "kani";
           extraOptions = {
