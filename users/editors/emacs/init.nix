@@ -213,7 +213,6 @@ let
             create-lockfiles nil)) ; no .#blah files
     (global-auto-revert-mode t)
     (add-hook 'before-save-hook 'whitespace-cleanup)
-    (add-hook 'prog-mode-hook 'whitespace-mode)
     (global-set-key (kbd "C-x k") 'kill-this-buffer)
     (setq confirm-kill-emacs 'y-or-n-p)
 
