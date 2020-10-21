@@ -647,6 +647,14 @@
     );
 
     apps = forAllSystems ({ pkgs, system, ... }: {
+      epsilon = rec {
+        type = "app";
+        inherit (inputs.self.homeConfigurations.epsilon.${system}) activationPackage;
+        program = (pkgs.writeShellScript "reconfigure-epsilon" ''
+          nix copy --to ssh://epsilon '${activationPackage}' \
+            && ssh epsilon -t ${activationPackage}/activate $@
+        '').outPath;
+      };
       nixos = {
         type = "app";
         program = pkgs.callPackage ./pkgs/lib/nixos.nix {} + "/bin/nixos";
