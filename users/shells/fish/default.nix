@@ -115,7 +115,7 @@ in {
             if test "$TERM" = "dumb"
                 exec bash
             else if test -n "$DISPLAY"                # If we're in X11
-                test -z "$TMUX"; and exec ${pkgs.tmux}/bin/tmux new -A -s (echo X$DISPLAY | sed 's/X:/X/;s/:/-/')
+                test -z "$TMUX"; and exec ${pkgs.tmux}/bin/tmux new -A -s (echo X$DISPLAY | sed 's/X:/X/;s/[.:]/-/')
             else if contains (tty) /dev/tty*          # If we're in TTY
                 test -z "$WINDOW"; and exec ${pkgs.screen}/bin/screen -xRR
             else if test -n "$SSH_CONNECTION"         # If we're in SSH
