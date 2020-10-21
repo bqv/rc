@@ -56,6 +56,8 @@
 
   #systemd.user.startServices = true; # broken by the [nix-env -> nix profile] move
 
+  xsession.windowManager.bspwm.enable = true;
+
   home.packages = with pkgs; [
    #appimage-run # Package Tools
    #abduco dvtm # Terminal Multiplexing
