@@ -13,33 +13,33 @@
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
     pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
 
-    nix.url = "github:nixos/nix";          #|- Nix
-    nix.inputs.nixpkgs.follows = "master"; #|
+    nix.url = "github:nixos/nix";           #|- Nix
+    nix.inputs.nixpkgs.follows = "/master"; #|
 
-    dwarffs.url = "github:edolstra/dwarffs";   #|- Dwarffs
-    dwarffs.inputs.nix.follows = "nix";        #|
-    dwarffs.inputs.nixpkgs.follows = "master"; #|
+    dwarffs.url = "github:edolstra/dwarffs";    #|- Dwarffs
+    dwarffs.inputs.nix.follows = "/nix";        #|
+    dwarffs.inputs.nixpkgs.follows = "/master"; #|
 
     home.url = "github:nix-community/home-manager"; #|- Home-manager
-    home.inputs.nixpkgs.follows = "master";         #|
+    home.inputs.nixpkgs.follows = "/master";        #|
 
-    naersk.url = "github:nmattia/naersk";     #|- Naersk
-    naersk.inputs.nixpkgs.follows = "master"; #|
+    naersk.url = "github:nmattia/naersk";      #|- Naersk
+    naersk.inputs.nixpkgs.follows = "/master"; #|
 
-    xontribs.url = "github:bqv/xontribs";       #|- Xontribs
-    xontribs.inputs.nixpkgs.follows = "master"; #|
-    xontribs.inputs.prompt-bar.follows = "prompt-bar";
+    xontribs.url = "github:bqv/xontribs";        #|- Xontribs
+    xontribs.inputs.nixpkgs.follows = "/master"; #|
+    xontribs.inputs.prompt-bar.follows = "/prompt-bar";
     prompt-bar.url = "github:anki-code/xontrib-prompt-bar/68b3487e156ed3dce80578ebe552b6afa94c7eb8";
     prompt-bar.flake = false;
-    xontribs.inputs.pipeliner.follows = "pipeliner";
+    xontribs.inputs.pipeliner.follows = "/pipeliner";
     pipeliner.url = "github:anki-code/xontrib-pipeliner/daccb6c8a67bbda799dfa2d6d8d829b5e9151c92";
     pipeliner.flake = false;
 
-    guix.url = "github:bqv/guix";           #|- Guix
-    guix.inputs.nixpkgs.follows = "master"; #|
+    guix.url = "github:bqv/guix";            #|- Guix
+    guix.inputs.nixpkgs.follows = "/master"; #|
 
     construct.url = "github:matrix-construct/construct"; #|- Construct
-    construct.inputs.nixpkgs.follows = "large";          #|
+    construct.inputs.nixpkgs.follows = "/large";         #|
 
     nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; # NixIPFS
 
@@ -52,7 +52,7 @@
     cluffer = { url = "github:robert-strandh/cluffer"; flake = false; }; #|  | cluffer
 
     wayland.url = "github:colemickens/nixpkgs-wayland"; #|- Nixpkgs-wayland
-    wayland.inputs.nixpkgs.follows = "small";           #|
+    wayland.inputs.nixpkgs.follows = "/small";          #|
 
     haskell.url = "github:input-output-hk/haskell.nix"; # Haskell.nix
     utils.url = "github:numtide/flake-utils";           # Flake-utils
