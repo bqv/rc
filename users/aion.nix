@@ -53,6 +53,7 @@
 
   services.lorri.enable = true;
   services.gpg-agent.enable = true;
+  services.sxhkd.enable = true;
 
   #systemd.user.startServices = true; # broken by the [nix-env -> nix profile] move
 

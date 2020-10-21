@@ -514,8 +514,10 @@
             _module.args = rec {
               pkgsPath = pkgs.path;
               inherit pkgs;
-              super.services.aria2.rpcSecret = "";
-              super.networking.hostName = "epsilon";
+              nixosConfig = {
+                services.aria2.rpcSecret = "";
+                networking.hostName = "epsilon";
+              };
             };
             nixpkgs = {
               inherit config system;
