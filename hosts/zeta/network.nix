@@ -84,7 +84,7 @@ in {
 
           # restrict imap and smtp to vpn
           ip saddr 10.0.0.0/24 accept
-          tcp dport { 143, 993 } drop
+          tcp dport { 1143 } drop
           tcp dport { 1025 } drop
 
           tcp dport 4004 accept
