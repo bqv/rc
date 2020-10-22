@@ -90,6 +90,12 @@
           value = 6600;
           policy = "accept";
         };
+        mosh = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = [ 60000 60001 60002 60003 60004 60005 60006 60007 60008 60009
+                    60010 60011 60012 60013 60014 60015 60016 60017 60018 60019 ];
+          policy = "accept";
+        };
         theta = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
           protocol = "ip"; field = "saddr";
           value = hosts.lan.theta;
