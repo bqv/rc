@@ -35,6 +35,11 @@ See `comint-run'."
           (set-visited-file-name new-name)
           (set-buffer-modified-p nil))))))
 
+(defun bookmark-save-advice (&rest r)
+  (let ((save-silently t))
+    (bookmark-save)))
+(advice-add 'bookmark-set :after #'bookmark-save-advice)
+
 (defun pulseaudio-ctl/volume-up (&rest r)
   (interactive)
   (shell-command-to-string "pulseaudio-ctl up"))
