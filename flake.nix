@@ -518,6 +518,7 @@
                 services.aria2.rpcSecret = "";
                 networking.hostName = "epsilon";
               };
+              flakes = inputs;
             };
             nixpkgs = {
               inherit config system;
