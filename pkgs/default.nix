@@ -46,7 +46,7 @@ in rec {
 
   mx-puppet-discord = prev.callPackage ./servers/mx-puppet-discord { };
 
-  nyxt = prev.callPackage ./applications/networking/browsers/nyxt { };
+  nyxt = final.staged.callPackage ./applications/networking/browsers/nyxt { };
 
   nodePackages = recurseIntoAttrs prev.nodePackages;
 

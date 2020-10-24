@@ -47,9 +47,7 @@
     nativecomp.url = "github:fejfighter/emacs/pgtk-nativecomp"; # Emacs-nativecomp
     nativecomp.flake = false;
 
-    nyxt = { url = "github:atlas-engineer/nyxt"; flake = false; };       #|- Nyxt
-    cl-webkit = { url = "github:joachifm/cl-webkit"; flake = false; };   #|  | cl-webkit
-    cluffer = { url = "github:robert-strandh/cluffer"; flake = false; }; #|  | cluffer
+    nyxt = { url = "github:atlas-engineer/nyxt"; flake = false; }; #|- Nyxt
 
     wayland.url = "github:colemickens/nixpkgs-wayland"; #|- Nixpkgs-wayland
     wayland.inputs.nixpkgs.follows = "/small";          #|
@@ -259,38 +257,29 @@
             ];
           }).overrideAttrs (_: { inherit (pkgs.stable.postman) meta; });
         })
-        (final: prev: {
-          nyxt = prev.nyxt.override {
-            src = final.runCommand "nyxt-source" rec {
-              inherit (final.lispPackages) quicklisp;
-            } ''
-              mkdir $out && cd $out && cp -r ${inputs.nyxt}/* .
+       #(final: prev: {
+       #  nyxt = prev.nyxt.override {
+       #    src = final.runCommand "nyxt-source" rec {
+       #      inherit (final.lispPackages) quicklisp;
+       #    } ''
+       #      mkdir $out && cd $out && cp -r ${inputs.nyxt}/* .
 
-              chmod a+w quicklisp-client quicklisp-libraries
-              rm -rf quicklisp-client quicklisp-libraries
+       #      chmod a+w quicklisp-client quicklisp-libraries
+       #      rm -rf quicklisp-client quicklisp-libraries
 
-              mkdir quicklisp-client
-              cp -r $quicklisp/lib/common-lisp/quicklisp/* quicklisp-client/
+       #      mkdir quicklisp-client
+       #      cp -r $quicklisp/lib/common-lisp/quicklisp/* quicklisp-client/
 
-              mkdir quicklisp-libraries
-              ln -s ${inputs.cl-webkit} quicklisp-libraries/cl-webkit
-              ln -s ${inputs.cluffer} quicklisp-libraries/cluffer
-            '';
-            version = let
-              rev = lib.substring 0 8 inputs.nyxt.rev;
-              date = lib.substring 0 8 (inputs.nyxt.lastModifiedDate or inputs.nyxt.lastModified);
-            in "${date}.${rev}";
-            sbcl = final.sbcl_2_0_2.overrideAttrs (drv: with drv; rec {
-              version = "2.0.8";
-              src = final.fetchurl {
-                url    = "mirror://sourceforge/project/sbcl/sbcl/${version}/${pname}-${version}-source.tar.bz2";
-                sha256 = "II1G97lNJW0Dbw78lzTms0qFxRuwPD64vzm3o+/mmfc=";
-              };
-              postPatch = '' echo '"${version}.nixos"' > version.lisp-expr '';
-              meta = drv.meta // { inherit version; };
-            });
-          };
-        })
+       #      mkdir quicklisp-libraries
+       #      ln -s ${inputs.cl-webkit} quicklisp-libraries/cl-webkit
+       #      ln -s ${inputs.cluffer} quicklisp-libraries/cluffer
+       #    '';
+       #    version = let
+       #      rev = lib.substring 0 8 inputs.nyxt.rev;
+       #      date = lib.substring 0 8 (inputs.nyxt.lastModifiedDate or inputs.nyxt.lastModified);
+       #    in "${date}.${rev}";
+       #  };
+       #})
       ];
     };
 

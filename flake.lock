@@ -112,38 +112,6 @@
         "type": "github"
       }
     },
-    "cl-webkit": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1601371195,
-        "narHash": "sha256-Z8M2m2iJZ1Yvyw/QC+qj6y43w4+zSBBKMsYnI/HioHQ=",
-        "owner": "joachifm",
-        "repo": "cl-webkit",
-        "rev": "096bef5577f7381c6021f84f5e188988ca8eff89",
-        "type": "github"
-      },
-      "original": {
-        "owner": "joachifm",
-        "repo": "cl-webkit",
-        "type": "github"
-      }
-    },
-    "cluffer": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1537757136,
-        "narHash": "sha256-coqpaqgz7KeZkJonRncsP1ajsGwwKlA+ym0sfN4Ij60=",
-        "owner": "robert-strandh",
-        "repo": "cluffer",
-        "rev": "4aad29c276a58a593064e79972ee4d77cae0af4a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "robert-strandh",
-        "repo": "cluffer",
-        "type": "github"
-      }
-    },
     "cmpkgs": {
       "locked": {
         "lastModified": 1601260294,
@@ -850,8 +818,6 @@
     "root": {
       "inputs": {
         "baduk": "baduk",
-        "cl-webkit": "cl-webkit",
-        "cluffer": "cluffer",
         "construct": "construct",
         "dwarffs": "dwarffs",
         "emacs": "emacs",
@@ -918,11 +884,11 @@
     },
     "small": {
       "locked": {
-        "lastModified": 1602440113,
-        "narHash": "sha256-Wjy9mD//KmKDamRsX7ngIlIy2TYWPparKFKDiBVD+sc=",
+        "lastModified": 1603347458,
+        "narHash": "sha256-Ec9Xkb3U/WdUk6K51Ts4oLNGdlYxC02JyOMXoivYWjQ=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "8294af02845210169290240e6fd356f6b7ea3f11",
+        "rev": "ec3aa4c109cf4ddb2094269d7673bae3d3867308",
         "type": "github"
       },
       "original": {
@@ -982,11 +948,11 @@
     },
     "staged": {
       "locked": {
-        "lastModified": 1602435398,
-        "narHash": "sha256-RI83LZVmj1gR6u3muyuNv+GRwlXwwG6FsbrmX0sozVI=",
+        "lastModified": 1603582983,
+        "narHash": "sha256-hXm3dG0w8408vPI+isbg6rOJzrmm7AkRCpw8Bp5fqdg=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "653b6ae58b89c3cb223244ad46f49fd8975c0ff0",
+        "rev": "61d82f08f7338471fcc6e48bb9145d9e4f3bb44d",
         "type": "github"
       },
       "original": {

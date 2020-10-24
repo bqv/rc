@@ -1,110 +1,51 @@
-{ callPackage, symlinkJoin, writeShellScriptBin, wrapLisp, clisp, sbcl,
-  lib, fetchgit, rev ? "8251d8b076e399d0e85ad75431f32ffdd452978f", src ? fetchgit {
-    url = "https://github.com/atlas-engineer/nyxt"; inherit rev;
-    sha256 = "lEY5qNhJayRmSjdCQuiS9COY7pVRHRwiq9iSCatdL78=";
-    fetchSubmodules = true;
-  }, version ? lib.substring 0 7 rev
-}:
+{ stdenv, lib, fetchFromGitHub, lispPackages, pkgs }:
 
-let
-  nyxt = { pkgs,
-      useQt ? false, useGtk ? !useQt,
-      useClisp ? false, useSbcl ? !useClisp
-    }:
+stdenv.mkDerivation rec {
+  pname = "nyxt";
+  version = lispPackages.nyxt.meta.version + "-nix";
 
-    assert useGtk -> !useQt;
-    assert useQt  -> !useGtk;
+  src = lispPackages.nyxt;
 
-    assert useSbcl  -> !useClisp;
-    assert useClisp -> !useSbcl;
+  nativeBuildInputs = with pkgs; [ makeWrapper wrapGAppsHook ];
+  gstBuildInputs = with pkgs.gst_all_1; [
+    gstreamer gst-libav
+    gst-plugins-base
+    gst-plugins-good
+    gst-plugins-bad
+    gst-plugins-ugly
+  ];
+  buildInputs = with pkgs; [
+    glib gdk-pixbuf cairo
+    mime-types pango gtk3
+    glib-networking gsettings-desktop-schemas
+    xclip notify-osd enchant
+  ] ++ gstBuildInputs;
 
-    with pkgs; let
-      lisp = wrapLisp (if useClisp then clisp else sbcl);
+  GST_PLUGIN_SYSTEM_PATH_1_0 = lib.concatMapStringsSep ":" (p: "${p}/lib/gstreamer-1.0") gstBuildInputs;
 
-      lispCmd = if useClisp then "common-lisp.sh -on-error appease" else
-                if useSbcl  then "common-lisp.sh" else null;
+  dontWrapGApps = true;
+  installPhase = ''
+    mkdir -p $out/share/applications/
+    sed "s/VERSION/$version/" $src/lib/common-lisp/nyxt/assets/nyxt.desktop > $out/share/applications/nyxt.desktop
+    for i in 16 32 128 256 512; do
+      mkdir -p "$out/share/icons/hicolor/''${i}x''${i}/apps/"
+      cp -f $src/lib/common-lisp/nyxt/assets/nyxt_''${i}x''${i}.png "$out/share/icons/hicolor/''${i}x''${i}/apps/nyxt.png"
+    done
 
-      applicationModule = if useGtk then "nyxt/gtk-application" else
-                          if useQt  then "nyxt/qt-application" else null;
+    mkdir -p $out/bin && makeWrapper $src/bin/nyxt $out/bin/nyxt \
+      --prefix GST_PLUGIN_SYSTEM_PATH_1_0 : "${GST_PLUGIN_SYSTEM_PATH_1_0}" \
+      --argv0 nyxt "''${gappsWrapperArgs[@]}"
+  '';
 
-      evalCmd = if useSbcl  then "--eval" else
-                if useClisp then "-x" else null;
-    in stdenv.mkDerivation rec {
-      pname = "nyxt";
+  checkPhase = ''
+    $out/bin/nyxt -h
+  '';
 
-      inherit version src;
-
-      nativeBuildInputs = [ git cacert makeWrapper wrapGAppsHook ];
-      gstBuildInputs = with gst_all_1; [
-        gstreamer gst-libav
-        gst-plugins-base
-        gst-plugins-good
-        gst-plugins-bad
-        gst-plugins-ugly
-      ];
-      buildInputs = [
-        lisp openssl libfixposix mime-types
-        glib gdk-pixbuf cairo
-        pango gtk3 webkitgtk vivaldi-widevine
-        glib-networking gsettings-desktop-schemas
-        xclip notify-osd enchant
-      ] ++ gstBuildInputs;
-
-      GST_PLUGIN_SYSTEM_PATH_1_0 = lib.concatMapStringsSep ":" (p: "${p}/lib/gstreamer-1.0") gstBuildInputs;
-
-      configurePhase = ''
-        mkdir -p quicklisp-client/local-projects
-        for i in quicklisp-libraries/*; do ln -sf "$(readlink -f "$i")" "quicklisp-client/local-projects/$(basename "$i")"; done
-      '';
-
-      dontStrip = true;
-      buildPhase = ''
-        ${lispCmd} ${evalCmd} '(require "asdf")' \
-                   ${evalCmd} '(load "quicklisp-client/setup.lisp")' \
-                   ${evalCmd} '(asdf:load-asd (truename "nyxt.asd") :name "nyxt")' \
-                   ${evalCmd} '(ql:quickload :${applicationModule})' \
-                   ${evalCmd} '(quit)'
-
-        ${lispCmd} ${evalCmd} '(load "quicklisp-client/setup.lisp")' \
-                   ${evalCmd} '(require "asdf")' \
-                   ${evalCmd} '(ql:update-dist "quicklisp" :prompt nil)' \
-                   ${evalCmd} '(quit)'
-      '';
-
-      dontWrapGApps = true;
-      installPhase = ''
-        cp -r . $out && cd $out && export HOME=$out
-
-        ${lispCmd} ${evalCmd} '(require "asdf")' \
-                   ${evalCmd} '(load "quicklisp-client/setup.lisp")' \
-                   ${evalCmd} '(asdf:load-asd (truename "nyxt.asd") :name "nyxt")' \
-                   ${evalCmd} '(asdf:make :${applicationModule})' \
-                   ${evalCmd} '(quit)'
-
-        mkdir -p $out/share/applications/
-        sed "s/VERSION/${version}/" assets/nyxt.desktop > $out/share/applications/nyxt.desktop
-        rm -f version
-        for i in 16 32 128 256 512; do \
-                mkdir -p "$out/share/icons/hicolor/''${i}x''${i}/apps/" ; \
-                cp -f assets/nyxt_''${i}x''${i}.png "$out/share/icons/hicolor/''${i}x''${i}/apps/nyxt.png" ; \
-                done
-
-        install -D -m0755 nyxt $out/libexec/nyxt
-        mkdir -p $out/bin && makeWrapper $out/libexec/nyxt $out/bin/nyxt \
-          --prefix LD_LIBRARY_PATH : "${lib.makeLibraryPath buildInputs}" \
-          --prefix GST_PLUGIN_SYSTEM_PATH_1_0 : "${GST_PLUGIN_SYSTEM_PATH_1_0}" \
-          --argv0 nyxt "''${gappsWrapperArgs[@]}"
-      '';
-
-      checkPhase = ''
-        $out/bin/nyxt -h
-      '';
-
-      meta = pkgs.next.meta // {
-        broken = pkgs.system != "x86_64-linux";
-      };
-
-      __noChroot = true;
-      # Packaged like a kebab in duct-tape, for now
-    };
-in callPackage nyxt {}
+  meta = with stdenv.lib; {
+    description = "Infinitely extensible web-browser (with Lisp development files using WebKitGTK platform port)";
+    homepage = "https://nyxt.atlas.engineer";
+    license = licenses.bsd3;
+    maintainers = with maintainers; [ lewo ];
+    platforms = [ "x86_64-linux" ];
+  };
+}
