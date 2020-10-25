@@ -201,7 +201,7 @@
   services.openssh.restartPeriod = "Hourly";
   #services.openssh.startWhenNeeded = true;
 
-  programs.x2goserver.enable = true;
+  programs.x2goserver.enable = builtins.trace "pkgs.x2goserver: broken" false;
   programs.mosh.enable = true;
   environment.variables.MOSH_SERVER_NETWORK_TMOUT = "86400";
   programs.ssh = let
