@@ -86,7 +86,7 @@
         }
         {
           description = "apparmor: fix and improve the service";
-          id = 101071; hash = "RSaeEMLFJ41z50Fhk6TKSqLfcaNZ2uUF276EfEGxBvA=";
+          id = 101071; hash = "DRwN1+ubcWRuy6qb3jszJ88J+o5DM6WjR5akjEYC7Ck=";
         }
        #{
        #  description = "nixos/security.gnupg: provisioning GnuPG-protected secrets through the Nix store";
