@@ -512,6 +512,7 @@
             nixpkgs = {
               inherit config system;
             };
+            home.packages = [ pkgs.nix ];
             imports = [ ./users/aion.nix ];
           };
           inherit system;
@@ -641,8 +642,11 @@
         type = "app";
         inherit (inputs.self.homeConfigurations.epsilon.${system}) activationPackage;
         program = (pkgs.writeShellScript "reconfigure-epsilon" ''
-          nix copy --to ssh://epsilon '${activationPackage}' \
-            && ssh epsilon -t ${activationPackage}/activate $@
+          echo Deploying ${activationPackage}
+          export HOST=epsilon
+          export NIX_SSHOPTS="-o StrictHostKeyChecking=no"
+          nix copy --to ssh://$HOST '${activationPackage}' \
+            && ssh $NIX_SSHOPTS $HOST -t ${activationPackage}/activate $@
         '').outPath;
       };
       nixos = {
