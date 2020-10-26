@@ -11,6 +11,7 @@
    #./utilities/ssh
     ./utilities/git
     ./utilities/darcs
+    ./utilities/tmux
     ./utilities/htop
     ./services/gnupg
   ];
@@ -65,10 +66,10 @@
     ## wm independent hotkeys
 
     # terminal emulator
-    "mode_switch + Return" = "stterm -f 'DejaVu Sans Mono-9'";
+    "mode_switch + {_,shift + }Return" = "stterm -f 'DejaVu Sans Mono-9'{_, -- mosh bao@delta -- emacsclient -t}";
 
     # program launcher
-    "mode_switch + @space" = "rofi -show";
+    "mode_switch + @space" = "rofi -show run";
 
     # make sxhkd reload its configuration files:
     "mode_switch + Escape" = "pkill -USR1 -x sxhkd";
@@ -152,6 +153,7 @@
   #systemd.user.startServices = true; # broken by the [nix-env -> nix profile] move
 
   xsession.windowManager.bspwm.enable = true;
+  xdg.configFile."bspwm/bspwmrc".executable = true;
   xdg.configFile."bspwm/bspwmrc".text = ''
     #!/bin/sh
 
@@ -173,14 +175,22 @@
     bspc rule -a Kupfer.py focus=on
     bspc rule -a Screenkey manage=off
 
-    echo | xmodmap - <<END
-      remove Mod4 = Super_L
-      remove Control = Control_L
-      keysym Control_L = Super_L
-      keysym Super_L = Control_L
-      add Mod4 = Super_L
-      add Control = Control_L
-    END
+    #echo | xmodmap - <<END
+    #  remove Mod4 = Super_L
+    #  remove Control = Control_L
+    #  keysym Control_L = Super_L
+    #  keysym Super_L = Control_L
+    #  add Mod4 = Super_L
+    #  add Control = Control_L
+    #END
+  '';
+  home.file.".Xmodmap".text = ''
+    remove Mod4 = Super_L
+    remove Control = Control_L
+    keysym Control_L = Super_L
+    keysym Super_L = Control_L
+    add Mod4 = Super_L
+    add Control = Control_L
   '';
 
   xdg.configFile."nix/registry.json".text = builtins.toJSON {
