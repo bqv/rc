@@ -1,6 +1,7 @@
 { super, config, lib, pkgs, usr, ... }:
 
 let
+  packageNames = lib.mapAttrsToList (_: e: e.name) config.emacs-loader;
   packageSpec = { config, name, ... }:
   {
     options = with lib; {
@@ -24,7 +25,7 @@ let
         default = [];
       };
       after = mkOption {
-        type = types.listOf types.str;
+        type = types.listOf (types.enum packageNames);
         default = [];
       };
       diminish = mkOption {

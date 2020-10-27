@@ -3,7 +3,7 @@
 {
   emacs-loader.lsp-haskell = {
     demand = true;
-    after = [ "lsp" "haskell-mode" ];
+    after = [ "lsp-mode" "haskell-mode" ];
     hook = [
       { haskell-mode-hook = "lsp"; }
     ];

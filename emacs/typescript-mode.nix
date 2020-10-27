@@ -3,7 +3,7 @@
 {
   emacs-loader.typescript-mode = {
     demand = true;
-    after = [ "lsp" ];
+    after = [ "lsp-mode" ];
     hook = [
       { typescript-mode-hook = "lsp"; }
     ];

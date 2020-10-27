@@ -3,6 +3,6 @@
 {
   emacs-loader.slime-company = {
     demand = true;
-    after = [ "slime" "company-mode" ];
+    after = [ "slime" "company" ];
   };
 }

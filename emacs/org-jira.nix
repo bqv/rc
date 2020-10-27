@@ -3,6 +3,6 @@
 {
   emacs-loader.org-jira = {
     demand = true;
-    after = [ "org-mode" ];
+    after = [ "org" ];
   };
 }

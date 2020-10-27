@@ -3,7 +3,7 @@
 {
   emacs-loader.rust-mode = {
     demand = true;
-    after = [ "lsp" ];
+    after = [ "lsp-mode" ];
     hook = [
       { rust-mode-hook = "lsp"; }
     ];

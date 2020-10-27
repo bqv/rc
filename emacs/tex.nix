@@ -1,8 +1,8 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.dap-mode = {
+  emacs-loader.tex = {
     demand = true;
-    after = [ "lsp-mode" ];
+    package = lib.const null;
   };
 }

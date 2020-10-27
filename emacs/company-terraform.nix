@@ -3,6 +3,6 @@
 {
   emacs-loader.company-terraform = {
     demand = true;
-    after = [ "terraform-mode" "company-mode" ];
+    after = [ "terraform-mode" "company" ];
   };
 }

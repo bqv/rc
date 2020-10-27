@@ -3,7 +3,7 @@
 {
   emacs-loader.purescript-mode = {
     demand = true;
-    after = [ "lsp" ];
+    after = [ "lsp-mode" ];
     hook = [
       { purescript-mode-hook = "lsp"; }
     ];
