@@ -28,12 +28,15 @@
 
     xontribs.url = "github:bqv/xontribs";        #|- Xontribs
     xontribs.inputs.nixpkgs.follows = "/master"; #|
+    # BEGIN ignorethis
     xontribs.inputs.prompt-bar.follows = "/prompt-bar";
     prompt-bar.url = "github:anki-code/xontrib-prompt-bar/68b3487e156ed3dce80578ebe552b6afa94c7eb8";
     prompt-bar.flake = false;
+    # TODO notthis
     xontribs.inputs.pipeliner.follows = "/pipeliner";
     pipeliner.url = "github:anki-code/xontrib-pipeliner/daccb6c8a67bbda799dfa2d6d8d829b5e9151c92";
     pipeliner.flake = false;
+    # END ignorethis
 
     guix.url = "github:bqv/guix";            #|- Guix
     guix.inputs.nixpkgs.follows = "/master"; #|
@@ -169,13 +172,13 @@
         })
         inputs.nix.overlay (final: prev: {
           nix-ipfs = inputs.nix-ipfs.defaultPackage.${system};
-          nix3 = final.nix.overrideAttrs (drv: {
+          nixFlakes = inputs.nix.packages.${system}.nix.overrideAttrs (drv: {
             patches = (drv.patches or []) ++ [
-             #(final.fetchpatch {
-             #  name = "logformat-option.patch";
-             #  url = "https://github.com/nixos/nix/pull/3961.diff";
-             #  sha256 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=";
-             #})
+              (final.fetchpatch {
+                name = "logformat-option.patch";
+                url = "https://github.com/nixos/nix/pull/3961.diff";
+                sha256 = "n4i/cQ22fCTSKzZumJH7+U/JTFNqenFYMWZ28zWI/LE=";
+              })
               (final.fetchpatch {
                 name = "libfetcher-file.patch";
                 url = "https://github.com/nixos/nix/pull/4153.diff";
@@ -183,6 +186,7 @@
               })
             ];
           });
+          inherit (inputs.nix.packages.${system}) nix-static;
         })
         inputs.guix.overlay
         inputs.construct.overlay (final: prev: {
@@ -356,7 +360,7 @@
             environment.pathsToLink = [ "/share/bios" ];
             networking = { inherit hostName; };
 
-            nix.package = pkgs.nix3;
+            nix.package = pkgs.nixFlakes;
             nix.registry = lib.mapAttrs (id: flake: {
               inherit flake;
               from = { inherit id; type = "indirect"; };
@@ -499,10 +503,11 @@
     {
       epsilon = forAllSystems ({ pkgs, system, ... }:
         let
-          inherit (pkgs) pkgsStatic;
-          nix = inputs.nix.packages.${system}.nix-static;
+          inherit (pkgs) pkgsStatic nix-static;
         in inputs.home.lib.homeManagerConfiguration rec {
-          pkgs = pkgsStatic;
+          pkgs = pkgsStatic // {
+            nixFlakes = nix-static;
+          };
           configuration = {
             _module.args = rec {
               pkgsPath = pkgs.path;
@@ -516,7 +521,7 @@
             nixpkgs = {
               inherit config system;
             };
-            home.packages = [ nix ];
+            home.packages = with pkgs; [ nixFlakes ];
             imports = [ ./users/aion.nix ];
           };
           inherit system;
