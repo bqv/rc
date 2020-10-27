@@ -500,8 +500,7 @@
       epsilon = forAllSystems ({ pkgs, system, ... }:
         let
           inherit (pkgs) pkgsStatic;
-          # pkgsStatic.nixUnstable is broken
-          nix = pkgs.nixUnstable;
+          nix = inputs.nix.packages.${system}.nix-static;
         in inputs.home.lib.homeManagerConfiguration rec {
           pkgs = pkgsStatic;
           configuration = {
