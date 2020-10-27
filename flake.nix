@@ -498,7 +498,12 @@
       (host: inputs.self.nixosConfigurations.${host}.config.home-manager.users) //
     {
       epsilon = forAllSystems ({ pkgs, system, ... }:
-        inputs.home.lib.homeManagerConfiguration {
+        let
+          inherit (pkgs) pkgsStatic;
+          # pkgsStatic.nixUnstable is broken
+          nix = pkgs.nixUnstable;
+        in inputs.home.lib.homeManagerConfiguration rec {
+          pkgs = pkgsStatic;
           configuration = {
             _module.args = rec {
               pkgsPath = pkgs.path;
@@ -512,13 +517,12 @@
             nixpkgs = {
               inherit config system;
             };
-            home.packages = [ pkgs.nix ];
+            home.packages = [ nix ];
             imports = [ ./users/aion.nix ];
           };
           inherit system;
-          homeDirectory = "/home/aion";
+          homeDirectory = "/home/${username}";
           username = "aion";
-          inherit pkgs;
         }
       );
     };
@@ -646,7 +650,9 @@
           export HOST=epsilon
           export NIX_SSHOPTS="-o StrictHostKeyChecking=no"
           nix copy --to ssh://$HOST '${activationPackage}' \
-            && ssh $NIX_SSHOPTS $HOST -t ${activationPackage}/activate $@
+            && ssh $NIX_SSHOPTS $HOST -t \
+              sh -c ". $HOME/.nix-profile/etc/profile.d/nix.sh && \
+                exec ${activationPackage}/activate $@"
         '').outPath;
       };
       nixos = {

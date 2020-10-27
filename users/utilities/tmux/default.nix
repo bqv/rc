@@ -11,8 +11,7 @@
     '';
     historyLimit = 5000;
     keyMode = "vi";
-    shortcut = "a";
-    terminal = "tmux-256color";
+    shortcut = "q";
     baseIndex = 1;
     plugins = with pkgs.tmuxPlugins; [
       copycat

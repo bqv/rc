@@ -3,7 +3,7 @@
 {
   emacs-loader.flycheck-posframe = {
     demand = true;
-    after = [ "flycheck" "lsp" ];
+    after = [ "flycheck" "lsp-mode" ];
     hook = [
       { flycheck-mode-hook = "flycheck-posframe-mode"; }
     ];
