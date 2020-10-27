@@ -23,8 +23,8 @@
     home.url = "github:nix-community/home-manager"; #|- Home-manager
     home.inputs.nixpkgs.follows = "/master";        #|
 
-    naersk.url = "github:nmattia/naersk";      #|- Naersk
-    naersk.inputs.nixpkgs.follows = "/master"; #|
+    naersk.url = "github:nmattia/naersk/58aa776"; #|- Naersk
+    naersk.inputs.nixpkgs.follows = "/master";    #|  (cole-h fork)
 
     xontribs.url = "github:bqv/xontribs";        #|- Xontribs
     xontribs.inputs.nixpkgs.follows = "/master"; #|
