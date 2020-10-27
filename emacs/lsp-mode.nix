@@ -11,7 +11,7 @@
     });
     commands = [ "lsp" ];
     config = ''
-      (setq lsp-log-io t)
+      ;(setq lsp-log-io t)
     '';
   };
 }
