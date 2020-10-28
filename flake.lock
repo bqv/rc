@@ -561,11 +561,11 @@
     "nyxt": {
       "flake": false,
       "locked": {
-        "lastModified": 1603023376,
-        "narHash": "sha256-Yn54fgpFUdBRcj9vPbddQTiK6UoXI0B296PITHOaJw8=",
+        "lastModified": 1603809610,
+        "narHash": "sha256-TE5M/NML7D3I8iPvtdI3Ok/T0q/D1IbZDkYD3wn4JuU=",
         "owner": "atlas-engineer",
         "repo": "nyxt",
-        "rev": "acfbe828580ea1a1dccf56c995046f3eff89d150",
+        "rev": "8189cc8511dc6cc7f2e85035ef3961e71905e693",
         "type": "github"
       },
       "original": {

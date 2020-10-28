@@ -149,7 +149,7 @@
       inherit system config;
       overlays = (attrValues inputs.self.overlays) ++ [
         (channelToOverlay { inherit system config; flake = "master"; branch = "master"; })
-        (channelToOverlay { inherit system config; flake = "stable"; branch = "nixos-20.03"; })
+        (channelToOverlay { inherit system config; flake = "stable"; branch = "nixos-20.09"; })
         (channelToOverlay { inherit system config; flake = "staged"; branch = "staging"; })
         (channelToOverlay { inherit system config; flake = "small"; branch = "nixos-unstable-small"; })
         (channelToOverlay { inherit system config; flake = "large"; branch = "nixos-unstable"; })
@@ -261,29 +261,15 @@
             ];
           }).overrideAttrs (_: { inherit (pkgs.stable.postman) meta; });
         })
-       #(final: prev: {
-       #  nyxt = prev.nyxt.override {
-       #    src = final.runCommand "nyxt-source" rec {
-       #      inherit (final.lispPackages) quicklisp;
-       #    } ''
-       #      mkdir $out && cd $out && cp -r ${inputs.nyxt}/* .
-
-       #      chmod a+w quicklisp-client quicklisp-libraries
-       #      rm -rf quicklisp-client quicklisp-libraries
-
-       #      mkdir quicklisp-client
-       #      cp -r $quicklisp/lib/common-lisp/quicklisp/* quicklisp-client/
-
-       #      mkdir quicklisp-libraries
-       #      ln -s ${inputs.cl-webkit} quicklisp-libraries/cl-webkit
-       #      ln -s ${inputs.cluffer} quicklisp-libraries/cluffer
-       #    '';
-       #    version = let
-       #      rev = lib.substring 0 8 inputs.nyxt.rev;
-       #      date = lib.substring 0 8 (inputs.nyxt.lastModifiedDate or inputs.nyxt.lastModified);
-       #    in "${date}.${rev}";
-       #  };
-       #})
+        (final: prev: {
+          nyxt = prev.nyxt.overrideAttrs (drv: rec {
+            src = drv.src.overrideAttrs (drv: {
+              src = inputs.nyxt;
+              name = lib.replaceStrings [drv.meta.version] [version] drv.name;
+            });
+            version = inputs.nyxt.lastModifiedDate;
+          });
+        })
       ];
     };
 
