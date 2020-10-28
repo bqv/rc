@@ -4,7 +4,9 @@
   emacs-loader.bufler = {
     demand = true;
     config = ''
-      (delq "VC" bufler-columns)
+      (if (boundp 'bufler-vc-remote)
+          (setq bufler-vc-remote nil)
+        (delq "VC" bufler-columns))
     '';
   };
 }
