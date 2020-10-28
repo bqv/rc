@@ -3,7 +3,7 @@
 
   inputs = {
     master.url = "github:nixos/nixpkgs/master";               #|.
-    stable.url = "github:nixos/nixpkgs/nixos-20.03";          #| \
+    stable.url = "github:nixos/nixpkgs/nixos-20.09";          #| \
     staged.url = "github:nixos/nixpkgs/staging";              #|  |-- Nixpkgs
     small.url  = "github:nixos/nixpkgs/nixos-unstable-small"; #| /
     large.url  = "github:nixos/nixpkgs/nixos-unstable";       #|'
