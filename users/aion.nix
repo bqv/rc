@@ -208,10 +208,12 @@
           id = "self";
           type = "indirect";
         };
-        to = {
-          inherit (flakes.self) narHash lastModified;
-          path = flakes.self.outPath;
-          rev = if flakes.self ? rev then flakes.self.rev
+        to = let
+          flake = flakes.self;
+        in {
+          inherit (flake) narHash lastModified;
+          path = flake.outPath;
+          rev = if flake ? rev then flake.rev
                 else "0000000000000000000000000000000000000000";
           type = "path";
         };
@@ -221,10 +223,12 @@
           id = "nixpkgs";
           type = "indirect";
         };
-        to = {
-          inherit (flakes.stable) narHash lastModified;
-          path = flakes.stable.outPath;
-          rev = if flakes.stable ? rev then flakes.stable.rev
+        to = let
+          flake = flakes.rel2009;
+        in {
+          inherit (flake) narHash lastModified;
+          path = flake.outPath;
+          rev = if flake ? rev then flake.rev
                 else "0000000000000000000000000000000000000000";
           type = "path";
         };

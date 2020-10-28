@@ -3,11 +3,12 @@
 
   inputs = {
     master.url = "github:nixos/nixpkgs/master";               #|.
-    stable.url = "github:nixos/nixpkgs/nixos-20.09";          #| \
-    staged.url = "github:nixos/nixpkgs/staging";              #|  |-- Nixpkgs
-    small.url  = "github:nixos/nixpkgs/nixos-unstable-small"; #| /
+    staged.url = "github:nixos/nixpkgs/staging";              #| |-- Nix
+    small.url  = "github:nixos/nixpkgs/nixos-unstable-small"; #| |--   pkgs
     large.url  = "github:nixos/nixpkgs/nixos-unstable";       #|'
 
+    rel2009.url = "github:nixos/nixpkgs/nixos-20.09";         #| Stable
+    rel2003.url = "github:nixos/nixpkgs/nixos-20.03";         #| Old Stable
     pr75800.url = "github:nixos/nixpkgs/517b290754f6a7cc487ce11932a8b750f868324d"; #|\ Pull
     pr93659.url = "github:ju1m/nixpkgs/security.pass";                             #|/ Reqs
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
@@ -64,6 +65,7 @@
     baduk = { url = "github:dustinlacewell/baduk.nix"; flake = false; };          # Baduk
     snack = { url = "github:nmattia/snack"; flake = false; };                     # Snack
     napalm = { url = "github:nmattia/napalm"; flake = false; };                   # Napalm
+    jami = { url = "github:alpmestan/jami.nix"; flake = false; };                 # Jami
   };
 
   outputs = inputs: with builtins; let
@@ -149,10 +151,11 @@
       inherit system config;
       overlays = (attrValues inputs.self.overlays) ++ [
         (channelToOverlay { inherit system config; flake = "master"; branch = "master"; })
-        (channelToOverlay { inherit system config; flake = "stable"; branch = "nixos-20.09"; })
         (channelToOverlay { inherit system config; flake = "staged"; branch = "staging"; })
         (channelToOverlay { inherit system config; flake = "small"; branch = "nixos-unstable-small"; })
         (channelToOverlay { inherit system config; flake = "large"; branch = "nixos-unstable"; })
+        (channelToOverlay { inherit system config; flake = "rel2009"; branch = "nixos-20.09"; })
+        (channelToOverlay { inherit system config; flake = "rel2003"; branch = "nixos-20.03"; })
         (final: prev: { broken = import channels.pkgs {
           inherit system overlays;
           config = config // { allowBroken = true; };
@@ -169,6 +172,8 @@
           snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
           napalm = pkgs.callPackage inputs.napalm;
           inherit (inputs.haskell.legacyPackages.${system}) haskell-nix; # ignore overlay, we want cache hits
+          jamiPkgs = pkgs.callPackage inputs.jami;
+          jami = pkgs.jamiPkgs.ring-client-gnome;
         })
         inputs.nix.overlay (final: prev: {
           nix-ipfs = inputs.nix-ipfs.defaultPackage.${system};
@@ -233,7 +238,7 @@
         (pkgs: lib.const {
           inherit ((import (patchNixpkgs channels.modules.legacyPackages.${system}) { inherit system; }).pkgs)
             apparmor apparmor-utils apparmor-kernel-patches apparmorRulesFromClosure iputils inetutils;
-          inherit (inputs.stable.legacyPackages.${system}) firefox thunderbird; # slow
+          inherit (inputs.rel2009.legacyPackages.${system}) firefox thunderbird; # slow
           graalvm8 = builtins.trace "pkgs.graalvm8: suspended - too big and not cached" pkgs.hello;
           lbry = (pkgs.symlinkJoin {
             name = "lbry";
@@ -255,11 +260,11 @@
                 #!${pkgs.execline}/bin/execlineb -S0
                 export DISPLAY :0
                 exec -a postman
-                ${pkgs.stable.postman}/bin/postman
+                ${pkgs.rel2003.postman}/bin/postman
               '')
-              pkgs.stable.postman
+              pkgs.rel2003.postman
             ];
-          }).overrideAttrs (_: { inherit (pkgs.stable.postman) meta; });
+          }).overrideAttrs (_: { inherit (pkgs.rel2003.postman) meta; });
         })
         (final: prev: {
           nyxt = prev.nyxt.overrideAttrs (drv: rec {

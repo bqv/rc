@@ -64,7 +64,7 @@ in rec {
 
   velox = prev.callPackage ./applications/window-managers/velox { };
 
-  vervis = final.stable.callPackage ./applications/version-management/vervis { inherit fetchdarcs; };
+  vervis = final.rel2003.callPackage ./applications/version-management/vervis { inherit fetchdarcs; };
 
   yacy = prev.callPackage ./servers/yacy { };
 }

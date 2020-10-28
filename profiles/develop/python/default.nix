@@ -5,7 +5,7 @@
     packages = pythonPackages:
       with pythonPackages; let
         nixpkgs = builtins.trace "python.nixpkgs pinned to nixpkgs/stable"
-        flakes.stable.legacyPackages.${pkgs.system}.python3Packages.nixpkgs;
+        flakes.rel2003.legacyPackages.${pkgs.system}.python3Packages.nixpkgs;
       in [
         nixpkgs
         numpy

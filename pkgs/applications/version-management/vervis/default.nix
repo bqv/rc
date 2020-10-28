@@ -5,6 +5,9 @@ let
   inherit (haskell.lib) overrideCabal appendPatches;
   haskellPackages = haskell.packages.ghc865.override { overrides = _: super: {
     base-noprelude = super.callHackage "base-noprelude" "4.12.0.0" {};
+   #hslua = super.callHackage "hslua" "1.1.2" {
+   #  base-compat = super.callHackage "base-compat" "0.11.1" {};
+   #};
 
     git = appendPatches (unmarkBroken super.git) [ # not broken
       (fetchpatch {

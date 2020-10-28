@@ -352,6 +352,22 @@
         "type": "github"
       }
     },
+    "jami": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1587638126,
+        "narHash": "sha256-cMZw35/xc7Aw+b7yiVLWUs+pX01xvdxKDO1j8aqX6Bk=",
+        "owner": "alpmestan",
+        "repo": "jami.nix",
+        "rev": "9037a0705b909b023b39250dcc322aedf6eb9375",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alpmestan",
+        "repo": "jami.nix",
+        "type": "github"
+      }
+    },
     "kitty": {
       "flake": false,
       "locked": {
@@ -800,6 +816,38 @@
         "type": "github"
       }
     },
+    "rel2003": {
+      "locked": {
+        "lastModified": 1603832119,
+        "narHash": "sha256-cHP1KXI5JRkiyFsDvzq256x7cJNkjqEugaooUErr3Fg=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "6b5f85a62c445c14ca344bbe0de66927b13e0c20",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-20.03",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "rel2009": {
+      "locked": {
+        "lastModified": 1603785508,
+        "narHash": "sha256-aVhMd31J32DWdjGsSNOglG45dxf+D26EU21BXoov90c=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "13d0c311e3ae923a00f734b43fd1d35b47d8943a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-20.09",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "repassh": {
       "flake": false,
       "locked": {
@@ -827,6 +875,7 @@
         "haskell": "haskell",
         "home": "home",
         "impermanence": "impermanence",
+        "jami": "jami",
         "large": "large",
         "master": "master",
         "mozilla": "mozilla",
@@ -842,9 +891,10 @@
         "pr96368": "pr96368",
         "pr99188": "pr99188",
         "prompt-bar": "prompt-bar",
+        "rel2003": "rel2003",
+        "rel2009": "rel2009",
         "small": "small",
         "snack": "snack",
-        "stable": "stable",
         "staged": "staged",
         "utils": "utils",
         "wayland": "wayland",
@@ -928,22 +978,6 @@
       "original": {
         "owner": "dyuri",
         "repo": "xontrib-ssh-agent",
-        "type": "github"
-      }
-    },
-    "stable": {
-      "locked": {
-        "lastModified": 1603785508,
-        "narHash": "sha256-aVhMd31J32DWdjGsSNOglG45dxf+D26EU21BXoov90c=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "13d0c311e3ae923a00f734b43fd1d35b47d8943a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-20.09",
-        "repo": "nixpkgs",
         "type": "github"
       }
     },
