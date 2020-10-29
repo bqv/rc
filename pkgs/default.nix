@@ -4,6 +4,11 @@ final: prev: let
   dotnetOverride = {
     azure-functions-core-tools = prev.callPackage ./development/dotnet-modules/azure-functions-core-tools { };
   };
+  haskellOverride = self: super: (
+    final.lib.mapAttrs (_: p: if (p.meta.broken or false)
+      then prev.haskell.lib.markUnbroken p
+      else p) super
+  ) // {};
 in rec {
   bottom = prev.callPackage ./tools/system/bottom { };
 
@@ -32,7 +37,7 @@ in rec {
 
   greetd = prev.callPackage ./applications/display-managers/greetd { };
 
-  haskellPackages = recurseIntoAttrs prev.haskellPackages;
+  haskellPackages = recurseIntoAttrs (prev.haskellPackages.override { overrides = haskellOverride; });
 
   ipfscat = prev.callPackage ./applications/misc/ipfscat { };
 
