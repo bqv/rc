@@ -67,7 +67,7 @@
     ## wm independent hotkeys
 
     # terminal emulator
-    "${mod} + {_,shift + }Return" = "st -f 'DejaVu Sans Mono-9' {env -u TMUX_TMPDIR $SHELL, -- mosh bao@delta -- emacsclient -t}";
+    "${mod} + {_,shift + }Return" = "st -f 'DejaVu Sans Mono-9' {-e tmux, -- mosh bao@delta -- emacsclient -t}";
 
     # program launcher
     "${mod} + @space" = "rofi -show run";

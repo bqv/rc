@@ -352,22 +352,6 @@
         "type": "github"
       }
     },
-    "jami": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1587638126,
-        "narHash": "sha256-cMZw35/xc7Aw+b7yiVLWUs+pX01xvdxKDO1j8aqX6Bk=",
-        "owner": "alpmestan",
-        "repo": "jami.nix",
-        "rev": "9037a0705b909b023b39250dcc322aedf6eb9375",
-        "type": "github"
-      },
-      "original": {
-        "owner": "alpmestan",
-        "repo": "jami.nix",
-        "type": "github"
-      }
-    },
     "kitty": {
       "flake": false,
       "locked": {
@@ -875,7 +859,6 @@
         "haskell": "haskell",
         "home": "home",
         "impermanence": "impermanence",
-        "jami": "jami",
         "large": "large",
         "master": "master",
         "mozilla": "mozilla",
