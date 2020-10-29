@@ -6,7 +6,7 @@
     config = ''
       (if (boundp 'bufler-vc-remote)
           (setq bufler-vc-remote nil)
-        (delq "VC" bufler-columns))
+        (setq bufler-columns (remove "VC" bufler-columns)))
     '';
   };
 }

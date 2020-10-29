@@ -8,7 +8,9 @@
       (ivy-purpose-setup)
       ;(define-key purpose-mode-map "C-x b" nil)
       (define-purpose-prefix-overload purpose-switch-buffer-overload
-        '(bufler-switch-buffer ;ivy-purpose-switch-buffer-without-purpose
+        `(,(if (boundp 'bufler-vc-remote)
+               'bufler-switch-buffer
+             'ivy-purpose-switch-buffer-without-purpose)
           ivy-switch-buffer
           ivy-purpose-switch-buffer-with-some-purpose))
     '';
