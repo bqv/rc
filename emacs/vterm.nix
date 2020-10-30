@@ -27,6 +27,10 @@
           (assert (not (null executable)))
           (let ((vterm-shell command))
             (vterm buffer-name))))
+      (defun vterm-shell-command (command)
+        (interactive "sVTerm shell command: ")
+        (let ((vterm-shell command))
+          (vterm "*vterm-shell-command*")))
       (defun vterm--run-sudo (command)
         "Launch sudo COMMAND in a vterm buffer."
         (interactive (list (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
