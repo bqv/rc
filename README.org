@@ -39,7 +39,7 @@ always a default.nix, but I've broken this rule.
 ** Users
 
 User declarations on the toplevel, with home-manager "profiles" (as above) in
-subtrees. (Perhaps I should separate these?)
+subtrees.
 
 ** Deploy
 
@@ -67,7 +67,7 @@ reference when building ~/.emacs.d/init.el
 Module definitions for nixos, home-manager, emacs, and nixus, as collated in
 the lists home.nix, nixos.nix, etc.
 
-** Packages
+** Pkgs
 
 Package definitions a-la nixpkgs, collated into an overlay in default.nix
 
@@ -79,6 +79,7 @@ Container machine definitions, for import in host definitions.
 
 Overlay definitions, all auto-imported, for simple package overrides and
 sketching new packages
+
 ** Apparmor
 
 This contains a vast array of profiles for apparmor that I aim to port to my
