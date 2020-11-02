@@ -51,8 +51,6 @@ in rec {
 
   mx-puppet-discord = prev.callPackage ./servers/mx-puppet-discord { };
 
-  nyxt = final.staged.callPackage ./applications/networking/browsers/nyxt { };
-
   nodePackages = recurseIntoAttrs prev.nodePackages;
 
   pleroma = prev.callPackage ./servers/pleroma { };

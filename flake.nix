@@ -65,6 +65,7 @@
     baduk = { url = "github:dustinlacewell/baduk.nix"; flake = false; };          # Baduk
     snack = { url = "github:nmattia/snack"; flake = false; };                     # Snack
     napalm = { url = "github:nmattia/napalm"; flake = false; };                   # Napalm
+    statichask = { url = "github:nh2/static-haskell-nix"; flake = false; };       # Static Haskell
   };
 
   outputs = inputs: with builtins; let
@@ -233,6 +234,15 @@
         })
         inputs.xontribs.overlay
         inputs.wayland.overlay
+        (final: prev: {
+          nyxt = prev.nyxt.overrideAttrs (drv: rec {
+            src = drv.src.overrideAttrs (drv: {
+              src = inputs.nyxt;
+              name = lib.replaceStrings [drv.meta.version] [version] drv.name;
+            });
+            version = inputs.nyxt.lastModifiedDate;
+          });
+        })
         inputs.self.overlay
         (pkgs: lib.const {
           inherit ((import (patchNixpkgs channels.modules.legacyPackages.${system}) { inherit system; }).pkgs)
@@ -251,6 +261,18 @@
             ];
           }).overrideAttrs (_: { inherit (inputs.pr96368.legacyPackages.${system}.lbry) meta; });
           inherit (inputs.pr99188.legacyPackages.${system}) giara;
+         #giara = (inputs.pr99188.legacyPackages.${system}.giara
+         #).override { pkgs = pkgs // {
+         #  inherit (pkgs.staged) webkitgtk libhandy;
+         #  libical = pkgs.libical.overrideAttrs (drv: { doInstallCheck = false; });
+         #}; inherit (pkgs) stdenv; };
+         #giara-cairo = (inputs.pr99188.legacyPackages.${system}.giara.overrideAttrs (drv: {
+         #  nativeBuildInputs = drv.nativeBuildInputs ++ [ pkgs.cairo ];
+         #})).override { pkgs = pkgs // {
+         #  inherit (pkgs.large) webkitgtk;
+         #  inherit (pkgs.staged) libhandy;
+         #  libical = pkgs.libical.overrideAttrs (drv: { doInstallCheck = false; });
+         #}; inherit (pkgs) stdenv; };
           inherit (inputs.master.legacyPackages.${system}) nextcloud20; # doc eval problem
           postman = (pkgs.symlinkJoin {
             name = "postman";
@@ -264,15 +286,6 @@
               pkgs.rel2003.postman
             ];
           }).overrideAttrs (_: { inherit (pkgs.rel2003.postman) meta; });
-        })
-        (final: prev: {
-          nyxt = prev.nyxt.overrideAttrs (drv: rec {
-            src = drv.src.overrideAttrs (drv: {
-              src = inputs.nyxt;
-              name = lib.replaceStrings [drv.meta.version] [version] drv.name;
-            });
-            version = inputs.nyxt.lastModifiedDate;
-          });
         })
       ];
     };
@@ -467,11 +480,13 @@
             }) ];
           };
 
+          vm = import "${channels.modules}/nixos/modules/virtualisation/qemu-vm.nix";
+
           # Import this flake's defined nixos modules
           flakeModules = import ./modules/nixos.nix;
 
         in flakeModules ++ [
-          core global home local gnupg iwd
+          core global home local gnupg iwd vm
           home-manager dwarffs guix matrix-construct impermanence
         ];
       };
@@ -493,10 +508,11 @@
     {
       epsilon = forAllSystems ({ pkgs, system, ... }:
         let
-          inherit (pkgs) pkgsStatic nix-static;
+          inherit (pkgs) pkgsStatic nix-static termonad-with-packages;
         in inputs.home.lib.homeManagerConfiguration rec {
           pkgs = pkgsStatic // {
             nixFlakes = nix-static;
+            termonad = termonad-with-packages;
           };
           configuration = {
             _module.args = rec {
@@ -540,7 +556,7 @@
       inherit (pkgs) flarectl fsnoop git-pr-mirror greetd ipfscat;
       inherit (pkgs) matrix-appservice-irc mx-puppet-discord;
       inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
-      inherit (pkgs) nyxt pure sddm-chili shflags twitterpub velox vervis yacy;
+      inherit (pkgs) pure sddm-chili shflags twitterpub velox vervis yacy;
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }:
@@ -734,6 +750,54 @@
         ++ (attrValues (import ./secrets/domains.nix))
         ++ (lib.flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
       );
+
+      jamiDisk = let
+        pkgs = inputs.master.legacyPackages.x86_64-linux;
+        inherit (pkgs) fetchurl vmTools;
+
+        debGen = {
+          name = "jami";
+          packages = vmTools.debDistros.debian9x86_64.packages ++ [
+            "gnupg" "dirmngr" "ca-certificates" "curl" "sshd" "apt" "jami"
+          ];
+          inherit (vmTools.debDistros.debian9x86_64) urlPrefix;
+          packagesLists = [ vmTools.debDistros.debian9x86_64.packagesList ] ++ [(fetchurl {
+            url = "https://dl.jami.net/nightly/debian_9/dists/ring/main/binary-amd64/Packages.gz";
+            sha256 = "XkG3gkktf5pGKOTYQFpmKGG4LQNHIsyWlmwk/Hz7Ocg=";
+          })];
+        };
+
+        baseDebs = import (vmTools.debClosureGenerator debGen) { inherit fetchurl; };
+
+        snapshot = builtins.head (lib.splitString "/dists/" (
+          builtins.head vmTools.debDistros.debian9x86_64.packagesList.drvAttrs.urls)
+        );
+      in vmTools.fillDiskWithDebs rec {
+        name = "jami";
+        fullName = name + "-debian";
+        debs = builtins.map (d: d.overrideAttrs (drv: { urls = let
+          urlparts = lib.splitString "debian/" (builtins.head drv.urls);
+        in [
+          "${snapshot}/${lib.last urlparts}"
+        ] ++ drv.urls ++ [
+          "https://dl.jami.net/nightly/debian_9/${lib.last urlparts}"
+        ]; })) (lib.flatten baseDebs);
+      };
+      jamiVM = let
+        pkgs = inputs.master.legacyPackages.x86_64-linux;
+        vm = pkgs.vmTools.runInLinuxVM (let
+          nixosConfig = inputs.self.nixosConfigurations.delta.config;
+          sshd_config = nixosConfig.environment.etc."ssh/sshd_config".source;
+        in pkgs.runCommand "sshd" rec {
+          diskImage = jamiDisk;
+          passthru = { inherit diskImage; };
+        } ''
+          /usr/sbin/useradd --system sshd || true
+          mkdir -p /etc/ssh /var/empty /var/run/sshd
+          ${pkgs.openssh}/bin/ssh-keygen -A
+          ${pkgs.openssh}/bin/sshd -f ${sshd_config}
+        '');
+      in vm; #pkgs.vmTools.makeImageTestScript jamiDisk;
     };
   };
 }

@@ -87,6 +87,7 @@
         ${lib.optionalString config.nixpkgs.config.allowUnfree "allowUnfree = true;"}
       }
     '';
+    home.file.".gdbinit".source = pkgs.writeText "gdbinit" ''set auto-load safe-path /nix/store'';
 
     programs.home-manager.enable = true;
     programs.command-not-found.enable = false;
