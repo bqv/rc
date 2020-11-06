@@ -182,7 +182,7 @@
               (final.fetchpatch {
                 name = "logformat-option.patch";
                 url = "https://github.com/nixos/nix/pull/3961.diff";
-                sha256 = "vHSkQ3SYk1rzde7aNHZpV8nOFB/dGYBU7NofBWwXyQk=";
+                sha256 = "n4i/cQ22fCTSKzZumJH7+U/JTFNqenFYMWZ28zWI/LE=";
               })
               (final.fetchpatch {
                 name = "libfetcher-file.patch";
