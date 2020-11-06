@@ -85,10 +85,10 @@
         inherit meta;
         sha256 = meta.hash;
       }) [
-        {
-          description = "nixos/iwd: add `networks` and `interfaces` option";
-          id = 75800; hash = "ptMLTVfCwd3N3kWQwDMn7dIJ2DYtijSohGGep+OuT24=";
-        }
+       #{
+       #  description = "nixos/iwd: add `networks` and `interfaces` option";
+       #  id = 75800; hash = "ptMLTVfCwd3N3kWQwDMn7dIJ2DYtijSohGGep+OuT24=";
+       #}
         {
           description = "apparmor: fix and improve the service";
           id = 101071; hash = "DRwN1+ubcWRuy6qb3jszJ88J+o5DM6WjR5akjEYC7Ck=";
@@ -468,16 +468,18 @@
             iwdModule = "services/networking/iwd.nix";
           in {
             disabledModules = [ iwdModule ];
-            imports = [ (import "${inputs.pr75800}/nixos/modules/${iwdModule}" {
-              inherit config pkgs;
-              lib = let
-                iwdLib = import "${inputs.pr75800}/lib/default.nix";
-              in lib // {
-                types = {
-                  inherit (iwdLib.types) fixedLengthString lengthCheckedString;
-                } // lib.types;
-              };
-            }) ];
+            imports = [
+              (import "${inputs.pr75800}/nixos/modules/${iwdModule}" {
+                inherit config pkgs;
+                lib = let
+                  iwdLib = import "${inputs.pr75800}/lib/default.nix";
+                in lib // {
+                  types = {
+                    inherit (iwdLib.types) fixedLengthString lengthCheckedString;
+                  } // lib.types;
+                };
+              })
+            ];
           };
 
           vm = import "${channels.modules}/nixos/modules/virtualisation/qemu-vm.nix";
