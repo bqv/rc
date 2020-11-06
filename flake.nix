@@ -182,7 +182,7 @@
               (final.fetchpatch {
                 name = "logformat-option.patch";
                 url = "https://github.com/nixos/nix/pull/3961.diff";
-                sha256 = "n4i/cQ22fCTSKzZumJH7+U/JTFNqenFYMWZ28zWI/LE=";
+                sha256 = "vHSkQ3SYk1rzde7aNHZpV8nOFB/dGYBU7NofBWwXyQk=";
               })
               (final.fetchpatch {
                 name = "libfetcher-file.patch";
@@ -248,6 +248,7 @@
           inherit ((import (patchNixpkgs channels.modules.legacyPackages.${system}) { inherit system; }).pkgs)
             apparmor apparmor-utils apparmor-kernel-patches apparmorRulesFromClosure iputils inetutils;
           inherit (inputs.rel2009.legacyPackages.${system}) firefox thunderbird; # slow
+          inherit (inputs.rel2009.legacyPackages.${system}) rust-analyzer; # broken
           graalvm8 = builtins.trace "pkgs.graalvm8: suspended - too big and not cached" pkgs.hello;
           lbry = (pkgs.symlinkJoin {
             name = "lbry";
