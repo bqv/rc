@@ -43,8 +43,8 @@
   };
 
   boot.initrd.availableKernelModules = [
-    "xhci_pci" "ehci_pci" "ahci" "usbcore" "btrfs"
-    "sd_mod" "sr_mod" "nvme" "amdgpu" "ext2" "ext4"
+    "xhci_pci" "ehci_pci" "ahci" "usbcore"
+    "sd_mod" "sr_mod" "nvme" "amdgpu"
   ];
   boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ "kvm-intel" "amdgpu" "fuse" ];

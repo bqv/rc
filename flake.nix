@@ -489,7 +489,7 @@
           flakeModules = import ./modules/nixos.nix;
 
         in flakeModules ++ [
-          core global home local gnupg iwd vm
+          core global home local gnupg iwd
           home-manager dwarffs guix matrix-construct impermanence
         ];
       };
