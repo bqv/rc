@@ -242,6 +242,20 @@
         (unless (display-graphic-p (selected-frame))
           (set-face-background 'default "unspecified-bg" (selected-frame))))
 
+      (defun region-to-termbin (start end)
+        (interactive "r")
+        (let ((buffer (get-buffer-create "*termbin*")))
+          (with-current-buffer buffer (erase-buffer))
+          (shell-command-on-region start end "nc termbin.com 9999 | head -n1" buffer)
+          (let* ((result (with-current-buffer buffer (buffer-string)))
+                 (url (car (split-string result "\n"))))
+            (kill-new url)
+            url)))
+
+      (defun buffer-to-termbin ()
+        (interactive)
+        (region-to-termbin (point-min) (point-max)))
+
       (add-hook 'window-setup-hook 'maybe-disable-background)
     '';
   };
