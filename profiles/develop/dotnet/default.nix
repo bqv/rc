@@ -8,6 +8,6 @@
     mono msbuild
     azure-cli
     dotnetPackages.azure-functions-core-tools
-    jetbrains.rider
+   #jetbrains.rider
   ];
 }
