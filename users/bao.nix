@@ -138,7 +138,7 @@
       pstree bottom # Process Monitoring
       pv pup # Pipe Management
       timewarrior # Time Management
-      nmap wget curl mitmproxy aria2 # Network Utilities
+      nmap wget curl aria2 #mitmproxy # Network Utilities
       ipfscat onionshare nyxt tuir gomuks # Communication Tools
       bitwarden-cli protonvpn-cli # Password Management
       file exa unrar unzip ncdu tree mimeo # File Management

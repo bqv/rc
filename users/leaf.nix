@@ -97,7 +97,7 @@
       yadm # Dotfile Management
       pstree # Process Monitoring
       pv pup # Pipe Management
-      nmap wget curl ipfscat mitmproxy # Network Utilities
+      nmap wget curl ipfscat # Network Utilities
       file exa unrar unzip ncdu # File Management
       xpra xsel xclip scrot # X11 Utilities
       gdb lldb radare2 radare2-cutter # Debug Utilities
