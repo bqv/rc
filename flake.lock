@@ -488,11 +488,11 @@
     "nativecomp": {
       "flake": false,
       "locked": {
-        "lastModified": 1600897901,
-        "narHash": "sha256-d0h0a6N3v0O7pOwHv5aZZPQSv40sQXfxyvirZNBtQTo=",
+        "lastModified": 1604137040,
+        "narHash": "sha256-mXbQhvqqFDkssF3uUCm3qpTyS92k41TkG2YeALclYT8=",
         "owner": "fejfighter",
         "repo": "emacs",
-        "rev": "90a25a506de60e4d7f2e9f65a3084116a25b8a60",
+        "rev": "331f30c4a0011e6aaa306ff101c5a0274b2d8b62",
         "type": "github"
       },
       "original": {
