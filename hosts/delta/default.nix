@@ -181,6 +181,7 @@
   };
   services.flatpak.enable = true;
   xdg.portal.enable = true;
+  services.searx.enable = true;
 
  #security.pam.loginLimits = [
  #  { domain = "@wheel"; item = "nofile"; type = "hard"; value = "unlimited"; }
