@@ -90,6 +90,11 @@
           value = 6600;
           policy = "accept";
         };
+        searx = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = 8888;
+          policy = "accept";
+        };
         mosh = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "udp"; field = "dport";
           value = [ 60000 60001 60002 60003 60004 60005 60006 60007 60008 60009

@@ -181,6 +181,11 @@
   };
   services.flatpak.enable = true;
   xdg.portal.enable = true;
+  services.searx.enable = true;
+  services.searx.configFile = pkgs.runCommand "settings.yml" {
+  } ''
+    sed 's/127.0.0.1/0.0.0.0/g' "${pkgs.searx.src}/searx/settings.yml" > $out
+  '';
 
  #security.pam.loginLimits = [
  #  { domain = "@wheel"; item = "nofile"; type = "hard"; value = "unlimited"; }
