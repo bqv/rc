@@ -274,6 +274,12 @@
               (reduce (lambda (hook el) (hooks:add-hook hook el))
                       handlers :initial-value (request-resource-hook (buffer mode))))))))
 
+      (progn
+        (setq trivial-clipboard::*clipboard-in-command* "${pkgs.xclip}/bin/xclip")
+        (setq trivial-clipboard::*clipboard-in-args* '("-in" "-selection" "clipboard"))
+        (setq trivial-clipboard::*clipboard-out-command* "${pkgs.xclip}/bin/xclip")
+        (setq trivial-clipboard::*clipboard-out-args* '("-out" "-selection" "clipboard")))
+
       (unless (and (boundp '*configured-web*) *configured-web*)
         (define-configuration (buffer web-buffer)
           ((default-modes (append '(dispatch-mode blocker-mode auto-mode emacs-mode) %slot-default))
