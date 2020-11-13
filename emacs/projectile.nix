@@ -15,6 +15,7 @@
       (put 'projectile-project-compilation-cmd 'safe-local-variable
            (lambda (a) (and (stringp a) (or (not (boundp 'compilation-read-command))
                                             compilation-read-command))))
+      (global-set-key (kbd "C-c C-f") 'recompile)
     '';
   };
 }

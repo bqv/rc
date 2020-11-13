@@ -8,6 +8,7 @@
       { haskell-mode-hook = "dante-mode"; }
     ];
     config = ''
+      (add-to-list 'haskell-mode-hook #'dante-mode)
       (defun dante-setup-flake ()
         (interactive)
         (setq dante-repl-command-line '(

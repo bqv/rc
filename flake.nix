@@ -511,10 +511,10 @@
     {
       epsilon = forAllSystems ({ pkgs, system, ... }:
         let
-          inherit (pkgs) pkgsStatic nix-static termonad-with-packages;
+          inherit (pkgs) pkgsStatic nix nix-static termonad-with-packages;
         in inputs.home.lib.homeManagerConfiguration rec {
           pkgs = pkgsStatic // {
-            nixFlakes = nix-static;
+            nixFlakes = nix;
             termonad = termonad-with-packages;
           };
           configuration = {
@@ -530,7 +530,7 @@
             nixpkgs = {
               inherit config system;
             };
-            home.packages = with pkgs; [ nixFlakes ];
+            home.packages = with pkgs; [ nixFlakes termonad ];
             imports = [ ./users/aion.nix ];
           };
           inherit system;

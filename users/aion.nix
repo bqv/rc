@@ -162,7 +162,8 @@
   in ''
     #!/bin/sh
 
-    xkbcomp ${compiledLayout} $DISPLAY
+    xkbcomp ${compiledLayout} $DISPLAY &
+    xinput set-prop 'Elan Touchpad' 'libinput Tapping Enabled' 1 &
     sxhkd &
     unclutter &
 
