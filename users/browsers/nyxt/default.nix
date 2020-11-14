@@ -275,12 +275,10 @@
                       handlers :initial-value (request-resource-hook (buffer mode))))))))
 
       (progn
-        (setq trivial-clipboard::*clipboard-in-command* "${pkgs.coreutils}/bin/env")
-        (setq trivial-clipboard::*clipboard-in-args*
-          '("DISPLAY=:0" "${pkgs.xclip}/bin/xclip" "-in" "-selection" "clipboard"))
-        (setq trivial-clipboard::*clipboard-out-command* "${pkgs.coreutils}/bin/env")
-        (setq trivial-clipboard::*clipboard-out-args*
-          '("DISPLAY=:0" "${pkgs.xclip}/bin/xclip" "-out" "-selection" "clipboard")))
+        (setq trivial-clipboard::*clipboard-in-command* "${pkgs.xsel}/bin/xsel")
+        (setq trivial-clipboard::*clipboard-in-args* '("--display" ":0" "-i" "-b"))
+        (setq trivial-clipboard::*clipboard-out-command* "${pkgs.xsel}/bin/xsel")
+        (setq trivial-clipboard::*clipboard-out-args* '("--display" ":0" "-o" "-b")))
 
       (unless (and (boundp '*configured-web*) *configured-web*)
         (define-configuration (buffer web-buffer)
