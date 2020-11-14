@@ -1,4 +1,4 @@
-{ nixosConfig, config, lib, pkgs, ... }:
+{ nixosConfig, config, lib, pkgs, hosts, ... }:
 
 {
   config = {
@@ -315,6 +315,10 @@
                                  :shortcut "qw"
                                  :search-url "https://qwant.com/?q=~a"
                                  :fallback-url "https://qwant.com/")
+                  (make-instance 'search-engine
+                                 :shortcut "sx"
+                                 :search-url "http://${hosts.lan.delta}:8888/?q=~a"
+                                 :fallback-url "https://${hosts.lan.delta}:8888/")
                   ))
            ))
         (defvar *configured-buffer* t))
