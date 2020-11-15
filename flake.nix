@@ -287,6 +287,48 @@
               pkgs.rel2003.postman
             ];
           }).overrideAttrs (_: { inherit (pkgs.rel2003.postman) meta; });
+          hnix = let
+            hlib = inputs.staged.legacyPackages.${system}.haskell.lib;
+            hnix-store = pkgs.fetchFromGitHub {
+              owner = "haskell-nix";
+              repo = "hnix-store";
+              rev = "2497d37d35eeed854875e9245c02bf538eaafa10";
+              sha256 = "1xkj99ba4rc9mgd14bjsk170qvhmhrx00zz5bwml4737h3izl84k";
+              # date = 2020-11-13T23:36:12+01:00;
+            };
+            hpkgs = inputs.staged.legacyPackages.${system}.haskellPackages.override {
+              overrides = self: super: with hlib; {
+                cryptohash-sha512 = doJailbreak super.cryptohash-sha512;
+                hnix-store-core = addBuildDepends (overrideSrc super.hnix-store-core {
+                  src = "${hnix-store}/hnix-store-core";
+                }) (with self; [
+                  attoparsec algebraic-graphs cereal cereal cryptohash-sha512
+                  io-streams lifted-base monad-control nix-derivation
+                  process-extras tasty-golden
+                ]);
+                hnix-store-remote = addBuildDepends (overrideSrc super.hnix-store-remote {
+                  src = "${hnix-store}/hnix-store-remote";
+                }) (with self; [
+                  attoparsec filepath tasty tasty-discover tasty-hspec
+                  tasty-hunit tasty-quickcheck linux-namespaces temporary
+                  hspec-expectations-lifted
+                  pkgs.nix
+                ]);
+                hnix = addBuildDepends (doJailbreak (overrideSrc super.hnix {
+                  # PR: 554 derivationStruct
+                  src = pkgs.fetchFromGitHub {
+                    owner = "layus";
+                    repo = "hnix";
+                    rev = "derivationStrict"; # 6e8022c45
+                    sha256 = "nUfvddtTKhmdauVvK8ErkjayiSXf78EVdK+Z/C+IDyA=";
+                    # date = 2020-11-13T23:36:12+01:00;
+                  };
+                })) (with self; [
+                  hnix-store-remote
+                ]);
+              };
+            };
+          in hpkgs.hnix;
         })
       ];
     };
