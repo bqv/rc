@@ -287,6 +287,20 @@
               pkgs.rel2003.postman
             ];
           }).overrideAttrs (_: { inherit (pkgs.rel2003.postman) meta; });
+          hnix = let
+            inherit (inputs.staged.legacyPackages.${system}) haskellPackages;
+            hlib = inputs.staged.legacyPackages.${system}.haskell.lib;
+          in hlib.addBuildDepends (hlib.overrideSrc haskellPackages.hnix {
+            # PR: 554 derivationStruct
+            src = pkgs.fetchFromGitHub {
+              owner = "layus";
+              repo = "hnix";
+              rev = "derivationStrict";
+              sha256 = "nUfvddtTKhmdauVvK8ErkjayiSXf78EVdK+Z/C+IDyA=";
+            };
+          }) [
+            haskellPackages.hnix-store-remote
+          ];
         })
       ];
     };
