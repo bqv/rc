@@ -202,6 +202,25 @@
               (containers:insert-item (clipboard-ring *browser*)
                                       (bw-totp key itemid))))))
 
+     ;(make-style-association
+     ; :url "about:blank"
+     ; :style (cl-css:css
+     ;         '((body
+     ;            :background-color "black"))))
+
+      (defparameter old-reddit-handler
+        (url-dispatching-handler
+         'old-reddit-dispatcher
+         (match-host "www.reddit.com")
+         (lambda (url)
+           (quri:copy-uri url :host "old.reddit.com"))))
+
+      (progn
+        (setq trivial-clipboard::*clipboard-in-command* "${pkgs.xsel}/bin/xsel")
+        (setq trivial-clipboard::*clipboard-in-args* '("--display" ":0" "-i" "-b"))
+        (setq trivial-clipboard::*clipboard-out-command* "${pkgs.xsel}/bin/xsel")
+        (setq trivial-clipboard::*clipboard-out-args* '("--display" ":0" "-o" "-b")))
+
       (let ((handlers (list ;; doi://path -> https url
                        (url-dispatching-handler
                         'doi-link-dispatcher (match-scheme "doi")
@@ -274,12 +293,6 @@
               (reduce (lambda (hook el) (hooks:add-hook hook el))
                       handlers :initial-value (request-resource-hook (buffer mode))))))))
 
-      (progn
-        (setq trivial-clipboard::*clipboard-in-command* "${pkgs.xsel}/bin/xsel")
-        (setq trivial-clipboard::*clipboard-in-args* '("--display" ":0" "-i" "-b"))
-        (setq trivial-clipboard::*clipboard-out-command* "${pkgs.xsel}/bin/xsel")
-        (setq trivial-clipboard::*clipboard-out-args* '("--display" ":0" "-o" "-b")))
-
       (unless (and (boundp '*configured-web*) *configured-web*)
         (define-configuration (buffer web-buffer)
           ((default-modes (append '(dispatch-mode blocker-mode auto-mode emacs-mode) %slot-default))
@@ -304,6 +317,10 @@
              ;(define-key map "button7" 'switch-buffor-previous)
              ;(define-key map "button8" 'switch-buffor-next)
               map))
+           (request-resource-hook ((request-resource-hook
+             (reduce #'hooks:add-hook
+                     (list old-reddit-handler)
+                     :initial-value %slot-default))))
            (default-new-buffer-url "about:blank")
            (download-path (make-instance 'download-data-path :dirname "~/tmp/"))
            (search-engines
