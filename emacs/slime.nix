@@ -9,7 +9,7 @@
 
       (defun nyxt/repl ()
         (interactive)
-        (slime-connect "localhost" 4005))
+        (slime-connect "localhost" 4005 nil (interactive-p)))
 
       (defun nyxt/push (text)
         (interactive "sText: ")
