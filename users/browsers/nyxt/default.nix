@@ -271,8 +271,8 @@
                         (lambda (url)
                           (uiop:launch-program
                            (list "${pkgs.mpv}/bin/mpv"
-                                 "--no-cache" "--cache-secs=0" "--demuxer-readahead-secs=0" "--untimed"
-                                 "--cache-pause=no"
+                                ;"--no-cache" "--cache-secs=0" "--demuxer-readahead-secs=0" "--untimed"
+                                ;"--cache-pause=no"
                                  (object-string url)))
                           nil))
                        )))
@@ -317,10 +317,10 @@
              ;(define-key map "button7" 'switch-buffor-previous)
              ;(define-key map "button8" 'switch-buffor-next)
               map))
-           (request-resource-hook ((request-resource-hook
-             (reduce #'hooks:add-hook
-                     (list old-reddit-handler)
-                     :initial-value %slot-default))))
+           (request-resource-hook
+             (make-hook-resource
+               :combination #'combine-composed-hook-until-nil
+               :handlers '(old-reddit-handler)))
            (default-new-buffer-url "about:blank")
            (download-path (make-instance 'download-data-path :dirname "~/tmp/"))
            (search-engines
