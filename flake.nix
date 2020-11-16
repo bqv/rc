@@ -711,13 +711,17 @@
                 exec ${activationPackage}/activate $@"
         '').outPath;
       };
+      delta = rec {
+        type = "app";
+        inherit (inputs.self.nixosConfigurations.delta.config.system.build) toplevel;
+        program = (pkgs.writeShellScript "test-delta" ''
+          echo Deploying ${toplevel}
+          exec doas ${toplevel}/bin/switch-to-configuration test $@
+        '').outPath;
+      };
       nixos = {
         type = "app";
         program = pkgs.callPackage ./pkgs/lib/nixos.nix {} + "/bin/nixos";
-      };
-      nixus = {
-        type = "app";
-        program = inputs.self.defaultPackage.${system}.outPath;
       };
     });
 
