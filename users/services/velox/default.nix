@@ -29,6 +29,15 @@
       action spawn_firefox    spawn   exec firefox-safe-wl
       action spawn_browser    spawn   exec vivaldi
       action spawn_nyxt       spawn   exec systemd-cat -t nyxt-browser nyxt
+      action spawn_xnest      spawn   exec xinit ${pkgs.writeShellScript "start-awesome" ''
+        unset WAYLAND_DISPLAY
+        unset XDG_SESSION_TYPE
+        unset QT_QPA_PLATFORM
+        export DISPLAY=:9
+        SESSION=${pkgs.awesome}/bin/awesome
+        eval $@
+        eval exec $(SESSION)
+      ''} -- ${pkgs.xorg.xorgserver}/bin/Xnest -ac :9 -geometry 1915x1060
       action spawn_run        spawn   exec dmenu_run-wl
 
       #   key         modifiers           action
