@@ -187,11 +187,11 @@
           nix-ipfs = inputs.nix-ipfs.defaultPackage.${system};
           nixFlakes = inputs.nix.packages.${system}.nix.overrideAttrs (drv: {
             patches = (drv.patches or []) ++ [
-              (final.fetchpatch {
-                name = "logformat-option.patch";
-                url = "https://github.com/nixos/nix/pull/3961.diff";
-                sha256 = "vHSkQ3SYk1rzde7aNHZpV8nOFB/dGYBU7NofBWwXyQk=";
-              })
+             #(final.fetchpatch {
+             #  name = "logformat-option.patch";
+             #  url = "https://github.com/nixos/nix/pull/3961.diff";
+             #  sha256 = "vHSkQ3SYk1rzde7aNHZpV8nOFB/dGYBU7NofBWwXyQk=";
+             #})
               (final.fetchpatch {
                 name = "libfetcher-file.patch";
                 url = "https://github.com/nixos/nix/pull/4153.diff";
