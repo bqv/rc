@@ -250,6 +250,7 @@
             apparmor apparmor-utils apparmor-kernel-patches apparmorRulesFromClosure iputils inetutils;
           inherit (inputs.rel2009.legacyPackages.${system}) firefox thunderbird; # slow
           inherit (inputs.rel2009.legacyPackages.${system}) rust-analyzer; # broken
+          inherit (inputs.master.legacyPackages.${system}) obs-studio; # un-wayland
           graalvm8 = builtins.trace "pkgs.graalvm8: suspended - too big and not cached" pkgs.hello;
           lbry = (pkgs.symlinkJoin {
             name = "lbry";
@@ -289,47 +290,69 @@
             ];
           }).overrideAttrs (_: { inherit (pkgs.rel2003.postman) meta; });
           hnix = let
-            hlib = inputs.staged.legacyPackages.${system}.haskell.lib;
-            hnix-store = pkgs.fetchFromGitHub {
-              owner = "haskell-nix";
-              repo = "hnix-store";
-              rev = "2497d37d35eeed854875e9245c02bf538eaafa10";
-              sha256 = "1xkj99ba4rc9mgd14bjsk170qvhmhrx00zz5bwml4737h3izl84k";
-              # date = 2020-11-13T23:36:12+01:00;
-            };
-            hpkgs = inputs.staged.legacyPackages.${system}.haskellPackages.override {
-              overrides = self: super: with hlib; {
-                cryptohash-sha512 = doJailbreak super.cryptohash-sha512;
-                hnix-store-core = addBuildDepends (overrideSrc super.hnix-store-core {
-                  src = "${hnix-store}/hnix-store-core";
-                }) (with self; [
-                  attoparsec algebraic-graphs cereal cereal cryptohash-sha512
-                  io-streams lifted-base monad-control nix-derivation
-                  process-extras tasty-golden
-                ]);
-                hnix-store-remote = addBuildDepends (overrideSrc super.hnix-store-remote {
-                  src = "${hnix-store}/hnix-store-remote";
-                }) (with self; [
-                  attoparsec filepath tasty tasty-discover tasty-hspec
-                  tasty-hunit tasty-quickcheck linux-namespaces temporary
-                  hspec-expectations-lifted
-                  pkgs.nix
-                ]);
-                hnix = addBuildDepends (doJailbreak (overrideSrc super.hnix {
-                  # PR: 554 derivationStruct
-                  src = pkgs.fetchFromGitHub {
-                    owner = "layus";
-                    repo = "hnix";
-                    rev = "derivationStrict"; # 6e8022c45
-                    sha256 = "nUfvddtTKhmdauVvK8ErkjayiSXf78EVdK+Z/C+IDyA=";
-                    # date = 2020-11-13T23:36:12+01:00;
-                  };
-                })) (with self; [
-                  hnix-store-remote
-                ]);
-              };
-            };
-          in hpkgs.hnix;
+            overlay = pkgs.fetchFromGitHub {
+              owner = "layus";
+              repo = "hnix-overlay";
+              rev = "c39949e8a5b1506e68114b684f05c97ddb6427b3";
+              sha256 = "d0f/7CDJFZhfgrBV/TtbZaw3Kio5pwLiZN2aat86Ibs=";
+            } + "/overlay.nix";
+            inherit (import pkgs.path {
+              inherit system;
+              overlays = import overlay;
+            }) haskellPackages haskell;
+            hnix = haskell.lib.appendPatch haskellPackages.hnix (
+              pkgs.fetchpatch {
+                url = "https://github.com/haskell-nix/hnix/commit/e2ad934492eeac9881527610e4a1c1cf31ea1115.patch";
+                sha256 = "dWMf50asrDaYtAU+Ii/Eu7/HiGnae0aeVqh7iUUhjr4=";
+              }
+            );
+          in pkgs.writeScriptBin "hnix" ''
+            #!${pkgs.execline}/bin/execlineb -S0
+            export NIX_DATA_DIR ${hnix.src}/data
+            ${hnix}/bin/hnix $@
+          '';
+         #hnix = let
+         #  hlib = inputs.staged.legacyPackages.${system}.haskell.lib;
+         #  hnix-store = pkgs.fetchFromGitHub {
+         #    owner = "haskell-nix";
+         #    repo = "hnix-store";
+         #    rev = "2497d37d35eeed854875e9245c02bf538eaafa10";
+         #    sha256 = "1xkj99ba4rc9mgd14bjsk170qvhmhrx00zz5bwml4737h3izl84k";
+         #    # date = 2020-11-13T23:36:12+01:00;
+         #  };
+         #  hpkgs = inputs.staged.legacyPackages.${system}.haskellPackages.override {
+         #    overrides = self: super: with hlib; {
+         #      cryptohash-sha512 = doJailbreak super.cryptohash-sha512;
+         #      hnix-store-core = addBuildDepends (overrideSrc super.hnix-store-core {
+         #        src = "${hnix-store}/hnix-store-core";
+         #      }) (with self; [
+         #        attoparsec algebraic-graphs cereal cereal cryptohash-sha512
+         #        io-streams lifted-base monad-control nix-derivation
+         #        process-extras tasty-golden
+         #      ]);
+         #      hnix-store-remote = addBuildDepends (overrideSrc super.hnix-store-remote {
+         #        src = "${hnix-store}/hnix-store-remote";
+         #      }) (with self; [
+         #        attoparsec filepath tasty tasty-discover tasty-hspec
+         #        tasty-hunit tasty-quickcheck linux-namespaces temporary
+         #        hspec-expectations-lifted
+         #        pkgs.nix
+         #      ]);
+         #      hnix = addBuildDepends (doJailbreak (overrideSrc super.hnix {
+         #        # PR: 554 derivationStruct
+         #        src = pkgs.fetchFromGitHub {
+         #          owner = "layus";
+         #          repo = "hnix";
+         #          rev = "derivationStrict"; # 6e8022c45
+         #          sha256 = "nUfvddtTKhmdauVvK8ErkjayiSXf78EVdK+Z/C+IDyA=";
+         #          # date = 2020-11-13T23:36:12+01:00;
+         #        };
+         #      })) (with self; [
+         #        hnix-store-remote
+         #      ]);
+         #    };
+         #  };
+         #in hpkgs.hnix;
         })
       ];
     };
@@ -415,6 +438,7 @@
             nix.nixPath = [
               "nixpkgs=${channels.pkgs}"
               "nixos=${inputs.self}/configuration.nix"
+              "nix=${inputs.nix}/corepkgs"
               "self=/run/current-system/flake/input/self/configuration.nix"
             ];
 

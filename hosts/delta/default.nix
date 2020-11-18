@@ -121,7 +121,7 @@
     nrBuildUsers = 64;
 
     extraOptions = with usr.units; ''
-      min-free = ${toString (gigabytes 100)}
+      min-free = ${toString (gigabytes 5)}
     '';
 
     buildMachines = lib.optionals true [

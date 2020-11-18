@@ -199,7 +199,7 @@
                        (concat "\n" (propertize line 'face 'weechat-read-marker)))))
       (evil-set-initial-state 'weechat-mode 'emacs)
 
-      (add-hook 'after-init-hook #'bqv/weechat-local)
+     ;(add-hook 'after-init-hook #'bqv/weechat-local)
     '';
   };
 }

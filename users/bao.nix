@@ -104,6 +104,15 @@
     programs.jq.enable = true;
     programs.direnv.enable = true;
     programs.texlive.enable = true;
+    programs.texlive.extraPackages = tpkgs: {
+      inherit (tpkgs) collection-basic;
+      inherit (tpkgs) collection-latex;
+      inherit (tpkgs) collection-latexrecommended;
+      inherit (tpkgs) collection-latexextra;
+      inherit (tpkgs) collection-luatex;
+      inherit (tpkgs) collection-fontsrecommended;
+      inherit (tpkgs) collection-fontsextra;
+    };
     programs.taskwarrior.enable = true;
     programs.neomutt.enable = true;
     programs.obs-studio.enable = true;
