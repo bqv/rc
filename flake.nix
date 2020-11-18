@@ -9,6 +9,10 @@
 
     rel2009.url = "github:nixos/nixpkgs/nixos-20.09";         #| Stable
     rel2003.url = "github:nixos/nixpkgs/nixos-20.03";         #| Old Stable
+    rel1909 = { url = "github:nixos/nixpkgs/nixos-19.09"; flake = false; };
+    rel1903 = { url = "github:nixos/nixpkgs/nixos-19.03"; flake = false; };
+    rel1809 = { url = "github:nixos/nixpkgs/nixos-18.09"; flake = false; };
+    rel1803 = { url = "github:nixos/nixpkgs/18.03"; flake = false; };
     pr75800.url = "github:nixos/nixpkgs/517b290754f6a7cc487ce11932a8b750f868324d"; #|\ Pull
     pr93659.url = "github:ju1m/nixpkgs/security.pass";                             #|/ Reqs
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
@@ -156,6 +160,10 @@
         (channelToOverlay { inherit system config; flake = "large"; branch = "nixos-unstable"; })
         (channelToOverlay { inherit system config; flake = "rel2009"; branch = "nixos-20.09"; })
         (channelToOverlay { inherit system config; flake = "rel2003"; branch = "nixos-20.03"; })
+        (channelToOverlay { inherit system config; flake = "rel1909"; branch = "nixos-19.09"; })
+        (channelToOverlay { inherit system config; flake = "rel1903"; branch = "nixos-19.03"; })
+        (channelToOverlay { inherit system config; flake = "rel1809"; branch = "nixos-18.09"; })
+        (channelToOverlay { inherit system config; flake = "rel1803"; branch = "nixos-18.03"; })
         (final: prev: { broken = import channels.pkgs {
           inherit system overlays;
           config = config // { allowBroken = true; };
