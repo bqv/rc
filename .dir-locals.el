@@ -6,5 +6,5 @@
         ;             (locate-dominating-file buffer-file-name ".dir-locals.el")))
          (compile-command . "systemd-run --user --scope nix run . -- -Tbasv")
          (eval . (setq projectile-project-compilation-cmd
-                       "systemd-run --user -u nixos --scope if nix build --log-format bar-with-logs '' if ./result '' git push"))
+                       "systemd-run --user -u nixos --scope if nix build '' if ./result '' git push"))
          )))

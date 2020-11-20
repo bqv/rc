@@ -53,6 +53,13 @@ in {
           headPat = "''\\n";
           tailPat = "^\\s*''";
         };
+        nix-c = basicPolymode {
+          host = "nix";
+          inner = "c";
+          discrim = "dsquoted";
+          headPat = "''\\n";
+          tailPat = "^\\s*''";
+        };
       };
       config = (lib.concatStrings (builtins.attrValues config.polymodes)) + ''
 

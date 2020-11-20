@@ -750,6 +750,14 @@
           echo Deploying ${toplevel}
           exec doas ${toplevel}/bin/switch-to-configuration test $@
         '').outPath;
+        bao = rec {
+          type = "app";
+          inherit (inputs.self.homeConfigurations.delta.bao.home) activationPackage;
+          program = (pkgs.writeShellScript "test-delta-bao" ''
+            echo Deploying ${activationPackage}
+            exec ${activationPackage}/activate $@
+          '').outPath;
+        };
       };
       nixos = {
         type = "app";
@@ -801,7 +809,7 @@
             ${lib.optionalString (builtins.pathExists /etc/nix/nix.conf)
               (builtins.readFile /etc/nix/nix.conf)}
             experimental-features = nix-command flakes ca-references
-            log-format = bar-with-logs
+            print-build-logs = true
           '';
         in linkFarm "nix-conf-dir" ( [
           { name = "nix.conf"; path = writeText "flakes-nix.conf" nixConf; }

@@ -37,6 +37,8 @@ in rec {
 
   greetd = prev.callPackage ./applications/display-managers/greetd { };
 
+  guix-ns = prev.callPackage ./tools/misc/guix-ns { };
+
   haskellPackages = recurseIntoAttrs (prev.haskellPackages.override { overrides = haskellOverride; });
 
   ipfscat = prev.callPackage ./applications/misc/ipfscat { };

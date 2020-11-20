@@ -134,10 +134,38 @@
     services.ckb.enable = !config.headless;
 
     #systemd.user.startServices = true; # broken by the [nix-env -> nix profile] move
+    systemd.user.services.guix-daemon = with home-config.lib.guix; {
+      Service = {
+        ExecStart = "${pkgs.guix-ns}/bin/guix-ns-root ${homeDirectory}/gnu ${guix}/bin/guix-daemon --max-jobs=4 --debug";
+        Environment = [ "GUIX_LOCPATH='${profile}/lib/locale'" ];
+      };
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
+    };
+
+    lib.guix = rec {
+      inherit (home-config.home) homeDirectory username;
+      guix = "/gnu/var/profiles/per-user/${username}/current-guix";
+      profile = "/gnu/var/profiles/per-user/${username}/guix-profile";
+      ns-env = pkgs.writeShellScriptBin "guix-ns-env" ''
+        export GUIX_PROFILE=$(readlink -f ${homeDirectory}/${profile})
+        export GUIX_LOCPATH=$GUIX_PROFILE/lib/locale
+        source ${homeDirectory}/$GUIX_PROFILE/etc/profile
+        exec ${pkgs.guix-ns}/bin/guix-ns ${homeDirectory}/gnu $@
+      '';
+      packages = {
+        inherit ns-env;
+        jami = pkgs.writeScriptBin "jami" ''
+          #!${pkgs.execline}/bin/execlineb -S0
+          ${ns-env}/bin/guix-ns-env ${pkgs.dbus.lib}/bin/dbus-launch env CLUTTER_BACKEND=x11 jami $@
+        '';
+      };
+    };
 
     home.packages = with pkgs; let
       emms-play-file = pkgs.writeScriptBin "emms-play-file" ''
-        !#${pkgs.execline}/bin/execlineb -W
+        #!${pkgs.execline}/bin/execlineb -W
         ${home-config.programs.emacs.package}/bin/emacsclient --eval "(emms-play-file \"$@\")"
       '';
     in [
@@ -154,7 +182,8 @@
       audacity # Audio Utilities
       xpra xsel xclip scrot # X11 Utilities
       gdb lldb radare2 radare2-cutter jadx stress # Debug Utilities
-    ] ++ lib.optional home-config.programs.emacs.enable emms-play-file;
+    ] ++ lib.optional home-config.programs.emacs.enable emms-play-file
+      ++ (builtins.attrValues home-config.lib.guix.packages);
 
     home.activation.preloadNixSearch = home-config.lib.dag.entryAnywhere ''
       function preloadNixSearch() {
