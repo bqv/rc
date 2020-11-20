@@ -18,8 +18,8 @@
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
     pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
 
-    nix.url = "github:nixos/nix";           #|- Nix
-    nix.inputs.nixpkgs.follows = "/master"; #|
+    nix.url = "github:nixos/nix/progress-bar"; #|- Nix
+    nix.inputs.nixpkgs.follows = "/master";    #|
 
     dwarffs.url = "github:edolstra/dwarffs";    #|- Dwarffs
     dwarffs.inputs.nix.follows = "/nix";        #|
