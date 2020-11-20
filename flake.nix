@@ -259,7 +259,6 @@
           inherit (inputs.rel2009.legacyPackages.${system}) firefox thunderbird; # slow
           inherit (inputs.rel2009.legacyPackages.${system}) rust-analyzer; # broken
           inherit (inputs.master.legacyPackages.${system}) obs-studio; # un-wayland
-          graalvm8 = builtins.trace "pkgs.graalvm8: suspended - too big and not cached" pkgs.hello;
           lbry = (pkgs.symlinkJoin {
             name = "lbry";
             paths = [
