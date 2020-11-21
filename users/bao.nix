@@ -194,7 +194,6 @@
       preloadNixSearch || exit 0
     '';
 
-    home.file."mimeapps.list".force = lib.mkForce true;
     xdg = let
       inherit (home-config.home) homeDirectory;
     in rec {
@@ -274,6 +273,7 @@
         associations.added."application/rss+xml" = [ defaultMailer ];
         associations.added."application/x-extension-rss" = [ defaultMailer ];
       };
+      configFile."mimeapps.list".force = lib.mkForce true;
     };
 
     gtk = {

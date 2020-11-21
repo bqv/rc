@@ -45,4 +45,6 @@ in {
       #include ${p}
     '';
   }) profiles;
+
+  systemd.services.apparmor.wantedBy = lib.mkForce [];
 }

@@ -90,6 +90,7 @@ in {
       experimental-features = nix-command flakes ca-references recursive-nix
       preallocate-contents = true
       print-build-logs = true
+      access-tokens = "${(import ../secrets/git.github.nix).oauth-token}"
     '';
 
     binaryCaches = [

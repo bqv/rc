@@ -83,6 +83,29 @@
     };
 
     patchNixpkgs = basePkgs: let
+      untransmission = (basePkgs.writeText "tr.patch" ''
+diff --git a/nixos/modules/services/torrent/transmission.nix b/nixos/modules/services/torrent/transmission.nix
+index aeb58a7194f99..717c18d367f01 100644
+--- a/nixos/modules/services/torrent/transmission.nix
++++ b/nixos/modules/services/torrent/transmission.nix
+@@ -236,7 +236,6 @@ in
+           # an AppArmor profile is provided to get a confinement based upon paths and rights.
+           builtins.storeDir
+           "/etc"
+-          "/run"
+           ] ++
+           optional (cfg.settings.script-torrent-done-enabled &&
+                     cfg.settings.script-torrent-done-filename != "")
+@@ -409,7 +408,6 @@ in
+           #r @{PROC}/@{pid}/environ,
+           r @{PROC}/@{pid}/mounts,
+           rwk /tmp/tr_session_id_*,
+-          r /run/systemd/resolve/stub-resolv.conf,
+-
++
+           r ''${pkgs.openssl.out}/etc/**,
+           r ''${config.systemd.services.transmission.environment.CURL_CA_BUNDLE},
+      '') // { outputHash = "untransmission"; };
       pullReqs = map (meta: {
         url = meta.url or "https://github.com/nixos/nixpkgs/pull/${toString meta.id}.diff";
         name = "nixpkgs-pull-request-${toString meta.id}";
@@ -102,7 +125,7 @@
        #  id = 93659; hash = "3im5nSrlM32DQUeq0Yp1MHkUcQyLdCGbxfJjgcc9e78=";
        #}
       ];
-      patches = map basePkgs.fetchpatch pullReqs;
+      patches = [ untransmission ] ++ map basePkgs.fetchpatch pullReqs;
       patchedTree = basePkgs.applyPatches {
         name = "nixpkgs-patched";
         src = basePkgs.path;
@@ -283,7 +306,7 @@
          #  inherit (pkgs.staged) libhandy;
          #  libical = pkgs.libical.overrideAttrs (drv: { doInstallCheck = false; });
          #}; inherit (pkgs) stdenv; };
-          inherit (inputs.master.legacyPackages.${system}) nextcloud20; # doc eval problem
+          inherit (inputs.large.legacyPackages.${system}) matrix-synapse;
           postman = (pkgs.symlinkJoin {
             name = "postman";
             paths = [
@@ -764,7 +787,7 @@
       };
     });
 
-    defaultApp = forAllSystems ({ system, ... }: inputs.self.apps.${system}.nixus);
+    defaultApp = forAllSystems ({ system, ... }: inputs.self.apps.${system}.delta);
 
     nixosModules = let
       mergeAll = lib.fold lib.recursiveUpdate {};
@@ -809,6 +832,7 @@
               (builtins.readFile /etc/nix/nix.conf)}
             experimental-features = nix-command flakes ca-references
             print-build-logs = true
+            access-tokens = "${(import ./secrets/git.github.nix).oauth-token}"
           '';
         in linkFarm "nix-conf-dir" ( [
           { name = "nix.conf"; path = writeText "flakes-nix.conf" nixConf; }
