@@ -101,6 +101,7 @@
     emacs-ffi = { url = "github:tromey/emacs-ffi"; flake = false; };
     explain-pause-mode = { url = "github:lastquestion/explain-pause-mode"; flake = false; };
     gnome-network-displays = { url = "git+https://gitlab.gnome.org/gnome/gnome-network-displays"; flake = false; };
+    emacs-webkit = { url = "github:akirakyle/emacs-webkit"; flake = false; };
   };
 
   outputs = inputs: with builtins; let
@@ -545,6 +546,7 @@ index aeb58a7194f99..717c18d367f01 100644
       epsilon = forAllSystems ({ pkgs, system, ... }:
         let
           inherit (pkgs) pkgsStatic nix nix-static termonad-with-packages;
+          flakeModules = import ./modules/home-manager.nix;
         in inputs.home.lib.homeManagerConfiguration rec {
           pkgs = pkgsStatic // {
             nixFlakes = nix;
@@ -558,13 +560,13 @@ index aeb58a7194f99..717c18d367f01 100644
                 services.aria2.rpcSecret = "";
                 networking.hostName = "epsilon";
               };
-              flakes = inputs;
+              flake = inputs.self;
             };
             nixpkgs = {
               inherit config system;
             };
             home.packages = with pkgs; [ nixFlakes termonad ];
-            imports = [ ./users/aion.nix ];
+            imports = flakeModules ++ [ ./users/aion.nix ];
           };
           inherit system;
           homeDirectory = "/home/${username}";

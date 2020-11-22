@@ -317,6 +317,22 @@
         "type": "github"
       }
     },
+    "emacs-webkit": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1606012055,
+        "narHash": "sha256-pFIoLfz/yH08usMM8IhSPVQCv+0id5pIPWZVObpFwCk=",
+        "owner": "akirakyle",
+        "repo": "emacs-webkit",
+        "rev": "10e0f0843ad0f73fb9fbfbacc5347c76284063f0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "akirakyle",
+        "repo": "emacs-webkit",
+        "type": "github"
+      }
+    },
     "emacsbridge": {
       "flake": false,
       "locked": {
@@ -1270,6 +1286,7 @@
         "emacs": "emacs",
         "emacs-bitwarden": "emacs-bitwarden",
         "emacs-ffi": "emacs-ffi",
+        "emacs-webkit": "emacs-webkit",
         "emacsbridge": "emacsbridge",
         "envrc": "envrc",
         "eterm-256color": "eterm-256color",

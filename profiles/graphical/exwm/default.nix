@@ -5,10 +5,7 @@
     windowManager.session = lib.singleton {
       name = "exwm";
       start = ''
-        ${pkgs.gccEmacs.override {
-          withXwidgets = true;
-          webkitgtk = pkgs.large.webkitgtk;
-        }}/bin/emacs
+        ${pkgs.gccEmacs}/bin/emacs
       '';
     };
   };

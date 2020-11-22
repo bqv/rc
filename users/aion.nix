@@ -4,8 +4,9 @@
   imports = [
     ./shells/fish
     ./shells/xonsh
-    ./browsers/nyxt
+   #./browsers/nyxt
     ./editors/vim
+    ./editors/emacs
    #./media/radio
     ./media/mpv
    #./utilities/ssh

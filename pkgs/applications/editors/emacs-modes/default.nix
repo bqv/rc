@@ -1,10 +1,10 @@
-{ lib, writeText, flake, emacsPackages, fetchurl, lzip, libffi, libtool, ... }:
+{ lib, flake, emacsPackages, fetchurl, lzip, pkgs, libffi, libtool, ... }:
 
 let
   inherit (emacsPackages) trivialBuild emacs;
   inputs = {
     inherit (flake.inputs) emacs-bitwarden ivy-exwm flycheck-purescript;
-    inherit (flake.inputs) eterm-256color envrc emacsbridge;
+    inherit (flake.inputs) eterm-256color envrc emacsbridge emacs-webkit;
     inherit (flake.inputs) font-lock-ext sln-mode emacs-ffi explain-pause-mode;
   };
 in lib.recurseIntoAttrs rec {
@@ -57,6 +57,37 @@ in lib.recurseIntoAttrs rec {
     buildInputs = with emacsPackages; [
       alert
     ];
+  };
+
+  emacs-webkit = trivialBuild rec {
+    pname = "emacs-webkit";
+    version = src.shortRev;
+    src = inputs.emacs-webkit;
+    buildPhase = ''
+      make all
+      export LD_LIBRARY_PATH=$PWD:$LD_LIBRARY_PATH
+    '';
+    nativeBuildInputs = with pkgs; [ pkg-config wrapGAppsHook ];
+    gstBuildInputs = with pkgs; with gst_all_1; [
+      gstreamer gst-libav
+      gst-plugins-base
+      gst-plugins-good
+      gst-plugins-bad
+      gst-plugins-ugly
+    ];
+    buildInputs = with pkgs; [
+      webkitgtk
+      glib gdk-pixbuf cairo
+      mime-types pango gtk3
+      glib-networking gsettings-desktop-schemas
+      xclip notify-osd enchant
+    ] ++ gstBuildInputs;
+
+    GST_PLUGIN_SYSTEM_PATH_1_0 = lib.concatMapStringsSep ":" (p: "${p}/lib/gstreamer-1.0") gstBuildInputs;
+    postInstall = ''
+      cp *.so *.js *.css $out/share/emacs/site-lisp/
+      mkdir $out/lib && cp *.so $out/lib/
+    '';
   };
 
   font-lock-ext = trivialBuild rec {

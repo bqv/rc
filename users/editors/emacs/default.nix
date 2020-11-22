@@ -3,11 +3,6 @@ args@{ config, lib, pkgs, ... }:
 with lib; let
   cfg = config.programs.emacs;
 
-  myEmacs = pkgs.gccEmacs.override {
-    withXwidgets = true;
-    webkitgtk = pkgs.large.webkitgtk;
-  };
-
   forEachPackage = f: lib.flatten (lib.mapAttrsToList (k: v:
     let ret = if v.enable then f v else [];
     in if builtins.isNull ret then [] else ret
@@ -42,10 +37,10 @@ in {
     ]);
 
     programs.emacs = {
-      package = lib.fix (self: myEmacs.overrideAttrs (_: {
+      package = lib.fix (self: pkgs.gccEmacs.overrideAttrs (drv: {
         passthru = {
           pkgs = pkgs.emacsPackagesFor self;
-          nativeComp = myEmacs.nativeComp or false;
+          nativeComp = drv.nativeComp or false;
         };
       }));
       extraPackages = epkgs: forEachPackage (p: p.package epkgs);
