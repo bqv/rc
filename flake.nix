@@ -53,8 +53,6 @@
     nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; # NixIPFS
 
     emacs.url = "github:nix-community/emacs-overlay";           # Emacs-overlay
-    nativecomp.url = "github:fejfighter/emacs/pgtk-nativecomp"; # Emacs-nativecomp
-    nativecomp.flake = false;
 
     nyxt = { url = "github:atlas-engineer/nyxt"; flake = false; }; #|- Nyxt
 
@@ -271,15 +269,7 @@ index aeb58a7194f99..717c18d367f01 100644
           });
         })
         inputs.emacs.overlay (final: prev: rec {
-          gccEmacs = let
-            version = inputs.nativecomp.shortRev;
-            src = inputs.nativecomp;
-          in final.emacsGcc.overrideAttrs (old: {
-            name = "${old.name}-${version}";
-            inherit src version;
-            buildInputs = old.buildInputs ++ [ final.cairo ];
-            configureFlags = old.configureFlags ++ [ "--with-pgtk" "--with-cairo" "--with-modules" ];
-          });
+          gccEmacs = final.emacsPgtkGcc;
 
           gccEmacsPackages = lib.dontRecurseIntoAttrs (final.emacsPackagesFor gccEmacs);
 
@@ -812,54 +802,6 @@ index aeb58a7194f99..717c18d367f01 100644
         ++ (attrValues (import ./secrets/domains.nix))
         ++ (lib.flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
       );
-
-      jamiDisk = let
-        pkgs = inputs.master.legacyPackages.x86_64-linux;
-        inherit (pkgs) fetchurl vmTools;
-
-        debGen = {
-          name = "jami";
-          packages = vmTools.debDistros.debian9x86_64.packages ++ [
-            "gnupg" "dirmngr" "ca-certificates" "curl" "sshd" "apt" "jami"
-          ];
-          inherit (vmTools.debDistros.debian9x86_64) urlPrefix;
-          packagesLists = [ vmTools.debDistros.debian9x86_64.packagesList ] ++ [(fetchurl {
-            url = "https://dl.jami.net/nightly/debian_9/dists/ring/main/binary-amd64/Packages.gz";
-            sha256 = "XkG3gkktf5pGKOTYQFpmKGG4LQNHIsyWlmwk/Hz7Ocg=";
-          })];
-        };
-
-        baseDebs = import (vmTools.debClosureGenerator debGen) { inherit fetchurl; };
-
-        snapshot = builtins.head (lib.splitString "/dists/" (
-          builtins.head vmTools.debDistros.debian9x86_64.packagesList.drvAttrs.urls)
-        );
-      in vmTools.fillDiskWithDebs rec {
-        name = "jami";
-        fullName = name + "-debian";
-        debs = builtins.map (d: d.overrideAttrs (drv: { urls = let
-          urlparts = lib.splitString "debian/" (builtins.head drv.urls);
-        in [
-          "${snapshot}/${lib.last urlparts}"
-        ] ++ drv.urls ++ [
-          "https://dl.jami.net/nightly/debian_9/${lib.last urlparts}"
-        ]; })) (lib.flatten baseDebs);
-      };
-      jamiVM = let
-        pkgs = inputs.master.legacyPackages.x86_64-linux;
-        vm = pkgs.vmTools.runInLinuxVM (let
-          nixosConfig = inputs.self.nixosConfigurations.delta.config;
-          sshd_config = nixosConfig.environment.etc."ssh/sshd_config".source;
-        in pkgs.runCommand "sshd" rec {
-          diskImage = jamiDisk;
-          passthru = { inherit diskImage; };
-        } ''
-          /usr/sbin/useradd --system sshd || true
-          mkdir -p /etc/ssh /var/empty /var/run/sshd
-          ${pkgs.openssh}/bin/ssh-keygen -A
-          ${pkgs.openssh}/bin/sshd -f ${sshd_config}
-        '');
-      in vm; #pkgs.vmTools.makeImageTestScript jamiDisk;
     };
   };
 }

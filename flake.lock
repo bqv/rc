@@ -826,23 +826,6 @@
         "type": "github"
       }
     },
-    "nativecomp": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1605520686,
-        "narHash": "sha256-9wpklFbcyYYmkayXOvpIB/xAud86urzZaPU+ZMF1ViI=",
-        "owner": "fejfighter",
-        "repo": "emacs",
-        "rev": "0603c2f49d8f9c2d0b8e141927b39f8d6d8fe272",
-        "type": "github"
-      },
-      "original": {
-        "owner": "fejfighter",
-        "ref": "pgtk-nativecomp",
-        "repo": "emacs",
-        "type": "github"
-      }
-    },
     "nix": {
       "inputs": {
         "lowdown-src": "lowdown-src",
@@ -1312,7 +1295,6 @@
         "mozilla": "mozilla",
         "naersk": "naersk",
         "napalm": "napalm",
-        "nativecomp": "nativecomp",
         "nix": "nix",
         "nix-ipfs": "nix-ipfs",
         "nyxt": "nyxt",

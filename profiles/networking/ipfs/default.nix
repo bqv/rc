@@ -95,6 +95,8 @@ in {
     };
   };
 
+  systemd.services.ipfs-init.serviceConfig.TimeoutStartSec = "20s";
+
   systemd.services.ipfs = builtins.trace "${config.networking.hostName} - ipfs config permissions still broken" {
     serviceConfig.ExecStartPost = "${pkgs.coreutils}/bin/chmod g+r /var/lib/ipfs/config";
     wantedBy = [ "local-fs.target" ];
