@@ -320,11 +320,11 @@
     "emacs-webkit": {
       "flake": false,
       "locked": {
-        "lastModified": 1606012055,
-        "narHash": "sha256-pFIoLfz/yH08usMM8IhSPVQCv+0id5pIPWZVObpFwCk=",
+        "lastModified": 1606075147,
+        "narHash": "sha256-2zubpjlNZkaTWa+BqQ+HEgBz7y78XZcMtZ52mj9S+6I=",
         "owner": "akirakyle",
         "repo": "emacs-webkit",
-        "rev": "10e0f0843ad0f73fb9fbfbacc5347c76284063f0",
+        "rev": "5af94ac13acc5f3fac605e0803e18e2e74467091",
         "type": "github"
       },
       "original": {
