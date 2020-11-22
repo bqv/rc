@@ -5,7 +5,7 @@
     windowManager.session = lib.singleton {
       name = "exwm";
       start = ''
-        ${pkgs.gccEmacs}/bin/emacs
+        ${pkgs.emacsPgtkGcc}/bin/emacs
       '';
     };
   };

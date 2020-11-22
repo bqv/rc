@@ -37,7 +37,7 @@ in {
     ]);
 
     programs.emacs = {
-      package = lib.fix (self: pkgs.gccEmacs.overrideAttrs (drv: {
+      package = lib.fix (self: pkgs.emacsPgtkGcc.overrideAttrs (drv: {
         passthru = {
           pkgs = pkgs.emacsPackagesFor self;
           nativeComp = drv.nativeComp or false;

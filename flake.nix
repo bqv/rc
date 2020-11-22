@@ -265,14 +265,7 @@ index aeb58a7194f99..717c18d367f01 100644
             src = builtins.toPath "${inputs.construct}/.";
           });
         })
-        inputs.emacs.overlay (final: prev: rec {
-          gccEmacs = final.emacsPgtkGcc;
-
-          gccEmacsPackages = lib.dontRecurseIntoAttrs (final.emacsPackagesFor gccEmacs);
-
-          # Overridden for exwm
-          emacsWithPackages = gccEmacsPackages.emacsWithPackages;
-        })
+        inputs.emacs.overlay
         inputs.xontribs.overlay
         inputs.wayland.overlay
         inputs.self.overlay
@@ -280,47 +273,8 @@ index aeb58a7194f99..717c18d367f01 100644
           inherit ((import (patchNixpkgs channels.modules.legacyPackages.${system}) { inherit system; }).pkgs)
             apparmor apparmor-utils apparmor-kernel-patches apparmorRulesFromClosure iputils inetutils;
           inherit (inputs.rel2009.legacyPackages.${system}) firefox thunderbird obs-studio; # slow
-          lbry = (pkgs.symlinkJoin {
-            name = "lbry";
-            paths = [
-              (pkgs.writeScriptBin "lbry-x11" ''
-                #!${pkgs.runtimeShell}
-                export DISPLAY=:0
-                exec -a lbry ${inputs.pr96368.legacyPackages.${system}.lbry}/bin/lbry $@
-              '')
-              inputs.pr96368.legacyPackages.${system}.lbry
-            ];
-          }).overrideAttrs (_: { inherit (inputs.pr96368.legacyPackages.${system}.lbry) meta; });
           inherit (inputs.pr99188.legacyPackages.${system}) giara;
           inherit (inputs.large.legacyPackages.${system}) matrix-synapse;
-          postman = (pkgs.symlinkJoin {
-            name = "postman";
-            paths = [
-              (pkgs.writeScriptBin "postman-x11" ''
-                #!${pkgs.execline}/bin/execlineb -S0
-                export DISPLAY :0
-                exec -a postman
-                ${pkgs.rel2003.postman}/bin/postman
-              '')
-              pkgs.rel2003.postman
-            ];
-          }).overrideAttrs (_: { inherit (pkgs.rel2003.postman) meta; });
-          hnix = let
-            inherit (import pkgs.path {
-              inherit system;
-              overlays = import (inputs.hnix-overlay + "/overlay.nix");
-            }) haskellPackages haskell;
-            hnix = haskell.lib.appendPatch haskellPackages.hnix (
-              pkgs.fetchpatch {
-                url = "https://github.com/haskell-nix/hnix/commit/e2ad934492eeac9881527610e4a1c1cf31ea1115.patch";
-                sha256 = "dWMf50asrDaYtAU+Ii/Eu7/HiGnae0aeVqh7iUUhjr4=";
-              }
-            );
-          in pkgs.writeScriptBin "hnix" ''
-            #!${pkgs.execline}/bin/execlineb -S0
-            export NIX_DATA_DIR ${hnix.src}/data
-            ${hnix}/bin/hnix -I nix=${inputs.nix}/corepkgs $@
-          '';
         })
       ];
     };
