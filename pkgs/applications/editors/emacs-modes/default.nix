@@ -1,4 +1,4 @@
-{ lib, writeText, flake, emacsPackages, libffi, libtool, ... }:
+{ lib, writeText, flake, emacsPackages, fetchurl, lzip, libffi, libtool, ... }:
 
 let
   inherit (emacsPackages) trivialBuild emacs;
@@ -100,4 +100,5 @@ in lib.recurseIntoAttrs rec {
     version = src.shortRev;
     src = inputs.explain-pause-mode;
   };
+
 }
