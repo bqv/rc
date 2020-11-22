@@ -1,18 +1,13 @@
-{ pkgs, ... }:
+{ pkgs, flake, ... }:
 let
   inherit (builtins) concatStringsSep;
-  inherit (pkgs) fetchFromGitHub stdenv gnugrep;
+  inherit (pkgs) stdenv gnugrep;
   inherit (builtins) readFile fetchurl;
 
   hosts = stdenv.mkDerivation {
     name = "hosts";
 
-    src = fetchFromGitHub {
-      owner = "x0uid";
-      repo = "SpotifyAdBlock";
-      rev = "1776d1a2b8ff0b73229196f37e3164b9049cc090";
-      hash = "sha256-6iWUSoxvcyM/+BLCIab5ixH2UIyzGo8CtLsFElvtU44=";
-    };
+    src = flake.inputs.spotify-adblock;
 
     nativeBuildInputs = [ gnugrep ];
 

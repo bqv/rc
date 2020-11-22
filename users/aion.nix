@@ -1,4 +1,4 @@
-{ config, pkgs, lib, flakes, ... }:
+{ config, pkgs, lib, flake, ... }:
 
 {
   imports = [
@@ -211,9 +211,7 @@
           id = "self";
           type = "indirect";
         };
-        to = let
-          flake = flakes.self;
-        in {
+        to = {
           inherit (flake) narHash lastModified;
           path = flake.outPath;
           rev = if flake ? rev then flake.rev
@@ -226,10 +224,8 @@
           id = "nixpkgs";
           type = "indirect";
         };
-        to = let
-          flake = flakes.rel2009;
-        in {
-          inherit (flake) narHash lastModified;
+        to = {
+          inherit (flake.inputs.rel2009) narHash lastModified;
           path = flake.outPath;
           rev = if flake ? rev then flake.rev
                 else "0000000000000000000000000000000000000000";

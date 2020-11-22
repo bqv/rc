@@ -1,4 +1,4 @@
-final: prev: {
+inputs@{...}: final: prev: {
   epsxe = final.insecuressl.epsxe.overrideAttrs ({ installPhase, ... }: {
     installPhase = let
       bios = final.fetchurl {

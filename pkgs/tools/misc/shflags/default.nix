@@ -1,15 +1,10 @@
-{ stdenv, fetchFromGitHub, runtimeShell, getopt }:
+{ stdenv, flake, runtimeShell, getopt }:
 
 stdenv.mkDerivation rec {
   pname = "shflags";
-  version = "1.2.3";
+  version = flake.inputs.shflags.shortRev;
 
-  src = fetchFromGitHub {
-    owner = "kward";
-    repo = pname;
-    rev = "v${version}";
-    hash = "sha256-ntIso51KI6Z+XblLR+vGCf7rjiemrXJfEzr9bZYGvfk=";
-  };
+  src = flake.inputs.shflags;
 
   buildInputs = [ getopt ];
 

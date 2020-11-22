@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, flake, ... }:
 with lib;
 
 let
@@ -227,12 +227,7 @@ in {
       plugins = [
         {
           name = "bass";
-          src = pkgs.fetchFromGitHub {
-            owner = "edc";
-            repo = "bass";
-            rev = "c0d11420f35cfbcb62f94be0dfcf9baf70a9cea5";
-            sha256 = "07x4zvm04kra6cc1224mxm6mdl0gggw0ri98kdgysax53cm8r95r";
-          };
+          src = flake.inputs.fish-bass;
         }
       ];
     };

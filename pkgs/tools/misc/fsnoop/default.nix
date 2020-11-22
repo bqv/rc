@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, linuxHeaders, fetchurl }:
+{ stdenv, flake, linuxHeaders, fetchurl }:
 
 let
   headers =
@@ -17,14 +17,9 @@ in
 stdenv.mkDerivation rec {
   pname = "fsnoop";
   rev = "e05bfc949838e094161360ce5a046cdaa097d39a";
-  version = "git-${rev}";
+  version = "git-${flake.inputs.fsnoop.shortRev}";
 
-  src = fetchFromGitHub {
-    owner = "jeffwalter";
-    repo = "fsnoop";
-    inherit rev;
-    sha256 = "07c7d09d5qqzv5pcawm27q79cdzdyaxv4cwrw6aw2dnxqa63f8bh";
-  };
+  src = flake.inputs.fsnoop;
 
   buildInputs = [
     # TODO: Remove the override when `linuxHeaders` is a version >= 5.1 to

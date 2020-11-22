@@ -1,18 +1,12 @@
-{ lib, stdenv, fetchFromGitHub, pkgconfig, makeWrapper
+{ lib, stdenv, flake, pkgconfig, makeWrapper
 , wld, wayland, wayland-protocols, fontconfig, pixman, libdrm, libinput, libevdev, libxkbcommon, libxcb, xcbutilwm
 }:
 
 stdenv.mkDerivation rec {
   name = "swc-${version}";
-  version = lib.substring 0 7 src.rev;
+  version = flake.inputs.swc.shortRev;
 
-  src = fetchFromGitHub {
-    owner = "bqv";
-    repo = "swc";
-    rev = "2d5a062c22f944f888f739ae289a6878babf7a81";
-    sha256 = "0znbnyaym718dfzb78ahcajd6ncfr89mjv7dpb652phri5qprcwg";
-    # date = 2020-07-13T01:30:15+01:00;
-  };
+  src = flake.inputs.swc;
 
   patches = [
    #./hardcode-screen-order.patch # committed

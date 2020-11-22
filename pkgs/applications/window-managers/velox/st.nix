@@ -1,18 +1,12 @@
-{ stdenv, lib, fetchFromGitHub, pkgconfig, writeText
+{ stdenv, lib, flake, pkgconfig, writeText
 , ncurses, wayland, wayland-protocols, wld, libxkbcommon, fontconfig, pixman
 , conf, patches }:
 
 stdenv.mkDerivation rec {
   name = "st-velox-${version}";
-  version = lib.substring 0 7 src.rev;
+  version = flake.inputs.st-wl.shortRev;
 
-  src = fetchFromGitHub {
-    owner = "michaelforney";
-    repo = "st";
-    rev = "83d6bc6e0efccff6905374c1a5fb550f7c08bd4a";
-    sha256 = "0hfrbyr5vck9f4appphk4wbg27l39vyxzlb8rjg4j1gk9pn44b1s";
-    # date = 2019-10-14T10:50:23+01:00;
-  };
+  src = flake.inputs.st-wl;
 
   inherit patches;
 

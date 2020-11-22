@@ -1,4 +1,4 @@
-final: prev: {
+inputs@{...}: final: prev: {
   lbry = prev.callPackage (
     { stdenv, lib, fetchurl, system, appimageTools, makeWrapper, autoPatchelfHook, desktop-file-utils, imagemagick,
       ffmpeg, nss, nssTools, nspr, gtk3, vivaldi-ffmpeg-codecs, xorg }:

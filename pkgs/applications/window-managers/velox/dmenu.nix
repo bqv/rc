@@ -1,16 +1,10 @@
-{ stdenv, lib, fetchFromGitHub, swc, wld, wayland, libxkbcommon, pixman, fontconfig }:
+{ stdenv, lib, flake, swc, wld, wayland, libxkbcommon, pixman, fontconfig }:
 
 stdenv.mkDerivation rec {
   name = "dmenu-velox-${version}";
-  version = lib.substring 0 7 src.rev;
+  version = flake.inputs.dmenu.shortRev;
 
-  src = fetchFromGitHub {
-    owner = "michaelforney";
-    repo = "dmenu";
-    rev = "f385d9d18813071b4b4257bf8d4d572daeda0e70";
-    sha256 = "14j8jv0nlybinhzkgd6dplvng9zy8p292prlx39w0k4fm6x5nv6y";
-    # date = 2017-04-07T12:33:16+01:00;
-  };
+  src = flake.inputs.dmenu;
 
   buildInputs = [ swc wld wayland libxkbcommon pixman fontconfig ];
 

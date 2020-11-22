@@ -1,4 +1,4 @@
-final: prev: rec {
+inputs@{...}: final: prev: rec {
   swc = prev.velox.swc.overrideAttrs (o: {
     separateDebugInfo = true;
   });

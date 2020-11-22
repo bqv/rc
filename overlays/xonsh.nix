@@ -1,15 +1,10 @@
-final: prev: let
+inputs@{ prompt-toolkit, ... }: final: prev: let
   super = {
     inherit (final.master.xonsh) overridePythonAttrs propagatedBuildInputs;
   };
   pythonOverrides = self: super: {
     prompt_toolkit = super.prompt_toolkit.overridePythonAttrs (_: {
-      src = final.fetchFromGitHub {
-        owner = "bobhy";
-        repo = "python-prompt-toolkit";
-        rev = "th-threadsafe-load-2";
-        sha256 = "sha256-5lgMehJuRFL49Whi3uM1OKCTv/wFofc69l6C/+wy7S8=";
-      };
+      src = prompt-toolkit;
     });
   };
   python = (prev.lib.last super.propagatedBuildInputs).pkgs.python.override {

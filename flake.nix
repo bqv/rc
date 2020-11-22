@@ -33,6 +33,7 @@
 
     xontribs.url = "github:bqv/xontribs";        #|- Xontribs
     xontribs.inputs.nixpkgs.follows = "/master"; #|
+    prompt-toolkit = { url = "github:bobhy/python-prompt-toolkit/th-threadsafe-load-2"; flake = false; };
     # BEGIN ignorethis
     xontribs.inputs.prompt-bar.follows = "/prompt-bar";
     prompt-bar.url = "github:anki-code/xontrib-prompt-bar/68b3487e156ed3dce80578ebe552b6afa94c7eb8";
@@ -64,12 +65,44 @@
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
 
-    impermanence = { url = "github:nix-community/impermanence"; flake = false; }; # Impermanence
-    mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };         # Nixpkgs-mozilla
-    baduk = { url = "github:dustinlacewell/baduk.nix"; flake = false; };          # Baduk
-    snack = { url = "github:nmattia/snack"; flake = false; };                     # Snack
-    napalm = { url = "github:nmattia/napalm"; flake = false; };                   # Napalm
-    statichask = { url = "github:nh2/static-haskell-nix"; flake = false; };       # Static Haskell
+    hnix-overlay = { url = "github:layus/hnix/derivationStrict"; flake = false; }; # Hnix
+    impermanence = { url = "github:nix-community/impermanence"; flake = false; };  # Impermanence
+    mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };          # Nixpkgs-mozilla
+    baduk = { url = "github:dustinlacewell/baduk.nix"; flake = false; };           # Baduk
+    snack = { url = "github:nmattia/snack"; flake = false; };                      # Snack
+    napalm = { url = "github:nmattia/napalm"; flake = false; };                    # Napalm
+    statichask = { url = "github:nh2/static-haskell-nix"; flake = false; };        # Static Haskell
+    anki-sync = { url = "github:ankicommunity/anki-sync-server/125f7bb1"; flake = false; }; # Anki Server
+    matrix-nio = { url = "github:poljar/matrix-nio/98f0c244"; flake = false; };
+    weechat-matrix = { url = "github:poljar/weechat-matrix/d4158416"; flake = false; };
+    sqlcmdline = { url = "github:sebasmonia/sqlcmdline"; flake = false; };
+    fish-bass = { url = "github:edc/bass"; flake = false; };
+    spotify-adblock = { url = "github:x0uid/spotifyadblock"; flake = false; };
+    bottom = { url = "github:clementtsang/bottom/0.4.5"; flake = false; };
+    twitterpub = { url = "github:bqv/twitterpub"; flake = false; };
+    zsh-pure = { url = "github:sindresorhus/pure"; flake = false; };
+    fsnoop = { url = "github:jeffwalter/fsnoop"; flake = false; };
+    shflags = { url = "github:kward/shflags"; flake = false; };
+    git-remote-ipfs = { url = "github:cryptix/git-remote-ipfs"; flake = false; };
+    git-get = { url = "github:grdl/git-get"; flake = false; };
+    git-pullrequest = { url = "github:google/git-pull-request-mirror"; flake = false; };
+    dgit = { url = "github:quorumcontrol/dgit/v0.0.14-alpha"; flake = false; };
+    wld = { url = "github:michaelforney/wld"; flake = false; };
+    swc = { url = "github:bqv/swc"; flake = false; };
+    velox = { url = "github:michaelforney/velox"; flake = false; };
+    st-wl = { url = "github:michaelforney/st"; flake = false; };
+    dmenu = { url = "github:michaelforney/dmenu"; flake = false; };
+    emacs-bitwarden = { url = "github:seanfarley/emacs-bitwarden"; flake = false; };
+    ivy-exwm = { url = "github:pjones/ivy-exwm"; flake = false; };
+    flycheck-purescript = { url = "github:bsermons/flycheck-purescript"; flake = false; };
+    eterm-256color = { url = "github:dieggsy/eterm-256color"; flake = false; };
+    envrc = { url = "github:purcell/envrc"; flake = false; };
+    emacsbridge = { url = "github:aardsoft/emacsbridge"; flake = false; };
+    font-lock-ext = { url = "github:sensorflo/font-lock-ext"; flake = false; };
+    sln-mode = { url = "github:sensorflo/sln-mode"; flake = false; };
+    emacs-ffi = { url = "github:tromey/emacs-ffi"; flake = false; };
+    explain-pause-mode = { url = "github:lastquestion/explain-pause-mode"; flake = false; };
+    gnome-network-displays = { url = "git+https://gitlab.gnome.org/gnome/gnome-network-displays"; flake = false; };
   };
 
   outputs = inputs: with builtins; let
@@ -203,18 +236,11 @@ index aeb58a7194f99..717c18d367f01 100644
           snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
           napalm = pkgs.callPackage inputs.napalm;
           inherit (inputs.haskell.legacyPackages.${system}) haskell-nix; # ignore overlay, we want cache hits
-          jamiPkgs = pkgs.callPackage inputs.jami;
-          jami = pkgs.jamiPkgs.ring-client-gnome;
         })
         inputs.nix.overlay (final: prev: {
           nix-ipfs = inputs.nix-ipfs.defaultPackage.${system};
           nixFlakes = inputs.nix.packages.${system}.nix.overrideAttrs (drv: {
             patches = (drv.patches or []) ++ [
-             #(final.fetchpatch {
-             #  name = "logformat-option.patch";
-             #  url = "https://github.com/nixos/nix/pull/3961.diff";
-             #  sha256 = "vHSkQ3SYk1rzde7aNHZpV8nOFB/dGYBU7NofBWwXyQk=";
-             #})
               (final.fetchpatch {
                 name = "libfetcher-file.patch";
                 url = "https://github.com/nixos/nix/pull/4153.diff";
@@ -251,9 +277,6 @@ index aeb58a7194f99..717c18d367f01 100644
           in final.emacsGcc.overrideAttrs (old: {
             name = "${old.name}-${version}";
             inherit src version;
-           #prePatch = ''
-           #  sed -i '/comp_deferred_compilation = true;/s/true/false/' src/comp.c
-           #'';
             buildInputs = old.buildInputs ++ [ final.cairo ];
             configureFlags = old.configureFlags ++ [ "--with-pgtk" "--with-cairo" "--with-modules" ];
           });
@@ -265,23 +288,11 @@ index aeb58a7194f99..717c18d367f01 100644
         })
         inputs.xontribs.overlay
         inputs.wayland.overlay
-        (final: prev: {
-          nyxt = prev.nyxt.overrideAttrs (drv: rec {
-            src = drv.src.overrideAttrs (drv: {
-              src = inputs.nyxt;
-              name = lib.replaceStrings [drv.meta.version] [version] drv.name;
-              installPhase = builtins.replaceStrings ["nyxt-ext"] ["nyxt"] drv.installPhase;
-            });
-            version = inputs.nyxt.lastModifiedDate;
-          });
-        })
         inputs.self.overlay
         (pkgs: lib.const {
           inherit ((import (patchNixpkgs channels.modules.legacyPackages.${system}) { inherit system; }).pkgs)
             apparmor apparmor-utils apparmor-kernel-patches apparmorRulesFromClosure iputils inetutils;
-          inherit (inputs.rel2009.legacyPackages.${system}) firefox thunderbird; # slow
-          inherit (inputs.rel2009.legacyPackages.${system}) rust-analyzer; # broken
-          inherit (inputs.master.legacyPackages.${system}) obs-studio; # un-wayland
+          inherit (inputs.rel2009.legacyPackages.${system}) firefox thunderbird obs-studio; # slow
           lbry = (pkgs.symlinkJoin {
             name = "lbry";
             paths = [
@@ -294,18 +305,6 @@ index aeb58a7194f99..717c18d367f01 100644
             ];
           }).overrideAttrs (_: { inherit (inputs.pr96368.legacyPackages.${system}.lbry) meta; });
           inherit (inputs.pr99188.legacyPackages.${system}) giara;
-         #giara = (inputs.pr99188.legacyPackages.${system}.giara
-         #).override { pkgs = pkgs // {
-         #  inherit (pkgs.staged) webkitgtk libhandy;
-         #  libical = pkgs.libical.overrideAttrs (drv: { doInstallCheck = false; });
-         #}; inherit (pkgs) stdenv; };
-         #giara-cairo = (inputs.pr99188.legacyPackages.${system}.giara.overrideAttrs (drv: {
-         #  nativeBuildInputs = drv.nativeBuildInputs ++ [ pkgs.cairo ];
-         #})).override { pkgs = pkgs // {
-         #  inherit (pkgs.large) webkitgtk;
-         #  inherit (pkgs.staged) libhandy;
-         #  libical = pkgs.libical.overrideAttrs (drv: { doInstallCheck = false; });
-         #}; inherit (pkgs) stdenv; };
           inherit (inputs.large.legacyPackages.${system}) matrix-synapse;
           postman = (pkgs.symlinkJoin {
             name = "postman";
@@ -320,15 +319,9 @@ index aeb58a7194f99..717c18d367f01 100644
             ];
           }).overrideAttrs (_: { inherit (pkgs.rel2003.postman) meta; });
           hnix = let
-            overlay = pkgs.fetchFromGitHub {
-              owner = "layus";
-              repo = "hnix-overlay";
-              rev = "c39949e8a5b1506e68114b684f05c97ddb6427b3";
-              sha256 = "d0f/7CDJFZhfgrBV/TtbZaw3Kio5pwLiZN2aat86Ibs=";
-            } + "/overlay.nix";
             inherit (import pkgs.path {
               inherit system;
-              overlays = import overlay;
+              overlays = import (inputs.hnix-overlay + "/overlay.nix");
             }) haskellPackages haskell;
             hnix = haskell.lib.appendPatch haskellPackages.hnix (
               pkgs.fetchpatch {
@@ -339,50 +332,8 @@ index aeb58a7194f99..717c18d367f01 100644
           in pkgs.writeScriptBin "hnix" ''
             #!${pkgs.execline}/bin/execlineb -S0
             export NIX_DATA_DIR ${hnix.src}/data
-            ${hnix}/bin/hnix $@
+            ${hnix}/bin/hnix -I nix=${inputs.nix}/corepkgs $@
           '';
-         #hnix = let
-         #  hlib = inputs.staged.legacyPackages.${system}.haskell.lib;
-         #  hnix-store = pkgs.fetchFromGitHub {
-         #    owner = "haskell-nix";
-         #    repo = "hnix-store";
-         #    rev = "2497d37d35eeed854875e9245c02bf538eaafa10";
-         #    sha256 = "1xkj99ba4rc9mgd14bjsk170qvhmhrx00zz5bwml4737h3izl84k";
-         #    # date = 2020-11-13T23:36:12+01:00;
-         #  };
-         #  hpkgs = inputs.staged.legacyPackages.${system}.haskellPackages.override {
-         #    overrides = self: super: with hlib; {
-         #      cryptohash-sha512 = doJailbreak super.cryptohash-sha512;
-         #      hnix-store-core = addBuildDepends (overrideSrc super.hnix-store-core {
-         #        src = "${hnix-store}/hnix-store-core";
-         #      }) (with self; [
-         #        attoparsec algebraic-graphs cereal cereal cryptohash-sha512
-         #        io-streams lifted-base monad-control nix-derivation
-         #        process-extras tasty-golden
-         #      ]);
-         #      hnix-store-remote = addBuildDepends (overrideSrc super.hnix-store-remote {
-         #        src = "${hnix-store}/hnix-store-remote";
-         #      }) (with self; [
-         #        attoparsec filepath tasty tasty-discover tasty-hspec
-         #        tasty-hunit tasty-quickcheck linux-namespaces temporary
-         #        hspec-expectations-lifted
-         #        pkgs.nix
-         #      ]);
-         #      hnix = addBuildDepends (doJailbreak (overrideSrc super.hnix {
-         #        # PR: 554 derivationStruct
-         #        src = pkgs.fetchFromGitHub {
-         #          owner = "layus";
-         #          repo = "hnix";
-         #          rev = "derivationStrict"; # 6e8022c45
-         #          sha256 = "nUfvddtTKhmdauVvK8ErkjayiSXf78EVdK+Z/C+IDyA=";
-         #          # date = 2020-11-13T23:36:12+01:00;
-         #        };
-         #      })) (with self; [
-         #        hnix-store-remote
-         #      ]);
-         #    };
-         #  };
-         #in hpkgs.hnix;
         })
       ];
     };
@@ -435,7 +386,7 @@ index aeb58a7194f99..717c18d367f01 100644
       };
       specialArgs = {
         inherit usr;
-        flakes = inputs;
+        flake = inputs.self;
         fetchPullRequest = fetchPullRequestForSystem system;
 
         domains = import ./secrets/domains.nix;
@@ -468,7 +419,6 @@ index aeb58a7194f99..717c18d367f01 100644
             nix.nixPath = [
               "nixpkgs=${channels.pkgs}"
               "nixos=${inputs.self}/configuration.nix"
-              "nix=${inputs.nix}/corepkgs"
               "self=/run/current-system/flake/input/self/configuration.nix"
             ];
 
@@ -643,7 +593,7 @@ index aeb58a7194f99..717c18d367f01 100644
 
     overlays = listToAttrs (map (name: {
       name = lib.removeSuffix ".nix" name;
-      value = import (./overlays + "/${name}");
+      value = import (./overlays + "/${name}") inputs;
     }) (builtins.filter (file: lib.hasSuffix ".nix" file) (attrNames (readDir ./overlays))));
 
     packages = forAllSystems ({ pkgs, ... }: lib.filterAttrs (_: p: (p.meta.broken or null) != true) {
@@ -654,9 +604,8 @@ index aeb58a7194f99..717c18d367f01 100644
       inherit (pkgs.dotnetPackages) azure-functions-core-tools;
       inherit (pkgs) dgit dejavu_nerdfont electronmail;
       inherit (pkgs) flarectl fsnoop git-pr-mirror greetd ipfscat;
-      inherit (pkgs) matrix-appservice-irc mx-puppet-discord;
       inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
-      inherit (pkgs) pure sddm-chili shflags twitterpub velox vervis yacy;
+      inherit (pkgs) pure shflags twitterpub velox vervis yacy;
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }:

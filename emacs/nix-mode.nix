@@ -1,7 +1,9 @@
-{ config, lib, usr, pkgs, flakes, ... }:
+{ config, lib, usr, pkgs, flake, ... }:
 
 {
-  emacs-loader.nix-mode = {
+  emacs-loader.nix-mode = let
+    inputs = { self = flake; } // flake.inputs;
+  in {
     demand = true;
     config = ''
       (setq nix-repl-executable-args '("repl" "--impure" "/run/current-system/flake/input/self/configuration.nix"))
@@ -10,7 +12,7 @@
       ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: path: ''
         (defun flake-${name}-rg ()
           (interactive)
-          (counsel-rg nil "/run/current-system/flake/input/${name}/" nil "[flake:${name}] rg: ")) '') flakes)}
+          (counsel-rg nil "/run/current-system/flake/input/${name}/" nil "[flake:${name}] rg: ")) '') inputs)}
 
       (defun nix-repl-complete ()
         (interactive)

@@ -1,18 +1,12 @@
-{ lib, stdenv, fetchFromGitHub, pkgconfig
+{ lib, stdenv, flake, pkgconfig
 , wayland, fontconfig, pixman, freetype, libdrm
 }:
 
 stdenv.mkDerivation rec {
   name = "wld-${version}";
-  version = lib.substring 0 7 src.rev;
+  version = flake.inputs.wld.shortRev;
 
-  src = fetchFromGitHub {
-    owner = "michaelforney";
-    repo = "wld";
-    rev = "ea4eccb64cfcfc508b029a530fc434d6e6695af5";
-    sha256 = "0ynvqd3cwy23q97rn2x8v5gldpc3aa37nx66p8cd4cgpvcwvps5z";
-    # date = 2020-02-20T13:50:32-08:00;
-  };
+  src = flake.inputs.wld;
 
   nativeBuildInputs = [ pkgconfig ];
 

@@ -1,17 +1,12 @@
-{ lib, buildGoModule, fetchFromGitHub }:
+{ lib, buildGoModule, flake }:
 
 buildGoModule rec {
   pname = "git-pull-request-mirror-unstable";
-  version = "2020.06.04-git";
+  version = flake.inputs.git-pullrequest.shortRev;
 
   vendorSha256 = "0789v1r6my256pncs0105yji28ifchj6ppfiy8gavglgclq3cgvn";
 
-  src = fetchFromGitHub {
-    owner = "google";
-    repo = "git-pull-request-mirror";
-    rev = "3d342363b0e1f2da4e59ac01baf4601bcf233bf9";
-    sha256 = "13p1kjw5nvlv2d71094dslfd003a57qj3v5xvij19ms1ci453jrq";
-  };
+  src = flake.inputs.git-pullrequest;
 
   postInstall = ''
     for bin in $out/bin/*; do

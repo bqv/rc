@@ -1,15 +1,10 @@
-{ stdenv, fetchFromGitHub, openssl, pkgconfig, rustPlatform }:
+{ stdenv, flake, openssl, pkgconfig, rustPlatform }:
 
 stdenv.mkDerivation rec {
   name = "pure-${version}";
-  version = "0e87bd8";
+  version = flake.inputs.zsh-pure.shortRev;
 
-  srcs = fetchFromGitHub {
-    owner = "sindresorhus";
-    repo = "pure";
-    rev = "0e87bd897bb67049329c55174dcc643926337b01";
-    hash = "sha256-JytsTviVHphYnP5KTbSkbaiNeg2fMufYc6r0X0SQyqI=";
-  };
+  srcs = flake.inputs.zsh-pure;
 
   buildPhase = "true";
 

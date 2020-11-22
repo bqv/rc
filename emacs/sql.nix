@@ -1,14 +1,8 @@
-{ config, lib, usr, pkgs, ... }:
+{ config, lib, usr, pkgs, flake, ... }:
 
 {
   emacs-loader.sql = let
-    src = pkgs.fetchFromGitHub {
-      owner = "sebasmonia";
-      repo = "sqlcmdline";
-      rev = "1d4e97773f76f94875c4e4393abd3c8e7b6ec06d";
-      sha256 = "0p0byvl0h61yfy5gqj7d667axssnmxp0lgqbwwv1dyx2ryy6x8yi";
-      # date = 2020-03-09T08:41:02-06:00;
-    };
+    src = flake.inputs.sqlcmdline;
     python = pkgs.python3.withPackages (py: [
       py.pyodbc
       py.docopt

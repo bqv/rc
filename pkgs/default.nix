@@ -1,6 +1,17 @@
 final: prev: let
   inherit (prev.lib) recurseIntoAttrs;
-  emacsOverride = self: super: prev.callPackage ./applications/editors/emacs-modes { };
+  emacsOverride = self: super: {
+    _0xc = null;
+    _2048-game = null;
+    _4clojure = null;
+    at = null;
+    emacs-libvterm = null;
+    emacsClangCompleteAsync = null;
+    term-plus = null;
+    term-plus-key-intercept = null;
+    term-plus-mux = null;
+    xml-plus = null;
+  } // prev.callPackage ./applications/editors/emacs-modes { };
   dotnetOverride = {
     azure-functions-core-tools = prev.callPackage ./development/dotnet-modules/azure-functions-core-tools { };
   };
@@ -47,11 +58,7 @@ in rec {
 
   lispPackages = recurseIntoAttrs prev.lispPackages;
 
-  matrix-appservice-irc = prev.callPackage ./servers/matrix-appservice-irc { };
-
   miraclecast = prev.callPackage ./os-specific/linux/gnome-network-displays/default.nix { };
-
-  mx-puppet-discord = prev.callPackage ./servers/mx-puppet-discord { };
 
   nodePackages = recurseIntoAttrs prev.nodePackages;
 
@@ -60,8 +67,6 @@ in rec {
   pure = prev.callPackage ./shells/zsh/pure { };
 
   rPackages = recurseIntoAttrs prev.rPackages;
-
-  sddm-chili = prev.callPackage ./applications/display-managers/sddm/themes/chili { };
 
   shflags = prev.callPackage ./tools/misc/shflags { };
 

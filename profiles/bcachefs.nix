@@ -1,4 +1,4 @@
-{ config, pkgs, lib, flakes, ... }:
+{ config, pkgs, lib, ... }:
 
 {
   boot.supportedFilesystems = [ "bcachefs" ];

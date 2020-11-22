@@ -1,4 +1,4 @@
-{ stdenv, buildGoModule, fetchFromGitHub, makeWrapper,
+{ stdenv, flake, buildGoModule, makeWrapper,
   loglevel ? "" }:
 
 buildGoModule rec {
@@ -6,12 +6,7 @@ buildGoModule rec {
   version = "0.0.14-alpha";
   vendorSha256 = "0wg3wl6aws0wl02czzzlss7ffhl8h2zxchws2dlph0mk3c3vgppq";
 
-  src = fetchFromGitHub {
-    owner = "quorumcontrol";
-    repo = pname;
-    rev = "v${version}";
-    hash = "sha256-8l3iWJmu/j2Ielr1rr1Lu4/rzzDhWMgJPxkThizjncI=";
-  };
+  src = flake.inputs.dgit;
 
   nativeBuildInputs = [ makeWrapper ];
   postInstall = ''
@@ -28,4 +23,3 @@ buildGoModule rec {
     broken = true; # I don't even understand how this went so wrong
   };
 }
-

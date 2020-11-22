@@ -1,4 +1,4 @@
-final: prev: {
+inputs@{...}: final: prev: {
   webkitgtk-eme = prev.webkitgtk.overrideAttrs (super: {
     buildInputs = super.buildInputs ++ (with final; [
       libgpgerror

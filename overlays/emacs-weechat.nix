@@ -1,4 +1,4 @@
-final: prev: let
+inputs@{...}: final: prev: let
   override = self: super: {
     weechat-patched = super.weechat.overrideAttrs (o: {
       patches = (o.patches or []) ++ [
