@@ -31,12 +31,7 @@ in {
 
   time.timeZone = "Europe/London";
 
-  environment = let
-    nixos-rebuild = pkgs.callPackage ../pkgs/lib/nixos-rebuild.nix {
-      nix = config.nix.package;
-      nixos-rebuild = config.system.build.nixos-rebuild;
-    };
-  in {
+  environment = {
     systemPackages = with pkgs; [
       binutils
       coreutils
@@ -52,7 +47,6 @@ in {
       iputils
       manpages
       moreutils
-      (pkgs.hiPrio nixos-rebuild)
       perl
       ripgrep
       rsync

@@ -143,10 +143,6 @@ index aeb58a7194f99..717c18d367f01 100644
         inherit meta;
         sha256 = meta.hash;
       }) [
-       #{
-       #  description = "nixos/iwd: add `networks` and `interfaces` option";
-       #  id = 75800; hash = "ptMLTVfCwd3N3kWQwDMn7dIJ2DYtijSohGGep+OuT24=";
-       #}
         {
           description = "apparmor: fix and improve the service";
           id = 101071; hash = "DRwN1+ubcWRuy6qb3jszJ88J+o5DM6WjR5akjEYC7Ck=";
@@ -720,10 +716,6 @@ index aeb58a7194f99..717c18d367f01 100644
           '').outPath;
         };
       };
-      nixos = {
-        type = "app";
-        program = pkgs.callPackage ./pkgs/lib/nixos.nix {} + "/bin/nixos";
-      };
     });
 
     defaultApp = forAllSystems ({ system, ... }: inputs.self.apps.${system}.delta);
@@ -742,10 +734,6 @@ index aeb58a7194f99..717c18d367f01 100644
     devShell = forAllSystems ({ system, ... }:
       let
         pkgs = import channels.pkgs { inherit system; };
-        my = import ./pkgs pkgs pkgs;
-
-        nixos = import ./pkgs/lib/nixos.nix { pkgs = pkgs // my; };
-        flake-shell = import ./pkgs/lib/flake-shell.nix { inherit pkgs; };
       in pkgs.mkShell {
         nativeBuildInputs = with pkgs; let
           git-crypt = pkgs.git-crypt.overrideAttrs (attrs: rec {
@@ -757,8 +745,7 @@ index aeb58a7194f99..717c18d367f01 100644
             patches = [ worktreePatch ];
           });
         in [
-          git git-crypt git-secrets
-          nixfmt flake-shell nixos
+          git git-crypt git-secrets nixfmt
         ];
 
         shellHook = ''
