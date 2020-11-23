@@ -38,7 +38,7 @@ in {
         (interactive (list (intern (completing-read "Station" (map-keys bqv/radio-stations) nil t))))
         (let* ((url (map-elt bqv/radio-stations station)))
           (if (string-match-p "stream/?$" url)
-              (with-current-buffer (url-retrieve-synchronously (replace-in-string "stream" "currentsong?sid=0" url))
+              (with-current-buffer (url-retrieve-synchronously (replace-regexp-in-string "stream" "currentsong?sid=0" url))
                 (let ((curr (progn
                               (point-max)
                               (let ((end (point)))
