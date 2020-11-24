@@ -115,29 +115,6 @@
     };
 
     patchNixpkgs = basePkgs: let
-      untransmission = (basePkgs.writeText "tr.patch" ''
-diff --git a/nixos/modules/services/torrent/transmission.nix b/nixos/modules/services/torrent/transmission.nix
-index aeb58a7194f99..717c18d367f01 100644
---- a/nixos/modules/services/torrent/transmission.nix
-+++ b/nixos/modules/services/torrent/transmission.nix
-@@ -236,7 +236,6 @@ in
-           # an AppArmor profile is provided to get a confinement based upon paths and rights.
-           builtins.storeDir
-           "/etc"
--          "/run"
-           ] ++
-           optional (cfg.settings.script-torrent-done-enabled &&
-                     cfg.settings.script-torrent-done-filename != "")
-@@ -409,7 +408,6 @@ in
-           #r @{PROC}/@{pid}/environ,
-           r @{PROC}/@{pid}/mounts,
-           rwk /tmp/tr_session_id_*,
--          r /run/systemd/resolve/stub-resolv.conf,
--
-+
-           r ''${pkgs.openssl.out}/etc/**,
-           r ''${config.systemd.services.transmission.environment.CURL_CA_BUNDLE},
-      '') // { outputHash = "untransmission"; };
       pullReqs = map (meta: {
         url = meta.url or "https://github.com/nixos/nixpkgs/pull/${toString meta.id}.diff";
         name = "nixpkgs-pull-request-${toString meta.id}";
@@ -146,14 +123,14 @@ index aeb58a7194f99..717c18d367f01 100644
       }) [
         {
           description = "apparmor: fix and improve the service";
-          id = 101071; hash = "DRwN1+ubcWRuy6qb3jszJ88J+o5DM6WjR5akjEYC7Ck=";
+          id = 101071; hash = "rZOtPo5kXnYsn1m5z7FjURbKNnfRGGi2y3UV024VpV0=";
         }
        #{
        #  description = "nixos/security.gnupg: provisioning GnuPG-protected secrets through the Nix store";
        #  id = 93659; hash = "3im5nSrlM32DQUeq0Yp1MHkUcQyLdCGbxfJjgcc9e78=";
        #}
       ];
-      patches = [ untransmission ] ++ map basePkgs.fetchpatch pullReqs;
+      patches = map basePkgs.fetchpatch pullReqs;
       patchedTree = basePkgs.applyPatches {
         name = "nixpkgs-patched";
         src = basePkgs.path;
@@ -275,6 +252,11 @@ index aeb58a7194f99..717c18d367f01 100644
           inherit (inputs.rel2009.legacyPackages.${system}) firefox thunderbird obs-studio; # slow
           inherit (inputs.pr99188.legacyPackages.${system}) giara;
           inherit (inputs.large.legacyPackages.${system}) matrix-synapse;
+        })
+        (final: prev: {
+          xmlsec = prev.xmlsec.overrideAttrs (drv: {
+            doCheck = false; # broken by update
+          });
         })
       ];
     };
@@ -714,7 +696,7 @@ index aeb58a7194f99..717c18d367f01 100644
               (builtins.readFile /etc/nix/nix.conf)}
             experimental-features = nix-command flakes ca-references
             print-build-logs = true
-            access-tokens = "${(import ./secrets/git.github.nix).oauth-token}"
+            access-tokens = "github.com=${(import ./secrets/git.github.nix).oauth-token}"
           '';
         in linkFarm "nix-conf-dir" ( [
           { name = "nix.conf"; path = writeText "flakes-nix.conf" nixConf; }
