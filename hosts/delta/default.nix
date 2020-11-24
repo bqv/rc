@@ -165,6 +165,7 @@
   programs.adb.enable = true;
   programs.tmux.enable = true;
   programs.xonsh.enable = true;
+  programs.singularity.enable = true;
 
   services.disnix.enable = true;
   services.printing.enable = true;

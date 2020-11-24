@@ -11,15 +11,6 @@ final: prev: let
     term-plus-key-intercept = null;
     term-plus-mux = null;
     xml-plus = null;
-
-    auctex = super.auctex.overrideAttrs (drv: {
-      src = (final.fetchurl {
-        url = "https://elpa.gnu.org/packages/auctex-12.2.4.tar.lz";
-        sha256 = "eD6niRm+3j21WH2kua9aEB42CghGZrZEYyVP5dpz1mw=";
-      }).overrideAttrs (drv: {
-        nativeBuildInputs = [ final.lzip ];
-      });
-    });
   } // prev.callPackage ./applications/editors/emacs-modes { };
   dotnetOverride = {
     azure-functions-core-tools = prev.callPackage ./development/dotnet-modules/azure-functions-core-tools { };

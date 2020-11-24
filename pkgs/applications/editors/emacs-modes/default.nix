@@ -83,6 +83,7 @@ in lib.recurseIntoAttrs rec {
       xclip notify-osd enchant
     ] ++ gstBuildInputs;
 
+    GIO_EXTRA_MODULES = "${pkgs.glib-networking}/lib/gio/modules:${pkgs.dconf.lib}/lib/gio/modules";
     GST_PLUGIN_SYSTEM_PATH_1_0 = lib.concatMapStringsSep ":" (p: "${p}/lib/gstreamer-1.0") gstBuildInputs;
     postInstall = ''
       cp *.so *.js *.css $out/share/emacs/site-lisp/
