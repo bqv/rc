@@ -131,7 +131,7 @@
         #system = "x86_64-linux";
         systems = ["x86_64-linux" "i686-linux" "armv6l-linux" "armv7l-linux"];
         maxJobs = 4;
-        speedFactor = 4;
+        speedFactor = 2;
         supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
         mandatoryFeatures = [ ];
       }
