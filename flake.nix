@@ -102,6 +102,7 @@
     explain-pause-mode = { url = "github:lastquestion/explain-pause-mode"; flake = false; };
     gnome-network-displays = { url = "git+https://gitlab.gnome.org/gnome/gnome-network-displays"; flake = false; };
     emacs-webkit = { url = "github:akirakyle/emacs-webkit"; flake = false; };
+    giara = { url = "git+https://gitlab.gnome.org/world/giara"; flake = false; };
   };
 
   outputs = inputs: with builtins; let
@@ -249,9 +250,7 @@
         (pkgs: lib.const {
           inherit ((import (patchNixpkgs channels.modules.legacyPackages.${system}) { inherit system; }).pkgs)
             apparmor apparmor-utils apparmor-kernel-patches apparmorRulesFromClosure iputils inetutils;
-          inherit (inputs.rel2009.legacyPackages.${system}) firefox thunderbird obs-studio; # slow
-          inherit (inputs.pr99188.legacyPackages.${system}) giara;
-          inherit (inputs.large.legacyPackages.${system}) matrix-synapse;
+          inherit (inputs.large.legacyPackages.${system}) firefox thunderbird obs-studio webkitgtk; # slow
         })
         (final: prev: {
           xmlsec = prev.xmlsec.overrideAttrs (drv: {

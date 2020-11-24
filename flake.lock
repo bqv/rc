@@ -477,6 +477,22 @@
         "type": "github"
       }
     },
+    "giara": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1606033852,
+        "narHash": "sha256-O29CM6SJZyN5wLMf6WRhXbCwz2ouR70OwYUmOAPLF+I=",
+        "ref": "master",
+        "rev": "98045cf03e7773cbbbd0f223e0a66d9810a582cd",
+        "revCount": 278,
+        "type": "git",
+        "url": "https://gitlab.gnome.org/world/giara"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://gitlab.gnome.org/world/giara"
+      }
+    },
     "git-get": {
       "flake": false,
       "locked": {
@@ -1295,6 +1311,7 @@
         "flycheck-purescript": "flycheck-purescript",
         "font-lock-ext": "font-lock-ext",
         "fsnoop": "fsnoop",
+        "giara": "giara",
         "git-get": "git-get",
         "git-pullrequest": "git-pullrequest",
         "git-remote-ipfs": "git-remote-ipfs",
