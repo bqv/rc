@@ -306,17 +306,19 @@
           gigabytes = m: m * 1024;
         };
       };
-      specialArgs = {
-        inherit usr;
-        flake = inputs.self;
-        fetchPullRequest = fetchPullRequestForSystem system;
 
-        domains = import ./secrets/domains.nix;
-        hosts = import ./secrets/hosts.nix;
-      };
+      modulesFor = hostName: appendModules: rec {
+        inherit system;
+        specialArgs = {
+          inherit usr;
+          flake = inputs.self;
+          fetchPullRequest = fetchPullRequestForSystem system;
 
-      modulesFor = hostName: {
-        inherit system specialArgs;
+          domains = import ./secrets/domains.nix;
+          hosts = import ./secrets/hosts.nix;
+
+          modules = modules;
+        };
         modules = let
           # External modules
           inherit (inputs.home.nixosModules) home-manager;
@@ -457,19 +459,26 @@
           # Import this flake's defined nixos modules
           flakeModules = import ./modules/nixos.nix;
 
-        in flakeModules ++ [
-          core global home local gnupg iwd
-          home-manager dwarffs guix matrix-construct impermanence
-        ];
+          allModules = flakeModules ++ [
+            core global home local gnupg iwd
+            dwarffs guix matrix-construct impermanence
+            home-manager
+          ];
+        in allModules ++ appendModules;
       };
     in usr.utils.recImport {
       # Build a nixos system for each dir in ./hosts using modulesFor
       dir = ./hosts;
       _import = host: let
-        modules = modulesFor host;
         pkgs = channels.modules.legacyPackages.${system};
-        nixosSystem = import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix" modules;
-      in nixosSystem // {
+        mkSystem = import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix";
+        vmConfig = (mkSystem (modulesFor host [vm])).config;
+        modules = modulesFor host [{
+          system.build = {
+            inherit (vmConfig.system.build) vm;
+          };
+        }];
+      in mkSystem modules // {
         nixos = modules; # This is extra spicy, but vaguely needed for nixus?
       };
     };
