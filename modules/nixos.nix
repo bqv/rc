@@ -8,4 +8,5 @@
   ./networking/nftables.nix
   ./networking/wireguard-mesh.nix
   ./networking/namespacing.nix
+  ./misc/headless.nix
 ]

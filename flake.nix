@@ -316,7 +316,7 @@
           domains = import ./secrets/domains.nix;
           hosts = import ./secrets/hosts.nix;
 
-          modules = manModules ++ [{
+          modules = systemModules ++ [{
             _module.args = specialArgs;
           }];
           extraModules = [];
@@ -420,20 +420,12 @@
           };
         };
 
-        # Global options that hosts depend on
-        local = { lib, ... }: {
-          imports = [ "${toString ./hosts}/${hostName}" ];
-
-          options = {
-            headless = lib.mkOption {
-              type = lib.types.bool;
-              description = "Is a headless machine";
-            };
-          };
-        };
-
-        # Hack in the gnupg secrets module
-        gnupg = import "${inputs.pr93659}/nixos/modules/security/gnupg.nix";
+        # Hack in the gnupg secrets module (fix docbook)
+        gnupg = import (pkgs.runCommand "gnupg.nix" {
+          "in" = "${inputs.pr93659}/nixos/modules/security/gnupg.nix";
+        } ''
+          sed '/wants<.wants>/d' $in > $out
+        '').outPath;
 
         # Plug in the impermanence module (not a flake :<)
         impermanence = import "${inputs.impermanence}/nixos.nix";
@@ -457,24 +449,28 @@
           ];
         };
 
+        # Virtual machine builder (don't import otherwise)
         vm = import "${channels.modules}/nixos/modules/virtualisation/qemu-vm.nix";
 
-        # Import this flake's defined nixos modules
         flakeModules = import ./modules/nixos.nix;
 
-        manModules = flakeModules ++ [
-          core global iwd
+        # Actual host config
+        configuration = import "${toString ./hosts}/${hostName}";
+
+        systemModules = flakeModules ++ [
+          core global iwd gnupg
           dwarffs guix matrix-construct impermanence
         ];
 
-        allModules = manModules ++ [
-          gnupg # breaks docbook?
-          home-manager # breaks docbook!
-          home local #^ needs this
+        userModules = [
+          home
+          home-manager
         ];
       in {
         inherit system specialArgs;
-        modules = allModules ++ appendModules;
+        modules = systemModules ++ userModules ++ [
+          configuration
+        ] ++ appendModules;
       };
     in usr.utils.recImport {
       # Build a nixos system for each dir in ./hosts using modulesFor
