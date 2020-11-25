@@ -126,10 +126,8 @@ in {
 
   services.earlyoom.enable = true;
 
-  documentation.nixos.includeAllModules = false;
+  documentation.nixos.includeAllModules = true;
   documentation.man.generateCaches = lib.mkForce false;
 
   users.mutableUsers = false;
-
-  home-manager.useUserPackages = true;
 }
