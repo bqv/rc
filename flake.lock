@@ -1014,11 +1014,11 @@
     },
     "pr93659": {
       "locked": {
-        "lastModified": 1606101824,
-        "narHash": "sha256-PabkSIlHTKVitpwNsZzs4wIaex3xn3fFwkG/Qd9uHOM=",
+        "lastModified": 1606330578,
+        "narHash": "sha256-MM9/1INUQH982qesshIWzt2KQBKYACw5skgLRlykhUg=",
         "owner": "ju1m",
         "repo": "nixpkgs",
-        "rev": "99f8f9ed6fd74d2b645527c67ddfa2bd72cdb56d",
+        "rev": "1551d3f52f560aa183549cfc3842b96a9843dbea",
         "type": "github"
       },
       "original": {

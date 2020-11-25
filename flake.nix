@@ -126,10 +126,6 @@
           description = "apparmor: fix and improve the service";
           id = 101071; hash = "rZOtPo5kXnYsn1m5z7FjURbKNnfRGGi2y3UV024VpV0=";
         }
-       #{
-       #  description = "nixos/security.gnupg: provisioning GnuPG-protected secrets through the Nix store";
-       #  id = 93659; hash = "3im5nSrlM32DQUeq0Yp1MHkUcQyLdCGbxfJjgcc9e78=";
-       #}
       ];
       patches = map basePkgs.fetchpatch pullReqs;
       patchedTree = basePkgs.applyPatches {
@@ -421,11 +417,7 @@
         };
 
         # Hack in the gnupg secrets module (fix docbook)
-        gnupg = import (pkgs.runCommand "gnupg.nix" {
-          "in" = "${inputs.pr93659}/nixos/modules/security/gnupg.nix";
-        } ''
-          sed '/wants<.wants>/d' $in > $out
-        '').outPath;
+        gnupg = import "${inputs.pr93659}/nixos/modules/security/gnupg.nix";
 
         # Plug in the impermanence module (not a flake :<)
         impermanence = import "${inputs.impermanence}/nixos.nix";
