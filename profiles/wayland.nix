@@ -107,5 +107,37 @@
     };
 
     users.users.greeter.isSystemUser = true;
+
+    systemd.services.x11 = let cfg = config.services.xserver; in
+      { description = "X11 Server";
+
+        after = [ "acpid.service" "systemd-logind.service" ];
+
+        restartIfChanged = false;
+
+        environment =
+          lib.optionalAttrs config.hardware.opengl.setLdLibraryPath
+            { LD_LIBRARY_PATH = pkgs.addOpenGLRunpath.driverLink; }
+          // cfg.displayManager.job.environment;
+
+        preStart =
+          ''
+            ${cfg.displayManager.job.preStart}
+
+            rm -f /tmp/.X0-lock
+          '';
+
+        script = "${cfg.displayManager.job.execCmd}";
+
+        # Stop restarting if the display manager stops (crashes) 2 times
+        # in one minute. Starting X typically takes 3-4s.
+        startLimitIntervalSec = 30;
+        startLimitBurst = 3;
+        serviceConfig = {
+          Restart = "always";
+          RestartSec = "200ms";
+          SyslogIdentifier = "display-manager";
+        };
+      };
   };
 }
