@@ -112,8 +112,12 @@
       { description = "X11 Server";
 
         after = [ "acpid.service" "systemd-logind.service" ];
+        before = [ "greetd.service" ];
+        wantedBy = [ "graphical.target" ];
 
+        restartTriggers = lib.mkForce [];
         restartIfChanged = false;
+        stopIfChanged = false;
 
         environment =
           lib.optionalAttrs config.hardware.opengl.setLdLibraryPath
@@ -136,7 +140,8 @@
         serviceConfig = {
           Restart = "always";
           RestartSec = "200ms";
-          SyslogIdentifier = "display-manager";
+          SyslogIdentifier = "xserver";
+          StartLimitBurst = lib.mkForce "5";
         };
       };
   };
