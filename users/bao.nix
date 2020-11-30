@@ -164,6 +164,10 @@
     };
 
     home.packages = with pkgs; let
+      twitch = pkgs.writeScriptBin "twitch" ''
+        #!${pkgs.execline}/bin/execlineb -W1
+        ${pkgs.mpv}/bin/mpv https://twitch.tv/$@
+      '';
       emms-play-file = pkgs.writeScriptBin "emms-play-file" ''
         #!${pkgs.execline}/bin/execlineb -W
         ${home-config.programs.emacs.package}/bin/emacsclient --eval "(emms-play-file \"$@\")"
@@ -179,7 +183,7 @@
       ipfscat onionshare nyxt tuir gomuks # Communication Tools
       bitwarden-cli protonvpn-cli # Password Management
       file exa unrar unzip ncdu tree mimeo # File Management
-      audacity # Audio Utilities
+      audacity twitch # Audio/Video Utilities
       xpra xsel xclip scrot # X11 Utilities
       gdb lldb radare2 radare2-cutter jadx stress # Debug Utilities
     ] ++ lib.optional home-config.programs.emacs.enable emms-play-file
