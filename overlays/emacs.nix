@@ -26,8 +26,9 @@ inputs@{...}: final: prev: rec {
     GST_PLUGIN_SYSTEM_PATH_1_0 = final.lib.concatMapStringsSep ":" (p: "${p}/lib/gstreamer-1.0") gstBuildInputs;
     dontWrapGApps = true;
     installPhase = ''
-      makeWrapper $src/bin/emacsclient "''${gappsWrapperArgs[@]}" \
+      makeWrapper $src/bin/emacsclient $out/bin/emacsclient \
         --prefix LD_LIBRARY_PATH : "${final.lib.makeLibraryPath buildInputs}" \
+        "''${gappsWrapperArgs[@]}" \
         --argv0 emacsclient
     '';
   };

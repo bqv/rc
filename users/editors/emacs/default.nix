@@ -32,6 +32,7 @@ in {
 
     home.packages = with pkgs; packageDeps ++ systemDeps ++ [
       nixfmt w3m findutils cmake gnumake gcc libtool gtk3 age emacsWrapper
+      (hiPrio emacsPgtkGccClient)
     ] ++ (with cfg.package.pkgs; [
       leaf auto-compile gcmh diminish epkg log4e bug-hunter use-package
     ]);
