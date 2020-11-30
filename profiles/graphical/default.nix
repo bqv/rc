@@ -45,7 +45,7 @@
         user = "bao";
       };
      #defaultSession = "none+exwm";
-      defaultSession = "none+openbox";
+      defaultSession = "none+awesome";
     };
     windowManager.openbox.enable = true;
     windowManager.awesome.enable = true;
