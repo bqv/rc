@@ -1,13 +1,9 @@
-inputs@{ nyxt, ... }: final: prev: {
-  nyxt = prev.nyxt.overrideAttrs (drv: rec {
-    src = drv.src.overrideAttrs (drv: {
-      src = inputs.nyxt;
-      name = final.lib.replaceStrings [drv.meta.version] [version] drv.name;
-      installPhase = builtins.replaceStrings ["nyxt-ext"] ["nyxt"] drv.installPhase;
-    });
-    version = inputs.nyxt.lastModifiedDate;
-  });
-
+inputs@{ nyxt, ... }: final: prev: let
+  variants = {
+    ccl = final.nyxtCCL // variants;
+    sbcl = final.nyxtSBCL // variants;
+  };
+in {
   nyxtFor = lisp: let
     inherit (final) lib;
     clwrapper = final.wrapLisp lisp;
@@ -62,16 +58,38 @@ inputs@{ nyxt, ... }: final: prev: {
     ]).overrideAttrs (drv: {
       postInstall = lib.replaceStrings [
         "sb-alien::*shared-objects*"
+        "\"\""
+        "='"
       ] [
         "(setf cffi:*foreign-library-directories*
            (cffi::explode-path-environment-variable
              \\\"NIX_LISP_LD_LIBRARY_PATH\\\"))"
+        "\"cffi\""
+        "='\nset +x"
       ] drv.postInstall;
     });
-  in (final.nyxt.override { lispPackages = nyxtPkgs; }).overrideAttrs (_: {
-    postFixup = '' ln -s ${nyxtPkgs.nyxt} $out/src '';
+  in (prev.nyxt.override { lispPackages = nyxtPkgs; }).overrideAttrs (_: {
+    postFixup = ''
+      head -n -1 $out/bin/nyxt > $out/bin/nyxt-repl
+      echo 'exec ${nyxtPkgs.nyxt}/bin/nyxt-lisp-launcher.sh "$@"' >> $out/bin/nyxt-repl
+      chmod a+x $out/bin/nyxt-repl
+      ln -s ${nyxtPkgs.nyxt} $out/src
+    '';
     version = inputs.nyxt.lastModifiedDate;
   });
 
   nyxtCCL = final.nyxtFor final.ccl;
+  nyxtSBCL = final.nyxtFor final.sbcl;
+
+  nyxt = variants.sbcl;
+  nyxt-eval = final.writeShellScript "nyxt" ''
+    eval $(head -n -1 ${variants.ccl}/bin/nyxt)
+    exec ${variants.ccl.src}/bin/nyxt-lisp-launcher.sh \
+      -e '(asdf:load-system :nyxt/gtk-application)' \
+      -- $@
+  '';
+  nyxt-live = final.writeScriptBin "nyxt-live" ''
+    #!${final.execline}/bin/execlineb -S0
+    ${variants.ccl}/bin/nyxt-repl -e "(asdf:load-system :nyxt/gtk)" -e "(nyxt:start)" $@
+  '';
 }
