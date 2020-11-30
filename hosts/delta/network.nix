@@ -95,7 +95,7 @@
           value = 8888;
           policy = "accept";
         };
-        udp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+        udpports = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "udp"; field = "dport";
           value = map (x: x+32768) (lib.genList (x: x+1) (65535-32768));
           # mosh: 60000-65535
