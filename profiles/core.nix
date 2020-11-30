@@ -127,7 +127,7 @@ in {
   services.earlyoom.enable = true;
 
   documentation.nixos.includeAllModules = true;
-  documentation.man.generateCaches = lib.mkForce false;
+  documentation.man.generateCaches = lib.mkForce true;
 
   users.mutableUsers = false;
 }
