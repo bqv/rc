@@ -1,5 +1,7 @@
 inputs@{...}: final: prev: rec {
   emacsPgtkGccClient = final.stdenv.mkDerivation rec {
+    pname = "emacsclient";
+    inherit (src) version;
     src = final.emacsPgtkGcc;
     dontBuild = true;
     nativeBuildInputs = [

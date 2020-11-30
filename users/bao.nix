@@ -183,7 +183,7 @@
       ipfscat onionshare nyxt tuir gomuks # Communication Tools
       bitwarden-cli protonvpn-cli # Password Management
       file exa unrar unzip ncdu tree mimeo # File Management
-      audacity twitch # Audio/Video Utilities
+      audacity twitch streamlink-twitch-gui-bin # Audio/Video Utilities
       xpra xsel xclip scrot # X11 Utilities
       gdb lldb radare2 radare2-cutter jadx stress # Debug Utilities
     ] ++ lib.optional home-config.programs.emacs.enable emms-play-file
