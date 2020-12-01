@@ -124,16 +124,18 @@
       }) [
         {
           description = "apparmor: fix and improve the service";
-          id = 101071; hash = "rZOtPo5kXnYsn1m5z7FjURbKNnfRGGi2y3UV024VpV0=";
+          id = 101071; hash = "/H23K8Cfkyy21xN8Vl8ylc+fcHJxCNFQok3GqAYXDbU=";
         }
       ];
-      patches = map basePkgs.fetchpatch pullReqs;
+      patches = [
+        ./pkgs/applications/networking/transmission.patch
+      ] ++ map basePkgs.fetchpatch pullReqs;
       patchedTree = basePkgs.applyPatches {
         name = "nixpkgs-patched";
         src = basePkgs.path;
         inherit patches;
         postPatch = ''
-          patch=$(printf '%s\n' ${builtins.concatStringsSep " " (map (p: p.outputHash) patches)} |
+          patch=$(printf '%s\n' ${builtins.concatStringsSep " " (map (p: p.outputHash or (builtins.baseNameOf p)) patches)} |
           sort | sha256sum | cut -c -7)
           echo "+patch-$patch" >.version-suffix
         '';

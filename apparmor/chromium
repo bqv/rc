@@ -14,7 +14,7 @@ profile ${pkgs.chromium}/bin/chromium {
   ${pkgs.chromium.browser}/libexec/chromium/chromium cx -> chromium,
 
   profile chromium {
-    include "${pkgs.apparmorRulesFromClosure [
+    include "${pkgs.apparmorRulesFromClosure { name = "chromium"; } [
       pkgs.chromium
     ]}"
     include <local/bin.chromium>
