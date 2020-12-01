@@ -1,3 +1,4 @@
+{ pkgs, ... }: ''
 deny /usr/bin/pulseaudio xrm,
 
 deny /dev/shm/ r,
@@ -10,6 +11,7 @@ deny /run/user/*/orcexec.* rwkm,
 deny @{HOME}/orcexec.* m,
 
 ## Site-local symlinks
-deny @{SYS_GIT}/sys/pulse/* r,
-deny @{SYS_GIT}/sys/asound.conf r,
-deny @{SYS_GIT}/sys/secure/pulse.cookie r,
+#deny @{SYS_GIT}/sys/pulse/* r,
+#deny @{SYS_GIT}/sys/asound.conf r,
+#deny @{SYS_GIT}/sys/secure/pulse.cookie r,
+''

@@ -1,17 +1,18 @@
-#include <tunables/global>
+{ pkgs, ... }: ''
+include <tunables/global>
 
 /usr/share/skypeforlinux/skypeforlinux {
 
-	#include <abstractions/base>
-	#include <abstractions/site/base>
-	#include <abstractions/nameservice>
-	#include <abstractions/ssl-certs>
-	#include <abstractions/fonts>
-	#include <abstractions/X>
-	#include <abstractions/freedesktop.org>
-	#include <abstractions/user-download>
-	#include <abstractions/pulse>
-	#include <abstractions/site/de>
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/base"
+	include <abstractions/site/base>
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/nameservice"
+	include <abstractions/ssl-certs>
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/fonts"
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/X"
+	include <abstractions/freedesktop>
+	include <abstractions/user-download>
+	include <abstractions/pulse>
+	include <abstractions/site/de>
 
 	/usr/share/skypeforlinux/** kmr,
 	/usr/share/skypeforlinux/skypeforlinux ix,
@@ -81,3 +82,4 @@
 	network inet stream,
 
 }
+''

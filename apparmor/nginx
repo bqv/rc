@@ -1,8 +1,9 @@
-#include <tunables/global>
+{ pkgs, ... }: ''
+include <tunables/global>
 
 /usr/bin/nginx {
-	#include <abstractions/base>
-	#include <abstractions/nameservice>
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/base"
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/nameservice"
 
 	/etc/nginx/** r,
 	/etc/ssl/** r,
@@ -27,3 +28,4 @@
 	network inet udp,
 	network inet icmp,
 }
+''

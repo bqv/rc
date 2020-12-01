@@ -1,0 +1,130 @@
+{ pkgs, ... }: ''
+# For https://github.com/Eloston/ungoogled-chromium variant of chromium
+
+# NOTE: assumes kernel support for ns-sandbox, and not suid-sandbox
+#   modern chromium uses ns-sandbox if it can, with suid as a fallback
+#   see also: https://bugs.chromium.org/p/chromium/issues/detail?id=312380
+
+include <tunables/global>
+
+profile ${pkgs.chromium}/bin/chromium {
+  include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/base"
+  include <abstractions/site/base>
+
+  ${pkgs.chromium.browser}/libexec/chromium/chromium cx -> chromium,
+
+  profile chromium {
+    include "${pkgs.apparmorRulesFromClosure [
+      pkgs.chromium
+    ]}"
+    include <local/bin.chromium>
+    include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/base"
+    include <abstractions/site/base>
+    include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/fonts"
+    include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/X"
+    include <abstractions/pulse>
+    include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/gnome"
+    include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/nameservice"
+    include <abstractions/user-download>
+    include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/ssl_certs"
+    include <abstractions/site/de>
+    include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/dconf"
+
+    ${pkgs.chromium.browser}/libexec/chromium/chromium ix,
+    ${pkgs.chromium.browser}/libexec/chromium/** mr,
+    ${pkgs.chromium.browser}/libexec/chromium/chromium mr,
+    deny {/run/current-system/sw,/etc/profiles/per-user/*}/bin/xdg-{settings,desktop-menu} x, # "default browser" stuff
+
+    @{PROC}/ r,
+    owner @{PROC}/@{pid}/fd/ r,
+    deny @{PROC}/@{pid}/oom_{,score_}adj rw,
+
+    # sandbox/linux/services/namespace_sandbox.cc credentials.cc
+    capability sys_admin,
+    capability sys_chroot,
+    signal (receive) peer=unconfined,
+    deny signal (send) peer=unconfined,
+
+    # Presumably for built-in debugger/crash-report
+    capability sys_ptrace,
+    @{PROC}/@{pid}/status r,
+    @{PROC}/sys/kernel/yama/ptrace_scope r,
+    deny ptrace, # triggers on xdg handlers
+
+    /etc/chromium/** rk, # policies/managed and such
+    owner @{HOME}/.pki/nssdb/** rwk,
+    owner @{HOME}/.cache/thumbnails/** rw,
+    owner @{HOME}/.{config,cache}/chromium/ rwk,
+    owner @{HOME}/.{config,cache}/chromium/** rwk,
+    owner @{HOME}/.cache/mesa_shader_cache/** rwk,
+    /{run,dev}/shm/.org.chromium.Chromium.* rwkm,
+    /{run,dev}/shm/org.chromium.Chromium.shmem.* rwkm,
+
+    # Fills these paths with gigs of trash fast otherwise
+    deny @{HOME}/.config/chromium/BrowserMetrics/ rw,
+    deny @{HOME}/.config/chromium/BrowserMetrics/** rw,
+    deny @{HOME}/.config/chromium/BrowserMetrics* rw,
+
+    @{PROC}/vmstat r,
+    @{PROC}/sys/fs/inotify/max_user_watches r,
+    @{PROC}/@{pids}/stat r,
+    owner @{PROC}/@{pid}/setgroups w,
+    owner @{PROC}/@{pid}/gid_map w,
+    owner @{PROC}/@{pid}/uid_map w,
+    owner @{PROC}/@{pid}/{mem,stat,statm} r,
+    owner @{PROC}/@{pid}/clear_refs w,
+    owner @{PROC}/@{pid}/task/ r,
+    owner @{PROC}/@{pid}/task/@{pids}/stat r,
+    owner @{PROC}/@{pid}/task/@{pids}/status r,
+
+    deny ${pkgs.chromium.browser}/libexec/chromium/extensions/ rw,
+
+    # Device access stuff - should allow for GPU, but nothing else, ideally
+    /dev/ r,
+    /etc/udev/udev.conf r,
+    /sys/{bus,class}/ r,
+    /sys/bus/pci/devices/ r,
+    /sys/devices/pci[0-9:.]*/**/{uevent,resource,irq,vendor,device,class} r,
+    /sys/devices/pci[0-9:.]*/**/{subsystem_vendor,subsystem_device,config} r,
+    deny /sys/devices/pci[0-9:.]*/**/descriptors r, # block any further android-debug checks
+    deny /dev/video* r,
+
+    # Other known device-query things:
+    #  - StorageMonitorLinux for Media Gallery API - http://crbug.com/141229
+    deny /run/udev/data/** r,
+    deny /sys/devices/virtual/tty/tty*/active r,
+    deny /sys/class/*/ r,
+
+    # Wildcard rule doesn't work here, as it overrides "/sys/bus/pci/devices/ r"
+    deny /sys/bus/{clockevents,dax,platform,pci_express,serio,event_source}/devices/ r,
+    deny /sys/bus/{machinecheck,cpu,hdaudio,scsi,clocksource,hid,edac}/devices/ r,
+    deny /sys/bus/{pnp,usb,workqueue,virtio,container,acpi,i2c,snd_seq,mipi-dsi}/devices/ r,
+    deny /sys/bus/{mdio_bus,nvmem,wmi,usb-serial}/devices/ r,
+
+    # URL handlers
+    #owner @{HOME_BIN}/wrappers/xdg-open Ux,
+    #owner @{HOME_BIN}/wrappers/leech_*.wrapper Ux,
+
+    # File selection dialogs
+    deny @{HOME} r,
+    /etc/fstab r,
+    /run/mount/utab r,
+    @{PROC}/@{pid}/mountinfo r,
+    /usr/share/glib-*/schemas/gschemas.compiled r,
+    deny /{,var/}run/user/*/dconf/user w,
+
+    # Import for bookmarks and such
+    deny @{HOME}/.mozilla/firefox/ rw,
+    deny @{HOME}/.mozilla/firefox/** rw,
+
+    # Weird mmap probes
+    deny @{HOME}/#[0-9]* m,
+    /tmp/#[0-9]* m,
+
+    # All network
+    network inet dgram,
+    network inet stream,
+  }
+
+}
+''

@@ -1,0 +1,98 @@
+{ pkgs, ... }: ''
+include <tunables/global>
+
+# /usr/lib/firefox/firefox flags=( complain ) {
+/usr/lib/firefox/firefox {
+
+        include <abstractions/pulse>
+        include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/nameservice"
+        include <abstractions/ssl-certs>
+        include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/gnome"
+        include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/dconf"
+        include <abstractions/user-download>
+        include <abstractions/freedesktop>
+        include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/consoles"
+        include <abstractions/site/base>
+        include <abstractions/site/de>
+
+        # Launcher
+        /dev/tty* rw,
+        /usr/{lib/firefox,bin}/firefox rix,
+        /usr/lib/xulrunner/xulrunner-stub ix,
+
+        owner @{HOME}/.mozilla/firefox/** rwk,
+        owner @{HOME}/.cache/ rw,
+        owner @{HOME}/.cache/mozilla/ rw,
+        owner @{HOME}/.cache/mozilla/firefox/ rw,
+        owner @{HOME}/.cache/mozilla/firefox/** rwk,
+        owner @{HOME}/.cache/gstreamer-*/ rw,
+        owner @{HOME}/.cache/gstreamer-*/** rw,
+        owner @{HOME}/.cache/thumbnails/** rw,
+
+        /opt/netscape/plugins/ r,
+        /opt/netscape/plugins/** mr,
+        owner @{HOME}/.mozilla/plugins/ r,
+        owner @{HOME}/.mozilla/plugins/** mr,
+        owner @{HOME}/.mozilla/firefox/*/extensions/** m,
+        owner @{HOME}/.mozilla/extensions/** mr,
+
+        # Didn't check what this one is for
+        deny @{HOME}/.mozilla/systemextensionsdev/ rw,
+        deny @{HOME}/.mozilla/systemextensionsdev/** rw,
+
+        /etc/mime.types r,
+        /etc/mailcap r,
+        /usr/share/ r,
+        /usr/share/mime/ r,
+        /usr/share/glib-*/schemas/* r,
+        /usr/share/applications/screensavers/ r,
+        owner @{HOME}/.local/share/ r,
+        owner @{HOME}/.local/share/applications/ r,
+        owner @{HOME}/.local/share/applications/** r,
+
+        owner @{PROC}/@{pid}/fd/ r,
+        owner @{PROC}/@{pid}/mountinfo r,
+        owner @{PROC}/@{pid}/statm r, # for about:memory
+        owner @{PROC}/@{pid}/task/[0-9]*/stat r,
+        @{PROC}/@{pid}/net/arp r, # for local "network id", to detect changes
+
+        # udev
+        /etc/udev/udev.conf r,
+        /sys/devices/**/name r,
+        /sys/devices/**/uevent r,
+        /run/udev/data/* r,
+        /run/mount/utab r,
+        /sys/{bus,class}/ r,
+        /sys/class/{drm,input}/ r,
+        deny /dev/ r,
+        deny /sys/devices/pci**/{config,vendor,device} r,
+
+        # Used in private mode
+        /usr/bin/shred ix,
+
+        # Allowing to change these doesn't seem to be a good idea
+        # And denying it should be harmless
+        deny /{,var/}run/user/*/dconf/user w,
+        deny @{HOME}/.config/dconf/user w,
+        deny /var/cache/fontconfig/ w,
+        deny @{HOME}/.cache/fontconfig/** w,
+        deny /usr/lib/firefox/fonts/** w,
+
+        ## Site-local paths
+        # Images in file selection dialogs
+        owner @{HOME}/.thumbnails/** w,
+        # Download handlers
+        #owner @{HOME_BIN}/wrappers/leech_*.wrapper Ux,
+        deny /usr/bin/bash x, # flashgot leechers' detection
+        # It's All Text
+        #owner @{HOME_GIT}bin/ec Ux,
+        # downloads
+        /etc/fstab r,
+
+        ## New e10s profiles
+        /usr/lib/firefox/plugin-container ix, # used to create new tab
+        audit deny /dev/shm/org.chromium.Chromium.* rw, # used by Chromium
+        owner /dev/shm/org.chromium.* rwmk,
+
+}
+''

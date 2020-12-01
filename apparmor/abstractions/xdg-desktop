@@ -1,3 +1,4 @@
+{ pkgs, ... }: ''
 # vim:syntax=apparmor
 # ------------------------------------------------------------------
 #
@@ -10,7 +11,7 @@
 # ------------------------------------------------------------------
 
   # Entries based on:
-  # http://standards.freedesktop.org/basedir-spec/basedir-spec-latest.html
+  # http://standards.freedesktop/basedir-spec/basedir-spec-latest.html
 
   owner @{HOME}/.cache/ rw,
 
@@ -22,3 +23,4 @@
   # fallbacks
   /usr/share/ r,
   /usr/local/share/ r,
+''

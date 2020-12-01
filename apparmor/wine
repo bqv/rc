@@ -1,16 +1,17 @@
-#include <tunables/global>
+{ pkgs, ... }: ''
+include <tunables/global>
 
 /usr/bin/wine-preloader {
 
-	#include <abstractions/base>
-	#include <abstractions/fonts>
-	#include <abstractions/nameservice>
-	#include <abstractions/site/de>
-	#include <abstractions/site/base>
-	#include <abstractions/X>
-	#include <abstractions/freedesktop.org>
-	#include <abstractions/pulse>
-	#include <abstractions/p11-kit>
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/base"
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/fonts"
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/nameservice"
+	include <abstractions/site/de>
+	include <abstractions/site/base>
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/X"
+	include <abstractions/freedesktop>
+	include <abstractions/pulse>
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/p11-kit"
 
 	/usr/bin/wine-preloader rix,
 	/usr/bin/wineserver px,
@@ -71,10 +72,10 @@
 	/usr/bin/dosbox cx -> dosbox,
 
 	profile dosbox {
-		#include <abstractions/base>
-		#include <abstractions/X>
-		#include <abstractions/pulse>
-		#include <abstractions/site/base>
+		include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/base"
+		include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/X"
+		include <abstractions/pulse>
+		include <abstractions/site/base>
 
 		/etc/fstab r,
 		owner @{PROC}/@{pid}/mounts r,
@@ -96,9 +97,9 @@
 
 /usr/bin/wineserver {
 
-	#include <abstractions/base>
-	#include <abstractions/nameservice>
-	#include <abstractions/freedesktop.org>
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/base"
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/nameservice"
+	include <abstractions/freedesktop>
 
 	/usr/bin/wineserver r,
 
@@ -132,3 +133,4 @@
 	deny @{HOME}/.local/share/Trash/ rw,
 
 }
+''

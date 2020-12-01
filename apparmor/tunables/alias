@@ -1,3 +1,4 @@
+{ pkgs, ... }: ''
 # ------------------------------------------------------------------
 #
 #    Copyright (C) 2010 Canonical Ltd.
@@ -14,3 +15,4 @@
 #
 # Or if mysql databases are stored in /home:
 # alias /var/lib/mysql/ -> /home/mysql/,
+''

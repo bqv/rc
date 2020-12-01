@@ -1,3 +1,4 @@
+{ pkgs, ... }: ''
 # ------------------------------------------------------------------
 #
 #    Copyright (C) 2006-2009 Novell/SUSE
@@ -12,8 +13,9 @@
 # All the tunables definitions that should be available to every profile
 # should be included here
 
-#include <tunables/home>
-#include <tunables/proc>
-#include <tunables/alias>
-#include <tunables/kernelvars>
-#include <tunables/xdg-user-dirs>
+include <tunables/home>
+include <tunables/proc>
+include <tunables/alias>
+include <tunables/kernelvars>
+include <tunables/xdg-user-dirs>
+''

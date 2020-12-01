@@ -1,3 +1,4 @@
+{ pkgs, ... }: ''
 # ------------------------------------------------------------------
 #
 #    Copyright (C) 2006-2009 Novell/SUSE
@@ -22,4 +23,5 @@
 
 # Also, include files in tunables/home.d for site-specific adjustments to
 # @{HOMEDIRS}.
-#include <tunables/home.d>
+include <tunables/home.d>
+''

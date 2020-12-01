@@ -1,3 +1,4 @@
+{ pkgs, ... }: ''
 # "dotfiles" git repo
 @{HOME_GIT}=@{HOME}/hatch/cFG/
 
@@ -6,3 +7,4 @@
 
 # "system-wide configs" git repo
 @{SYS_GIT}=/etc/core/
+''

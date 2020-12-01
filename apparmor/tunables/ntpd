@@ -1,3 +1,4 @@
+{ pkgs, ... }: ''
 # Last Modified: Thu Aug  2 14:37:03 2007
 # ------------------------------------------------------------------
 #
@@ -12,3 +13,4 @@
 #Add your ntpd devices here eg. if you have a DCF clock
 # @{NTPD_DEVICE}=/dev/ttyS*
 @{NTPD_DEVICE}="/dev/tty10"
+''

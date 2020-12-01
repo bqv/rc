@@ -1,20 +1,21 @@
+{ pkgs, ... }: ''
 # For waterfox-current
 # See also https://github.com/mk-fg/waterfox
 
-#include <tunables/global>
+include <tunables/global>
 
 profile /opt/waterfox-current/waterfox-current {
-	#include <abstractions/base>
-	#include <abstractions/site/base>
-	#include <abstractions/site/de>
-	#include <abstractions/X>
-	#include <abstractions/fonts>
-	#include <abstractions/nameservice>
-	#include <abstractions/freedesktop.org>
-	#include <abstractions/ssl-certs>
-	#include <abstractions/pulse>
-	#include <abstractions/dconf>
-	#include <abstractions/user-download>
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/base"
+	include <abstractions/site/base>
+	include <abstractions/site/de>
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/X"
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/fonts"
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/nameservice"
+	include <abstractions/freedesktop>
+	include <abstractions/ssl-certs>
+	include <abstractions/pulse>
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/dconf"
+	include <abstractions/user-download>
 
 	/opt/waterfox-current/waterfox-current cix, # tabs
 	@{HOME}/.waterfox/url-handler cUx, # dispatcher for magnet: and such
@@ -84,3 +85,4 @@ profile /opt/waterfox-current/waterfox-current {
 	network inet dgram,
 	network inet stream,
 }
+''

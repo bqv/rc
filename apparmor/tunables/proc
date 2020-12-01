@@ -1,3 +1,4 @@
+{ pkgs, ... }: ''
 # ------------------------------------------------------------------
 #
 #    Copyright (C) 2006 Novell/SUSE
@@ -10,3 +11,4 @@
 
 # @{PROC} is the location where procfs is mounted.
 @{PROC}=/proc/
+''

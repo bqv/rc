@@ -1,3 +1,4 @@
+{ pkgs, ... }: ''
 # ------------------------------------------------------------------
 #
 #    Copyright (C) 2013 Christian Boltz
@@ -18,3 +19,4 @@
 
 @{DOVECOT_MAILSTORE}=@{HOME}/Maildir/ @{HOME}/mail/ @{HOME}/Mail/ /var/vmail/ /var/mail/ /var/spool/mail/
 
+''

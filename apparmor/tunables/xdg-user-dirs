@@ -1,3 +1,4 @@
+{ pkgs, ... }: ''
 # ------------------------------------------------------------------
 #
 #    Copyright (C) 2014 Canonical Ltd.
@@ -21,4 +22,5 @@
 
 # Also, include files in tunables/xdg-user-dirs.d for site-specific adjustments
 # to the various XDG directories
-#include <tunables/xdg-user-dirs.d>
+include <tunables/xdg-user-dirs.d>
+''

@@ -1,13 +1,7 @@
-{ config, pkgs, lib, ... }:
+args@{ config, pkgs, lib, ... }:
 
 let
-  profiles = {
-   #pulseaudio = ../../../apparmor/usr.bin.pulseaudio;
-   #firefox = ../../../apparmor/usr.bin.firefox;
-    chromium = ../../../apparmor/usr.bin.chrome;
-    skype = ../../../apparmor/usr.bin.skypeforlinux;
-    wine = ../../../apparmor/usr.bin.wine;
-  };
+  local = import ../../../apparmor args;
 
   initScript = pkgs.writeShellScript "aa-init" ''
     enabled_conf=/etc/apparmor/enabled.conf
@@ -41,10 +35,7 @@ let
   '';
 in {
   security.apparmor.policies = builtins.mapAttrs (n: p: {
-    profile = ''
-      #include ${p}
-    '';
-  }) profiles;
-
-  systemd.services.apparmor.wantedBy = lib.mkForce [];
+    profile = p;
+  }) local.policies;
+  security.apparmor.includes = local.includes;
 }

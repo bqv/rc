@@ -1,17 +1,18 @@
-#include <tunables/global>
+{ pkgs, ... }: ''
+include <tunables/global>
 
 /opt/Upwork/upwork {
 
-	#include <abstractions/base>
-	#include <abstractions/fonts>
-	#include <abstractions/nameservice>
-	#include <abstractions/X>
-	#include <abstractions/freedesktop.org>
-	#include <abstractions/ssl-certs>
-	#include <abstractions/user-tmp>
-	#include <abstractions/pulse>
-	#include <abstractions/site/base>
-	#include <abstractions/site/de>
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/base"
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/fonts"
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/nameservice"
+	include "${pkgs.apparmor-profiles}/etc/apparmor.d/abstractions/X"
+	include <abstractions/freedesktop>
+	include <abstractions/ssl-certs>
+	include <abstractions/user-tmp>
+	include <abstractions/pulse>
+	include <abstractions/site/base>
+	include <abstractions/site/de>
 
 	owner @{HOME}/.{,config/,cache/}Upwork/ rwkm,
 	owner @{HOME}/.{,config/,cache/}Upwork/** rwkm,
@@ -83,3 +84,4 @@
 	network,
 
 }
+''

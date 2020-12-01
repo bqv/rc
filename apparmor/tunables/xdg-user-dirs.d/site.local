@@ -1,3 +1,4 @@
+{ pkgs, ... }: ''
 # ------------------------------------------------------------------
 #
 #    Copyright (C) 2014 Canonical Ltd.
@@ -19,3 +20,4 @@
 #@{XDG_MUSIC_DIR}+=""
 #@{XDG_PICTURES_DIR}+=""
 #@{XDG_VIDEOS_DIR}+=""
+''

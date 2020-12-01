@@ -1,3 +1,4 @@
+{ pkgs, ... }: ''
 /etc/machine-id r,
 
 /sys/devices/system/cpu/ r,
@@ -18,3 +19,4 @@ audit deny /tmp/emacs*/** rwlkmx,
 audit deny /tmp/systemd-*/** rwlkmx,
 audit deny /tmp/claws-mail-*/** rwlkmx,
 audit deny /tmp/efreetd_* rwlkmx,
+''
