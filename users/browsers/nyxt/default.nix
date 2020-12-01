@@ -6,6 +6,8 @@
     home.file.".config/nyxt/init.lisp".text = let
       secrets = import ../../../secrets/nyxt.autofill.nix;
     in ''
+      #+sbcl(declaim (sb-ext:muffle-conditions cl:warning)) ; my GOD sbcl is noisy
+
       (unless (and (boundp '*swank-started*) *swank-started*)
         (setq *swank-port* 4005)
         (ignore-errors

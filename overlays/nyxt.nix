@@ -71,7 +71,7 @@ in {
   in (prev.nyxt.override { lispPackages = nyxtPkgs; }).overrideAttrs (_: {
     postFixup = ''
       head -n -1 $out/bin/nyxt > $out/bin/nyxt-repl
-      echo 'exec ${nyxtPkgs.nyxt}/bin/nyxt-lisp-launcher.sh "$@"' >> $out/bin/nyxt-repl
+      echo 'exec -a nyxt ${nyxtPkgs.nyxt}/bin/nyxt-lisp-launcher.sh "$@"' >> $out/bin/nyxt-repl
       chmod a+x $out/bin/nyxt-repl
       ln -s ${nyxtPkgs.nyxt} $out/src
     '';
