@@ -31,6 +31,7 @@
         (interactive "sVTerm shell command: ")
         (let ((vterm-shell command))
           (vterm "*vterm-shell-command*")))
+      (global-set-key (kbd "C-x M-&") #'vterm-shell-command)
       (defun vterm--run-sudo (command)
         "Launch sudo COMMAND in a vterm buffer."
         (interactive (list (completing-read "Command" (mapcar #'file-name-base (executables-list)))))

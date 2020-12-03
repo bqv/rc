@@ -21,6 +21,11 @@
            (concat (substring-no-properties (buffer-substring (point-at-bol) (point)))
                    "\C-i\C-a\C-k"))))
       (define-key nix-repl-mode-map (kbd "<tab>") #'nix-repl-complete)
+      (define-key nix-repl-mode-map (kbd "C-i") #'nix-repl-complete)
+
+      (defun nixos-configuration-help ()
+        (interactive)
+        (vterm-shell-command "env PAGER=less man configuration.nix"))
 
       (defmacro defcmd (name body &rest cdr)
         `(defun ,name () (interactive) ,body ,@cdr))
