@@ -17,16 +17,19 @@ self: super: with self; {
       options = {
         data = mkOption {
           type = subType;
+          description = "Entry value.";
         };
 
         before = mkOption {
           type = types.listOf types.str;
           default = [];
+          description = "Entries to guarantee before.";
         };
 
         after = mkOption {
           type = types.listOf types.str;
           default = [];
+          description = "Entries to guarantee after.";
         };
       };
     });

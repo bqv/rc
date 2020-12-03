@@ -12,6 +12,7 @@ let
         enable = lib.mkEnableOption desc;
         objects = lib.mkOption {
           type = with lib.types; listOf str;
+          description = "Objects associated with this table.";
         };
       } // body;
 
@@ -43,6 +44,7 @@ let
         in chains;
       };
     });
+    description = "Containers for chains, sets, and other stateful objects.";
   };
 
   mkChain = family: description: lib.mkOption {
@@ -56,23 +58,27 @@ let
             "ether" "vlan" "arp" "ip" "icmp" "igmp" "ip6" "icmpv6"
             "tcp" "udp" "udplite" "sctp" "dccp" "ah" "esp" "comp"
           ]) str);
+          description = "Protocol to match.";
         };
         field = lib.mkOption {
           default = null;
           type = with lib.types; nullOr (enum [
             "dport" "sport" "daddr" "saddr" "type" "state" "iifname"
           ]);
+          description = "Value to match.";
         };
         value = lib.mkOption {
           default = null;
           type = with lib.types; let
             valueType = oneOf [ port str ];
           in nullOr (coercedTo valueType (v: [v]) (listOf valueType));
+          description = "Associated value.";
         };
         policy = lib.mkOption {
           type = lib.types.enum [
             "accept" "reject" "drop" "log"
           ];
+          description = "What to do with matching packets.";
         };
       };
     });

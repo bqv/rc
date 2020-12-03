@@ -18,8 +18,8 @@ in {
       type = lib.types.submodule {
         config._module.freeformType = jsonFormat.type;
 
-        options.id = lib.mkOption { type = lib.types.str; };
-        options.private_key = lib.mkOption { type = lib.types.str; };
+        options.id = lib.mkOption { type = lib.types.str; description = "Id."; };
+        options.private_key = lib.mkOption { type = lib.types.str; description = "Private key."; };
       };
       description = "The IPFS Cluster node identity credentials";
     };
@@ -27,6 +27,7 @@ in {
     identityFile = lib.mkOption {
       type = lib.types.path;
       default = pkgs.writeText "identity.json" (builtins.toJSON cfg.identity);
+      description = "Identity json file path.";
     };
 
     package = lib.mkOption {
@@ -38,6 +39,7 @@ in {
     settings = lib.mkOption {
       example = builtins.readFile ./default.json;
       type = jsonFormat.type;
+      description = "Settings json content.";
     };
 
     settingsFile = lib.mkOption {
@@ -48,6 +50,7 @@ in {
             (lib.setAttrByPath ["cluster" "peername"] config.networking.hostName)
             cfg.settings ];
         in pkgs.writeText "service.json" (builtins.toJSON settings);
+      description = "Settings json file path.";
     };
   };
 

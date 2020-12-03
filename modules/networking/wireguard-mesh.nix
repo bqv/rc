@@ -43,9 +43,11 @@ in {
       enable = mkEnableOption "Enable a wireguard mesh network";
       ipv4Address = mkOption {
         type = types.str;
+        description = "IPv4 Address.";
       };
       privateKeyFile = mkOption {
         default = toString "/secrets/wireguard_key";
+        description = "Private key file path relative to repo root.";
       };
       peers = mkOption {
         default = {};
@@ -53,6 +55,7 @@ in {
         example = {
         };
         description = ''
+          Peers.
         '';
       };
     };
