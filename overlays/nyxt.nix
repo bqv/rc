@@ -53,9 +53,82 @@ in {
       installPhase = lib.replaceStrings ["nyxt-ext"] ["nyxt"] drv.installPhase;
     });
 
+    eager-future2 = lispPackages.buildLispPackage {
+      baseName = "eager-future2";
+      version = "2011-02-07";
+      description = "eager-future2";
+      deps = [
+        quicklispPackages.bordeaux-threads
+        quicklispPackages.trivial-garbage
+      ];
+      buildSystems = [ "eager-future2" ];
+      src = final.fetchzip {
+        url = "https://common-lisp.net/project/eager-future/release/eager-future2-0.2.tgz";
+        sha256 = "lkLFUkTgWoOd9AMLJkqpYqP1pgpSyO4xJ4ueFm3PuFE=";
+      };
+      packageName = "eager-future2";
+      asdFilesToKeep = [ "eager-future2.asd" ];
+    };
+    jpl-util = lispPackages.buildLispPackage {
+      baseName = "jpl-util";
+      version = "2011-06-14";
+      description = "jpl-util";
+      deps = [];
+      buildSystems = [ "jpl-util" ];
+      src = final.fetchFromGitHub {
+        owner = "hawkir";
+        repo = "cl-jpl-util";
+        rev = "0311ed374e19a49d43318064d729fe3abd9a3b62";
+        sha256 = "0nc0rk9n8grkg3045xsw34whmcmddn2sfrxki4268g7kpgz0d2yz";
+        # date = 2015-10-05T11:08:40-07:00;
+      };
+      packageName = "jpl-util";
+      asdFilesToKeep = [ "jpl-util.asd" ];
+    };
+    jpl-queues = lispPackages.buildLispPackage {
+      baseName = "jpl-queues";
+      version = "2009-10-19";
+      description = "jpl-queues";
+      deps = [
+        quicklispPackages.bordeaux-threads
+        jpl-util
+      ];
+      buildSystems = [ "jpl-queues" ];
+      src = final.fetchzip {
+        url = "http://www.thoughtcrime.us/software/jpl-queues/jpl-queues-0.1.tar.gz";
+        sha256 = "CMl5j4uzTlP6SSSm6Z3gKHZdhyRgMNqqZCC/oJxu7fU=";
+      };
+      packageName = "jpl-queues";
+      asdFilesToKeep = [ "jpl-queues.asd" ];
+    };
+    calispel = lispPackages.buildLispPackage {
+      baseName = "calispel";
+      version = "2009-10-19";
+      description = "calispel";
+      deps = [
+        quicklispPackages.bordeaux-threads
+        eager-future2
+        jpl-queues
+        jpl-util
+      ];
+      buildSystems = [ "calispel" ];
+      src = final.fetchFromGitHub {
+        owner = "hawkir";
+        repo = "calispel";
+        rev = "e9f2f9c1af97f4d7bb4c8ac25fb2a8f3e8fada7a";
+        sha256 = "08bmf3pi7n5hadpmqqkg65cxcj6kbvm997wcs1f53ml1nb79d9z8";
+        # date = 2014-10-27T17:47:36+00:00;
+      };
+      packageName = "calispel";
+      asdFilesToKeep = [ "calispel.asd" ];
+    };
+
     nyxtPkgs.nyxt = (lib.foldl (lib.flip deepOverride) nyxt' [
       log4cl' iterate'
     ]).overrideAttrs (drv: {
+      propagatedBuildInputs = drv.propagatedBuildInputs ++ [
+        calispel
+      ];
       postInstall = lib.replaceStrings [
         "sb-alien::*shared-objects*"
         "\"\""

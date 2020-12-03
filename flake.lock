@@ -918,11 +918,11 @@
     "nyxt": {
       "flake": false,
       "locked": {
-        "lastModified": 1606138130,
-        "narHash": "sha256-VoywFjc9wd+61S23cIzO6SK4Cn7YcxKk/uU9H3eB0Js=",
+        "lastModified": 1606999002,
+        "narHash": "sha256-Ba/KqMg1nXiTuAuSL7OJ23oBji9tmKNQJvDks0U4zS4=",
         "owner": "atlas-engineer",
         "repo": "nyxt",
-        "rev": "d313ba71c426f481386965a6fe8516edfdb643bb",
+        "rev": "94aaadd7c0542826092eb042597465022ca3836a",
         "type": "github"
       },
       "original": {
