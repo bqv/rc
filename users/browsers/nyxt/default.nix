@@ -16,48 +16,6 @@
          (list "emacsclient" "--eval" "(setq slime-enable-evaluate-in-emacs t)")
          (setq *swank-started* t)))
 
-      (define-mode shell-mode ()
-          "A basic shell prompt."
-          ((keymap-schemes
-            :initform
-            (let ((map (make-keymap "shell-mode-map")))
-              (define-key map
-                "c" 'run-shell-command
-                "k" 'clear-shell)
-              (list :emacs map
-                    :vi-normal map)))))
-
-      (define-parenscript clear-shell-output ()
-          (setf (ps:chain document body inner-h-t-m-l) ""))
-
-      ;(define-command clear-shell (shell-mode)
-      ;  "Clear the output in the shell buffer."
-      ;  (ipc-buffer-evaluate-javascript
-      ;   (active-buffer *browser*)
-      ;   (clear-shell-output)))
-
-      (define-parenscript append-output (output)
-        (setf (ps:chain document body inner-h-t-m-l)
-              (ps:chain document body inner-h-t-m-l
-                        (concat (ps:lisp
-                                 (format nil "<pre><code>~a</code></pre><br/>" output))))))
-
-      ;(define-command run-shell-command (shell-mode)
-      ;  "Run a shell command."
-      ;  (with-result
-      ;      (input (read-from-minibuffer
-      ;              (minibuffer *browser*)
-      ;              :input-prompt "Run in shell:"))
-      ;    (ipc-buffer-evaluate-javascript
-      ;     (active-buffer *browser*)
-      ;     (append-output
-      ;      :output
-      ;      (uiop:run-program input :force-shell t :output :string)))))
-
-      ;(define-command shell ()
-      ;  "Open a shell buffer."
-      ;  (set-active-buffer *browser* (make-buffer :name "*shell*" :default-modes '(shell-mode))))
-
       (define-parenscript %reload-page ()
         (ps:chain location (reload)))
 
@@ -219,9 +177,9 @@
 
       (progn
         (setq trivial-clipboard::*clipboard-in-command* "${pkgs.xsel}/bin/xsel")
-        (setq trivial-clipboard::*clipboard-in-args* '("--display" ":0" "-i" "-b"))
+        (setq trivial-clipboard::*clipboard-in-args* `("--display" ,(uiop:getenv "DISPLAY") "-i" "-b"))
         (setq trivial-clipboard::*clipboard-out-command* "${pkgs.xsel}/bin/xsel")
-        (setq trivial-clipboard::*clipboard-out-args* '("--display" ":0" "-o" "-b")))
+        (setq trivial-clipboard::*clipboard-out-args* `("--display" ,(uiop:getenv "DISPLAY") "-o" "-b")))
 
       (let ((handlers (list ;; doi://path -> https url
                        (url-dispatching-handler
@@ -347,6 +305,7 @@
           ((session-restore-prompt :always-restore)
            (external-editor-program "emacsclient")
            (autofills (list (nyxt::make-autofill :key "Name" :fill "${secrets.name}")))
+           (startup-function (make-startup-function :buffer-fn #'dashboard))
            ))
         (defvar *configured-browser* t))
     '';
