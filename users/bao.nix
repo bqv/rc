@@ -165,7 +165,7 @@
 
     home.packages = with pkgs; let
       twitch = pkgs.writeScriptBin "twitch" ''
-        #!${pkgs.execline}/bin/execlineb -W1
+        #!${pkgs.execline}/bin/execlineb -S1
         ${pkgs.mpv}/bin/mpv https://twitch.tv/$@
       '';
       emms-play-file = pkgs.writeScriptBin "emms-play-file" ''
