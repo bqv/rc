@@ -13,4 +13,5 @@
   britcom1 = ''http://149.255.59.164:8132/stream'';
   britcom2 = ''http://149.255.59.164:8078/stream'';
   rokbc2 = ''http://149.255.59.164:8009/stream'';
+  lofi = ''http://www.youtube.com/watch?v=5qap5aO4i9A'';
 }
