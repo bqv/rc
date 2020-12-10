@@ -52,9 +52,12 @@
 
     nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; # NixIPFS
 
-    emacs.url = "github:nix-community/emacs-overlay";           # Emacs-overlay
+    emacs.url = "github:nix-community/emacs-overlay"; # Emacs-overlay
 
-    nyxt = { url = "github:atlas-engineer/nyxt"; flake = false; }; #|- Nyxt
+    lisp.url = "github:nix-lisp/lisp-overlay"; # Lisp-overlay
+
+    nyxt.url = "github:atlas-engineer/nyxt"; #|- Nyxt
+    nyxt.inputs.nixpkgs.follows = "/master"; #|
 
     wayland.url = "github:colemickens/nixpkgs-wayland"; #|- Nixpkgs-wayland
     wayland.inputs.nixpkgs.follows = "/small";          #|
@@ -242,6 +245,7 @@
           });
         })
         inputs.emacs.overlay
+        inputs.lisp.overlay
         inputs.xontribs.overlay
         inputs.wayland.overlay
         inputs.self.overlay

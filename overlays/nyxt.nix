@@ -1,4 +1,4 @@
-inputs@{ nyxt, ... }: final: prev: let
+inputs@{ lisp, nyxt, ... }: final: prev: let
   variants = {
     ccl = final.nyxtCCL // variants;
     sbcl = final.nyxtSBCL // variants;
