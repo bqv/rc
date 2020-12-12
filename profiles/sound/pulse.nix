@@ -122,7 +122,8 @@ in {
         '') (lib.reverseList queue.queue)}
       '' ) ladspaSinkQueues}
 
-      set-default-sink mediaLimiterSink3
+      #set-default-sink mediaLimiterSink3
+      set-default-sink ${sinks.stereo}
     '';
   };
 
