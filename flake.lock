@@ -745,11 +745,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1607579841,
-        "narHash": "sha256-Adeik45n08pmyHRUgs2LRiSGsoUcCGguxC4ixN5/ffU=",
+        "lastModified": 1607800657,
+        "narHash": "sha256-puyh/FIHhUZM8sBJdSCuawpOLJbQPLvK3laCyXi6wVA=",
         "owner": "nix-lisp",
         "repo": "lisp-overlay",
-        "rev": "e219029a2281a33afc5a651458aa0d3e1dd8c104",
+        "rev": "37b7b50e9156ae208be4d4e98125cc7c3d798c32",
         "type": "github"
       },
       "original": {

@@ -107,6 +107,7 @@ in {
       # automatically switch to newly-connected devices
       load-module module-switch-on-connect
 
+      ${lib.const "" ''
       ${lib.concatMapStrings (queue: ''
         # ladspa queue - ${queue.name}
         ${lib.concatImapStrings (index: config: let
@@ -121,6 +122,7 @@ in {
           load-module module-ladspa-sink ${sinkValue} ${masterValue} ${pluginValue} ${labelValue} ${controlValue}
         '') (lib.reverseList queue.queue)}
       '' ) ladspaSinkQueues}
+      ''}
 
       #set-default-sink mediaLimiterSink3
       set-default-sink ${sinks.stereo}
