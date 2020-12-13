@@ -116,10 +116,49 @@ in {
       deps = [
         quicklispPackages.bordeaux-threads
       ];
-      inherit (final.emacsPackages.sly) src version;
+      inherit (final.emacsPackages.sly) version src;
       overrides = p: {
         postUnpack = "src=$src/slynk";
       };
+      buildSystems = [
+        "slynk" "slynk/util"
+        "slynk/mrepl" "slynk/arglists" "slynk/package-fu"
+        "slynk/stickers" "slynk/indentation" "slynk/retro"
+       #"slynk/fancy-inspector" "slynk/trace-dialog" "slynk/profiler"
+      ];
+    };
+
+    slynk-quicklisp = trivialBuild rec {
+      baseName = "slynk-quicklisp";
+      deps = [
+        slynk
+        lispPackages.quicklisp
+      ];
+      inherit (final.emacsPackages.sly-quicklisp) src version;
+    };
+
+    slynk-asdf = trivialBuild rec {
+      baseName = "slynk-asdf";
+      deps = [
+        slynk
+      ];
+      inherit (final.emacsPackages.sly-asdf) src version;
+    };
+
+    slynk-named-readtables = trivialBuild rec {
+      baseName = "slynk-named-readtables";
+      deps = [
+        slynk
+      ];
+      inherit (final.emacsPackages.sly-named-readtables) src version;
+    };
+
+    slynk-macrostep = trivialBuild rec {
+      baseName = "slynk-macrostep";
+      deps = [
+        slynk
+      ];
+      inherit (final.emacsPackages.sly-macrostep) src version;
     };
 
     nyxtPkgs.nyxt = (lib.foldl (lib.flip deepOverride) nyxt' [
@@ -127,13 +166,23 @@ in {
     ]).overrideAttrs (drv: rec {
       qlSetup = "${lispPackages.quicklisp}/lib/common-lisp/quicklisp/quicklisp/setup.lisp";
       propagatedBuildInputs = drv.propagatedBuildInputs ++ [
-        lispPackages.quicklisp
+       #lispPackages.quicklisp
         calispel
         slynk
        #slynk-quicklisp
        #slynk-asdf
        #slynk-named-readtables
-       #slynk-macrostep
+        slynk-macrostep
+      ];
+      extraSystems = [
+        "cffi"
+        "slynk/mrepl" "slynk/arglists" "slynk/package-fu" "slynk/stickers" "slynk/indentation" #"slynk" "slynk/util"
+       #"slynk/retro"
+       #"slynk/fancy-inspector" "slynk/trace-dialog" "slynk/profiler"
+       #"slynk-quicklisp"
+       #"slynk-asdf"
+       #"slynk-named-readtables"
+        "slynk-macrostep"
       ];
       postInstall = lib.replaceStrings [
         "sb-alien::*shared-objects*"
@@ -145,7 +194,7 @@ in {
            (setf cffi:*foreign-library-directories*
              (cffi::explode-path-environment-variable
                \\\"NIX_LISP_LD_LIBRARY_PATH\\\")))"
-        "\"cffi slynk\""
+        "\"${lib.concatStringsSep " " extraSystems}\""
         "='\nset +x"
       ] drv.postInstall;
     });

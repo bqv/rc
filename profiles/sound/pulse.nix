@@ -107,6 +107,13 @@ in {
       # automatically switch to newly-connected devices
       load-module module-switch-on-connect
 
+      # In user's ~/.config/pulse/client.conf set:
+      # default-server = unix:/run/pulse.socket
+      load-module module-native-protocol-unix auth-anonymous=1 socket=/run/pulse.socket
+
+      # no silly hdmi outputs
+      set-card-profile alsa_card.pci-0000_01_00.1 off
+
       ${lib.const "" ''
       ${lib.concatMapStrings (queue: ''
         # ladspa queue - ${queue.name}
