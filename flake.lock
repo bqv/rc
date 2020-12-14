@@ -740,6 +740,24 @@
         "type": "github"
       }
     },
+    "lisp": {
+      "inputs": {
+        "nixpkgs": "nixpkgs"
+      },
+      "locked": {
+        "lastModified": 1607800657,
+        "narHash": "sha256-puyh/FIHhUZM8sBJdSCuawpOLJbQPLvK3laCyXi6wVA=",
+        "owner": "nix-lisp",
+        "repo": "lisp-overlay",
+        "rev": "37b7b50e9156ae208be4d4e98125cc7c3d798c32",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nix-lisp",
+        "repo": "lisp-overlay",
+        "type": "github"
+      }
+    },
     "lowdown-src": {
       "flake": false,
       "locked": {
@@ -883,7 +901,7 @@
     "nix-ipfs": {
       "inputs": {
         "lowdown-src": "lowdown-src_2",
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "lastModified": 1602773364,
@@ -902,6 +920,22 @@
     },
     "nixpkgs": {
       "locked": {
+        "lastModified": 1607018170,
+        "narHash": "sha256-C9VzUgeVCfNrzij2exmWupx8RNu7wxNbD8eReMLGy9I=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "555641c50462d5ab87afe9ceab7df9d8c7755a37",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixpkgs-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
         "lastModified": 1591633336,
         "narHash": "sha256-oVXv4xAnDJB03LvZGbC72vSVlIbbJr8tpjEW5o/Fdek=",
         "owner": "NixOS",
@@ -916,13 +950,17 @@
       }
     },
     "nyxt": {
-      "flake": false,
+      "inputs": {
+        "nixpkgs": [
+          "master"
+        ]
+      },
       "locked": {
-        "lastModified": 1606999002,
-        "narHash": "sha256-Ba/KqMg1nXiTuAuSL7OJ23oBji9tmKNQJvDks0U4zS4=",
+        "lastModified": 1607457438,
+        "narHash": "sha256-rvDuRQ62zjV71R9x5hm0wwvHWDHKagbTkpszeVxaeyI=",
         "owner": "atlas-engineer",
         "repo": "nyxt",
-        "rev": "94aaadd7c0542826092eb042597465022ca3836a",
+        "rev": "78d3398a1fe225a5c1e9876159505d281bf92380",
         "type": "github"
       },
       "original": {
@@ -1324,6 +1362,7 @@
         "impermanence": "impermanence",
         "ivy-exwm": "ivy-exwm",
         "large": "large",
+        "lisp": "lisp",
         "master": "master",
         "matrix-nio": "matrix-nio",
         "mozilla": "mozilla",
