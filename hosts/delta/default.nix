@@ -148,7 +148,7 @@
 
   programs.firejail = {
     enable = true;
-    wrappedBinaries = {
+    wrappedBinaries = builtins.mapAttrs (k: builtins.toPath) {
       firefox-safe-x11 = pkgs.writeScript "firefox" ''
         env MOZ_ENABLE_WAYLAND=1 ${lib.getBin pkgs.large.firefox}/bin/firefox
       '';
@@ -186,6 +186,8 @@
   } ''
     sed 's/127.0.0.1/0.0.0.0/g' "${pkgs.searx.src}/searx/settings.yml" > $out
   '';
+
+  dysnomia.enableLegacyModules = false;
 
  #security.pam.loginLimits = [
  #  { domain = "@wheel"; item = "nofile"; type = "hard"; value = "unlimited"; }

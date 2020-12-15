@@ -18,12 +18,12 @@
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
     pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
 
-    nix.url = "github:nixos/nix/progress-bar"; #|- Nix
-    nix.inputs.nixpkgs.follows = "/master";    #|
+    nix.url = "github:nixos/nix/progress-bar";            #|- Nix
+    nix.inputs.nixpkgs.url = "nixpkgs/nixos-20.09-small"; #| a util-linux change breaks this branch
 
-    dwarffs.url = "github:edolstra/dwarffs";    #|- Dwarffs
-    dwarffs.inputs.nix.follows = "/nix";        #|
-    dwarffs.inputs.nixpkgs.follows = "/master"; #|
+    dwarffs.url = "github:edolstra/dwarffs";         #|- Dwarffs
+    dwarffs.inputs.nix.follows = "/nix";             #|
+    dwarffs.inputs.nixpkgs.follows = "/nix/nixpkgs"; #|
 
     home.url = "github:nix-community/home-manager"; #|- Home-manager
     home.inputs.nixpkgs.follows = "/master";        #|
@@ -44,11 +44,13 @@
     pipeliner.flake = false;
     # END ignorethis
 
-    guix.url = "github:bqv/guix";            #|- Guix
+    guix.url = "github:emiller88/guix";            #|- Guix
     guix.inputs.nixpkgs.follows = "/master"; #|
 
     construct.url = "github:matrix-construct/construct"; #|- Construct
     construct.inputs.nixpkgs.follows = "/large";         #|
+
+    apparmor.url = "github:bqv/apparmor-nix"; #|- Apparmor
 
     nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; # NixIPFS
 
@@ -125,14 +127,12 @@
         inherit meta;
         sha256 = meta.hash;
       }) [
-        {
-          description = "apparmor: fix and improve the service";
-          id = 101071; hash = "/H23K8Cfkyy21xN8Vl8ylc+fcHJxCNFQok3GqAYXDbU=";
-        }
+       #{
+       #  description = "apparmor: fix and improve the service";
+       #  id = 101071; hash = "UrZVDTS15VaQ16xl0jhTypyDED6yx72hYHqFc99oPj0=";
+       #}
       ];
-      patches = [
-        ./pkgs/applications/networking/transmission.patch
-      ] ++ map basePkgs.fetchpatch pullReqs;
+      patches = map basePkgs.fetchpatch pullReqs;
       patchedTree = basePkgs.applyPatches {
         name = "nixpkgs-patched";
         src = basePkgs.path;
@@ -211,9 +211,10 @@
           napalm = pkgs.callPackage inputs.napalm;
           inherit (inputs.haskell.legacyPackages.${system}) haskell-nix; # ignore overlay, we want cache hits
         })
-        inputs.nix.overlay (final: prev: {
-          nix-ipfs = inputs.nix-ipfs.defaultPackage.${system};
-          nixFlakes = inputs.nix.packages.${system}.nix.overrideAttrs (drv: {
+        inputs.nix.overlay (final: prev: rec {
+          nixFlakes = nix;
+          nixUnstable = nix;
+          nix = inputs.nix.packages.${system}.nix.overrideAttrs (drv: {
             patches = (drv.patches or []) ++ [
               (final.fetchpatch {
                 name = "libfetcher-file.patch";
@@ -223,6 +224,7 @@
             ];
           });
           inherit (inputs.nix.packages.${system}) nix-static;
+          nix-ipfs = inputs.nix-ipfs.packages.${system}.nix;
         })
         inputs.guix.overlay
         inputs.construct.overlay (final: prev: {
@@ -248,16 +250,15 @@
         inputs.lisp.overlay
         inputs.xontribs.overlay
         inputs.wayland.overlay
+        inputs.apparmor.overlay
         inputs.self.overlay
         (pkgs: lib.const {
-          inherit ((import (patchNixpkgs channels.modules.legacyPackages.${system}) { inherit system; }).pkgs)
-            apparmor apparmor-utils apparmor-kernel-patches apparmorRulesFromClosure iputils inetutils;
           inherit (inputs.large.legacyPackages.${system}) firefox thunderbird obs-studio webkitgtk; # slow
         })
         (final: prev: {
-          xmlsec = prev.xmlsec.overrideAttrs (drv: {
-            doCheck = false; # broken by update
-          });
+        # xmlsec = prev.xmlsec.overrideAttrs (drv: {
+        #   doCheck = false; # broken by update
+        # });
         })
       ];
     };
@@ -329,6 +330,7 @@
         inherit (inputs.dwarffs.nixosModules) dwarffs;
         inherit (inputs.guix.nixosModules) guix;
         inherit (inputs.construct.nixosModules) matrix-construct;
+        apparmor-nix = inputs.apparmor.nixosModule;
 
         # Some common basic stuff
         core = ./profiles/core.nix;
@@ -457,7 +459,7 @@
 
         systemModules = flakeModules ++ [
           core global iwd gnupg
-          dwarffs guix matrix-construct impermanence
+          dwarffs guix matrix-construct impermanence apparmor-nix
         ];
 
         userModules = [
