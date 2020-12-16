@@ -1,17 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 let
-  omnisharp-roslyn_1_37_4 = pkgs.omnisharp-roslyn.overrideAttrs (drv: rec {
-    version = "1.37.4";
-    src = pkgs.fetchurl {
-      url = "https://github.com/OmniSharp/omnisharp-roslyn/releases/download/v${version}/omnisharp-mono.tar.gz";
-      sha256 = "IgOfu2pnwOfeMJw6CWQ6BsljEaykKy/zsSQF1zy8dl4=";
-      # date = 2020-11-21T05:13:45+0000;
-    };
-  });
-  omnisharp-roslyn = if lib.versionAtLeast pkgs.omnisharp-roslyn.version "1.37.4"
-  then builtins.trace "[emacs/omnisharp]: roslyn has advanced" pkgs.omnisharp-roslyn
-  else omnisharp-roslyn_1_37_4;
+  inherit (pkgs) omnisharp-roslyn;
 in {
   emacs-loader.omnisharp = {
     demand = true;
