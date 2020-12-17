@@ -111,6 +111,7 @@
     systemd.services.x11 = let cfg = config.services.xserver; in
       { description = "X11 Server";
 
+        wants = [ "systemd-logind.service" ];
         after = [ "acpid.service" "systemd-logind.service" ];
         before = [ "greetd.service" ];
         wantedBy = [ "graphical.target" ];

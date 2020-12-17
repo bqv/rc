@@ -25,7 +25,7 @@ in {
     what = "tmpfs";
 
     # 400k is unacceptably low for my nix builds
-    options = "1777,strictatime,nosuid,nodev,size=16G,nr_inodes=8M";
+    options = "mode=1777,strictatime,nosuid,nodev,size=16G,nr_inodes=8M";
   }];
 
   hardware.enableAllFirmware = true;
