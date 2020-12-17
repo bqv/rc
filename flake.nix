@@ -131,10 +131,6 @@
        #  description = "apparmor: fix and improve the service";
        #  id = 101071; hash = "UrZVDTS15VaQ16xl0jhTypyDED6yx72hYHqFc99oPj0=";
        #}
-        {
-          description = "azure-cli: 2.15.1 -> 2.16.0";
-          id = 106773; hash = "AHWYlN+AZVsBqw9xRN8Snx4d3VbRONP8FY7rXlZYc+o=";
-        }
       ];
       patches = map basePkgs.fetchpatch pullReqs;
       patchedTree = basePkgs.applyPatches {
