@@ -20,6 +20,13 @@ in {
       "kernel.pid_max" = "4194304";
     };
   };
+  systemd.mounts = [{
+    where = "/tmp";
+    what = "tmpfs";
+
+    # 400k is unacceptably low for my nix builds
+    options = "mode=1777,strictatime,nosuid,nodev,size=16G,nr_inodes=8M";
+  }];
 
   hardware.enableAllFirmware = true;
   nixpkgs.config.allowUnfree = true;

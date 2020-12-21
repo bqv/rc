@@ -19,7 +19,7 @@
     pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
 
     nix.url = "github:nixos/nix/progress-bar";            #|- Nix
-    nix.inputs.nixpkgs.url = "nixpkgs/nixos-20.09-small"; #| a util-linux change breaks this branch
+    #nix.inputs.nixpkgs.follows = "master"; #| a util-linux change breaks this branch
 
     dwarffs.url = "github:edolstra/dwarffs";         #|- Dwarffs
     dwarffs.inputs.nix.follows = "/nix";             #|
@@ -253,7 +253,15 @@
         inputs.apparmor.overlay
         inputs.self.overlay
         (pkgs: lib.const {
-          inherit (inputs.large.legacyPackages.${system}) firefox thunderbird obs-studio webkitgtk; # slow
+          inherit ((import (patchNixpkgs channels.modules.legacyPackages.${system}) { inherit system; }).pkgs) azure-cli; # pending nixpkgs-pr 107663
+          inherit (inputs.master.legacyPackages.${system}) plantuml-server; # missing
+          inherit (inputs.small.legacyPackages.${system}) firefox firefox-unwrapped; # slow and broken
+          inherit (inputs.large.legacyPackages.${system}) thunderbird obs-studio webkitgtk chromium; # slow
+          androidenv.androidPkgs_9_0 = builtins.trace "pkgs.androidenv: neutered due to breakages" {
+            androidsdk = pkgs.hello;
+            platform-tools = pkgs.hello;
+            build-tools = [pkgs.hello];
+          };
         })
         (final: prev: {
         # xmlsec = prev.xmlsec.overrideAttrs (drv: {

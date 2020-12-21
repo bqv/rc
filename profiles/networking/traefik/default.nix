@@ -58,7 +58,7 @@
           search-http = {
             entryPoints = [ "http" ];
             rule = "Host(`search.${domains.home}`)";
-            service = "search";
+            service = "yacy";
           };
           search-https = search-http // {
             entryPoints = [ "https" ];
@@ -385,7 +385,7 @@
               { url = "http://127.0.0.1:8384"; }
             ];
           };
-          search.loadBalancer = {
+          yacy.loadBalancer = {
             servers = [
               { url = "http://10.5.0.2:8090"; }
             ];
@@ -476,6 +476,11 @@
             entryPoints = [ "ssh-alt" ];
             rule = "HostSNI(`*`)";
             service = "vervis";
+          };
+          yacy = {
+            entryPoints = [ "yacy" ];
+            rule = "HostSNI(`*`)";
+            service = "yacy";
           };
          #irc = {
          #  entryPoints = [ "ircs" ];
@@ -688,6 +693,9 @@
         };
         synapse = {
           address = ":8448/tcp";
+        };
+        yacy = {
+          address = ":8090/tcp";
         };
         anki = {
           address = ":27701/tcp";

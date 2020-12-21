@@ -121,7 +121,7 @@ in {
         postUnpack = "src=$src/slynk";
       };
       buildSystems = [
-        "slynk" "slynk/util"
+        "slynk" #"slynk/util"
         "slynk/mrepl" "slynk/arglists" "slynk/package-fu"
         "slynk/stickers" "slynk/indentation" "slynk/retro"
        #"slynk/fancy-inspector" "slynk/trace-dialog" "slynk/profiler"
@@ -176,7 +176,8 @@ in {
       ];
       extraSystems = [
         "cffi"
-        "slynk/mrepl" "slynk/arglists" "slynk/package-fu" "slynk/stickers" "slynk/indentation" #"slynk" "slynk/util"
+        "slynk"
+        "slynk/mrepl" "slynk/arglists" "slynk/package-fu" "slynk/stickers" "slynk/indentation"
        #"slynk/retro"
        #"slynk/fancy-inspector" "slynk/trace-dialog" "slynk/profiler"
        #"slynk-quicklisp"

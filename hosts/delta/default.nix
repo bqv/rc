@@ -150,12 +150,12 @@
     enable = true;
     wrappedBinaries = builtins.mapAttrs (k: builtins.toPath) {
       firefox-safe-x11 = pkgs.writeScript "firefox" ''
-        env MOZ_ENABLE_WAYLAND=1 ${lib.getBin pkgs.large.firefox}/bin/firefox
+        env MOZ_ENABLE_WAYLAND=1 ${lib.getBin pkgs.firefox}/bin/firefox
       '';
       firefox-safe-wl = pkgs.writeScript "firefox" ''
-        env -u MOZ_ENABLE_WAYLAND ${lib.getBin pkgs.large.firefox}/bin/firefox
+        env -u MOZ_ENABLE_WAYLAND ${lib.getBin pkgs.firefox}/bin/firefox
       '';
-      chromium-safe = "${lib.getBin pkgs.large.chromium}/bin/chromium";
+      chromium-safe = "${lib.getBin pkgs.chromium}/bin/chromium";
       teams-safe = "${lib.getBin pkgs.teams}/bin/teams"; # broken a.f.
       mpv-safe = "${lib.getBin pkgs.mpv}/bin/mpv"; # broken too, apparently
     };
