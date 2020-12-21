@@ -58,11 +58,15 @@
           search-http = {
             entryPoints = [ "http" ];
             rule = "Host(`search.${domains.home}`)";
-            service = "yacy";
+            service = "searx";
           };
           search-https = search-http // {
             entryPoints = [ "https" ];
             tls = {};
+          };
+          yacy = {
+            entryPoints = [ "yacy" ];
+            service = "yacy";
           };
           gpx = {
             entryPoints = [ "http" "https" ];
@@ -385,6 +389,11 @@
               { url = "http://127.0.0.1:8384"; }
             ];
           };
+          searx.loadBalancer = {
+            servers = [
+              { url = "http://10.0.0.3:8888"; }
+            ];
+          };
           yacy.loadBalancer = {
             servers = [
               { url = "http://10.5.0.2:8090"; }
@@ -476,11 +485,6 @@
             entryPoints = [ "ssh-alt" ];
             rule = "HostSNI(`*`)";
             service = "vervis";
-          };
-          yacy = {
-            entryPoints = [ "yacy" ];
-            rule = "HostSNI(`*`)";
-            service = "yacy";
           };
          #irc = {
          #  entryPoints = [ "ircs" ];
