@@ -391,7 +391,7 @@
           };
           searx.loadBalancer = {
             servers = [
-              { url = "http://10.0.0.3:8888"; }
+              { url = "http://${hosts.wireguard.delta}:8888"; }
             ];
           };
           yacy.loadBalancer = {
