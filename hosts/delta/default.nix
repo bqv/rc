@@ -182,9 +182,20 @@
   services.flatpak.enable = true;
   xdg.portal.enable = true;
   services.searx.enable = true;
-  services.searx.configFile = pkgs.runCommand "settings.yml" {
+  services.searx.configFile = let
+    defaultJSON = pkgs.runCommand "searx.defaults.json" {} ''
+      ${pkgs.remarshal}/bin/remarshal -if yaml -of json ${pkgs.searx.src}/searx/settings.yml -o $out
+    '';
+    defaults = builtins.fromJSON (builtins.readFile defaultJSON);
+    settings = lib.recursiveUpdate defaults {
+      server.bind_address = "0.0.0.0";
+    };
+    settingJSON = builtins.toFile "searx.settings.json" (builtins.toJSON settings);
+  in pkgs.runCommand "searx.settings.yml" rec {
+    json = settingJSON;
+    passthru = settings;
   } ''
-    sed 's/127.0.0.1/0.0.0.0/g' "${pkgs.searx.src}/searx/settings.yml" > $out
+    ${pkgs.remarshal}/bin/remarshal -if json -of yaml $json -o $out
   '';
 
   dysnomia.enableLegacyModules = false;
