@@ -279,6 +279,9 @@
         associations.added."application/x-extension-rss" = [ defaultMailer ];
       };
       configFile."mimeapps.list".force = lib.mkForce true;
+      configFile."guix/channels.scm" = {
+        source = ../guix/channels.scm;
+      };
     };
 
     gtk = {
