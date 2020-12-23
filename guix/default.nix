@@ -11,8 +11,8 @@ let
   };
 in {
   config = rec {
-    xdg = {
-      configFile."guix/channels.scm" = {
+    xdg.configFile = {
+      "guix/channels.scm" = {
         text = ''(cons*
         ${lib.concatMapStringsSep "" (channel: ''
           (channel
@@ -25,6 +25,14 @@ in {
                  "${channel.fingerprint}"))))
        '') (builtins.attrValues channels)}
        %default-channels)'';
+      };
+      "guix/home.scm" = {
+        text = ''
+          (use-modules (home))
+
+          (home
+            (data-directory "${config.home.homeDirectory}/data"))
+        '';
       };
     };
   };
