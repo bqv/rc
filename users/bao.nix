@@ -66,6 +66,7 @@
       ./services/velox
       ./services/mpd
       ./services/ckb
+      ../guix
     ];
 
     home.file.".bashrc".text = ''
