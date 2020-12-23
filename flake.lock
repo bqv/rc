@@ -695,6 +695,22 @@
         "type": "github"
       }
     },
+    "ini2json": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1390326970,
+        "narHash": "sha256-Im7Cin8erDgDNKdAdRnH7dzCiE7hnIlonpTMReadUaI=",
+        "owner": "anubisss",
+        "repo": "ini2json",
+        "rev": "5504b9857af3de5e92f4e00d13c1d1694a905be0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anubisss",
+        "repo": "ini2json",
+        "type": "github"
+      }
+    },
     "ivy-exwm": {
       "flake": false,
       "locked": {
@@ -1393,6 +1409,7 @@
         "hnix-overlay": "hnix-overlay",
         "home": "home",
         "impermanence": "impermanence",
+        "ini2json": "ini2json",
         "ivy-exwm": "ivy-exwm",
         "large": "large",
         "lisp": "lisp",
