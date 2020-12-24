@@ -22,6 +22,7 @@
 
   networking.useNetworkd = true;
   users.users.resolved.uid = 57; # unused: was network-manager
+  systemd.services.nscd.serviceConfig.ExecStartPre = false;
   networking.useDHCP = false;
   networking.enableIPv6 = true;
   networking.defaultGateway = hosts.lan.router;

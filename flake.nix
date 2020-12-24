@@ -257,8 +257,7 @@
           inherit ((import (patchNixpkgs channels.modules.legacyPackages.${system}) { inherit system; }).pkgs) azure-cli; # pending nixpkgs-pr 107663
           inherit (inputs.master.legacyPackages.${system}) plantuml-server; # missing
           inherit (inputs.small.legacyPackages.${system}) firefox firefox-unwrapped; # slow and broken
-          inherit (inputs.large.legacyPackages.${system}) thunderbird obs-studio webkitgtk chromium; # slow
-          inherit (inputs.rel2009.legacyPackages.${system}) qemu qtwebengine qutebrowser radare2 radare2-cutter;
+          inherit (inputs.large.legacyPackages.${system}) thunderbird obs-studio webkitgtk chromium qemu; # slow
           androidenv.androidPkgs_9_0 = builtins.trace "pkgs.androidenv: neutered due to breakages" {
             androidsdk = pkgs.hello;
             platform-tools = pkgs.hello;

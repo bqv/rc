@@ -45,9 +45,6 @@ in {
     (makeServiceNsPhysical "wireguard-wg0")
     (makeSocketNsPhysical "sshd")
   ]) // {
-   #networking = {
-   #  hostId = "deadbeef";
-   #};
     boot = {
       loader.timeout = lib.mkForce 2;
 
