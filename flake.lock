@@ -1004,11 +1004,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1608058484,
-        "narHash": "sha256-d1Ip1qxjPmD6CVsgvm/dAjdM4/Rfs2e16vy8xmeOKEo=",
+        "lastModified": 1608721291,
+        "narHash": "sha256-h1zhvND69MwXTcIXnE5qHzfsNlNNKQjjwRxRXPzRhVY=",
         "owner": "atlas-engineer",
         "repo": "nyxt",
-        "rev": "82e97262c7cae29a0325d8e9d46e61f484ec25fb",
+        "rev": "7b304b94e2b99ff918e86e96796ee5ab4e5925fe",
         "type": "github"
       },
       "original": {
