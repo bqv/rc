@@ -14,7 +14,7 @@ in {
     xdg.configFile = {
       "guix/channels.scm" = {
         text = ''(cons*
-        ${lib.concatMapStringsSep "" (channel: ''
+        ${pkgs.lib.concatMapStringsSep "" (channel: ''
           (channel
            (name '${channel.name})
            (url "${channel.url}")
@@ -35,5 +35,48 @@ in {
         '';
       };
     };
+
+    systemd.user.services.guix-daemon = with config.lib.guix; {
+      Service = {
+        ExecStart = "${pkgs.guix-ns}/bin/guix-ns-root ${homeDirectory}/gnu ${guix}/bin/guix-daemon --max-jobs=4 --debug";
+        Environment = [ "GUIX_LOCPATH='${profile}/lib/locale'" ];
+      };
+      Install = {
+        WantedBy = [ "default.target" ];
+      };
+    };
+
+    lib.guix = rec {
+      inherit (config.home) homeDirectory username;
+      guix = "/gnu/var/profiles/per-user/${username}/current-guix";
+      profile = "/gnu/var/profiles/per-user/${username}/guix-profile";
+      ns-env = pkgs.writeShellScriptBin "guix-ns-env" ''
+        export GUIX_PROFILE=$(readlink -f ${homeDirectory}/${profile})
+        export GUIX_LOCPATH=$GUIX_PROFILE/lib/locale
+        source ${homeDirectory}/$GUIX_PROFILE/etc/profile
+        exec ${pkgs.guix-ns}/bin/guix-ns ${homeDirectory}/gnu $@
+      '';
+      packages = {
+        inherit ns-env;
+        guix = pkgs.writeScriptBin "guix" ''
+          #!${pkgs.execline}/bin/execlineb -S0
+          ${ns-env}/bin/guix-ns-env guix $@
+        '';
+        jami = pkgs.writeScriptBin "jami" ''
+          #!${pkgs.execline}/bin/execlineb -S0
+          ${ns-env}/bin/guix-ns-env ${pkgs.dbus.lib}/bin/dbus-launch env CLUTTER_BACKEND=x11 jami $@
+        '';
+      };
+    };
+
+    home.packages = (builtins.attrValues config.lib.guix.packages);
+
+    home.activation.guix-home = config.lib.dag.entryAnywhere ''
+      function guixReconfigure() {
+        ${config.lib.guix.packages.guix}/bin/guix home reconfigure ${config.xdg.configHome}/guix/home.scm
+      }
+
+      guixReconfigure || true
+    '';
   };
 }
