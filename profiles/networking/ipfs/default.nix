@@ -4,6 +4,19 @@ let
   cfg = config.services.ipfs;
 
   clusterSecrets = import ../../../secrets/ipfs.cluster.nix;
+
+  mfs-replace-root = pkgs.buildGo114Module {
+    name = "mfs-replace-root";
+    src = pkgs.fetchgit {
+      url = "https://github.com/hsanjuan/mfs-replace-root";
+      rev = "f4dce405d10c1543a8c2cf408de8ac46802b177b";
+      sha256 = "0xya2j12cw56ihgyzir7vpgd5v65yk80r9fy6rysb1w6sgmsjdgy";
+    };
+    vendorSha256 = "J9YjS47IwpKcNOizjswPBZaadeRFsczmIyp0Y4fitrU=";
+    patches = [
+      ./mfs-replace-root_update-ipfs.patch
+    ];
+  };
 in {
   environment.systemPackages = let
     # Replace a file(tree) with an ipfs symlink
@@ -96,10 +109,12 @@ in {
   };
 
   systemd.services.ipfs-init.serviceConfig.TimeoutStartSec = "20s";
+  systemd.services.ipfs-init.serviceConfig.ExecStartPre = ''
+    ${mfs-replace-root}/bin/mfs-replace-root QmUNLLsPACCz1vLxQVkXqqLX5R1X345qqfHbsf67hvA3Nn
+  '';
 
   systemd.services.ipfs = builtins.trace "${config.networking.hostName} - ipfs config permissions still broken" {
     serviceConfig.ExecStartPost = "${pkgs.coreutils}/bin/chmod g+r /var/lib/ipfs/config";
-    wantedBy = [ "local-fs.target" ];
   };
 
   security.wrappers.ipfs = {
