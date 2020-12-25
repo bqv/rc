@@ -1,8 +1,9 @@
-inputs@{ ini2json, ... }: final: prev: {
+inputs@{ ini2json, ... }: final: prev: rec {
   ini2json = final.stdenv.mkDerivation {
     name = "ini2json";
     src = inputs.ini2json;
     nativeBuildInputs = [ final.cmake ];
+    passthru = { inherit callINI; };
   };
 
   # Uses IFD because why the heck not

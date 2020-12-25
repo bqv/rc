@@ -258,16 +258,12 @@
           inherit (inputs.master.legacyPackages.${system}) plantuml-server; # missing
           inherit (inputs.small.legacyPackages.${system}) firefox firefox-unwrapped; # slow and broken
           inherit (inputs.large.legacyPackages.${system}) thunderbird obs-studio webkitgtk chromium; # slow
+          inherit (inputs.rel2009.legacyPackages.${system}) qemu qtwebengine qutebrowser radare2 radare2-cutter;
           androidenv.androidPkgs_9_0 = builtins.trace "pkgs.androidenv: neutered due to breakages" {
             androidsdk = pkgs.hello;
             platform-tools = pkgs.hello;
             build-tools = [pkgs.hello];
           };
-        })
-        (final: prev: {
-        # xmlsec = prev.xmlsec.overrideAttrs (drv: {
-        #   doCheck = false; # broken by update
-        # });
         })
       ];
     };
@@ -550,7 +546,7 @@
       inherit (pkgs.emacsPackages) emacs-ffi explain-pause-mode;
       inherit (pkgs.dotnetPackages) azure-functions-core-tools;
       inherit (pkgs) dgit dejavu_nerdfont electronmail;
-      inherit (pkgs) flarectl fsnoop git-pr-mirror greetd ipfscat;
+      inherit (pkgs) flarectl fsnoop git-pr-mirror greetd ini2json ipfscat;
       inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
       inherit (pkgs) pure shflags twitterpub velox vervis yacy;
     });
