@@ -294,8 +294,8 @@
                                  :fallback-url "https://qwant.com/")
                   (make-instance 'search-engine
                                  :shortcut "sx"
-                                 :search-url "https://search.${domains.home}:8888/?q=~a"
-                                 :fallback-url "https://search.${domains.home}:8888/")
+                                 :search-url "https://search.${domains.home}/?q=~a"
+                                 :fallback-url "https://search.${domains.home}/")
                   ))
            ))
         (defvar *configured-buffer* t))
