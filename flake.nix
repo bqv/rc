@@ -1,3 +1,9 @@
+#+title: NixOS System Configuration
+#+author: bqv
+#+email: nixos@fron.io
+#+OPTIONS: toc:nil num:nil
+
+#+BEGIN_SRC nix
 {
   description = "A highly structured configuration database.";
 
@@ -748,3 +754,4 @@
     };
   };
 }
+#+END_SRC
