@@ -10,9 +10,15 @@ let
     };
     nonguix = {
       name = "nonguix";
-      url = "https://gitlab.com/nonguix/nonguix";
+      url = "https://gitlab.com/nonguix/nonguix.git";
       introduction = "897c1a470da759236cc11798f4e0a5f7d4d59fbc";
       fingerprint = "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5";
+    };
+    flat = {
+      name = "flat";
+      url = "https://github.com/flatwhatson/guix-channel.git";
+      introduction = "33f86a4b48205c0dc19d7c036c85393f0766f806";
+      fingerprint = "736A C00E 1254 378B A982  7AF6 9DBE 8265 81B6 4490";
     };
     gaming = {
       name = "guix-gaming-games";
@@ -72,7 +78,7 @@ in {
         inherit ns-env;
         guix = pkgs.writeScriptBin "guix" ''
           #!${pkgs.execline}/bin/execlineb -S0
-          ${ns-env}/bin/guix-ns-env guix $@
+          ${ns-env}/bin/guix-ns-env ${homeDirectory}/.config/guix/current/bin/guix $@
         '';
         jami = pkgs.writeScriptBin "jami" ''
           #!${pkgs.execline}/bin/execlineb -S0
