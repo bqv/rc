@@ -115,6 +115,7 @@
     emacs-webkit = { url = "github:akirakyle/emacs-webkit"; flake = false; };
     giara = { url = "git+https://gitlab.gnome.org/world/giara"; flake = false; };
     ini2json = { url = "github:anubisss/ini2json"; flake = false; };
+    mfs-replace-root = { url = "github:hsanjuan/mfs-replace-root"; flake = false; };
   };
 
   outputs = inputs: with builtins; let

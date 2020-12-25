@@ -842,6 +842,22 @@
         "type": "github"
       }
     },
+    "mfs-replace-root": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1587542606,
+        "narHash": "sha256-/jWp69OGh6V9Nt6lDND0xezS3t0nx+8fjKZwJoIUync=",
+        "owner": "hsanjuan",
+        "repo": "mfs-replace-root",
+        "rev": "f4dce405d10c1543a8c2cf408de8ac46802b177b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "hsanjuan",
+        "repo": "mfs-replace-root",
+        "type": "github"
+      }
+    },
     "mozilla": {
       "flake": false,
       "locked": {
@@ -1415,6 +1431,7 @@
         "lisp": "lisp",
         "master": "master",
         "matrix-nio": "matrix-nio",
+        "mfs-replace-root": "mfs-replace-root",
         "mozilla": "mozilla",
         "naersk": "naersk",
         "napalm": "napalm",
