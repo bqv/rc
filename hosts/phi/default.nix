@@ -54,7 +54,7 @@
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "ondemand";
 
-  nix.package = lib.mkForce pkgs.nix-ipfs;
+  nix.package = pkgs.nix-ipfs;
 
   nix.maxJobs = lib.mkDefault 4;
   nix.buildMachines = [ {

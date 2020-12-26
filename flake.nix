@@ -1,7 +1,7 @@
 #+title: NixOS System Configuration
 #+author: bqv
 #+email: nixos@fron.io
-#+OPTIONS: toc:nil num:nil
+#+options: toc:nil num:nil
 
 #+BEGIN_SRC nix
 {
@@ -24,8 +24,8 @@
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
     pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
 
-    nix.url = "github:nixos/nix/progress-bar";            #|- Nix
-    #nix.inputs.nixpkgs.follows = "master"; #| a util-linux change breaks this branch
+    nix.url = "github:nixos/nix/progress-bar";                #|- Nix
+    nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; #|  ^^^IPFS
 
     dwarffs.url = "github:edolstra/dwarffs";         #|- Dwarffs
     dwarffs.inputs.nix.follows = "/nix";             #|
@@ -57,8 +57,6 @@
     construct.inputs.nixpkgs.follows = "/large";         #|
 
     apparmor.url = "github:bqv/apparmor-nix"; #|- Apparmor
-
-    nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; # NixIPFS
 
     emacs.url = "github:nix-community/emacs-overlay"; # Emacs-overlay
 
@@ -233,6 +231,7 @@
           });
           inherit (inputs.nix.packages.${system}) nix-static;
           nix-ipfs = inputs.nix-ipfs.packages.${system}.nix;
+          nix-ipfs-static = inputs.nix-ipfs.packages.${system}.nix-static;
         })
         inputs.guix.overlay
         inputs.construct.overlay (final: prev: {
@@ -352,7 +351,7 @@
           environment.pathsToLink = [ "/share/bios" ];
           networking = { inherit hostName; };
 
-          nix.package = pkgs.nixFlakes;
+          nix.package = lib.mkDefault pkgs.nixFlakes;
           nix.registry = lib.mapAttrs (id: flake: {
             inherit flake;
             from = { inherit id; type = "indirect"; };

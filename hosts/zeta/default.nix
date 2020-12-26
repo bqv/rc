@@ -122,6 +122,7 @@
 
   headless = true;
 
+  nix.package = pkgs.nix-ipfs;
   nix.gc.automatic = false;
   nix.gc.dates = "05:00";
   nix.gc.options = "";
@@ -132,6 +133,7 @@
   nix.extraOptions = with usr.units; ''
     min-free = ${toString (gigabytes 128)}
     builders-use-substitutes = true
+    extra-substituters = ipfs://
   '';
 
   #powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
