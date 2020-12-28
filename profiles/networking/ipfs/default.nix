@@ -115,6 +115,7 @@ in {
 
   systemd.services.ipfs = builtins.trace "${config.networking.hostName} - ipfs config permissions still broken" {
     serviceConfig.ExecStartPost = "${pkgs.coreutils}/bin/chmod g+r /var/lib/ipfs/config";
+    bindsTo = ["ipfs-init.service"];
   };
 
   security.wrappers.ipfs = {
