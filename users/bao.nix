@@ -146,6 +146,22 @@
         #!${pkgs.execline}/bin/execlineb -W
         ${home-config.programs.emacs.package}/bin/emacsclient --eval "(emms-play-file \"$@\")"
       '';
+      nix-ipfs-push = pkgs.writeScriptBin "nix-ipfs-push" ''
+        #!${pkgs.bash}
+
+        NIXIPFS=$(nix shell github:obsidiansystems/nix -c which nix)
+        nix build "$@" --no-link
+        DERIVATION=$(nix eval "$@".outPath --raw)
+
+        mkdir -p $PWD/nix
+        export NIX_REMOTE=local?real=$PWD/nix/store\&store=/nix/store
+        export NIX_STATE_DIR=$PWD/nix/var
+        export NIX_LOG_DIR=$PWD/nix/var/log
+
+        CADRV=$($NIXIPFS make-content-addressable --ipfs -r $DERIVATION --json | jq '.[] | last(.[])' -r)
+        $NIXIPFS copy $CADRV --to ipfs:// -v
+        $NIXIPFS build $CADRV --substituters ipfs:// -v
+      '';
     in [
       appimage-run steam-run manix # Package Tools
       abduco dvtm # Terminal Multiplexing
