@@ -1,3 +1,9 @@
+#+title: NixOS System Configuration
+#+author: bqv
+#+email: nixos@fron.io
+#+options: toc:nil num:nil
+
+#+BEGIN_SRC nix
 {
   description = "A highly structured configuration database.";
 
@@ -18,8 +24,8 @@
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
     pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
 
-    nix.url = "github:nixos/nix/progress-bar";            #|- Nix
-    #nix.inputs.nixpkgs.follows = "master"; #| a util-linux change breaks this branch
+    nix.url = "github:nixos/nix/progress-bar";                #|- Nix
+    nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; #|  ^^^IPFS
 
     dwarffs.url = "github:edolstra/dwarffs";         #|- Dwarffs
     dwarffs.inputs.nix.follows = "/nix";             #|
@@ -51,8 +57,6 @@
     construct.inputs.nixpkgs.follows = "/large";         #|
 
     apparmor.url = "github:bqv/apparmor-nix"; #|- Apparmor
-
-    nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; # NixIPFS
 
     emacs.url = "github:nix-community/emacs-overlay"; # Emacs-overlay
 
@@ -109,6 +113,7 @@
     emacs-webkit = { url = "github:akirakyle/emacs-webkit"; flake = false; };
     giara = { url = "git+https://gitlab.gnome.org/world/giara"; flake = false; };
     ini2json = { url = "github:anubisss/ini2json"; flake = false; };
+    mfs-replace-root = { url = "github:hsanjuan/mfs-replace-root"; flake = false; };
   };
 
   outputs = inputs: with builtins; let
@@ -226,6 +231,7 @@
           });
           inherit (inputs.nix.packages.${system}) nix-static;
           nix-ipfs = inputs.nix-ipfs.packages.${system}.nix;
+          nix-ipfs-static = inputs.nix-ipfs.packages.${system}.nix-static;
         })
         inputs.guix.overlay
         inputs.construct.overlay (final: prev: {
@@ -345,7 +351,7 @@
           environment.pathsToLink = [ "/share/bios" ];
           networking = { inherit hostName; };
 
-          nix.package = pkgs.nixFlakes;
+          nix.package = lib.mkDefault pkgs.nixFlakes;
           nix.registry = lib.mapAttrs (id: flake: {
             inherit flake;
             from = { inherit id; type = "indirect"; };
@@ -748,3 +754,4 @@
     };
   };
 }
+#+END_SRC

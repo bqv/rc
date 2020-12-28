@@ -1,4 +1,4 @@
-{ nixosConfig, config, lib, pkgs, hosts, ... }:
+{ nixosConfig, config, lib, pkgs, hosts, domains, ... }:
 
 {
   config = {
@@ -294,8 +294,8 @@
                                  :fallback-url "https://qwant.com/")
                   (make-instance 'search-engine
                                  :shortcut "sx"
-                                 :search-url "http://${hosts.lan.delta}:8888/?q=~a"
-                                 :fallback-url "https://${hosts.lan.delta}:8888/")
+                                 :search-url "https://search.${domains.home}/?q=~a"
+                                 :fallback-url "https://search.${domains.home}/")
                   ))
            ))
         (defvar *configured-buffer* t))
