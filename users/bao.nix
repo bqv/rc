@@ -153,12 +153,12 @@
       pstree bottom # Process Monitoring
       pv pup # Pipe Management
       timewarrior # Time Management
-      nmap wget curl aria2 #mitmproxy # Network Utilities
+      nmap wget curl aria2 httping #mitmproxy # Network Utilities
       ipfscat onionshare nyxt tuir gomuks # Communication Tools
       bitwarden-cli protonvpn-cli # Password Management
-      file exa unrar unzip ncdu tree mimeo # File Management
+      file exa unrar unzip ncdu tree mimeo sqlite # File Management
       audacity twitch streamlink-twitch-gui-bin # Audio/Video Utilities
-      xpra xsel xclip scrot # X11 Utilities
+      xpra xsel xclip scrot gnome3.zenity # X11 Utilities
       gdb lldb radare2 radare2-cutter jadx stress # Debug Utilities
     ] ++ lib.optional home-config.programs.emacs.enable emms-play-file;
 

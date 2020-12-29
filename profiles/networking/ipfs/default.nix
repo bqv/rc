@@ -1,4 +1,4 @@
-{ config, lib, pkgs, hosts, ... }:
+{ config, lib, pkgs, inputs, hosts, ... }:
 
 let
   cfg = config.services.ipfs;
@@ -70,7 +70,44 @@ in {
       if { umount /var/empty }
       ${pkgs.brig}/bin/brig $@
     '';
-  in [ pkgs.ipfs-cluster brig toipfs fromipfs ];
+
+    # Push a closure to ipfs using nix-ipfs
+    nix-ipfs-push = pkgs.writeScriptBin "nix-ipfs-push" ''
+      #!${pkgs.bash}/bin/bash
+
+      # Build the target derivation in the public store
+      nix build "$@" --no-link
+      DERIVATION=$(nix eval "$@".outPath --raw)
+
+      # Abuse nix to build CA derivations and publish them
+      nix eval --no-sandbox --expr 'builtins.readFile (builtins.derivation {
+        system = "${pkgs.system}";
+        preferLocalBuild = true; allowSubstitutes = false;
+        name = "_"; builder = "${pkgs.writeShellScript "_" ''
+          echo input: $@
+          export PATH=${pkgs.jq}/bin:${pkgs.coreutils}/bin:$PATH
+          cd /tmp
+          export HOME=$PWD
+          export TERM=dumb
+
+          # Build the CA drvs in a private store
+          mkdir -p $PWD/nix
+          export NIX_REMOTE=local?real=$PWD/nix/store\&store=/nix/store
+          export NIX_STATE_DIR=$PWD/nix/var
+          export NIX_LOG_DIR=$PWD/nix/var/log
+
+          # Publish and output toplevel pathinfo json
+          drv=$(${pkgs.nix-ipfs}/bin/nix make-content-addressable --ipfs -r $@ --json | jq '.[] | last(.[])' -r)
+          ${pkgs.nix-ipfs}/bin/nix copy $drv --to ipfs:// -v
+          ${pkgs.nix-ipfs}/bin/nix build $drv --substituters ipfs:// -v
+          ${pkgs.nix-ipfs}/bin/nix path-info $drv --json | jq | tee $out
+
+          echo 'Use `ipfs dag get '$(jq '.[] | .ca | split(":")[-1]' $out)' | jq` to explore'
+        ''}";
+        args = [ "'$DERIVATION'" ];
+      })' --raw
+    '';
+  in [ pkgs.ipfs-cluster brig toipfs fromipfs nix-ipfs-push ];
 
   services.ipfs = {
     enable = true;
@@ -115,6 +152,7 @@ in {
 
   systemd.services.ipfs = builtins.trace "${config.networking.hostName} - ipfs config permissions still broken" {
     serviceConfig.ExecStartPost = "${pkgs.coreutils}/bin/chmod g+r /var/lib/ipfs/config";
+    bindsTo = ["ipfs-init.service"];
   };
 
   security.wrappers.ipfs = {
