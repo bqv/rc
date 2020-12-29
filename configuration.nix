@@ -16,6 +16,6 @@ let
 in { inherit flake-compat flake; self = flake.defaultNix; }
 // maybe flake.defaultNix // maybe (flake.defaultNix.passthru or {})
 // maybe flake.defaultNix.nixosConfigurations
-#// maybe flake.defaultNix.nixosConfigurations.${hostname}
-#// maybe flake.defaultNix.nixosConfigurations.${hostname}.config
-#// maybe { inherit (flake.defaultNix.nixosConfigurations.${hostname}.pkgs) lib; }
+// maybe flake.defaultNix.nixosConfigurations.${hostname}
+// maybe flake.defaultNix.nixosConfigurations.${hostname}.config
+// maybe { inherit (flake.defaultNix.nixosConfigurations.${hostname}.pkgs) lib; }
