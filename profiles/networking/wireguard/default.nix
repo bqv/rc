@@ -49,7 +49,7 @@ in {
     enable = true;
     interfaces.wg0 = {
       ips = [ "${currentPeer.ip}/${toString network}" ];
-      privateKeyFile = config.secrets.files.wireguard.file;
+      privateKeyFile = "${config.secrets.files.wireguard.file}";
       generatePrivateKeyFile = false;
       listenPort = currentPeer.port or 51820;
 
@@ -70,7 +70,7 @@ in {
 
   secrets.files = {
     wireguard = {
-      file = ../../secrets/keys/wireguard + "/${config.networking.hostName}.key";
+      file = ../../../secrets/keys/wireguard + "/${config.networking.hostName}.key";
      #user = "root";
      #group = "root";
     };

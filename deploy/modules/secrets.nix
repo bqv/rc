@@ -57,8 +57,8 @@ let
     '');
 
   # Intersects the closure of a system with a set of secrets
-  requiredSecrets = pkgs: { system, secrets, host }: pkgs.stdenv.mkDerivation {
-    name = "${host}-required-secrets";
+  requiredSecrets = pkgs: { system, secrets, host, name, ... }: pkgs.stdenv.mkDerivation {
+    name = "${name}-required-secrets";
 
     __structuredAttrs = true;
     preferLocalBuild = true;
@@ -121,7 +121,8 @@ in {
           includedSecrets = requiredSecrets pkgs {
             system = config.configuration.system.build.toplevel;
             secrets = config.configuration.secrets.files;
-            host = config.name;
+            inherit (config) host;
+            name = config.configuration.networking.hostName;
           };
 
           baseDir = config.configuration.secrets.baseDirectory;
