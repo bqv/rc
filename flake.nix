@@ -329,9 +329,9 @@
           domains = import ./secrets/domains.nix;
           hosts = import ./secrets/hosts.nix;
 
-          modules = systemModules ++ [{
-            _module.args = specialArgs;
-          }];
+          modules = systemModules ++ [
+            { _module.args = specialArgs; }
+          ];
           extraModules = [];
         };
 
@@ -400,6 +400,8 @@
               iptables = pkgs.iptables-nftables-compat;
             };
           };
+
+          secrets.baseDirectory = "/var/lib/secrets/";
         };
 
         # Amend home-manager (inject modules, set common stuff)
@@ -482,22 +484,24 @@
           configuration
         ] ++ appendModules;
       };
-    in usr.utils.recImport {
-      # Build a nixos system for each dir in ./hosts using modulesFor
-      dir = ./hosts;
-      _import = host: let
-        pkgs = channels.modules.legacyPackages.${system};
-        mkSystem = import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix";
-        vmConfig = (mkSystem (modulesFor host [vm])).config;
-        modules = modulesFor host [{
-          system.build = {
-            inherit (vmConfig.system.build) vm;
-          };
-        }];
-      in mkSystem modules // {
-        nixos = modules; # This is extra spicy, but vaguely needed for nixus?
+
+      forEachHost = do: usr.utils.recImport {
+        # Build a nixos system for each dir in ./hosts using modulesFor
+        dir = ./hosts;
+        _import = do;
       };
-    };
+    in forEachHost (host: let
+      pkgs = channels.modules.legacyPackages.${system};
+      mkSystem = import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix";
+      vmConfig = (mkSystem (modulesFor host [vm])).config;
+      modules = modulesFor host [{
+        system.build = {
+          inherit (vmConfig.system.build) vm;
+        };
+      }];
+    in mkSystem modules // {
+      nixos = modules; # This is extra spicy, but vaguely needed for nixus?
+    });
 
     # convenience...
     homeConfigurations = lib.genAttrs (builtins.attrNames inputs.self.nixosConfigurations)

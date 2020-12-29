@@ -57,8 +57,8 @@ let
     '');
 
   # Intersects the closure of a system with a set of secrets
-  requiredSecrets = pkgs: { system, secrets }: pkgs.stdenv.mkDerivation {
-    name = "required-secrets";
+  requiredSecrets = pkgs: { system, secrets, host }: pkgs.stdenv.mkDerivation {
+    name = "${host}-required-secrets";
 
     __structuredAttrs = true;
     preferLocalBuild = true;
@@ -98,7 +98,7 @@ in {
             options.secrets = {
               baseDirectory = lib.mkOption {
                 type = types.path;
-                default = "/var/lib/nixus-secrets";
+                default = "/var/lib/nixos/secrets";
                 description = ''
                   The persistent directory on the target host to store secrets in.
                 '';
@@ -121,6 +121,7 @@ in {
           includedSecrets = requiredSecrets pkgs {
             system = config.configuration.system.build.toplevel;
             secrets = config.configuration.secrets.files;
+            host = config.name;
           };
 
           baseDir = config.configuration.secrets.baseDirectory;
@@ -130,7 +131,7 @@ in {
         /*
 
         Secret structure:
-        /var/lib/nixus-secrets/active  root:root    0755   # Directory containing all active persisted secrets and data needed to support it
+        /var/lib/nixos/secrets/active  root:root    0755   # Directory containing all active persisted secrets and data needed to support it
           |
           + included-secrets           root:root    0440   # A file containing line-delimited json values describing all present secrets
           |
@@ -147,7 +148,7 @@ in {
               |
               + <name>                 root:<group> 0040   # A file containing the secret <name>
 
-        /var/lib/nixus-secrets/pending root:root    0755   # The same structure as /active, but this is only used during deployment to make it more atomic and simple to remove unneeded ones later
+        /var/lib/nixos/secrets/pending root:root    0755   # The same structure as /active, but this is only used during deployment to make it more atomic and simple to remove unneeded ones later
                                                            # The only difference here is that no owners are set yet, since we can't yet know uid and gid
         */
 

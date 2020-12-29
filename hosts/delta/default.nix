@@ -285,11 +285,4 @@
   environment.etc."ssh/ssh_revoked_keys".text = "";
   environment.etc."ssh/ssh_user-ca.pub".source = ../../secrets/keys/deltassh/ssh_user-ca.pub;
   environment.etc."ssh/ssh_host-ca.pub".source = ../../secrets/keys/deltassh/ssh_host-ca.pub;
-  environment.etc."wireguard/private.key".source = ../../secrets/keys/wireguard/delta.key;
-
-  secrets.files.wireguard-private = {
-    file = ../../secrets/keys/wireguard/delta.key;
-   #user = "root";
-   #group = "root";
-  };
 }
