@@ -4,8 +4,10 @@ let
   # Slightly flimsy but means I don't need two files for this.
   nixos = ! home-manager;
   home-manager = args ? nixosConfig;
+
+  merge = xs: builtins.foldl' (a: b: a // b) {} xs;
 in {
-  options = builtins.foldl' (a: b: a // b) {} [
+  options = merge [
     (if home-manager then {
 
       home.packages' = lib.mkOption {
@@ -23,7 +25,7 @@ in {
 
     } else {})
   ];
-  config = builtins.foldl' (a: b: a // b) {} [
+  config = merge [
     (if home-manager then {
 
       home.packages' = lib.mkOverride 100 (lib.zipAttrs
