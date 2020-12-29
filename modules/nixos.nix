@@ -9,4 +9,5 @@
   ./networking/wireguard-mesh.nix
   ./networking/namespacing.nix
   ./misc/headless.nix
+  ./misc/attrmods.nix
 ]

@@ -419,19 +419,10 @@
                   imports = [ (import inputs.baduk) ];
                   baduk.sabaki.engines = lib.mkDefault [];
                 };
-                attrmods = { config, lib, ... }: {
-                  options.home.packages' = lib.mkOption {
-                    type = lib.types.attrs;
-                  };
-                  config.home.packages' = lib.mkOverride 100 (lib.zipAttrs
-                    (map (p: { ${if p ? pname then p.pname else p.name} = p; })
-                      config.home.packages));
-                };
                 impermanence = import "${inputs.impermanence}/home-manager.nix";
               in flakeModules ++ [
                 nixProfile
                 baduk
-                attrmods
               ];
             });
           };
@@ -468,15 +459,6 @@
           ];
         };
 
-        attrmods = { config, lib, ... }: {
-          options.environment.systemPackages' = lib.mkOption {
-            type = lib.types.attrs;
-          };
-          config.environment.systemPackages' = lib.mkOverride 100 (lib.zipAttrs
-            (map (p: { ${if p ? pname then p.pname else p.name} = p; })
-              config.environment.systemPackages));
-        };
-
         # Virtual machine builder (don't import otherwise)
         vm = import "${channels.modules}/nixos/modules/virtualisation/qemu-vm.nix";
 
@@ -486,7 +468,7 @@
         configuration = import "${toString ./hosts}/${hostName}";
 
         systemModules = flakeModules ++ [
-          core global iwd gnupg attrmods
+          core global iwd gnupg
           dwarffs guix matrix-construct impermanence apparmor-nix
         ];
 
