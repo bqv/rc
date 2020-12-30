@@ -1,4 +1,4 @@
-{ ... }:
+{ system ? builtins.currentSystem, ... }:
 
 let
   lock = builtins.fromJSON (builtins.readFile ./flake.lock);
@@ -15,7 +15,7 @@ let
   maybe = c: let result = builtins.tryEval c; in if result.success then result.value else {};
 in { inherit flake-compat flake; self = flake.defaultNix; }
 // maybe flake.defaultNix // maybe (flake.defaultNix.passthru or {})
-// maybe flake.defaultNix.nixosConfigurations
-// maybe flake.defaultNix.nixosConfigurations.${hostname}
-// maybe flake.defaultNix.nixosConfigurations.${hostname}.config
-// maybe { inherit (flake.defaultNix.nixosConfigurations.${hostname}.pkgs) lib; }
+// maybe flake.defaultNix.defaultPackage.${system}
+// maybe flake.defaultNix.defaultPackage.${system}.config.nodes
+// maybe flake.defaultNix.defaultPackage.${system}.config.nodes.${hostname}.configuration
+// maybe { inherit (flake.defaultNix.defaultPackage.${system}.config.nodes.${hostname}.configuration._pkgs) pkgs lib; }
