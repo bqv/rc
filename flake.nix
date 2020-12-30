@@ -753,11 +753,11 @@
       }
     );
 
-    passthru = rec {
+    lib = rec {
       inherit inputs channels config allSystems inputMap patchNixpkgs;
       patchedPkgs = patchNixpkgs (channels.modules.legacyPackages.x86_64-linux);
 
-      #$ git config secrets.providers "nix eval --raw .#passthru.secrets"
+      #$ git config secrets.providers "nix eval --raw .#lib.secrets"
       secrets = with lib.strings; concatMapStringsSep "\n" (replaceStrings [" "] ["\\s"]) ([
         (import ./secrets/git.github.nix).oauth-token
       ] ++ (attrNames (import ./secrets/wifi.networks.nix))
@@ -773,6 +773,14 @@
         ++ (attrValues (import ./secrets/weechat.credentials.nix))
         ++ (attrValues (import ./secrets/domains.nix))
         ++ (lib.flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
+        ++ (attrValues (import ./secrets/hass.tuya.nix))
+        ++ (attrValues (import ./secrets/hydroxide.auth.nix))
+        ++ (attrValues (import ./secrets/ipfs.cluster.nix))
+        ++ (attrValues (import ./secrets/ipfs.repo.nix))
+        ++ (attrValues (import ./secrets/mastodon.twitter.nix))
+        ++ (attrValues (import ./secrets/matrix.synapse.nix))
+        ++ (attrValues (import ./secrets/nyxt.autofill.nix))
+        ++ (attrValues (import ./secrets/rescue.nix))
       );
     };
   };
