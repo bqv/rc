@@ -307,7 +307,6 @@
       config = node.configuration;
     }) inputs.self.defaultPackage.x86_64-linux.config.nodes;
 
-    # convenience...
     homeConfigurations = lib.genAttrs (builtins.attrNames inputs.self.nixosConfigurations)
       (host: inputs.self.nixosConfigurations.${host}.config.home-manager.users) //
     {
