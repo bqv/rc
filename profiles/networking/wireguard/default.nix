@@ -38,6 +38,8 @@ let
     (peers.${to} ? publicKey)
   ];
 in {
+  environment.etc."wireguard/private.key".source = config.secrets.files.wireguard.file;
+
   networking.firewall.allowedUDPPorts =
     lib.mkIf (currentPeer ? "port") [ currentPeer.port ];
 
@@ -47,7 +49,7 @@ in {
     enable = true;
     interfaces.wg0 = {
       ips = [ "${currentPeer.ip}/${toString network}" ];
-      privateKeyFile = "/etc/wireguard/private.key";
+      privateKeyFile = "${config.secrets.files.wireguard.file}";
       generatePrivateKeyFile = false;
       listenPort = currentPeer.port or 51820;
 
@@ -65,4 +67,12 @@ in {
   };
 
   systemd.services.wireguard-wg0.serviceConfig.Before = [ "sshd.service" ];
+
+  secrets.files = {
+    wireguard = {
+      file = ../../../secrets/keys/wireguard + "/${config.networking.hostName}.key";
+     #user = "root";
+     #group = "root";
+    };
+  };
 }

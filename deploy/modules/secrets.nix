@@ -42,10 +42,7 @@ let
 
     # We make this derivation dependent on the secret itself, such that a
     # change of it causes a rebuild
-    secretHash = builtins.hashString "sha512" (builtins.readFile file);
-    # TODO: Switch to `builtins.hashFile "sha512" value`
-    # which requires Nix 2.3. The readFile way can cause an error when it
-    # contains null bytes
+    secretHash = builtins.hashFile "sha512" file;
   } (
     let
       validSecret = (config.user == null) || (config.group == null);
@@ -60,8 +57,8 @@ let
     '');
 
   # Intersects the closure of a system with a set of secrets
-  requiredSecrets = pkgs: { system, secrets }: pkgs.stdenv.mkDerivation {
-    name = "required-secrets";
+  requiredSecrets = pkgs: { system, secrets, host, name, ... }: pkgs.stdenv.mkDerivation {
+    name = "${name}-required-secrets";
 
     __structuredAttrs = true;
     preferLocalBuild = true;
@@ -101,7 +98,7 @@ in {
             options.secrets = {
               baseDirectory = lib.mkOption {
                 type = types.path;
-                default = "/var/lib/nixus-secrets";
+                default = "/var/lib/nixos/secrets";
                 description = ''
                   The persistent directory on the target host to store secrets in.
                 '';
@@ -124,6 +121,8 @@ in {
           includedSecrets = requiredSecrets pkgs {
             system = config.configuration.system.build.toplevel;
             secrets = config.configuration.secrets.files;
+            inherit (config) host;
+            name = config.configuration.networking.hostName;
           };
 
           baseDir = config.configuration.secrets.baseDirectory;
@@ -133,7 +132,7 @@ in {
         /*
 
         Secret structure:
-        /var/lib/nixus-secrets/active  root:root    0755   # Directory containing all active persisted secrets and data needed to support it
+        /var/lib/nixos/secrets/active  root:root    0755   # Directory containing all active persisted secrets and data needed to support it
           |
           + included-secrets           root:root    0440   # A file containing line-delimited json values describing all present secrets
           |
@@ -150,7 +149,7 @@ in {
               |
               + <name>                 root:<group> 0040   # A file containing the secret <name>
 
-        /var/lib/nixus-secrets/pending root:root    0755   # The same structure as /active, but this is only used during deployment to make it more atomic and simple to remove unneeded ones later
+        /var/lib/nixos/secrets/pending root:root    0755   # The same structure as /active, but this is only used during deployment to make it more atomic and simple to remove unneeded ones later
                                                            # The only difference here is that no owners are set yet, since we can't yet know uid and gid
         */
 

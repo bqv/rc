@@ -300,206 +300,13 @@
       in tryGetValue (builtins.tryEval (lib.concatMap lib.attrValues (lib.attrValues s6))));
     };
   in {
-    nixosConfigurations = let
+    nixosConfigurations = builtins.mapAttrs (host: node: let
       system = "x86_64-linux"; # So far it always is...
-      pkgs = pkgsForSystem system;
-      usr = {
-        utils = import ./lib/utils.nix {
-          inherit lib;
-        };
-        elisp = import ./lib/elisp.nix {
-          inherit lib;
-          pkgs = channels.lib.legacyPackages.${system};
-        };
-        dag = let dagLib = import ./lib/dag.nix lib lib;
-        in dagLib.dag // { inherit (dagLib) types; };
-        units = {
-          kilobytes = b: b * 1024;
-          megabytes = k: k * 1024;
-          gigabytes = m: m * 1024;
-        };
-      };
+      pkgs = channels.modules.legacyPackages.${system};
+    in {
+      config = node.configuration;
+    }) inputs.self.defaultPackage.x86_64-linux.config.nodes;
 
-      modulesFor = hostName: appendModules: let
-        specialArgs = {
-          inherit usr;
-          flake = inputs.self;
-          fetchPullRequest = fetchPullRequestForSystem system;
-
-          domains = import ./secrets/domains.nix;
-          hosts = import ./secrets/hosts.nix;
-
-          modules = systemModules ++ [{
-            _module.args = specialArgs;
-          }];
-          extraModules = [];
-        };
-
-        # External modules
-        inherit (inputs.home.nixosModules) home-manager;
-        inherit (inputs.dwarffs.nixosModules) dwarffs;
-        inherit (inputs.guix.nixosModules) guix;
-        inherit (inputs.construct.nixosModules) matrix-construct;
-        apparmor-nix = inputs.apparmor.nixosModule;
-
-        # Some common basic stuff
-        core = ./profiles/core.nix;
-
-        # The flake-ier common basic stuff
-        global = {
-          environment.etc."machine-id".text = builtins.hashString "md5" hostName;
-          environment.pathsToLink = [ "/share/bios" ];
-          networking = { inherit hostName; };
-
-          nix.package = lib.mkDefault pkgs.nixFlakes;
-          nix.registry = lib.mapAttrs (id: flake: {
-            inherit flake;
-            from = { inherit id; type = "indirect"; };
-          }) (inputs // { nixpkgs = inputs.master; });
-          nix.nixPath = [
-            "nixpkgs=${channels.pkgs}"
-            "nixos=${inputs.self}/configuration.nix"
-            "self=/run/current-system/flake/input/self/configuration.nix"
-          ];
-
-          system.configurationRevision = inputs.self.rev or "dirty";
-          system.nixos.versionSuffix = let inherit (inputs) self;
-            date = lib.substring 0 8 (self.lastModifiedDate or self.lastModified);
-            rev = self.shortRev or "dirty";
-          in lib.mkForce ".${date}.${rev}";
-
-          system.extraSystemBuilderCmds = (''
-
-            mkdir -p $out/flake/input
-
-            # Link first-class inputs
-            ${lib.concatMapStringsSep "\n" ({ name, value }: ''
-              ln -s '${value}' "$out/flake/input/${name}"
-            '') inputMap.n1}
-
-            # Link second-class inputs
-            ${(lib.concatMapStringsSep "\n" ({ name, value }: ''
-              ln -s '${value}' "$out/flake/input/${name}"
-            '') inputMap.n2)}
-
-            # Link third-class inputs (skipped)
-            ${lib.concatMapStringsSep "\n" ({ name, value }: ''
-              ln -s '${value}' "$out/flake/input/${name}"
-            '') inputMap.n3}
-
-          '');
-
-          system.activationScripts.etcnixos = ''
-            rm -f /etc/nixos && \
-            ln -sfn /run/current-system/flake/input/self /etc/nixos || \
-            true
-          '';
-
-          nixpkgs = {
-            pkgs = pkgs // {
-              iptables = pkgs.iptables-nftables-compat;
-            };
-          };
-        };
-
-        # Amend home-manager (inject modules, set common stuff)
-        home = { config, ... }: {
-          options.home-manager.users = lib.mkOption {
-            type = with lib.types; attrsOf (submoduleWith {
-              inherit specialArgs;
-              modules = let
-                flakeModules = import ./modules/home-manager.nix;
-                nixProfile = { lib, ... }: {
-                  home.activation.disableNixEnv = lib.hm.dag.entryBefore ["installPackages"] ''
-                    alias nix-env=true
-                  '';
-                  home.activation.installPackages = lib.mapAttrs (k: v: lib.mkForce v) (lib.hm.dag.entryAnywhere "true");
-                };
-                baduk = {
-                  imports = [ (import inputs.baduk) ];
-                  baduk.sabaki.engines = lib.mkDefault [];
-                };
-                impermanence = import "${inputs.impermanence}/home-manager.nix";
-              in flakeModules ++ [
-                nixProfile
-                baduk
-              ];
-            });
-          };
-
-          config.home-manager = {
-            useUserPackages = true;
-            useGlobalPkgs = true;
-            verbose = true;
-          };
-        };
-
-        # Hack in the gnupg secrets module (fix docbook)
-        gnupg = import "${inputs.pr93659}/nixos/modules/security/gnupg.nix";
-
-        # Plug in the impermanence module (not a flake :<)
-        impermanence = import "${inputs.impermanence}/nixos.nix";
-
-        # Set up any other pull request modules
-        iwd = { config, ... }: let
-          iwdModule = "services/networking/iwd.nix";
-        in {
-          disabledModules = [ iwdModule ];
-          imports = [
-            (import "${inputs.pr75800}/nixos/modules/${iwdModule}" {
-              inherit config pkgs;
-              lib = let
-                iwdLib = import "${inputs.pr75800}/lib/default.nix";
-              in lib // {
-                types = {
-                  inherit (iwdLib.types) fixedLengthString lengthCheckedString;
-                } // lib.types;
-              };
-            })
-          ];
-        };
-
-        # Virtual machine builder (don't import otherwise)
-        vm = import "${channels.modules}/nixos/modules/virtualisation/qemu-vm.nix";
-
-        flakeModules = import ./modules/nixos.nix;
-
-        # Actual host config
-        configuration = import "${toString ./hosts}/${hostName}";
-
-        systemModules = flakeModules ++ [
-          core global iwd gnupg
-          dwarffs guix matrix-construct impermanence apparmor-nix
-        ];
-
-        userModules = [
-          home
-          home-manager
-        ];
-      in {
-        inherit system specialArgs;
-        modules = systemModules ++ userModules ++ [
-          configuration
-        ] ++ appendModules;
-      };
-    in usr.utils.recImport {
-      # Build a nixos system for each dir in ./hosts using modulesFor
-      dir = ./hosts;
-      _import = host: let
-        pkgs = channels.modules.legacyPackages.${system};
-        mkSystem = import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix";
-        vmConfig = (mkSystem (modulesFor host [vm])).config;
-        modules = modulesFor host [{
-          system.build = {
-            inherit (vmConfig.system.build) vm;
-          };
-        }];
-      in mkSystem modules // {
-        nixos = modules; # This is extra spicy, but vaguely needed for nixus?
-      };
-    };
-
-    # convenience...
     homeConfigurations = lib.genAttrs (builtins.attrNames inputs.self.nixosConfigurations)
       (host: inputs.self.nixosConfigurations.${host}.config.home-manager.users) //
     {
@@ -557,40 +364,60 @@
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }:
-      import ./deploy rec {
+      import ./deploy {
         nixpkgs = patchNixpkgs (channels.modules.legacyPackages.${system});
         deploySystem = system;
       } ({ config, lib, ... }: let
         inherit (config) nodes;
+        system = {
+          deploy = system;
+          # no current exceptions
+          target = "x86_64-linux";
+        };
       in {
         defaults = { name, config, ... }: let
-          inherit (inputs.self.nixosConfigurations.${name}) nixos;
-        in {
-          host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
+          nixos = inputs.self.nixosModules.hosts.${system.target}.${name};
 
-          configuration = {
-            _module.args = nixos.specialArgs;
-            imports = nixos.modules;
+          vmsystem = { modules, system, specialArgs, ... }: {
+            system.build.vm = (import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix" {
+              inherit system specialArgs;
+              modules = modules ++ [
+                (import "${channels.modules}/nixos/modules/virtualisation/qemu-vm.nix")
+              ];
+            }).config.system.build.toplevel;
+          };
 
-            secrets.baseDirectory = "/var/lib/secrets";
-
+          linkage = let
+            inherit (inputs.self.defaultPackage.${system.deploy}.config) nodes;
+          in {
             # Link raw hosts on each host (non-recursively)
             system.extraSystemBuilderCmds = ''
               mkdir -p $out/flake/hosts
 
               # Link other hosts (nonrecursively)
               ${lib.concatMapStringsSep "\n" ({ name, value }: ''
-                ln -s '${value.config.system.build.toplevel}' "$out/flake/hosts/${name}"
-              '') (lib.mapAttrsToList lib.nameValuePair inputs.self.nixosConfigurations)}
+                ln -s '${value.configuration.system.build.toplevel}' "$out/flake/hosts/${name}"
+              '') (lib.mapAttrsToList lib.nameValuePair nodes)}
 
               # Link host containers
               ${lib.concatMapStringsSep "\n" (host@{ name, value }: ''
                 mkdir -p $out/flake/container/${name}
                 ${lib.concatMapStringsSep "\n" (container@{ name, value }: ''
-                  ln -s '${value.config.system.build.toplevel}' "$out/flake/container/${host.name}/${name}"
-                '') (lib.mapAttrsToList lib.nameValuePair value.config.containers)}
-              '') (lib.mapAttrsToList lib.nameValuePair inputs.self.nixosConfigurations)}
+                  ln -s '${value.configuration.system.build.toplevel}' "$out/flake/container/${host.name}/${name}"
+                '') (lib.mapAttrsToList lib.nameValuePair value.configuration.containers)}
+              '') (lib.mapAttrsToList lib.nameValuePair nodes)}
             '';
+          };
+        in {
+          host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
+
+          configuration = rec {
+            _module.args = nixos.specialArgs;
+            imports = nixos.modules ++ [
+             #linkage
+              vmsystem
+              { secrets.baseDirectory = "/var/lib/secrets/"; }
+            ];
           };
 
           # Filter out "added to list of known hosts" spam from output
@@ -601,11 +428,6 @@
             pipeline -w { ${pkgs.gnugrep}/bin/grep --line-buffered -v "list of known hosts" }
             fdswap 2 1
           '';
-
-         ## Replace all usage of nix-copy-closure with `nix-copy`
-         #deployScriptPhases.nix-copy-alias = lib.dag.entryBefore ["copy-closure"] ''
-         #  alias nix-copy-closure="nix copy"
-         #'';
 
           # Git tag all systems and deployments
           deployScriptPhases.git-tag = let
@@ -626,6 +448,8 @@
             }
           '';
 
+          privilegeEscalationCommand = []; # already root
+
           successTimeout = lib.mkDefault 120;
           switchTimeout = lib.mkDefault 120;
 
@@ -636,7 +460,7 @@
         };
 
         nodes = let
-          hosts = builtins.attrNames (builtins.removeAttrs inputs.self.nixosConfigurations [
+          hosts = builtins.attrNames (builtins.removeAttrs inputs.self.nixosModules.hosts.${system.target} [
             "image"
           ]);
         in (lib.genAttrs hosts (_: {})) // {
@@ -685,13 +509,207 @@
     nixosModules = let
       mergeAll = lib.fold lib.recursiveUpdate {};
       pathsToAttrs = map (file:
-        let cleanFile = lib.removeSuffix ".nix" (lib.removePrefix "./" (toString file));
+        let cleanFile = lib.removeSuffix ".nix" (lib.removePrefix "${toString ./.}/" (toString file));
         in lib.setAttrByPath (lib.splitString "/" cleanFile) (import file)
       );
+      nixFilesOf = builtins.filter (lib.hasSuffix ".nix");
 
-      moduleList = (import ./modules/nixos.nix) ++ (import ./modules/home-manager.nix);
-      profilesList = import ./profiles/list.nix;
-    in mergeAll (pathsToAttrs moduleList) // { profiles = mergeAll (pathsToAttrs profilesList); };
+      moduleList = (import ./modules/nixos.nix)
+        ++ (import ./modules/home-manager.nix);
+
+      profilesList = (lib.filesystem.listFilesRecursive ./profiles)
+        ++ (builtins.filter (f: ! builtins.hasAttr (builtins.baseNameOf f) (builtins.readDir ./users))
+                            (lib.filesystem.listFilesRecursive ./users));
+    in (mergeAll (pathsToAttrs (nixFilesOf moduleList)))
+    // (mergeAll (pathsToAttrs (nixFilesOf profilesList)))
+    // {
+      hosts = forAllSystems ({ pkgs, system, ... }: (let
+        usr = {
+          utils = import ./lib/utils.nix {
+            inherit lib;
+          };
+          elisp = import ./lib/elisp.nix {
+            inherit lib;
+            pkgs = channels.lib.legacyPackages.${system};
+          };
+          dag = let dagLib = import ./lib/dag.nix lib lib;
+          in dagLib.dag // { inherit (dagLib) types; };
+          units = {
+            kilobytes = b: b * 1024;
+            megabytes = k: k * 1024;
+            gigabytes = m: m * 1024;
+          };
+        };
+
+        modulesFor = hostName: appendModules: let
+          specialArgs = {
+            inherit usr;
+            flake = inputs.self;
+            fetchPullRequest = fetchPullRequestForSystem system;
+
+            domains = import ./secrets/domains.nix;
+            hosts = import ./secrets/hosts.nix;
+
+            modules = systemModules ++ [
+              { _module.args = specialArgs; }
+            ];
+            extraModules = [];
+          };
+
+          # External modules
+          inherit (inputs.home.nixosModules) home-manager;
+          inherit (inputs.dwarffs.nixosModules) dwarffs;
+          inherit (inputs.guix.nixosModules) guix;
+          inherit (inputs.construct.nixosModules) matrix-construct;
+          apparmor-nix = inputs.apparmor.nixosModule;
+
+          # Some common basic stuff
+          core = ./profiles/core.nix;
+
+          # The flake-ier common basic stuff
+          global = {
+            environment.etc."machine-id".text = builtins.hashString "md5" hostName;
+            environment.pathsToLink = [ "/share/bios" ];
+            networking = { inherit hostName; };
+
+            nix.package = lib.mkDefault pkgs.nixFlakes;
+            nix.registry = lib.mapAttrs (id: flake: {
+              inherit flake;
+              from = { inherit id; type = "indirect"; };
+            }) (inputs // { nixpkgs = inputs.master; });
+            nix.nixPath = [
+              "nixpkgs=${channels.pkgs}"
+              "nixos=${inputs.self}/configuration.nix"
+              "self=/run/current-system/flake/input/self/configuration.nix"
+            ];
+
+            system.configurationRevision = inputs.self.rev or "dirty";
+            system.nixos.versionSuffix = let inherit (inputs) self;
+              date = lib.substring 0 8 (self.lastModifiedDate or self.lastModified);
+              rev = self.shortRev or "dirty";
+            in lib.mkForce ".${date}.${rev}";
+
+            system.extraSystemBuilderCmds = (''
+
+              mkdir -p $out/flake/input
+
+              # Link first-class inputs
+              ${lib.concatMapStringsSep "\n" ({ name, value }: ''
+                ln -s '${value}' "$out/flake/input/${name}"
+              '') inputMap.n1}
+
+              # Link second-class inputs
+              ${(lib.concatMapStringsSep "\n" ({ name, value }: ''
+                ln -s '${value}' "$out/flake/input/${name}"
+              '') inputMap.n2)}
+
+              # Link third-class inputs (skipped)
+              ${lib.concatMapStringsSep "\n" ({ name, value }: ''
+                ln -s '${value}' "$out/flake/input/${name}"
+              '') inputMap.n3}
+
+            '');
+
+            system.activationScripts.etcnixos = ''
+              rm -f /etc/nixos && \
+              ln -sfn /run/current-system/flake/input/self /etc/nixos || \
+              true
+            '';
+
+            nixpkgs = {
+              pkgs = pkgs // {
+                iptables = pkgs.iptables-nftables-compat;
+              };
+            };
+          };
+
+          # Amend home-manager (inject modules, set common stuff)
+          home = { config, ... }: {
+            options.home-manager.users = lib.mkOption {
+              type = with lib.types; attrsOf (submoduleWith {
+                inherit specialArgs;
+                modules = let
+                  flakeModules = import ./modules/home-manager.nix;
+                  nixProfile = { lib, ... }: {
+                    home.activation.disableNixEnv = lib.hm.dag.entryBefore ["installPackages"] ''
+                      alias nix-env=true
+                    '';
+                    home.activation.installPackages = lib.mapAttrs (k: v: lib.mkForce v) (lib.hm.dag.entryAnywhere "true");
+                  };
+                  baduk = {
+                    imports = [ (import inputs.baduk) ];
+                    baduk.sabaki.engines = lib.mkDefault [];
+                  };
+                  impermanence = import "${inputs.impermanence}/home-manager.nix";
+                in flakeModules ++ [
+                  nixProfile
+                  baduk
+                ];
+              });
+            };
+
+            config.home-manager = {
+              useUserPackages = true;
+              useGlobalPkgs = true;
+              verbose = true;
+            };
+          };
+
+          # Hack in the gnupg secrets module (fix docbook)
+          gnupg = import "${inputs.pr93659}/nixos/modules/security/gnupg.nix";
+
+          # Plug in the impermanence module (not a flake :<)
+          impermanence = import "${inputs.impermanence}/nixos.nix";
+
+          # Set up any other pull request modules
+          iwd = { config, ... }: let
+            iwdModule = "services/networking/iwd.nix";
+          in {
+            disabledModules = [ iwdModule ];
+            imports = [
+              (import "${inputs.pr75800}/nixos/modules/${iwdModule}" {
+                inherit config pkgs;
+                lib = let
+                  iwdLib = import "${inputs.pr75800}/lib/default.nix";
+                in lib // {
+                  types = {
+                    inherit (iwdLib.types) fixedLengthString lengthCheckedString;
+                  } // lib.types;
+                };
+              })
+            ];
+          };
+
+          flakeModules = import ./modules/nixos.nix;
+
+          # Actual host config
+          configuration = import "${toString ./hosts}/${hostName}";
+
+          systemModules = flakeModules ++ [
+            core global iwd gnupg
+            dwarffs guix matrix-construct impermanence apparmor-nix
+          ];
+
+          userModules = [
+            home
+            home-manager
+          ];
+        in {
+          inherit system specialArgs;
+          modules = systemModules ++ userModules ++ [
+            configuration
+          ] ++ appendModules;
+        };
+
+        forEachHost = do: usr.utils.recImport {
+          # Build a nixos system for each dir in ./hosts using modulesFor
+          dir = ./hosts;
+          _import = do;
+        };
+      in forEachHost (host: let
+        pkgs = channels.modules.legacyPackages.${system};
+      in modulesFor host [])));
+    };
 
     devShell = forAllSystems ({ system, ... }:
       let
@@ -730,11 +748,11 @@
       }
     );
 
-    passthru = rec {
+    lib = rec {
       inherit inputs channels config allSystems inputMap patchNixpkgs;
       patchedPkgs = patchNixpkgs (channels.modules.legacyPackages.x86_64-linux);
 
-      #$ git config secrets.providers "nix eval --raw .#passthru.secrets"
+      #$ git config secrets.providers "nix eval --raw .#lib.secrets"
       secrets = with lib.strings; concatMapStringsSep "\n" (replaceStrings [" "] ["\\s"]) ([
         (import ./secrets/git.github.nix).oauth-token
       ] ++ (attrNames (import ./secrets/wifi.networks.nix))
@@ -750,6 +768,14 @@
         ++ (attrValues (import ./secrets/weechat.credentials.nix))
         ++ (attrValues (import ./secrets/domains.nix))
         ++ (lib.flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
+        ++ (attrValues (import ./secrets/hass.tuya.nix))
+        ++ (attrValues (import ./secrets/hydroxide.auth.nix))
+        ++ (attrValues (import ./secrets/ipfs.cluster.nix))
+        ++ (attrValues (import ./secrets/ipfs.repo.nix))
+        ++ (attrValues (import ./secrets/mastodon.twitter.nix))
+        ++ (attrValues (import ./secrets/matrix.synapse.nix))
+        ++ (attrValues (import ./secrets/nyxt.autofill.nix))
+        ++ (attrValues (import ./secrets/rescue.nix))
       );
     };
   };
