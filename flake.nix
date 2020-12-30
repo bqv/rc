@@ -377,18 +377,22 @@
       in {
         defaults = { name, config, ... }: let
           nixos = inputs.self.nixosModules.hosts.${system.target}.${name};
+          evalConfig = import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix";
 
-          vmsystem = { modules, system, specialArgs, ... }: {
-            system.build.vm = (import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix" {
-              inherit system specialArgs;
+          vmsystem = { modules, pkgs, specialArgs, ... }: {
+            system.build.vm = (evalConfig {
+              inherit specialArgs;
+              inherit (pkgs) system;
               modules = modules ++ [
                 (import "${channels.modules}/nixos/modules/virtualisation/qemu-vm.nix")
               ];
             }).config.system.build.toplevel;
           };
 
-          linkage = let
-            inherit (inputs.self.defaultPackage.${system.deploy}.config) nodes;
+          linkage = { pkgs, ... }: let
+            systems = builtins.mapAttrs (host: _:
+              evalConfig inputs.self.nixosModules.hosts.${pkgs.system}.${host}
+            ) nodes;
           in {
             # Link raw hosts on each host (non-recursively)
             system.extraSystemBuilderCmds = ''
@@ -396,16 +400,16 @@
 
               # Link other hosts (nonrecursively)
               ${lib.concatMapStringsSep "\n" ({ name, value }: ''
-                ln -s '${value.configuration.system.build.toplevel}' "$out/flake/hosts/${name}"
-              '') (lib.mapAttrsToList lib.nameValuePair nodes)}
+                ln -s '${value.config.system.build.toplevel}' "$out/flake/hosts/${name}"
+              '') (lib.mapAttrsToList lib.nameValuePair systems)}
 
               # Link host containers
               ${lib.concatMapStringsSep "\n" (host@{ name, value }: ''
                 mkdir -p $out/flake/container/${name}
                 ${lib.concatMapStringsSep "\n" (container@{ name, value }: ''
-                  ln -s '${value.configuration.system.build.toplevel}' "$out/flake/container/${host.name}/${name}"
-                '') (lib.mapAttrsToList lib.nameValuePair value.configuration.containers)}
-              '') (lib.mapAttrsToList lib.nameValuePair nodes)}
+                  ln -s '${value.config.system.build.toplevel}' "$out/flake/container/${host.name}/${name}"
+                '') (lib.mapAttrsToList lib.nameValuePair value.config.containers)}
+              '') (lib.mapAttrsToList lib.nameValuePair systems)}
             '';
           };
         in {
@@ -414,7 +418,7 @@
           configuration = rec {
             _module.args = nixos.specialArgs;
             imports = nixos.modules ++ [
-             #linkage
+              linkage
               vmsystem
               { secrets.baseDirectory = "/var/lib/secrets/"; }
             ];
