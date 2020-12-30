@@ -13,8 +13,8 @@ let
   flake = flake-compat { src = ./.; };
   hostname = with builtins; head (split "\n" (readFile /etc/hostname));
   maybe = c: let result = builtins.tryEval c; in if result.success then result.value else {};
-in { inherit flake-compat flake; self = flake.defaultNix; }
-// maybe flake.defaultNix // maybe (flake.defaultNix.passthru or {})
+in rec { inherit flake-compat flake; self = flake.defaultNix; inputs = self.lib.inputs // { inherit self; }; }
+// maybe flake.defaultNix // maybe (flake.defaultNix.lib or {})
 // maybe flake.defaultNix.defaultPackage.${system}
 // maybe flake.defaultNix.defaultPackage.${system}.config.nodes
 // maybe flake.defaultNix.defaultPackage.${system}.config.nodes.${hostname}.configuration
