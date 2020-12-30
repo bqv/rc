@@ -33,4 +33,4 @@ nixusArgs: conf: let
       }
     ];
   };
-in result #.config.deployScript // result // nixusPkgs.lib.mapAttrs (n: v: v.nodeDeployScript) result.config.nodes
+in result.config.deployScript // result // nixusPkgs.lib.mapAttrs (n: v: v.nodeDeployScript) result.config.nodes
