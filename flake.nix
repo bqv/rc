@@ -397,23 +397,25 @@
             }).config.system.build.toplevel;
           };
 
-          linkage = {
+          linkage = let
+            inherit (inputs.self.defaultPackage.${system.deploy}.config) nodes;
+          in {
             # Link raw hosts on each host (non-recursively)
             system.extraSystemBuilderCmds = ''
               mkdir -p $out/flake/hosts
 
               # Link other hosts (nonrecursively)
               ${lib.concatMapStringsSep "\n" ({ name, value }: ''
-                ln -s '${value.config.system.build.toplevel}' "$out/flake/hosts/${name}"
-              '') (lib.mapAttrsToList lib.nameValuePair inputs.self.nixosConfigurations)}
+                ln -s '${value.configuration.system.build.toplevel}' "$out/flake/hosts/${name}"
+              '') (lib.mapAttrsToList lib.nameValuePair nodes)}
 
               # Link host containers
               ${lib.concatMapStringsSep "\n" (host@{ name, value }: ''
                 mkdir -p $out/flake/container/${name}
                 ${lib.concatMapStringsSep "\n" (container@{ name, value }: ''
-                  ln -s '${value.config.system.build.toplevel}' "$out/flake/container/${host.name}/${name}"
-                '') (lib.mapAttrsToList lib.nameValuePair value.config.containers)}
-              '') (lib.mapAttrsToList lib.nameValuePair inputs.self.nixosConfigurations)}
+                  ln -s '${value.configuration.system.build.toplevel}' "$out/flake/container/${host.name}/${name}"
+                '') (lib.mapAttrsToList lib.nameValuePair value.configuration.containers)}
+              '') (lib.mapAttrsToList lib.nameValuePair nodes)}
             '';
           };
         in {
