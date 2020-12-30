@@ -300,21 +300,12 @@
       in tryGetValue (builtins.tryEval (lib.concatMap lib.attrValues (lib.attrValues s6))));
     };
   in {
-    nixosConfigurations = let
+    nixosConfigurations = builtins.mapAttrs (host: node: let
       system = "x86_64-linux"; # So far it always is...
-      forEachHost = v: {};
-    in forEachHost (host: let
       pkgs = channels.modules.legacyPackages.${system};
-      mkSystem = import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix";
-      vmConfig = (mkSystem (modulesFor host [vm])).config;
-      modules = modulesFor host [{
-        system.build = {
-          inherit (vmConfig.system.build) vm;
-        };
-      }];
-    in mkSystem modules // {
-      nixos = modules; # This is extra spicy, but vaguely needed for nixus?
-    });
+    in {
+      config = node.configuration;
+    }) inputs.self.defaultPackage.x86_64-linux.config.nodes;
 
     # convenience...
     homeConfigurations = lib.genAttrs (builtins.attrNames inputs.self.nixosConfigurations)
@@ -421,7 +412,7 @@
         in {
           host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
 
-          configuration = {
+          configuration = rec {
             _module.args = nixos.specialArgs;
             imports = nixos.modules ++ [
              #linkage
