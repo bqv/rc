@@ -429,11 +429,6 @@
             fdswap 2 1
           '';
 
-          # Replace all usage of nix-copy-closure with `nix-copy`
-          deployScriptPhases.nix-copy-alias = lib.dag.entryBefore ["copy-closure"] ''
-            alias nix-copy-closure="nix copy"
-          '';
-
           # Git tag all systems and deployments
           deployScriptPhases.git-tag = let
             inherit (config.configuration) system;
@@ -588,7 +583,7 @@
               "self=/run/current-system/flake/input/self/configuration.nix"
             ];
 
-            system.configurationRevision = inputs.self.rev or "dirty-${toString builtins.currentTime}";
+            system.configurationRevision = inputs.self.rev or "dirty";
             system.nixos.versionSuffix = let inherit (inputs) self;
               date = lib.substring 0 8 (self.lastModifiedDate or self.lastModified);
               rev = self.shortRev or "dirty";

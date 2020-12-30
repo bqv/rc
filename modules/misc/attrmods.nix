@@ -10,7 +10,7 @@ in {
   options = merge [
     (if home-manager then {
 
-      home.packages' = lib.mkOption {
+      home.packagesAttrs = lib.mkOption {
         type = lib.types.attrs;
         description = "Attrset based mirror of home.packages";
       };
@@ -18,7 +18,7 @@ in {
     } else {})
     (if nixos then {
 
-      environment.systemPackages' = lib.mkOption {
+      environment.systemPackagesAttrs = lib.mkOption {
         type = lib.types.attrs;
         description = "Attrset based mirror of environment.systemPackages";
       };
@@ -28,14 +28,14 @@ in {
   config = merge [
     (if home-manager then {
 
-      home.packages' = lib.mkOverride 100 (lib.zipAttrs
+      home.packagesAttrs = lib.mkOverride 100 (lib.zipAttrs
         (map (p: { ${if p ? pname then p.pname else p.name} = p; })
           config.home.packages));
 
     } else {})
     (if nixos then {
 
-      environment.systemPackages' = lib.mkOverride 100 (lib.zipAttrs
+      environment.systemPackagesAttrs = lib.mkOverride 100 (lib.zipAttrs
         (map (p: { ${if p ? pname then p.pname else p.name} = p; })
           config.environment.systemPackages));
 
