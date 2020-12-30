@@ -10,4 +10,5 @@
   ./networking/namespacing.nix
   ./misc/headless.nix
   ./misc/attrmods.nix
+  ./misc/platform.nix
 ]

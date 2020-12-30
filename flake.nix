@@ -366,18 +366,15 @@
     defaultPackage = forAllSystems ({ pkgs, system, ... }:
       import ./deploy {
         nixpkgs = patchNixpkgs (channels.modules.legacyPackages.${system});
-        deploySystem = system;
+        deploySystem = system; # By habit, system is deployer, platform is target
       } ({ config, lib, ... }: let
         inherit (config) nodes;
-        system = {
-          deploy = system;
-          # no current exceptions
-          target = "x86_64-linux";
-        };
       in {
         defaults = { name, config, ... }: let
-          nixos = inputs.self.nixosModules.hosts.${system.target}.${name};
           evalConfig = import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix";
+          nixos = with inputs.self.nixosModules;
+            let inherit ((evalConfig hosts.${system}.${name}).config) platform;
+            in hosts.${platform}.${name};
 
           vmsystem = { modules, pkgs, specialArgs, ... }: {
             system.build.vm = (evalConfig {
@@ -390,8 +387,9 @@
           };
 
           linkage = { pkgs, ... }: let
-            systems = builtins.mapAttrs (host: _:
-              evalConfig inputs.self.nixosModules.hosts.${pkgs.system}.${host}
+            systems = builtins.mapAttrs (host: _: with inputs.self.nixosModules;
+              let inherit ((evalConfig hosts.${system}.${host}).config) platform;
+              in evalConfig hosts.${platform}.${host}
             ) nodes;
           in {
             # Link raw hosts on each host (non-recursively)
@@ -415,14 +413,18 @@
         in {
           host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
 
-          configuration = rec {
-            _module.args = nixos.specialArgs;
-            imports = nixos.modules ++ [
-              linkage
-              vmsystem
-              { secrets.baseDirectory = "/var/lib/secrets/"; }
-            ];
-          };
+          configuration = nixos.modules ++ [
+            linkage
+            vmsystem
+            {
+              key = "secretsDir";
+              secrets.baseDirectory = "/var/lib/secrets/";
+            }
+            {
+              key = "specialArgs";
+              _module.args = nixos.specialArgs;
+            }
+          ];
 
           # Filter out "added to list of known hosts" spam from output
           deployScriptPhases.filter-known-hosts = lib.dag.entryBefore ["copy-closure"] ''
@@ -464,11 +466,11 @@
         };
 
         nodes = let
-          hosts = builtins.attrNames (builtins.removeAttrs inputs.self.nixosModules.hosts.${system.target} [
-            "image"
-          ]);
+          hosts = builtins.attrNames inputs.self.nixosModules.hosts.${system};
         in (lib.genAttrs hosts (_: {})) // {
-          zeta.panicAction = "false";
+          delta.hasFastConnection = true; # it's local!
+          image.enabled = false;
+          zeta.panicAction = "false"; # we shouldn't reboot this carelessly
           zeta.hasFastConnection = true;
           zeta.successTimeout = 240; # Zeta seems very slow...
           zeta.switchTimeout = 240; # maybe due to wireguard reloading?

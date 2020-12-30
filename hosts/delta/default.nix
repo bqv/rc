@@ -32,6 +32,8 @@
     ./remote.nix
   ];
 
+  platform = "x86_64-linux";
+
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
     efi.canTouchEfiVariables = true;
