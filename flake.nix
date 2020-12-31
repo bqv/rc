@@ -488,13 +488,15 @@
         };
       });
     in pkgs.runCommand "deployment" {
-      outputs = [ "out" "systems" ] ++ builtins.attrNames deployment.config.nodes;
+      outputs = [ "out" "systems" ] ++ builtins.attrNames (
+        lib.filterAttrs (_: n: n.enabled) deployment.config.nodes
+      );
       passthru = deployment;
     } ''
       mkdir -p $(dirname $out)
       ln -s ${deployment.config.deployScript} $out
       ${lib.concatStringsSep "" (lib.mapAttrsToList (host: node: if node.enabled then ''
-        ln -s ${node.nodeDeployScript} $${host}
+        ln -s ${node.nodeDeployScript} ''$${host}
         mkdir -p $systems
         ln -s ${node.configuration.system.build.toplevel} $systems/${host}
       '' else "") deployment.config.nodes)}
@@ -796,11 +798,9 @@
         ++ (attrValues (import ./secrets/weechat.credentials.nix))
         ++ (attrValues (import ./secrets/domains.nix))
         ++ (lib.flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
-        ++ (attrValues (import ./secrets/hass.tuya.nix))
-        ++ (attrValues (import ./secrets/hydroxide.auth.nix))
-        ++ (attrValues (import ./secrets/ipfs.cluster.nix))
-        ++ (attrValues (import ./secrets/ipfs.repo.nix))
-        ++ (attrValues (import ./secrets/mastodon.twitter.nix))
+        ++ (map (u: u.password) (attrValues (import ./secrets/hydroxide.auth.nix)))
+        ++ (lib.flatten (map attrValues (attrValues ((import ./secrets/ipfs.cluster.nix) // { secret = {}; }))))
+        ++ (lib.flatten (map attrValues (attrValues (import ./secrets/ipfs.repo.nix))))
         ++ (attrValues (import ./secrets/matrix.synapse.nix))
         ++ (attrValues (import ./secrets/nyxt.autofill.nix))
         ++ (attrValues (import ./secrets/wireguard.pubkeys.nix))
