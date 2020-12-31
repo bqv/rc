@@ -21,21 +21,32 @@ in {
             networking.firewall.enable = false;
 
             environment.systemPackages = with pkgs; [
-              vervis yq yj jq git darcs
+              yq yj jq git
             ];
 
             services.jellyfin.enable = true;
+
+            services.sonarr.enable = true;
+            services.radarr.enable = true;
+            services.lidarr.enable = true;
+            services.bazarr.enable = true;
+            services.jackett.enable = true;
+
+            services.transmission = {
+              enable = true;
+              settings.download-dir = "/srv/ftp";
+            };
           };
         };
       bindMounts = {
-        "/var/lib/jellyfin" = {
-          hostPath = "/var/lib/jellyfin";
+        "/srv/ftp" = {
+          hostPath = "/srv/ftp";
           isReadOnly = false;
         };
       };
     };
 
-  system.activationScripts.var-lib-jellyfin = ''
-    mkdir -p /var/lib/jellyfin
+  system.activationScripts.srv-ftp = ''
+    mkdir -p /srv/ftp
   '';
 }

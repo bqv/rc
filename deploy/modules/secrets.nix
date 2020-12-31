@@ -213,19 +213,19 @@ in {
               importas -i json JSON
 
               backtick -i -n NAME {
-                heredoc 0 $json jq -r '.name'
+                heredoc 0 $json jq -r ".name"
               } importas -i name NAME
 
               backtick -i -n SOURCE {
-                heredoc 0 $json jq -r '.source'
+                heredoc 0 $json jq -r ".source"
               } importas -i source SOURCE
 
               backtick -i -n USER {
-                heredoc 0 $json jq -r '.user'
+                heredoc 0 $json jq -r ".user"
               } importas -i user USER
 
               backtick -i -n GROUP {
-                heredoc 0 $json jq -r '.group'
+                heredoc 0 $json jq -r ".group"
               } importas -i group GROUP
 
               foreground {
