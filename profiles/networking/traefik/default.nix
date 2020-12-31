@@ -132,6 +132,17 @@
               { main = "rc.${domains.home}"; }
             ];
           };
+          jellyfin-http = {
+            entryPoints = [ "http" ];
+            rule = "Host(`media.${domains.home}`)";
+            service = "jellyfin";
+          };
+          jellyfin-https = jellyfin-http // {
+            entryPoints = [ "https" ];
+            tls.domains = [
+              { main = "media.${domains.home}"; }
+            ];
+          };
          #Router1 = {
          #  entryPoints = [ "foobar" "foobar" ];
          #  middlewares = [ "foobar" "foobar" ];
@@ -438,6 +449,12 @@
             passHostHeader = true;
             servers = [
               { url = "http://10.10.0.2:3000"; }
+            ];
+          };
+          jellyfin.loadBalancer = {
+            passHostHeader = true;
+            servers = [
+              { url = "http://10.11.0.2:8096"; }
             ];
           };
          #mirror-sample.mirroring = {
