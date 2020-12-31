@@ -366,58 +366,75 @@
     defaultPackage = forAllSystems ({ pkgs, system, ... }:
       import ./deploy {
         nixpkgs = patchNixpkgs (channels.modules.legacyPackages.${system});
-        deploySystem = system;
+        deploySystem = system; # By habit, system is deployer, platform is target
       } ({ config, lib, ... }: let
         inherit (config) nodes;
-        system = {
-          deploy = system;
-          # no current exceptions
-          target = "x86_64-linux";
-        };
       in {
         defaults = { name, config, ... }: let
-          nixos = inputs.self.nixosModules.hosts.${system.target}.${name};
+          evalConfig = import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix";
 
-          vmsystem = { modules, system, specialArgs, ... }: {
-            system.build.vm = (import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix" {
-              inherit system specialArgs;
+          getPlatform = with lib.modules; { modules, specialArgs, ... }: let
+            args = { config = null; options = null; inherit lib; } // specialArgs;
+          in (mergeModules [] (collectModules "" modules args)).matchedOptions.platform.value;
+
+          nixos = with inputs.self.nixosModules;
+            let platform = (getPlatform hosts.${system}.${name});
+            in hosts.${platform}.${name};
+
+          vmsystem = { modules, pkgs, specialArgs, ... }: {
+            system.build.vm = (evalConfig {
+              inherit specialArgs;
+              inherit (pkgs) system;
               modules = modules ++ [
                 (import "${channels.modules}/nixos/modules/virtualisation/qemu-vm.nix")
               ];
             }).config.system.build.toplevel;
           };
 
-          linkage = let
-            inherit (inputs.self.defaultPackage.${system.deploy}.config) nodes;
+          linkage = { config, pkgs, ... }: let
+            systems = builtins.mapAttrs (host: _: with inputs.self;
+              let platform = getPlatform nixosModules.hosts.${system}.${host};
+              in defaultPackage.${platform}.config.nodes.${host}.configuration
+            ) nodes;
           in {
+            options.system.linkOtherSystems = lib.mkOption {
+              type = lib.types.bool;
+              default = true;
+              description = "Whether to link other flake nodes to the system derivation.";
+            };
+
             # Link raw hosts on each host (non-recursively)
-            system.extraSystemBuilderCmds = ''
-              mkdir -p $out/flake/hosts
+            config.system = {
+              extraSystemBuilderCmds = lib.mkIf config.system.linkOtherSystems (''
+                mkdir -p $out/flake/hosts
 
-              # Link other hosts (nonrecursively)
-              ${lib.concatMapStringsSep "\n" ({ name, value }: ''
-                ln -s '${value.configuration.system.build.toplevel}' "$out/flake/hosts/${name}"
-              '') (lib.mapAttrsToList lib.nameValuePair nodes)}
+                # Link other hosts (nonrecursively)
+                ${lib.concatMapStringsSep "\n" ({ name, value }: ''
+                  ln -s '${value.system.build.toplevel}' "$out/flake/hosts/${name}"
+                '') (lib.mapAttrsToList lib.nameValuePair systems)}
 
-              # Link host containers
-              ${lib.concatMapStringsSep "\n" (host@{ name, value }: ''
-                mkdir -p $out/flake/container/${name}
-                ${lib.concatMapStringsSep "\n" (container@{ name, value }: ''
-                  ln -s '${value.configuration.system.build.toplevel}' "$out/flake/container/${host.name}/${name}"
-                '') (lib.mapAttrsToList lib.nameValuePair value.configuration.containers)}
-              '') (lib.mapAttrsToList lib.nameValuePair nodes)}
-            '';
+                # Link host containers
+                ${lib.concatMapStringsSep "\n" (host@{ name, value }: ''
+                  mkdir -p $out/flake/container/${name}
+                  ${lib.concatMapStringsSep "\n" (container@{ name, value }: ''
+                    ln -s '${value.config.system.build.toplevel}' "$out/flake/container/${host.name}/${name}"
+                  '') (lib.mapAttrsToList lib.nameValuePair value.containers)}
+                '') (lib.mapAttrsToList lib.nameValuePair systems)}
+              '');
+            };
           };
         in {
           host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
 
-          configuration = rec {
-            _module.args = nixos.specialArgs;
+          configuration = {
             imports = nixos.modules ++ [
-             #linkage
+             #linkage # TODO: figure out how to make this work
               vmsystem
-              { secrets.baseDirectory = "/var/lib/secrets/"; }
             ];
+            config = {
+              secrets.baseDirectory = "/var/lib/secrets/";
+              _module.args = nixos.specialArgs;
+            };
           };
 
           # Filter out "added to list of known hosts" spam from output
@@ -460,11 +477,11 @@
         };
 
         nodes = let
-          hosts = builtins.attrNames (builtins.removeAttrs inputs.self.nixosModules.hosts.${system.target} [
-            "image"
-          ]);
+          hosts = builtins.attrNames inputs.self.nixosModules.hosts.${system};
         in (lib.genAttrs hosts (_: {})) // {
-          zeta.panicAction = "false";
+          delta.hasFastConnection = true; # it's local!
+          image.enabled = false;
+          zeta.panicAction = "false"; # we shouldn't reboot this carelessly
           zeta.hasFastConnection = true;
           zeta.successTimeout = 240; # Zeta seems very slow...
           zeta.switchTimeout = 240; # maybe due to wireguard reloading?

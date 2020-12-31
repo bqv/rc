@@ -31,6 +31,8 @@
     ./certificate.nix
   ];
 
+  platform = "x86_64-linux";
+
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "sd_mod" ];
   boot.initrd.kernelModules = [ "btrfs" "ext4" ];
   boot.kernelModules = [ "kvm-intel" ];
