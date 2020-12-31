@@ -12,7 +12,8 @@
     ../../containers/hydroxide.nix # 10. 8.0.x
     ../../containers/anki.nix      # 10. 9.0.x
     ../../containers/vervis.nix    # 10.10.0.x
-   #../../containers/lemmy.nix     # 10.11.0.x
+    ../../containers/jellyfin.nix  # 10.11.0.x
+   #../../containers/lemmy.nix     # 10.12.0.x
     ../../profiles/meta/fatal-warnings.nix
     ../../profiles/misc/qemu.nix
     ../../profiles/misc/restartssh.nix
