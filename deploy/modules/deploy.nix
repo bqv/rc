@@ -227,7 +227,7 @@ in {
     #!${nixus.pkgs.execline}/bin/execlineb -Ws0
   '' + (
     if lib.any (node: node.dirty) (lib.attrValues config.nodes) then ''
-      foreground { echo Cannot complete a dirty deployment }
+      foreground { echo Not completing a dirty deployment }
       exit 41
     '' else ""
   ) + ''

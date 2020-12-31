@@ -364,13 +364,26 @@
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }: let
+      introspect = { options, ... }: {
+        # Inlink options arg for convenient introspection
+        options.options = lib.mkOption {
+          type = lib.types.attrs;
+          default = options;
+          internal = true;
+        };
+      };
+
       deployment = import ./deploy {
         nixpkgs = patchNixpkgs (channels.modules.legacyPackages.${system});
         deploySystem = system; # By habit, system is deployer, platform is target
       } ({ config, lib, ... }: let
         inherit (config) nodes;
       in {
+        imports = [ introspect ];
+
         defaults = { name, config, ... }: let
+          imports = [ introspect ];
+
           evalConfig = import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix";
 
           getPlatform = with lib.modules; { modules, specialArgs, ... }: let
@@ -424,12 +437,15 @@
             };
           };
         in {
+          imports = [ introspect ];
+
           host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
 
           configuration = {
             imports = nixos.modules ++ [
              #linkage # TODO: figure out how to make this work
               vmsystem
+              introspect
             ];
             config = {
               secrets.baseDirectory = "/var/lib/secrets";
