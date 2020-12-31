@@ -391,46 +391,50 @@
             }).config.system.build.toplevel;
           };
 
-          linkage = { pkgs, ... }: let
-            systems = builtins.mapAttrs (host: _: with inputs.self.nixosModules;
-              let platform = (getPlatform hosts.${system}.${host});
-              in evalConfig hosts.${platform}.${host}
+          linkage = { config, pkgs, ... }: let
+            systems = builtins.mapAttrs (host: _: with inputs.self;
+              let platform = getPlatform nixosModules.hosts.${system}.${host};
+              in defaultPackage.${platform}.config.nodes.${host}.configuration
             ) nodes;
           in {
+            options.system.linkOtherSystems = lib.mkOption {
+              type = lib.types.bool;
+              default = true;
+              description = "Whether to link other flake nodes to the system derivation.";
+            };
+
             # Link raw hosts on each host (non-recursively)
-            system.extraSystemBuilderCmds = ''
-              mkdir -p $out/flake/hosts
+            config.system = {
+              extraSystemBuilderCmds = lib.mkIf config.system.linkOtherSystems (''
+                mkdir -p $out/flake/hosts
 
-              # Link other hosts (nonrecursively)
-              ${lib.concatMapStringsSep "\n" ({ name, value }: ''
-                ln -s '${value.config.system.build.toplevel}' "$out/flake/hosts/${name}"
-              '') (lib.mapAttrsToList lib.nameValuePair systems)}
+                # Link other hosts (nonrecursively)
+                ${lib.concatMapStringsSep "\n" ({ name, value }: ''
+                  ln -s '${value.system.build.toplevel}' "$out/flake/hosts/${name}"
+                '') (lib.mapAttrsToList lib.nameValuePair systems)}
 
-              # Link host containers
-              ${lib.concatMapStringsSep "\n" (host@{ name, value }: ''
-                mkdir -p $out/flake/container/${name}
-                ${lib.concatMapStringsSep "\n" (container@{ name, value }: ''
-                  ln -s '${value.config.system.build.toplevel}' "$out/flake/container/${host.name}/${name}"
-                '') (lib.mapAttrsToList lib.nameValuePair value.config.containers)}
-              '') (lib.mapAttrsToList lib.nameValuePair systems)}
-            '';
+                # Link host containers
+                ${lib.concatMapStringsSep "\n" (host@{ name, value }: ''
+                  mkdir -p $out/flake/container/${name}
+                  ${lib.concatMapStringsSep "\n" (container@{ name, value }: ''
+                    ln -s '${value.config.system.build.toplevel}' "$out/flake/container/${host.name}/${name}"
+                  '') (lib.mapAttrsToList lib.nameValuePair value.containers)}
+                '') (lib.mapAttrsToList lib.nameValuePair systems)}
+              '');
+            };
           };
         in {
           host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
 
           configuration = {
             imports = nixos.modules ++ [
-              linkage
+             #linkage # TODO: figure out how to make this work
               vmsystem
-              {
-                key = "secretsDir";
-                secrets.baseDirectory = "/var/lib/secrets/";
-              }
-              {
-                key = "specialArgs";
-                _module.args = nixos.specialArgs;
-              }
             ];
+            config = {
+              secrets.baseDirectory = "/var/lib/secrets/";
+              _module.args = nixos.specialArgs;
+            };
           };
 
           # Filter out "added to list of known hosts" spam from output
