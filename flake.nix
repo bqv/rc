@@ -489,6 +489,7 @@
       });
     in pkgs.runCommand "deployment" {
       outputs = [ "out" "systems" ] ++ builtins.attrNames deployment.config.nodes;
+      passthru = deployment;
     } ''
       mkdir -p $(dirname $out)
       ln -s ${deployment.config.deployScript} $out
