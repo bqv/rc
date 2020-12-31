@@ -363,8 +363,8 @@
       inherit (pkgs) pure shflags twitterpub velox vervis yacy;
     });
 
-    defaultPackage = forAllSystems ({ pkgs, system, ... }:
-      import ./deploy {
+    defaultPackage = forAllSystems ({ pkgs, system, ... }: let
+      deployment = import ./deploy {
         nixpkgs = patchNixpkgs (channels.modules.legacyPackages.${system});
         deploySystem = system; # By habit, system is deployer, platform is target
       } ({ config, lib, ... }: let
@@ -486,8 +486,19 @@
           zeta.successTimeout = 240; # Zeta seems very slow...
           zeta.switchTimeout = 240; # maybe due to wireguard reloading?
         };
-      })
-    );
+      });
+    in pkgs.runCommand "deployment" {
+      outputs = [ "out" "systems" ] ++ builtins.attrNames deployment.config.nodes;
+      passthru = deployment;
+    } ''
+      mkdir -p $(dirname $out)
+      ln -s ${deployment.config.deployScript} $out
+      ${lib.concatStringsSep "" (lib.mapAttrsToList (host: node: if node.enabled then ''
+        ln -s ${node.nodeDeployScript} $${host}
+        mkdir -p $systems
+        ln -s ${node.configuration.system.build.toplevel} $systems/${host}
+      '' else "") deployment.config.nodes)}
+    '');
 
     apps = forAllSystems ({ pkgs, system, ... }: {
       epsilon = rec {
