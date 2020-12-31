@@ -372,8 +372,13 @@
       in {
         defaults = { name, config, ... }: let
           evalConfig = import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix";
+
+          getPlatform = with lib.modules; { modules, specialArgs, ... }: let
+            args = { config = null; options = null; inherit lib; } // specialArgs;
+          in (mergeModules [] (collectModules "" modules args)).matchedOptions.platform.value;
+
           nixos = with inputs.self.nixosModules;
-            let inherit ((evalConfig hosts.${system}.${name}).config) platform;
+            let platform = (getPlatform hosts.${system}.${name});
             in hosts.${platform}.${name};
 
           vmsystem = { modules, pkgs, specialArgs, ... }: {
@@ -388,7 +393,7 @@
 
           linkage = { pkgs, ... }: let
             systems = builtins.mapAttrs (host: _: with inputs.self.nixosModules;
-              let inherit ((evalConfig hosts.${system}.${host}).config) platform;
+              let platform = (getPlatform hosts.${system}.${host});
               in evalConfig hosts.${platform}.${host}
             ) nodes;
           in {
@@ -413,18 +418,20 @@
         in {
           host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
 
-          configuration = nixos.modules ++ [
-            linkage
-            vmsystem
-            {
-              key = "secretsDir";
-              secrets.baseDirectory = "/var/lib/secrets/";
-            }
-            {
-              key = "specialArgs";
-              _module.args = nixos.specialArgs;
-            }
-          ];
+          configuration = {
+            imports = nixos.modules ++ [
+              linkage
+              vmsystem
+              {
+                key = "secretsDir";
+                secrets.baseDirectory = "/var/lib/secrets/";
+              }
+              {
+                key = "specialArgs";
+                _module.args = nixos.specialArgs;
+              }
+            ];
+          };
 
           # Filter out "added to list of known hosts" spam from output
           deployScriptPhases.filter-known-hosts = lib.dag.entryBefore ["copy-closure"] ''
