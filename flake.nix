@@ -602,6 +602,9 @@
             environment.pathsToLink = [ "/share/bios" ];
             networking = { inherit hostName; };
 
+            documentation.nixos.extraModuleSources = [./.]
+              ++ lib.mapAttrsToList (_: x: x.outPath) inputs;
+
             nix.package = lib.mkDefault pkgs.nixFlakes;
             nix.registry = lib.mapAttrs (id: flake: {
               inherit flake;
