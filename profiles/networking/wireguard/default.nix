@@ -1,31 +1,33 @@
 { config, lib, hosts, ... }:
 
 let
+  pubkeys = import ../../../secrets/wireguard.pubkeys.nix;
+
   network = 24;
   peers = {
     zeta = {
       ip = hosts.wireguard.zeta;
       wideArea = [ hosts.ipv4.zeta ]; # Note: Wireguard won't retry DNS resolution if it fails
-      publicKey = "WbZqPcgSxWf+mNsWVbS+0JylysN9FKrRG9783wn1JAg=";
+      publicKey = pubkeys.zeta;
     };
 
     theta = {
       ip = hosts.wireguard.theta;
       routes.zeta = [ "10.0.0.0/24" ];
-      publicKey = "Itld9S83/URY8CR1ZsIfYRGK74/T0O5YbsHWcNpn2gE=";
+      publicKey = pubkeys.theta;
     };
 
     delta = {
       ip = hosts.wireguard.delta;
       wideArea = [ hosts.ipv4.home ];
       localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
-      publicKey = "Y/SRDGEQfFLUGqx6vMnO1pxHs9zn//NpwdSGQ2Sm+Dg=";
+      publicKey = pubkeys.delta;
     };
 
     phi = {
       ip = hosts.wireguard.phi;
       localArea = [ hosts.lan.phi ];
-      publicKey = "kccZA+GAc0VStb28A+Kr0z8iPCWsiuRMfwHW391Qrko=";
+      publicKey = pubkeys.phi;
     };
   };
 
