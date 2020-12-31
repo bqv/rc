@@ -803,7 +803,6 @@
         ++ (attrValues (import ./secrets/mastodon.twitter.nix))
         ++ (attrValues (import ./secrets/matrix.synapse.nix))
         ++ (attrValues (import ./secrets/nyxt.autofill.nix))
-        ++ (attrValues (import ./secrets/rescue.nix))
         ++ (attrValues (import ./secrets/wireguard.pubkeys.nix))
       );
     };
