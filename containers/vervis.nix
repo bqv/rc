@@ -8,7 +8,7 @@ let
   databaseName = "vervis";
 in {
   environment.systemPackages = with pkgs; [
-    vervis 
+    vervis
   ];
 
   services.postgresql.enable = true;
