@@ -364,13 +364,26 @@
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }: let
+      introspect = { options, ... }: {
+        # Inlink options arg for convenient introspection
+        options.options = lib.mkOption {
+          type = lib.types.attrs;
+          default = options;
+          internal = true;
+        };
+      };
+
       deployment = import ./deploy {
         nixpkgs = patchNixpkgs (channels.modules.legacyPackages.${system});
         deploySystem = system; # By habit, system is deployer, platform is target
       } ({ config, lib, ... }: let
         inherit (config) nodes;
       in {
+        imports = [ introspect ];
+
         defaults = { name, config, ... }: let
+          imports = [ introspect ];
+
           evalConfig = import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix";
 
           getPlatform = with lib.modules; { modules, specialArgs, ... }: let
@@ -424,12 +437,15 @@
             };
           };
         in {
+          imports = [ introspect ];
+
           host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
 
           configuration = {
             imports = nixos.modules ++ [
              #linkage # TODO: figure out how to make this work
               vmsystem
+              introspect
             ];
             config = {
               secrets.baseDirectory = "/var/lib/secrets";
@@ -488,13 +504,15 @@
         };
       });
     in pkgs.runCommand "deployment" {
-      outputs = [ "out" "systems" ] ++ builtins.attrNames deployment.config.nodes;
+      outputs = [ "out" "systems" ] ++ builtins.attrNames (
+        lib.filterAttrs (_: n: n.enabled) deployment.config.nodes
+      );
       passthru = deployment;
     } ''
       mkdir -p $(dirname $out)
       ln -s ${deployment.config.deployScript} $out
       ${lib.concatStringsSep "" (lib.mapAttrsToList (host: node: if node.enabled then ''
-        ln -s ${node.nodeDeployScript} $${host}
+        ln -s ${node.nodeDeployScript} ''$${host}
         mkdir -p $systems
         ln -s ${node.configuration.system.build.toplevel} $systems/${host}
       '' else "") deployment.config.nodes)}
@@ -599,6 +617,9 @@
             environment.etc."machine-id".text = builtins.hashString "md5" hostName;
             environment.pathsToLink = [ "/share/bios" ];
             networking = { inherit hostName; };
+
+            documentation.nixos.extraModuleSources = [./.]
+              ++ lib.mapAttrsToList (_: x: x.outPath) inputs;
 
             nix.package = lib.mkDefault pkgs.nixFlakes;
             nix.registry = lib.mapAttrs (id: flake: {
@@ -796,14 +817,11 @@
         ++ (attrValues (import ./secrets/weechat.credentials.nix))
         ++ (attrValues (import ./secrets/domains.nix))
         ++ (lib.flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
-        ++ (attrValues (import ./secrets/hass.tuya.nix))
-        ++ (attrValues (import ./secrets/hydroxide.auth.nix))
-        ++ (attrValues (import ./secrets/ipfs.cluster.nix))
-        ++ (attrValues (import ./secrets/ipfs.repo.nix))
-        ++ (attrValues (import ./secrets/mastodon.twitter.nix))
+        ++ (map (u: u.password) (attrValues (import ./secrets/hydroxide.auth.nix)))
+        ++ (lib.flatten (map attrValues (attrValues ((import ./secrets/ipfs.cluster.nix) // { secret = {}; }))))
+        ++ (lib.flatten (map attrValues (attrValues (import ./secrets/ipfs.repo.nix))))
         ++ (attrValues (import ./secrets/matrix.synapse.nix))
         ++ (attrValues (import ./secrets/nyxt.autofill.nix))
-        ++ (attrValues (import ./secrets/rescue.nix))
         ++ (attrValues (import ./secrets/wireguard.pubkeys.nix))
       );
     };

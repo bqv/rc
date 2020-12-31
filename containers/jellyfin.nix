@@ -36,6 +36,14 @@ in {
               enable = true;
               settings.download-dir = "/srv/ftp";
             };
+            systemd.services.transmission = {
+              environment.TRANSMISSION_WEB_HOME = pkgs.fetchFromGitHub {
+                owner = "Secretmapper";
+                repo = "combustion";
+                rev = "d5ff91d4078b41bd3738542a20d802cd3ff6cc1e";
+                sha256 = "gZ4YOKMsnYEWDLnh8OZNwEg1ZJioZsWrOcAjHLIyFYg=";
+              };
+            };
           };
         };
       bindMounts = {
