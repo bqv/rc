@@ -276,6 +276,7 @@
     forAllSystems = f: lib.genAttrs allSystems (system: f {
       inherit system;
       pkgs = pkgsForSystem system;
+      inherit (pkgs) lib;
     });
 
     inputMap = let
@@ -364,12 +365,14 @@
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }: let
-      introspect = { options, ... }: {
-        # Inlink options arg for convenient introspection
-        options.options = lib.mkOption {
+      introspect = { config, options, pkgs, lib, ... }: {
+        options = lib.mapAttrs (default: lib.mkOption {
           type = lib.types.attrs;
-          default = options;
+          inherit default;
           internal = true;
+        }) {
+          # Inlink args for tidy introspection
+          inherit config options pkgs;
         };
       };
 
