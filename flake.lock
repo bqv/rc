@@ -645,16 +645,15 @@
     "hnix-overlay": {
       "flake": false,
       "locked": {
-        "lastModified": 1607436651,
-        "narHash": "sha256-JVb+RfBWE5/Mf8CDmhA1EcHj8hWJy69mur9tfQzPQ18=",
-        "owner": "layus",
+        "lastModified": 1609520251,
+        "narHash": "sha256-ZURTkqMhmbCpOM54Ij89qDsAfTGaPLyQQGrdljX26JM=",
+        "owner": "haskell-nix",
         "repo": "hnix",
-        "rev": "2ec374d19e4a4090abed5513faf6ad6644f0ff8b",
+        "rev": "8a6ff0766cb55b4b458e2a35cd4c9c06704b0f1f",
         "type": "github"
       },
       "original": {
-        "owner": "layus",
-        "ref": "derivationStrict",
+        "owner": "haskell-nix",
         "repo": "hnix",
         "type": "github"
       }
