@@ -610,22 +610,6 @@
         "type": "github"
       }
     },
-    "haskups": {
-      "locked": {
-        "lastModified": 1609535005,
-        "narHash": "sha256-RY31sRn6dLnIXWeUv18SQp8FfkRovTjt2WjwDquotqA=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "e61aa1530714d2832bfbc556df17ac0551b9fa63",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "haskell-updates",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "hist-navigator": {
       "flake": false,
       "locked": {
@@ -1437,7 +1421,6 @@
         "guix": "guix",
         "hardware": "hardware",
         "haskell": "haskell",
-        "haskups": "haskups",
         "hnix-overlay": "hnix-overlay",
         "home": "home",
         "impermanence": "impermanence",
