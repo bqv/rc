@@ -645,15 +645,16 @@
     "hnix-overlay": {
       "flake": false,
       "locked": {
-        "lastModified": 1609520251,
-        "narHash": "sha256-ZURTkqMhmbCpOM54Ij89qDsAfTGaPLyQQGrdljX26JM=",
-        "owner": "haskell-nix",
+        "lastModified": 1607436651,
+        "narHash": "sha256-JVb+RfBWE5/Mf8CDmhA1EcHj8hWJy69mur9tfQzPQ18=",
+        "owner": "layus",
         "repo": "hnix",
-        "rev": "8a6ff0766cb55b4b458e2a35cd4c9c06704b0f1f",
+        "rev": "2ec374d19e4a4090abed5513faf6ad6644f0ff8b",
         "type": "github"
       },
       "original": {
-        "owner": "haskell-nix",
+        "owner": "layus",
+        "ref": "derivationStrict",
         "repo": "hnix",
         "type": "github"
       }
@@ -1019,11 +1020,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1609508582,
-        "narHash": "sha256-ZJ2goHJp9pjFFeXEbjGCH8ZCrlArNOFsK43oyIGRXjM=",
+        "lastModified": 1609346110,
+        "narHash": "sha256-sWrJ7MAdB+SJhdjO75ACHzwPZWEDTA22BZ1aoZoO1/Q=",
         "owner": "atlas-engineer",
         "repo": "nyxt",
-        "rev": "6df4b60db26d305d2cef0d36ae7d5191c79048b1",
+        "rev": "9a531621ec4092aada58afbab050aafbb5f21bc6",
         "type": "github"
       },
       "original": {

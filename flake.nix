@@ -72,7 +72,7 @@
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
 
-    hnix-overlay = { url = "github:haskell-nix/hnix"; flake = false; }; # Hnix
+    hnix-overlay = { url = "github:layus/hnix/derivationStrict"; flake = false; }; # Hnix
     impermanence = { url = "github:nix-community/impermanence"; flake = false; };  # Impermanence
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };          # Nixpkgs-mozilla
     baduk = { url = "github:dustinlacewell/baduk.nix"; flake = false; };           # Baduk
