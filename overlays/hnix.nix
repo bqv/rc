@@ -28,9 +28,4 @@ inputs@{ hnix-overlay, ... }: final: prev: {
       cp -rv $cnix/corepkgs $out/data/nix/
     '';
   };
-  hnix-wrapped = final.writeScriptBin "hnix" ''
-    #!${final.execline}/bin/execlineb -S0
-    export NIX_DATA_DIR ${final.hnix.src}/data
-    ${final.hnix}/bin/hnix -I nix=${final.hnix.src}/data/nix/corepkgs $@
-  '';
 }

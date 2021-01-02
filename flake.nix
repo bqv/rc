@@ -265,10 +265,12 @@
           inherit (inputs.master.legacyPackages.${system}) plantuml-server; # missing
           inherit (inputs.small.legacyPackages.${system}) firefox firefox-unwrapped; # slow and broken
           inherit (inputs.large.legacyPackages.${system}) thunderbird obs-studio webkitgtk chromium qemu; # slow
+        })
+        (self: super: {
           androidenv.androidPkgs_9_0 = builtins.trace "pkgs.androidenv: neutered due to breakages" {
-            androidsdk = pkgs.hello;
-            platform-tools = pkgs.hello;
-            build-tools = [pkgs.hello];
+            androidsdk = self.hello;
+            inherit (super.androidenv.androidPkgs_9_0) platform-tools;
+            build-tools = [self.hello];
           };
         })
       ];
