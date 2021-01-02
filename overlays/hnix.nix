@@ -1,15 +1,10 @@
 inputs@{ hnix-overlay, ... }: final: prev: {
   hnix = let
-    inherit (inputs.haskups.legacyPackages.${final.system}) haskellPackages haskell;
+    inherit (final.master) haskellPackages haskell;
   in haskell.lib.overrideSrc (haskellPackages.override {
     overrides = self: super: {
-      attoparsec = haskell.lib.dontCheck super.attoparsec;
-      cassava = haskell.lib.dontCheck super.cassava;
       hnix-store-core = self.hnix-store-core_0_4_0_0;
       hnix-store-remote = haskell.lib.unmarkBroken super.hnix-store-remote;
-      ListLike = super.ListLike.overrideAttrs (_:{ patches = []; });
-      algebraic-graphs = haskell.lib.dontCheck super.algebraic-graphs;
-      nix-derivation = haskell.lib.dontCheck super.nix-derivation;
       hnix = haskell.lib.addBuildDepend super.hnix self.hnix-store-remote;
     };
   }).hnix {
