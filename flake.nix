@@ -370,7 +370,7 @@
     defaultPackage = forAllSystems ({ pkgs, system, ... }: let
       introspect = { config, options, pkgs, lib, ... }: {
         options = lib.mapAttrs (default: lib.mkOption {
-          type = lib.types.attrs;
+          type = lib.types.unspecified;
           inherit default;
           internal = true;
         }) {
@@ -385,10 +385,10 @@
       } ({ config, lib, ... }: let
         inherit (config) nodes;
       in {
-        imports = [ introspect ];
+       #imports = [ introspect ];
 
         defaults = { name, config, ... }: let
-          imports = [ introspect ];
+         #imports = [ introspect ];
 
           evalConfig = import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix";
 
@@ -443,7 +443,7 @@
             };
           };
         in {
-          imports = [ introspect ];
+         #imports = [ introspect ];
 
           host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
 
@@ -451,7 +451,7 @@
             imports = nixos.modules ++ [
              #linkage # TODO: figure out how to make this work
               vmsystem
-              introspect
+             #introspect # needs work
             ];
             config = {
               secrets.baseDirectory = "/var/lib/secrets";
