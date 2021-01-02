@@ -23,6 +23,7 @@
     pr93659.url = "github:ju1m/nixpkgs/security.pass";                             #|/ Reqs
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
     pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
+    haskups.url = "github:nixos/nixpkgs/haskell-updates";                          #||
 
     nix.url = "github:nixos/nix/progress-bar";                #|- Nix
     nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; #|  ^^^IPFS
@@ -72,7 +73,7 @@
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
 
-    hnix-overlay = { url = "github:layus/hnix/derivationStrict"; flake = false; }; # Hnix
+    hnix-overlay = { url = "github:haskell-nix/hnix"; flake = false; }; # Hnix
     impermanence = { url = "github:nix-community/impermanence"; flake = false; };  # Impermanence
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };          # Nixpkgs-mozilla
     baduk = { url = "github:dustinlacewell/baduk.nix"; flake = false; };           # Baduk
@@ -276,6 +277,7 @@
     forAllSystems = f: lib.genAttrs allSystems (system: f {
       inherit system;
       pkgs = pkgsForSystem system;
+      inherit (pkgs) lib;
     });
 
     inputMap = let
@@ -364,12 +366,14 @@
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }: let
-      introspect = { options, ... }: {
-        # Inlink options arg for convenient introspection
-        options.options = lib.mkOption {
+      introspect = { config, options, pkgs, lib, ... }: {
+        options = lib.mapAttrs (default: lib.mkOption {
           type = lib.types.attrs;
-          default = options;
+          inherit default;
           internal = true;
+        }) {
+          # Inlink args for tidy introspection
+          inherit config options pkgs;
         };
       };
 

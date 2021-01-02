@@ -4,7 +4,7 @@
 ((nil . (
         ;(eval . (set (make-local-variable 'default-directory)
         ;             (locate-dominating-file buffer-file-name ".dir-locals.el")))
-         (compile-command . "env TERM=dumb nix run '.#delta'")
+         (compile-command . "env TERM=dumb nix run '.#delta' --show-trace")
          (eval . (setq projectile-project-compilation-cmd
-                       "env TERM=dumb if nix build '' if ./result '' git push"))
+                       "env TERM=dumb if nix build --show-trace '' if ./result '' git push"))
          )))
