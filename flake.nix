@@ -23,6 +23,7 @@
     pr93659.url = "github:ju1m/nixpkgs/security.pass";                             #|/ Reqs
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
     pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
+    haskups.url = "github:nixos/nixpkgs/haskell-updates";                          #||
 
     nix.url = "github:nixos/nix/progress-bar";                #|- Nix
     nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; #|  ^^^IPFS
