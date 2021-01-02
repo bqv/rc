@@ -264,6 +264,7 @@
     wineWowPackages.staging
 
     giara lbry
+    hnix
   ];
 
   environment.etc."nix/id_zeta.ed25519".source = ../../secrets/keys/nix/id_zeta.ed25519;
