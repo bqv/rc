@@ -76,7 +76,7 @@ in {
           services.mastodon.configureNginx = true;
           services.mastodon.package = with fetchPullRequest {
             id = 78810;
-            sha256 = "0ksq5dwmlmz1vp40g1hq0bjxyczggi1k0rrkmcyaj8kk85qazx1f";
+            sha256 = "1d2927gwvjh1l2jajvfk4l6q3dsgwi7iq8kndiff06yqi203hv8s";
           }; mastodon;
           services.postfix.submissionOptions = {
             mynetworks = "127.0.0.0/8 10.0.0.0/8";

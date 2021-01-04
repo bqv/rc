@@ -72,7 +72,7 @@
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
 
-    hnix-overlay = { url = "github:layus/hnix/derivationStrict"; flake = false; }; # Hnix
+    hnix-overlay = { url = "github:haskell-nix/hnix"; flake = false; }; # Hnix
     impermanence = { url = "github:nix-community/impermanence"; flake = false; };  # Impermanence
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };          # Nixpkgs-mozilla
     baduk = { url = "github:dustinlacewell/baduk.nix"; flake = false; };           # Baduk
@@ -264,10 +264,12 @@
           inherit (inputs.master.legacyPackages.${system}) plantuml-server; # missing
           inherit (inputs.small.legacyPackages.${system}) firefox firefox-unwrapped; # slow and broken
           inherit (inputs.large.legacyPackages.${system}) thunderbird obs-studio webkitgtk chromium qemu; # slow
+        })
+        (self: super: {
           androidenv.androidPkgs_9_0 = builtins.trace "pkgs.androidenv: neutered due to breakages" {
-            androidsdk = pkgs.hello;
-            platform-tools = pkgs.hello;
-            build-tools = [pkgs.hello];
+            androidsdk = self.hello;
+            inherit (super.androidenv.androidPkgs_9_0) platform-tools;
+            build-tools = [self.hello];
           };
         })
       ];
@@ -365,28 +367,13 @@
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }: let
-      introspect = { config, options, pkgs, lib, ... }: {
-        options = lib.mapAttrs (default: lib.mkOption {
-          type = lib.types.attrs;
-          inherit default;
-          internal = true;
-        }) {
-          # Inlink args for tidy introspection
-          inherit config options pkgs;
-        };
-      };
-
       deployment = import ./deploy {
         nixpkgs = patchNixpkgs (channels.modules.legacyPackages.${system});
         deploySystem = system; # By habit, system is deployer, platform is target
       } ({ config, lib, ... }: let
         inherit (config) nodes;
       in {
-        imports = [ introspect ];
-
         defaults = { name, config, ... }: let
-          imports = [ introspect ];
-
           evalConfig = import "${patchNixpkgs pkgs}/nixos/lib/eval-config.nix";
 
           getPlatform = with lib.modules; { modules, specialArgs, ... }: let
@@ -440,15 +427,12 @@
             };
           };
         in {
-          imports = [ introspect ];
-
           host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
 
           configuration = {
             imports = nixos.modules ++ [
              #linkage # TODO: figure out how to make this work
               vmsystem
-              introspect
             ];
             config = {
               secrets.baseDirectory = "/var/lib/secrets";

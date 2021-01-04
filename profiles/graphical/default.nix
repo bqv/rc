@@ -25,10 +25,11 @@
       sddm = {
         enable = true;
         theme = "chili";
-        extraConfig = ''
-          [X11]
-          UserAuthFile=.local/share/sddm/Xauthority
-        '';
+       #extraConfig = ''
+       #  [X11]
+       #  UserAuthFile=.local/share/sddm/Xauthority
+       #'';
+        settings.X11.UserAuthFile = ".local/share/sddm/Xauthority";
       };
       setupCommands = ''
         export XDG_RUNTIME_DIR=/run/user/$(id --user)
