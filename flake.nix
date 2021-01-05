@@ -622,7 +622,7 @@
 
             system.configurationRevision = inputs.self.rev or "dirty";
             system.nixos.versionSuffix = let inherit (inputs) self;
-              date = lib.substring 0 8 (self.lastModifiedDate or self.lastModified);
+              date = lib.substring 0 8 (self.lastModifiedDate or "19700101");
               rev = self.shortRev or "dirty";
             in lib.mkForce ".${date}.${rev}";
 
@@ -791,6 +791,21 @@
 
       #$ git config secrets.providers "nix eval --raw .#lib.secrets"
       secrets = import ./secrets { inherit lib; };
+    };
+
+    hydraJobs = {
+      tarball = with inputs.self.legacyPackages.${builtins.currentSystem};
+      runCommandLocal "nixrc" rec {
+        src = builtins.storePath inputs.self.outPath;
+        buildInputs = [ src git git-crypt ];
+        outputs = [ "out" "tgz" ];
+      } ''
+        git clone --depth=1 file://$src $out && cd $out
+        git-crypt unlock ${toString ./secrets/keys/git}
+        tar cvz $out > $tgz
+      '';
+      deployment = with import "${inputs.self.hydraJobs.tarball}/configuration.nix" {};
+      defaultPackage;
     };
   };
 }
