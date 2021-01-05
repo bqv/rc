@@ -34,8 +34,8 @@
     home.url = "github:nix-community/home-manager"; #|- Home-manager
     home.inputs.nixpkgs.follows = "/master";        #|
 
-    naersk.url = "github:nmattia/naersk/58aa776"; #|- Naersk
-    naersk.inputs.nixpkgs.follows = "/master";    #|  (cole-h fork)
+    naersk.url = "github:nmattia/naersk";      #|- Naersk
+    naersk.inputs.nixpkgs.follows = "/master"; #|
 
     xontribs.url = "github:bqv/xontribs";        #|- Xontribs
     xontribs.inputs.nixpkgs.follows = "/master"; #|
@@ -50,7 +50,7 @@
     pipeliner.flake = false;
     # END ignorethis
 
-    guix.url = "github:emiller88/guix";            #|- Guix
+    guix.url = "github:emiller88/guix";      #|- Guix
     guix.inputs.nixpkgs.follows = "/master"; #|
 
     construct.url = "github:matrix-construct/construct"; #|- Construct
