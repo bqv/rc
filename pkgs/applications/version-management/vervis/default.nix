@@ -1,4 +1,7 @@
 { fetchdarcs, fetchgit, fetchpatch, runCommand, haskell, sqlite, ... }:
+# dev.angeley.es SSL broken. Fetch these with:
+# $ export GIT_SSL_NO_VERIFY=true
+# $ nix-prefetch-git https://dev.angeley.es/s/fr33domlover/r/yesod-auth-account --rev c67f360e264cb9daff29931ff3b2adb71fd5de9b
 
 let
   inherit (haskell.lib) dontHaddock unmarkBroken dontCheck doJailbreak;
