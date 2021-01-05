@@ -127,5 +127,6 @@ in overrideCabal (doJailbreak (dontHaddock (dontCheck (cabal2nix "vervis" fetchd
     '';
     passthru = {
       pkgs = haskellPackages // deps;
+      inherit deps;
     };
   })

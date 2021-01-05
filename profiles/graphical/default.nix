@@ -25,10 +25,6 @@
       sddm = {
         enable = true;
         theme = "chili";
-       #extraConfig = ''
-       #  [X11]
-       #  UserAuthFile=.local/share/sddm/Xauthority
-       #'';
         settings.X11.UserAuthFile = ".local/share/sddm/Xauthority";
       };
       setupCommands = ''
