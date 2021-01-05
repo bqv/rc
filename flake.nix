@@ -68,6 +68,9 @@
     wayland.url = "github:colemickens/nixpkgs-wayland"; #|- Nixpkgs-wayland
     wayland.inputs.nixpkgs.follows = "/small";          #|
 
+    agenix.url = "github:ryantm/agenix";                #|- AgeNix
+    agenix.inputs.nixpkgs.follows = "/small";           #|
+
     haskell.url = "github:input-output-hk/haskell.nix"; # Haskell.nix
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
