@@ -790,28 +790,7 @@
       patchedPkgs = patchNixpkgs (channels.modules.legacyPackages.x86_64-linux);
 
       #$ git config secrets.providers "nix eval --raw .#lib.secrets"
-      secrets = with lib.strings; concatMapStringsSep "\n" (replaceStrings [" "] ["\\s"]) ([
-        (import ./secrets/git.github.nix).oauth-token
-      ] ++ (attrNames (import ./secrets/wifi.networks.nix))
-        ++ (map (n: n.psk) (attrValues (import ./secrets/wifi.networks.nix)))
-        ++ (attrValues (import ./secrets/root.password.nix))
-        ++ (attrValues (import ./secrets/leaf.password.nix))
-        ++ (attrValues (import ./secrets/user.password.nix))
-        ++ (attrValues (import ./secrets/user.description.nix))
-        ++ (attrValues (import ./secrets/emacs.user.nix))
-        ++ (attrValues (import ./secrets/git.user.nix))
-        ++ (attrValues (import ./secrets/spotify.credentials.nix))
-        ++ (attrValues (import ./secrets/steam.credentials.nix))
-        ++ (attrValues (import ./secrets/weechat.credentials.nix))
-        ++ (attrValues (import ./secrets/domains.nix))
-        ++ (lib.flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
-        ++ (map (u: u.password) (attrValues (import ./secrets/hydroxide.auth.nix)))
-        ++ (lib.flatten (map attrValues (attrValues ((import ./secrets/ipfs.cluster.nix) // { secret = {}; }))))
-        ++ (lib.flatten (map attrValues (attrValues (import ./secrets/ipfs.repo.nix))))
-        ++ (attrValues (import ./secrets/matrix.synapse.nix))
-        ++ (attrValues (import ./secrets/nyxt.autofill.nix))
-        ++ (attrValues (import ./secrets/wireguard.pubkeys.nix))
-      );
+      secrets = import ./secrets { inherit lib; };
     };
   };
 }
