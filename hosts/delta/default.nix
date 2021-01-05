@@ -19,7 +19,7 @@
     ../../profiles/networking/bluetooth
     ../../profiles/networking/wireguard
     ../../profiles/networking/mdns.nix
-   #../../profiles/sound/pipewire.nix
+    ../../profiles/sound/pipewire.nix
     ../../profiles/sound/pulse.nix
     ../../profiles/virtualization/anbox
     ../../profiles/graphical
@@ -178,7 +178,7 @@
   services.flatpak.enable = true;
   xdg.portal.enable = true;
   services.searx.enable = true;
-  services.hydra.enable = false;
+  services.hydra.enable = true;
 
   dysnomia.enableLegacyModules = false;
 

@@ -1,8 +1,8 @@
 { config, lib, pkgs, ... }:
 
 {
-  services.pulseaudio = lib.mkForce false;
   hardware.pulseaudio.enable = lib.mkForce false;
+  services.jack.jackd.enable = lib.mkForce false;
 
   services.pipewire = {
     enable = true;
