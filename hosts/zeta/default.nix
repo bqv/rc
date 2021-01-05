@@ -126,6 +126,7 @@
   headless = true;
 
   nix.package = pkgs.nix-ipfs;
+  nix.binaryCaches = [ "ipfs://" ];
   nix.gc.automatic = false;
   nix.gc.dates = "05:00";
   nix.gc.options = "";
