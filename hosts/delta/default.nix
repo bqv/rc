@@ -14,6 +14,7 @@
     ../../profiles/services/aria2
     ../../profiles/services/guix
     ../../profiles/services/searx
+    ../../profiles/services/hydra
     ../../profiles/networking/ipfs
     ../../profiles/networking/bluetooth
     ../../profiles/networking/wireguard

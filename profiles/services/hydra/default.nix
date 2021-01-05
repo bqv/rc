@@ -6,7 +6,7 @@ in {
   services.hydra = lib.mkIf cfg.enable {
     hydraURL = "http://localhost:3000";
     notificationSender = "hydra@${domains.home}";
-    buildMAchinesFiles = [];
+    buildMachinesFiles = [];
     useSubstitutes = true;
   };
 }

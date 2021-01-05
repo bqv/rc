@@ -793,19 +793,19 @@
       secrets = import ./secrets { inherit lib; };
     };
 
-    hydraJobs = {
+    hydraJobs = rec {
       tarball = with inputs.self.legacyPackages.${builtins.currentSystem};
-      runCommandLocal "nixrc" rec {
+      { key ? toString ./secrets/keys/git }: runCommandLocal "nixrc" rec {
         src = builtins.storePath inputs.self.outPath;
         buildInputs = [ src git git-crypt ];
         outputs = [ "out" "tgz" ];
       } ''
         git clone --depth=1 file://$src $out && cd $out
-        git-crypt unlock ${toString ./secrets/keys/git}
+        git-crypt unlock ${key}
         tar cvz $out > $tgz
       '';
-      deployment = with import "${inputs.self.hydraJobs.tarball}/configuration.nix" {};
-      defaultPackage;
+      deployment = { system ? builtins.currentSystem }:
+      (import "${tarball}/configuration.nix" {}).defaultPackage.${system};
     };
   };
 }
