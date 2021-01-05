@@ -174,14 +174,6 @@
   services.nix-index.enable = true;
   services.locate.enable = true;
   services.pcscd.enable = true;
-  services.nixos-git = {
-    enable = false;
-    github = { owner = "bqv"; repo = "nixos"; };
-    branch = "live";
-    extraParams = {
-      idle_fetch_timeout = 10;
-    };
-  };
   services.flatpak.enable = true;
   xdg.portal.enable = true;
   services.searx.enable = true;
