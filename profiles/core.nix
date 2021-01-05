@@ -103,7 +103,6 @@ in {
       "https://all-hies.cachix.org"
       "https://iohk.cachix.org"
       "https://arm.cachix.org"
-      "ipfs://"
     ];
 
     binaryCachePublicKeys = [
