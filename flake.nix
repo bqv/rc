@@ -70,6 +70,7 @@
 
     agenix.url = "github:ryantm/agenix";                #|- AgeNix
     agenix.inputs.nixpkgs.follows = "/small";           #|
+    agenix.inputs.flake-utils.follows = "/utils";       #|
 
     haskell.url = "github:input-output-hk/haskell.nix"; # Haskell.nix
     utils.url = "github:numtide/flake-utils";           # Flake-utils
@@ -260,6 +261,7 @@
         inputs.lisp.overlay
         inputs.xontribs.overlay
         inputs.wayland.overlay
+        inputs.agenix.overlay
         inputs.apparmor.overlay
         inputs.self.overlay
         (pkgs: lib.const {
@@ -597,6 +599,7 @@
           inherit (inputs.dwarffs.nixosModules) dwarffs;
           inherit (inputs.guix.nixosModules) guix;
           inherit (inputs.construct.nixosModules) matrix-construct;
+          inherit (inputs.agenix.nixosModules) age;
           apparmor-nix = inputs.apparmor.nixosModule;
 
           # Some common basic stuff
@@ -726,7 +729,7 @@
 
           systemModules = flakeModules ++ [
             core global iwd gnupg
-            dwarffs guix matrix-construct impermanence apparmor-nix
+            dwarffs guix matrix-construct impermanence age apparmor-nix
           ];
 
           userModules = [
