@@ -37,19 +37,6 @@
     naersk.url = "github:nmattia/naersk";      #|- Naersk
     naersk.inputs.nixpkgs.follows = "/master"; #|
 
-    xontribs.url = "github:bqv/xontribs";        #|- Xontribs
-    xontribs.inputs.nixpkgs.follows = "/master"; #|
-    prompt-toolkit = { url = "github:bobhy/python-prompt-toolkit/th-threadsafe-load-2"; flake = false; };
-    # BEGIN ignorethis
-    xontribs.inputs.prompt-bar.follows = "/prompt-bar";
-    prompt-bar.url = "github:anki-code/xontrib-prompt-bar/68b3487e156ed3dce80578ebe552b6afa94c7eb8";
-    prompt-bar.flake = false;
-    # TODO notthis
-    xontribs.inputs.pipeliner.follows = "/pipeliner";
-    pipeliner.url = "github:anki-code/xontrib-pipeliner/daccb6c8a67bbda799dfa2d6d8d829b5e9151c92";
-    pipeliner.flake = false;
-    # END ignorethis
-
     guix.url = "github:emiller88/guix";      #|- Guix
     guix.inputs.nixpkgs.follows = "/master"; #|
 
@@ -68,13 +55,20 @@
     wayland.url = "github:colemickens/nixpkgs-wayland"; #|- Nixpkgs-wayland
     wayland.inputs.nixpkgs.follows = "/small";          #|
 
-    agenix.url = "github:ryantm/agenix";                #|- AgeNix
-    agenix.inputs.nixpkgs.follows = "/small";           #|
-    agenix.inputs.flake-utils.follows = "/utils";       #|
+    agenix.url = "github:ryantm/agenix";          #|- AgeNix
+    agenix.inputs.nixpkgs.follows = "/small";     #|
+    agenix.inputs.flake-utils.follows = "/utils"; #|
 
     haskell.url = "github:input-output-hk/haskell.nix"; # Haskell.nix
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
+
+    xontribs.url = "github:bqv/xontribs"; #|- Xontribs
+    xontribs.inputs = {
+      nixpkgs.follows = "/master";
+      prompt-bar = { url = "github:anki-code/xontrib-prompt-bar/68b3487e156ed3dce80578ebe552b6afa94c7eb8"; flake = false; };
+      pipeliner = { url = "github:anki-code/xontrib-pipeliner/daccb6c8a67bbda799dfa2d6d8d829b5e9151c92"; flake = false; };
+    };
 
     hnix-overlay = { url = "github:haskell-nix/hnix"; flake = false; }; # Hnix
     impermanence = { url = "github:nix-community/impermanence"; flake = false; };  # Impermanence
@@ -84,6 +78,7 @@
     napalm = { url = "github:nmattia/napalm"; flake = false; };                    # Napalm
     statichask = { url = "github:nh2/static-haskell-nix"; flake = false; };        # Static Haskell
     anki-sync = { url = "github:ankicommunity/anki-sync-server/125f7bb1"; flake = false; }; # Anki Server
+    prompt-toolkit = { url = "github:bobhy/python-prompt-toolkit/th-threadsafe-load-2"; flake = false; };
     matrix-nio = { url = "github:poljar/matrix-nio/98f0c244"; flake = false; };
     weechat-matrix = { url = "github:poljar/weechat-matrix/d4158416"; flake = false; };
     sqlcmdline = { url = "github:sebasmonia/sqlcmdline"; flake = false; };

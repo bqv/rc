@@ -1460,12 +1460,10 @@
         "nix": "nix",
         "nix-ipfs": "nix-ipfs",
         "nyxt": "nyxt",
-        "pipeliner": "pipeliner",
         "pr75800": "pr75800",
         "pr93659": "pr93659",
         "pr96368": "pr96368",
         "pr99188": "pr99188",
-        "prompt-bar": "prompt-bar",
         "prompt-toolkit": "prompt-toolkit",
         "rel1803": "rel1803",
         "rel1809": "rel1809",
@@ -1885,13 +1883,9 @@
         ],
         "output-search": "output-search",
         "pause": "pause",
-        "pipeliner": [
-          "pipeliner"
-        ],
+        "pipeliner": "pipeliner",
         "powerline": "powerline",
-        "prompt-bar": [
-          "prompt-bar"
-        ],
+        "prompt-bar": "prompt-bar",
         "prompt-vi-mode": "prompt-vi-mode",
         "pure": "pure",
         "pyenv": "pyenv",
