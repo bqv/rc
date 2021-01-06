@@ -37,6 +37,10 @@
     naersk.url = "github:nmattia/naersk";      #|- Naersk
     naersk.inputs.nixpkgs.follows = "/master"; #|
 
+    hydra.url = "github:nixos/hydra";              #|- Hydra
+    hydra.inputs.nix.follows = "/nix";             #|
+    hydra.inputs.nixpkgs.follows = "/nix/nixpkgs"; #|
+
     guix.url = "github:emiller88/guix";      #|- Guix
     guix.inputs.nixpkgs.follows = "/master"; #|
 
@@ -227,6 +231,9 @@
                 sha256 = "JfcswqOG0V5qlolxxYFOpqXJgENC4Adfk4J8r//tgfA=";
               })
             ];
+            passthru = {
+              inherit (inputs.nix.packages.${system}.nix) perl-bindings;
+            };
           });
           inherit (inputs.nix.packages.${system}) nix-static;
           nix-ipfs = inputs.nix-ipfs.packages.${system}.nix;

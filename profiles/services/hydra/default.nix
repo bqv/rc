@@ -4,9 +4,20 @@ let
   cfg = config.services.hydra;
 in {
   services.hydra = lib.mkIf cfg.enable {
-    hydraURL = "http://localhost:3000";
+    package = pkgs.hydra-unstable;
+    listenHost = "0.0.0.0";
+    port = 9999;
+    minimumDiskFree = 20; # in GB
+    minimumDiskFreeEvaluator = 5;
+    hydraURL = "https://hydra.${domains.home}";
     notificationSender = "hydra@${domains.home}";
-    buildMachinesFiles = [];
+    logo = null;
+   #buildMachinesFiles = [];
     useSubstitutes = true;
+    extraConfig = ''
+      using_frontend_proxy 1
+      max_output_size = 4294967296
+      evaluator_initial_heap_size = 4294967296
+    '';
   };
 }

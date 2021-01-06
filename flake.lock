@@ -701,6 +701,30 @@
         "type": "github"
       }
     },
+    "hydra": {
+      "inputs": {
+        "nix": [
+          "nix"
+        ],
+        "nixpkgs": [
+          "nix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1609854711,
+        "narHash": "sha256-eJfmyZTDJMusHIeMxsfhQNEDH6sTIuqiOYoM9MJdvGc=",
+        "owner": "nixos",
+        "repo": "hydra",
+        "rev": "be0aa7eb8589dc0b6ca92caa06a243c8163a04bd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "hydra",
+        "type": "github"
+      }
+    },
     "impermanence": {
       "flake": false,
       "locked": {
@@ -1446,6 +1470,7 @@
         "haskell": "haskell",
         "hnix-overlay": "hnix-overlay",
         "home": "home",
+        "hydra": "hydra",
         "impermanence": "impermanence",
         "ini2json": "ini2json",
         "ivy-exwm": "ivy-exwm",

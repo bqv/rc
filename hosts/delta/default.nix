@@ -127,19 +127,26 @@
       min-free = ${toString (gigabytes 48)}
     '';
 
-    buildMachines = lib.optionals true [
-      {
+    buildMachines =
+      (lib.optional true {
+        hostName = "localhost";
+        #system = "x86_64-linux";
+        systems = ["x86_64-linux" "i686-linux" ] ++ config.boot.binfmt.emulatedSystems;
+        inherit (config.nix) maxJobs;
+        speedFactor = 4;
+        supportedFeatures = config.nix.systemFeatures;
+        mandatoryFeatures = [ ];
+      })++
+      (lib.optional true {
         hostName = hosts.wireguard.zeta;
         #sshUser = "nix-ssh";
         sshKey = "/etc/nix/id_zeta.ed25519";
-        #system = "x86_64-linux";
         systems = ["x86_64-linux" "i686-linux" "armv6l-linux" "armv7l-linux"];
         maxJobs = 4;
         speedFactor = 2;
         supportedFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
         mandatoryFeatures = [ ];
-      }
-    ];
+      }) ;
     distributedBuilds = true;
   };
 

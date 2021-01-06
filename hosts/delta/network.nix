@@ -98,6 +98,11 @@
           value = 8888;
           policy = "accept";
         };
+        hydra = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = 9999;
+          policy = "accept";
+        };
         udpports = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "udp"; field = "dport";
           value = map (x: x+32768) (lib.genList (x: x+1) (65535-32768));
