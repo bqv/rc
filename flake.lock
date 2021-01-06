@@ -2,7 +2,9 @@
   "nodes": {
     "agenix": {
       "inputs": {
-        "flake-utils": "flake-utils",
+        "flake-utils": [
+          "utils"
+        ],
         "nixpkgs": [
           "small"
         ]
@@ -437,21 +439,6 @@
         "type": "github"
       }
     },
-    "flake-utils": {
-      "locked": {
-        "lastModified": 1600209923,
-        "narHash": "sha256-zoOWauTliFEjI++esk6Jzk7QO5EKpddWXQm9yQK24iM=",
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "rev": "3cd06d3c1df6879c9e41cb2c33113df10566c760",
-        "type": "github"
-      },
-      "original": {
-        "owner": "numtide",
-        "repo": "flake-utils",
-        "type": "github"
-      }
-    },
     "flycheck-purescript": {
       "flake": false,
       "locked": {
@@ -714,6 +701,30 @@
         "type": "github"
       }
     },
+    "hydra": {
+      "inputs": {
+        "nix": [
+          "nix"
+        ],
+        "nixpkgs": [
+          "nix",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1609854711,
+        "narHash": "sha256-eJfmyZTDJMusHIeMxsfhQNEDH6sTIuqiOYoM9MJdvGc=",
+        "owner": "nixos",
+        "repo": "hydra",
+        "rev": "be0aa7eb8589dc0b6ca92caa06a243c8163a04bd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "hydra",
+        "type": "github"
+      }
+    },
     "impermanence": {
       "flake": false,
       "locked": {
@@ -916,16 +927,15 @@
         ]
       },
       "locked": {
-        "lastModified": 1603594601,
-        "narHash": "sha256-PcHlJHKu9Hj7tquEwh0vNdL2RoU4ocRtWZDvaYPzEpo=",
+        "lastModified": 1606830243,
+        "narHash": "sha256-XuHaoQNTZ+aUvM6GjsGr8bax51Vvif+kuq4il6d4ZSU=",
         "owner": "nmattia",
         "repo": "naersk",
-        "rev": "58aa7763fa307184e0f1600912cdf25161a23fcf",
+        "rev": "a76924cbbb17c387e5ae4998a4721d88a3ac95c0",
         "type": "github"
       },
       "original": {
         "owner": "nmattia",
-        "ref": "58aa776",
         "repo": "naersk",
         "type": "github"
       }
@@ -1460,6 +1470,7 @@
         "haskell": "haskell",
         "hnix-overlay": "hnix-overlay",
         "home": "home",
+        "hydra": "hydra",
         "impermanence": "impermanence",
         "ini2json": "ini2json",
         "ivy-exwm": "ivy-exwm",
@@ -1474,12 +1485,10 @@
         "nix": "nix",
         "nix-ipfs": "nix-ipfs",
         "nyxt": "nyxt",
-        "pipeliner": "pipeliner",
         "pr75800": "pr75800",
         "pr93659": "pr93659",
         "pr96368": "pr96368",
         "pr99188": "pr99188",
-        "prompt-bar": "prompt-bar",
         "prompt-toolkit": "prompt-toolkit",
         "rel1803": "rel1803",
         "rel1809": "rel1809",
@@ -1899,13 +1908,9 @@
         ],
         "output-search": "output-search",
         "pause": "pause",
-        "pipeliner": [
-          "pipeliner"
-        ],
+        "pipeliner": "pipeliner",
         "powerline": "powerline",
-        "prompt-bar": [
-          "prompt-bar"
-        ],
+        "prompt-bar": "prompt-bar",
         "prompt-vi-mode": "prompt-vi-mode",
         "pure": "pure",
         "pyenv": "pyenv",

@@ -34,23 +34,14 @@
     home.url = "github:nix-community/home-manager"; #|- Home-manager
     home.inputs.nixpkgs.follows = "/master";        #|
 
-    naersk.url = "github:nmattia/naersk/58aa776"; #|- Naersk
-    naersk.inputs.nixpkgs.follows = "/master";    #|  (cole-h fork)
+    naersk.url = "github:nmattia/naersk";      #|- Naersk
+    naersk.inputs.nixpkgs.follows = "/master"; #|
 
-    xontribs.url = "github:bqv/xontribs";        #|- Xontribs
-    xontribs.inputs.nixpkgs.follows = "/master"; #|
-    prompt-toolkit = { url = "github:bobhy/python-prompt-toolkit/th-threadsafe-load-2"; flake = false; };
-    # BEGIN ignorethis
-    xontribs.inputs.prompt-bar.follows = "/prompt-bar";
-    prompt-bar.url = "github:anki-code/xontrib-prompt-bar/68b3487e156ed3dce80578ebe552b6afa94c7eb8";
-    prompt-bar.flake = false;
-    # TODO notthis
-    xontribs.inputs.pipeliner.follows = "/pipeliner";
-    pipeliner.url = "github:anki-code/xontrib-pipeliner/daccb6c8a67bbda799dfa2d6d8d829b5e9151c92";
-    pipeliner.flake = false;
-    # END ignorethis
+    hydra.url = "github:nixos/hydra";              #|- Hydra
+    hydra.inputs.nix.follows = "/nix";             #|
+    hydra.inputs.nixpkgs.follows = "/nix/nixpkgs"; #|
 
-    guix.url = "github:emiller88/guix";            #|- Guix
+    guix.url = "github:emiller88/guix";      #|- Guix
     guix.inputs.nixpkgs.follows = "/master"; #|
 
     construct.url = "github:matrix-construct/construct"; #|- Construct
@@ -68,13 +59,20 @@
     wayland.url = "github:colemickens/nixpkgs-wayland"; #|- Nixpkgs-wayland
     wayland.inputs.nixpkgs.follows = "/small";          #|
 
-    agenix.url = "github:ryantm/agenix";                #|- AgeNix
-    agenix.inputs.nixpkgs.follows = "/small";           #|
-    agenix.inputs.flake-utils.follows = "/utils";       #|
+    agenix.url = "github:ryantm/agenix";          #|- AgeNix
+    agenix.inputs.nixpkgs.follows = "/small";     #|
+    agenix.inputs.flake-utils.follows = "/utils"; #|
 
     haskell.url = "github:input-output-hk/haskell.nix"; # Haskell.nix
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
+
+    xontribs.url = "github:bqv/xontribs"; #|- Xontribs
+    xontribs.inputs = {
+      nixpkgs.follows = "/master";
+      prompt-bar = { url = "github:anki-code/xontrib-prompt-bar/68b3487e156ed3dce80578ebe552b6afa94c7eb8"; flake = false; };
+      pipeliner = { url = "github:anki-code/xontrib-pipeliner/daccb6c8a67bbda799dfa2d6d8d829b5e9151c92"; flake = false; };
+    };
 
     hnix-overlay = { url = "github:haskell-nix/hnix"; flake = false; }; # Hnix
     impermanence = { url = "github:nix-community/impermanence"; flake = false; };  # Impermanence
@@ -84,6 +82,7 @@
     napalm = { url = "github:nmattia/napalm"; flake = false; };                    # Napalm
     statichask = { url = "github:nh2/static-haskell-nix"; flake = false; };        # Static Haskell
     anki-sync = { url = "github:ankicommunity/anki-sync-server/125f7bb1"; flake = false; }; # Anki Server
+    prompt-toolkit = { url = "github:bobhy/python-prompt-toolkit/th-threadsafe-load-2"; flake = false; };
     matrix-nio = { url = "github:poljar/matrix-nio/98f0c244"; flake = false; };
     weechat-matrix = { url = "github:poljar/weechat-matrix/d4158416"; flake = false; };
     sqlcmdline = { url = "github:sebasmonia/sqlcmdline"; flake = false; };
@@ -232,6 +231,9 @@
                 sha256 = "JfcswqOG0V5qlolxxYFOpqXJgENC4Adfk4J8r//tgfA=";
               })
             ];
+            passthru = {
+              inherit (inputs.nix.packages.${system}.nix) perl-bindings;
+            };
           });
           inherit (inputs.nix.packages.${system}) nix-static;
           nix-ipfs = inputs.nix-ipfs.packages.${system}.nix;
@@ -627,7 +629,7 @@
 
             system.configurationRevision = inputs.self.rev or "dirty";
             system.nixos.versionSuffix = let inherit (inputs) self;
-              date = lib.substring 0 8 (self.lastModifiedDate or self.lastModified);
+              date = lib.substring 0 8 (self.lastModifiedDate or "19700101");
               rev = self.shortRev or "dirty";
             in lib.mkForce ".${date}.${rev}";
 
@@ -795,28 +797,22 @@
       patchedPkgs = patchNixpkgs (channels.modules.legacyPackages.x86_64-linux);
 
       #$ git config secrets.providers "nix eval --raw .#lib.secrets"
-      secrets = with lib.strings; concatMapStringsSep "\n" (replaceStrings [" "] ["\\s"]) ([
-        (import ./secrets/git.github.nix).oauth-token
-      ] ++ (attrNames (import ./secrets/wifi.networks.nix))
-        ++ (map (n: n.psk) (attrValues (import ./secrets/wifi.networks.nix)))
-        ++ (attrValues (import ./secrets/root.password.nix))
-        ++ (attrValues (import ./secrets/leaf.password.nix))
-        ++ (attrValues (import ./secrets/user.password.nix))
-        ++ (attrValues (import ./secrets/user.description.nix))
-        ++ (attrValues (import ./secrets/emacs.user.nix))
-        ++ (attrValues (import ./secrets/git.user.nix))
-        ++ (attrValues (import ./secrets/spotify.credentials.nix))
-        ++ (attrValues (import ./secrets/steam.credentials.nix))
-        ++ (attrValues (import ./secrets/weechat.credentials.nix))
-        ++ (attrValues (import ./secrets/domains.nix))
-        ++ (lib.flatten (map attrValues (attrValues (import ./secrets/hosts.nix))))
-        ++ (map (u: u.password) (attrValues (import ./secrets/hydroxide.auth.nix)))
-        ++ (lib.flatten (map attrValues (attrValues ((import ./secrets/ipfs.cluster.nix) // { secret = {}; }))))
-        ++ (lib.flatten (map attrValues (attrValues (import ./secrets/ipfs.repo.nix))))
-        ++ (attrValues (import ./secrets/matrix.synapse.nix))
-        ++ (attrValues (import ./secrets/nyxt.autofill.nix))
-        ++ (attrValues (import ./secrets/wireguard.pubkeys.nix))
-      );
+      secrets = import ./secrets { inherit lib; };
+    };
+
+    hydraJobs = rec {
+      tarball = with inputs.self.legacyPackages.${builtins.currentSystem};
+      { key ? toString ./secrets/keys/git }: runCommandLocal "nixrc" rec {
+        src = builtins.storePath inputs.self.outPath;
+        buildInputs = [ src git git-crypt ];
+        outputs = [ "out" "tgz" ];
+      } ''
+        git clone --depth=1 file://$src $out && cd $out
+        git-crypt unlock ${key}
+        tar cvz $out > $tgz
+      '';
+      deployment = { system ? builtins.currentSystem }:
+      (import "${tarball}/configuration.nix" {}).defaultPackage.${system};
     };
   };
 }

@@ -81,7 +81,7 @@ in {
 
     useSandbox = "relaxed";
 
-    allowedUsers = [ "@wheel" ];
+    allowedUsers = [ "@wheel" "hydra" ];
 
     trustedUsers = [ "root" "@wheel" ];
 

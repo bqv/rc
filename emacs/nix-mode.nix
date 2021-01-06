@@ -6,7 +6,9 @@
   in {
     demand = true;
     config = ''
-      (setq nix-repl-executable-args '("-vv" "repl" "--impure" "/run/current-system/flake/input/self/configuration.nix"))
+      (setq nix-repl-executable-args '("-vv" "repl" "--impure"
+                                       "--option" "allow-unsafe-native-code-during-evaluation" "true"
+                                       "/run/current-system/flake/input/self/configuration.nix"))
       (setq nix-indent-function 'nix-indent-line)
 
       ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: path: ''

@@ -64,6 +64,15 @@
             entryPoints = [ "https" ];
             tls = {};
           };
+          hydra-http = {
+            entryPoints = [ "http" ];
+            rule = "Host(`hydra.${domains.home}`)";
+            service = "hydra";
+          };
+          hydra-https = hydra-http // {
+            entryPoints = [ "https" ];
+            tls = {};
+          };
           yacy = {
             entryPoints = [ "yacy" ];
             service = "yacy";
@@ -403,6 +412,11 @@
           searx.loadBalancer = {
             servers = [
               { url = "http://${hosts.wireguard.delta}:8888"; }
+            ];
+          };
+          hydra.loadBalancer = {
+            servers = [
+              { url = "http://${hosts.wireguard.delta}:9999"; }
             ];
           };
           yacy.loadBalancer = {
