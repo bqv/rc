@@ -44,10 +44,12 @@
   (interactive "p")
   (ivy-shell nil :initial-input (if (= pfx -1) (car shell-command-history))))
 (global-set-key (kbd "M-!") #'ivy-shell-sync)
+(global-set-key (kbd "´") #'ivy-shell-sync)
 (defun ivy-shell-async (&optional pfx)
   (interactive "p")
   (ivy-shell t :initial-input (if (= pfx -1) (car shell-command-history))))
 (global-set-key (kbd "M-&") #'ivy-shell-async)
+(global-set-key (kbd "`") #'ivy-shell-async)
 
 (provide 'scraps+shell)
 ;;; scraps+shell.el ends here
