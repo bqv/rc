@@ -128,15 +128,15 @@
     '';
 
     buildMachines =
-      (lib.optional true {
-        hostName = "localhost";
-        #system = "x86_64-linux";
-        systems = ["x86_64-linux" "i686-linux" ] ++ config.boot.binfmt.emulatedSystems;
-        inherit (config.nix) maxJobs;
-        speedFactor = 4;
-        supportedFeatures = config.nix.systemFeatures;
-        mandatoryFeatures = [ ];
-      })++
+     #(lib.optional true {
+     #  hostName = "localhost";
+     #  #system = "x86_64-linux";
+     #  systems = ["x86_64-linux" "i686-linux" ] ++ config.boot.binfmt.emulatedSystems;
+     #  inherit (config.nix) maxJobs;
+     #  speedFactor = 4;
+     #  supportedFeatures = config.nix.systemFeatures;
+     #  mandatoryFeatures = [ ];
+     #})++
       (lib.optional true {
         hostName = hosts.wireguard.zeta;
         #sshUser = "nix-ssh";
