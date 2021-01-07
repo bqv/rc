@@ -268,8 +268,6 @@
         inputs.apparmor.overlay
         inputs.self.overlay
         (pkgs: lib.const {
-          inherit ((import (patchNixpkgs channels.modules.legacyPackages.${system}) { inherit system; }).pkgs) azure-cli; # pending nixpkgs-pr 107663
-          inherit (inputs.master.legacyPackages.${system}) plantuml-server; # missing
           inherit (inputs.small.legacyPackages.${system}) firefox firefox-unwrapped; # slow and broken
           inherit (inputs.large.legacyPackages.${system}) thunderbird obs-studio webkitgtk chromium qemu; # slow
         })
