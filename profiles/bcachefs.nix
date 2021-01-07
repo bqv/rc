@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 
 {
+  boot.kernelPackages = pkgs.large.linuxPackages_testing_bcachefs;
   boot.supportedFilesystems = [ "bcachefs" ];
   boot.kernelPatches = [{
     name = "bcachefs-acl";
