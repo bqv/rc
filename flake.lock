@@ -223,6 +223,21 @@
         "type": "github"
       }
     },
+    "devshell": {
+      "locked": {
+        "lastModified": 1609968818,
+        "narHash": "sha256-MhV9HrMP6BvDHKir2lzmPLLpHnwOiLb7hVOOQgwKcxQ=",
+        "owner": "numtide",
+        "repo": "devshell",
+        "rev": "8036aae0b292432e02f28a0203811ed7f25573e6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "devshell",
+        "type": "github"
+      }
+    },
     "dgit": {
       "flake": false,
       "locked": {
@@ -1081,11 +1096,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1609508582,
-        "narHash": "sha256-ZJ2goHJp9pjFFeXEbjGCH8ZCrlArNOFsK43oyIGRXjM=",
+        "lastModified": 1609858490,
+        "narHash": "sha256-nIXCGDAqw8o0Sw7hewlac5KPG/enAGRTe3mXKbEWolo=",
         "owner": "atlas-engineer",
         "repo": "nyxt",
-        "rev": "6df4b60db26d305d2cef0d36ae7d5191c79048b1",
+        "rev": "2bb9f4a0c0b036f7b400f9428bc9c26e8af3bbce",
         "type": "github"
       },
       "original": {
@@ -1462,6 +1477,7 @@
         "bottom": "bottom",
         "conix": "conix",
         "construct": "construct",
+        "devshell": "devshell",
         "dgit": "dgit",
         "dmenu": "dmenu",
         "dwarffs": "dwarffs",
