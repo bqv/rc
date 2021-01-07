@@ -802,18 +802,19 @@
     };
 
     hydraJobs = rec {
-      tarball = with inputs.self.legacyPackages.${builtins.currentSystem};
-      { key ? toString ./secrets/keys/git }: runCommandLocal "nixrc" rec {
+      tarball = forAllSystems ({ system, pkgs, key ? toString ./secrets/keys/git, ... }:
+      pkgs.runCommandLocal "nixrc" rec {
         src = builtins.storePath inputs.self.outPath;
-        buildInputs = [ src git git-crypt ];
+        buildInputs = [ src pkgs.git pkgs.git-crypt ];
         outputs = [ "out" "tgz" ];
       } ''
         git clone --depth=1 file://$src $out && cd $out
         git-crypt unlock ${key}
         tar cvz $out > $tgz
-      '';
-      deployment = { system ? builtins.currentSystem }:
-      (import "${tarball}/configuration.nix" {}).defaultPackage.${system};
+      '');
+      deployment = forAllSystems ({ system, ... }:
+        (import "${tarball}/configuration.nix" {}).defaultPackage.${system}
+      );
     };
   };
 }
