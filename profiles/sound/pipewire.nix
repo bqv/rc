@@ -18,4 +18,18 @@
       pkgs.xdg-desktop-portal-gtk
     ];
   };
+
+  environment.systemPackages = with pkgs; [
+    # ALSA Tools
+    # ------
+    alsaUtils
+
+    # PulseAudio control
+    # ------------------
+    ncpamixer
+    pavucontrol
+    pulseeffects
+    lxqt.pavucontrol-qt
+    pasystray
+  ];
 }
