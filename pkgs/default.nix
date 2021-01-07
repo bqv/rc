@@ -62,7 +62,7 @@ in rec {
 
   nodePackages = recurseIntoAttrs prev.nodePackages;
 
-  pleroma = prev.callPackage ./servers/pleroma { };
+  pleroma = builtins.trace "pkgs.pleroma: see instead nixpkgs#103138" (prev.callPackage ./servers/pleroma { });
 
   pure = prev.callPackage ./shells/zsh/pure { };
 

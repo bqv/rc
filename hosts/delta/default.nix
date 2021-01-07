@@ -24,7 +24,7 @@
     ../../profiles/virtualization/anbox
     ../../profiles/graphical
     ../../profiles/games
-   #../../profiles/bcachefs.nix
+    ../../profiles/bcachefs.nix
     ../../profiles/wayland.nix
     ../../profiles/weechat.nix
     ../../users/root.nix
