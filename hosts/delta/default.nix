@@ -186,6 +186,20 @@
   xdg.portal.enable = true;
   services.searx.enable = true;
   services.hydra.enable = true;
+  services.gitfs = {
+    enable = true;
+    mounts = {
+      nixrc = {
+        directory = "/run/git/nixrc";
+        remote = "/srv/git/github.com/bqv/nixrc";
+        branch = "live";
+      };
+     #"/run/git/nixpkgs" = {
+     #  github.owner = "nixos";
+     #  github.repo = "nixpkgs";
+     #};
+    };
+  };
 
   dysnomia.enableLegacyModules = false;
 
