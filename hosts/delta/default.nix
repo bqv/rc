@@ -20,7 +20,7 @@
     ../../profiles/networking/wireguard
     ../../profiles/networking/mdns.nix
     ../../profiles/sound/pipewire.nix
-    ../../profiles/sound/pulse.nix
+   #../../profiles/sound/pulse.nix
     ../../profiles/virtualization/anbox
     ../../profiles/graphical
     ../../profiles/games
