@@ -15,8 +15,8 @@ in {
     };
 
     mounts = mkOption {
-      type = types.submodule {
-        options = { name, config, ... }: {
+      type = types.attrsOf (types.submodule ({ name, config, ... }: {
+        options = {
           directory = mkOption {
             type = types.path;
             default = name;
@@ -80,18 +80,18 @@ in {
 
           invocation = mkOption {
             type = types.submodule {
-              options = { name, config, ... }: {
+              options = {
                 url = mkOption { type = types.str; };
                 params = mkOption { type = types.str; };
               };
             };
             internal = true;
             default = {
-              url = if ((mnt.github.owner == null) || (mnt.github.repo == null))
-                    then mnt.remote else mnt.githubRemote;
+              url = if ((config.github.owner == null) || (config.github.repo == null))
+                    then config.remote else config.githubRemote;
               params = let
-                paramAttrs = mnt.extraParams // {
-                  branch = mnt.branch;
+                paramAttrs = config.extraParams // {
+                  inherit (config) branch;
                   foreground = "true";
                   allow_other = "true";
                 };
@@ -100,7 +100,7 @@ in {
             };
           };
         };
-      };
+      }));
       default = {
       };
     };
