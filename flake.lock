@@ -187,6 +187,22 @@
         "type": "github"
       }
     },
+    "conix": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1609608416,
+        "narHash": "sha256-26PD9EkrEvDXQvtGmFcpiih1LaByxNX8Hc225qwz1XQ=",
+        "owner": "thenerd247",
+        "repo": "conix",
+        "rev": "2f529752d7b27daccd54b0a8b68a15a107192d7a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "thenerd247",
+        "repo": "conix",
+        "type": "github"
+      }
+    },
     "construct": {
       "inputs": {
         "nixpkgs": [
@@ -1444,6 +1460,7 @@
         "apparmor": "apparmor",
         "baduk": "baduk",
         "bottom": "bottom",
+        "conix": "conix",
         "construct": "construct",
         "dgit": "dgit",
         "dmenu": "dmenu",
