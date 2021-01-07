@@ -40,12 +40,6 @@ See `comint-run'."
     (bookmark-save)))
 (advice-add 'bookmark-set :after #'bookmark-save-advice)
 
-(defun pulseaudio-ctl/volume-up (&rest r)
-  (interactive)
-  (shell-command-to-string "pulseaudio-ctl up"))
-(defun pulseaudio-ctl/volume-down (&rest r)
-  (interactive)
-  (shell-command-to-string "pulseaudio-ctl down"))
-(define-key desktop-environment-mode-map (kbd "<269025043>") #'pulseaudio-ctl/volume-up) ; mouse v-up
-(define-key desktop-environment-mode-map (kbd "<269025041>") #'pulseaudio-ctl/volume-down) ; mouse v-down
+(define-key desktop-environment-mode-map (kbd "<269025043>") #'desktop-environment-volume-increment) ; mouse v-up
+(define-key desktop-environment-mode-map (kbd "<269025041>") #'desktop-environment-volume-decrement) ; mouse v-down
 (define-key desktop-environment-mode-map (kbd "<269025073>") #'emms-pause) ; headset btn
