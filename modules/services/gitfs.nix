@@ -44,7 +44,7 @@ in {
               '';
             };
 
-            githubRemote = mkOption {
+            remote = mkOption {
               type = types.str;
               internal = true;
               default = with config.github; "http://github.com/${owner}/${repo}";
@@ -88,7 +88,7 @@ in {
             internal = true;
             default = {
               url = if ((config.github.owner == null) || (config.github.repo == null))
-                    then config.remote else config.githubRemote;
+                    then config.remote else config.github.remote;
               params = let
                 paramAttrs = config.extraParams // {
                   inherit (config) branch;
