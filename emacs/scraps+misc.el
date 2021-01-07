@@ -40,6 +40,8 @@ See `comint-run'."
     (bookmark-save)))
 (advice-add 'bookmark-set :after #'bookmark-save-advice)
 
-(define-key desktop-environment-mode-map (kbd "<269025043>") #'desktop-environment-volume-increment) ; mouse v-up
-(define-key desktop-environment-mode-map (kbd "<269025041>") #'desktop-environment-volume-decrement) ; mouse v-down
+(define-key desktop-environment-mode-map (kbd "<269025043>") #'desktop-environment-volume-increment-slowly) ; mouse v-up
+(define-key desktop-environment-mode-map (kbd "S-<269025043>") #'desktop-environment-volume-increment)
+(define-key desktop-environment-mode-map (kbd "<269025041>") #'desktop-environment-volume-decrement-slowly) ; mouse v-down
+(define-key desktop-environment-mode-map (kbd "S-<269025041>") #'desktop-environment-volume-decrement)
 (define-key desktop-environment-mode-map (kbd "<269025073>") #'emms-pause) ; headset btn
