@@ -74,7 +74,7 @@
       pipeliner = { url = "github:anki-code/xontrib-pipeliner/daccb6c8a67bbda799dfa2d6d8d829b5e9151c92"; flake = false; };
     };
 
-    hnix-overlay = { url = "github:haskell-nix/hnix"; flake = false; }; # Hnix
+    hnix-overlay = { url = "github:haskell-nix/hnix"; flake = false; };            # Hnix
     impermanence = { url = "github:nix-community/impermanence"; flake = false; };  # Impermanence
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };          # Nixpkgs-mozilla
     baduk = { url = "github:dustinlacewell/baduk.nix"; flake = false; };           # Baduk
@@ -82,6 +82,7 @@
     napalm = { url = "github:nmattia/napalm"; flake = false; };                    # Napalm
     statichask = { url = "github:nh2/static-haskell-nix"; flake = false; };        # Static Haskell
     anki-sync = { url = "github:ankicommunity/anki-sync-server/125f7bb1"; flake = false; }; # Anki Server
+    conix = { url = "github:thenerd247/conix"; flake = false; };
     prompt-toolkit = { url = "github:bobhy/python-prompt-toolkit/th-threadsafe-load-2"; flake = false; };
     matrix-nio = { url = "github:poljar/matrix-nio/98f0c244"; flake = false; };
     weechat-matrix = { url = "github:poljar/weechat-matrix/d4158416"; flake = false; };
