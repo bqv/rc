@@ -53,6 +53,8 @@
 
     lisp.url = "github:nix-lisp/lisp-overlay"; # Lisp-overlay
 
+    devshell.url = "github:numtide/devshell"; # Devshell
+
     nyxt.url = "github:atlas-engineer/nyxt"; #|- Nyxt
     nyxt.inputs.nixpkgs.follows = "/master"; #|
 
@@ -266,6 +268,7 @@
         inputs.wayland.overlay
         inputs.agenix.overlay
         inputs.apparmor.overlay
+        inputs.devshell.overlay
         inputs.self.overlay
         (pkgs: lib.const {
           inherit (inputs.small.legacyPackages.${system}) firefox firefox-unwrapped; # slow and broken
@@ -749,9 +752,9 @@
 
     devShell = forAllSystems ({ system, ... }:
       let
-        pkgs = import channels.pkgs { inherit system; };
-      in pkgs.mkShell {
-        nativeBuildInputs = with pkgs; let
+        pkgs = import channels.pkgs { inherit system; overlays = [ inputs.devshell.overlay ]; };
+      in pkgs.mkDevShell {
+        packages = with pkgs; let
           git-crypt = pkgs.git-crypt.overrideAttrs (attrs: rec {
             worktreePatch = fetchurl {
               name = "support-worktree-simple-version.patch";
@@ -764,11 +767,7 @@
           git git-crypt git-secrets nixfmt
         ];
 
-        shellHook = ''
-          mkdir -p secrets
-        '';
-
-        NIX_CONF_DIR = with pkgs; let
+        env.NIX_CONF_DIR = with pkgs; let
           nixConf = ''
             ${lib.optionalString (builtins.pathExists /etc/nix/nix.conf)
               (builtins.readFile /etc/nix/nix.conf)}
@@ -781,6 +780,8 @@
           { name = "registry.json"; path = /etc/nix/registry.json; }
           { name = "machines"; path = /etc/nix/machines; }
         ] );
+
+        motd = "";
       }
     );
 
