@@ -4,7 +4,7 @@ let
   cfg = config.services.gitfs;
 in {
   options.services.gitfs = with lib; {
-    enable = mkEnableOption "NixOS.git";
+    enable = mkEnableOption "gitfs";
 
     workdir = mkOption {
       type = types.str;
