@@ -1,7 +1,7 @@
 [
   ./programs/nix-index.nix
   ./services/nix-index.nix
-  ./services/git/nixos.nix
+  ./services/gitfs.nix
   ./services/hydroxide/default.nix
   ./services/ipfs-cluster/default.nix
   ./security/mitigations.nix
