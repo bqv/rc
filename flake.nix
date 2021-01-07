@@ -137,10 +137,10 @@
         inherit meta;
         sha256 = meta.hash;
       }) [
-       #{
-       #  description = "apparmor: fix and improve the service";
-       #  id = 101071; hash = "UrZVDTS15VaQ16xl0jhTypyDED6yx72hYHqFc99oPj0=";
-       #}
+        {
+          description = "nixos/anbox: use mainline drivers when available";
+          id = 102341; hash = "UrZV4TS15VaQ16xl0jhTypyDED6yx72hYHqFc99oPj0=";
+        }
       ];
       patches = map basePkgs.fetchpatch pullReqs;
       patchedTree = basePkgs.applyPatches {

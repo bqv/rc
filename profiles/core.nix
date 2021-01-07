@@ -1,14 +1,10 @@
 { config, lib, pkgs, ... }:
 
-let
-  inherit (lib) fileContents;
-in {
+{
   nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
   boot = {
-    kernelPackages = lib.mkDefault (pkgs.large.linuxPackages_latest.extend (_: _: {
-      anbox = pkgs.large.linuxPackages_latest.virtualboxGuestAdditions; # harmless
-    }));
+    kernelPackages = lib.mkDefault (pkgs.large.linuxPackages_latest);
 
     tmpOnTmpfs = true;
     cleanTmpDir = true;
