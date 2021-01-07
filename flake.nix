@@ -53,6 +53,8 @@
 
     lisp.url = "github:nix-lisp/lisp-overlay"; # Lisp-overlay
 
+    devshell.url = "github:numtide/devshell"; # Devshell
+
     nyxt.url = "github:atlas-engineer/nyxt"; #|- Nyxt
     nyxt.inputs.nixpkgs.follows = "/master"; #|
 
