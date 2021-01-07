@@ -1,66 +1,108 @@
 { config, lib, pkgs, ... }:
-with lib;
+
 let
-  cfg = config.services.nixos-git;
-  workdir = "/var/lib/gitfs";
-  githubRemote = with cfg.github; "http://github.com/${owner}/${repo}";
+  cfg = config.services.gitfs;
 in {
-  options.services.nixos-git = {
+  options.services.gitfs = with lib; {
     enable = mkEnableOption "NixOS.git";
 
-    directory = mkOption {
-      type = types.path;
-      default = "/run/git/nixos";
-      description = ''
-        The directory where nixos.git will be mounted.
-      '';
-    };
-
-    github = {
-      owner = mkOption {
-        type = with types; nullOr str;
-        default = null;
-        example = "bqv";
-        description = ''
-          Owner of the repository hosted on GitHub.
-        '';
-      };
-
-      repo = mkOption {
-        type = with types; nullOr str;
-        default = null;
-        example = "nixos";
-        description = ''
-          Name of the repository hosted on GitHub.
-        '';
-      };
-    };
-
-    remote = mkOption {
-      type = with types; nullOr str;
-      default = null;
-      example = "http://github.com/bqv/nixos";
-      description = ''
-        Url of the repository.
-      '';
-    };
-
-    branch = mkOption {
+    workdir = mkOption {
       type = types.str;
-      default = "master";
-      example = "live";
+      default = "/var/lib/gitfs";
       description = ''
-        Name of the branch of the repository to be mounted.
+        The internal gitfs working directory.
       '';
     };
 
-    extraParams = mkOption {
-      type = types.attrs;
-      default = {};
-      example = { idle_fetch_timeout = "10"; };
-      description = ''
-        Extra params to pass to the mounter.
-      '';
+    mounts = mkOption {
+      type = types.submodule {
+        options = { name, config, ... }: {
+          directory = mkOption {
+            type = types.path;
+            default = name;
+            description = ''
+              The directory where nixos.git will be mounted.
+            '';
+          };
+
+          github = {
+            owner = mkOption {
+              type = with types; nullOr str;
+              default = null;
+              example = "bqv";
+              description = ''
+                Owner of the repository hosted on GitHub.
+              '';
+            };
+
+            repo = mkOption {
+              type = with types; nullOr str;
+              default = null;
+              example = "nixrc";
+              description = ''
+                Name of the repository hosted on GitHub.
+              '';
+            };
+
+            githubRemote = mkOption {
+              type = types.str;
+              internal = true;
+              default = with config.github; "http://github.com/${owner}/${repo}";
+            };
+          };
+
+          remote = mkOption {
+            type = with types; nullOr str;
+            default = null;
+            example = "http://github.com/bqv/nixrc";
+            description = ''
+              Url of the repository.
+            '';
+          };
+
+          branch = mkOption {
+            type = types.str;
+            default = "master";
+            example = "live";
+            description = ''
+              Name of the branch of the repository to be mounted.
+            '';
+          };
+
+          extraParams = mkOption {
+            type = types.attrs;
+            default = {};
+            example = { idle_fetch_timeout = "10"; };
+            description = ''
+              Extra params to pass to the mounter.
+            '';
+          };
+
+          invocation = mkOption {
+            type = types.submodule {
+              options = { name, config, ... }: {
+                url = mkOption { type = types.str; };
+                params = mkOption { type = types.str; };
+              };
+            };
+            internal = true;
+            default = {
+              url = if ((mnt.github.owner == null) || (mnt.github.repo == null))
+                    then mnt.remote else mnt.githubRemote;
+              params = let
+                paramAttrs = mnt.extraParams // {
+                  branch = mnt.branch;
+                  foreground = "true";
+                  allow_other = "true";
+                };
+                toKVList = lib.mapAttrsToList (k: v: "${k}=${builtins.toString v}");
+              in concatStringsSep "," (toKVList paramAttrs);
+            };
+          };
+        };
+      };
+      default = {
+      };
     };
 
     package = mkOption {
@@ -73,53 +115,47 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
+  config = lib.mkIf cfg.enable {
     assertions = [
       {
-        assertion = !(builtins.all (v: v == null)
-          [ cfg.github.owner cfg.github.repo cfg.remote ]);
+        assertion = builtins.all (mnt: !(builtins.all (v: v == null)
+          [ mnt.github.owner mnt.github.repo mnt.remote ])) cfg.mounts;
         message = ''
-          You must set either remote or github in services.nixos-git.
+          You must set either remote or github in services.gitfs.mounts.
         '';
       }
       {
-        assertion = ((cfg.github.owner == null) == (cfg.github.repo == null));
+        assertion = builtins.all (mnt: ((mnt.github.owner == null) == (mnt.github.repo == null))) cfg.mounts;
         message = ''
-          You must set both owner and repo in services.nixos-git.github.
+          You must set both owner and repo in services.gitfs.github.mounts.
         '';
       }
     ];
 
+    environment.systemPackages = [ cfg.package ];
+
     programs.fuse.userAllowOther = true;
 
-    systemd.services.nixos-git = let
-    in {
-      enable = true;
-      path = [ cfg.package pkgs.coreutils ];
-      after = [ "network.target" ];
-      description = "NixOS.git Mount";
-      environment.HOME = workdir;
-      wantedBy = [ "multi-user.target" ];
-      serviceConfig = {
-        ExecStartPre = ''
-          ${pkgs.coreutils}/bin/mkdir -p ${workdir} ${cfg.directory}
-        '';
-        ExecStart = let
-          url = if ((cfg.github.owner == null) || (cfg.github.repo == null))
-                then cfg.remote else githubRemote;
-          params = cfg.extraParams // {
-            branch = cfg.branch;
-            foreground = "true";
-            allow_other = "true";
-          };
-          paramsString = concatStringsSep "," (
-            lib.mapAttrsToList (k: v: "${k}=${builtins.toString v}") params);
-        in ''
-          ${cfg.package}/bin/gitfs ${url} -o ${paramsString} ${cfg.directory}
-        '';
-        Restart = "always";
-        RestartSec = 15;
+    systemd.services = lib.mapAttrs' (name: mnt: {
+      name = lib.strings.sanitizeDerivationName "gitfs-${name}";
+      value = {
+        enable = true;
+        path = [ cfg.package pkgs.coreutils ];
+        after = [ "network.target" ];
+        description = "${mnt.directory} gitfs mount of ${mnt.invocation.url}";
+        environment.HOME = cfg.workdir;
+        wantedBy = [ "multi-user.target" ];
+        serviceConfig = {
+          ExecStartPre = ''
+            ${pkgs.coreutils}/bin/mkdir -p ${cfg.workdir} ${mnt.directory}
+          '';
+          ExecStart = ''
+            ${cfg.package}/bin/gitfs ${mnt.invocation.url} -o ${mnt.invocation.params} ${mnt.directory}
+          '';
+          Restart = "always";
+          RestartSec = 15;
+        };
       };
-    };
+    }) cfg.mounts;
   };
 }
