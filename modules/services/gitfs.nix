@@ -119,13 +119,13 @@ in {
     assertions = [
       {
         assertion = builtins.all (mnt: !(builtins.all (v: v == null)
-          [ mnt.github.owner mnt.github.repo mnt.remote ])) cfg.mounts;
+        [ mnt.github.owner mnt.github.repo mnt.remote ])) (builtins.attrValues cfg.mounts);
         message = ''
           You must set either remote or github in services.gitfs.mounts.
         '';
       }
       {
-        assertion = builtins.all (mnt: ((mnt.github.owner == null) == (mnt.github.repo == null))) cfg.mounts;
+        assertion = builtins.all (mnt: ((mnt.github.owner == null) == (mnt.github.repo == null))) (builtins.attrValues cfg.mounts);
         message = ''
           You must set both owner and repo in services.gitfs.github.mounts.
         '';
