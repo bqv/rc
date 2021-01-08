@@ -259,21 +259,21 @@
       enable = true;
       theme = {
         name = "Adwaita-dark";
-        package = pkgs.gnome-themes-extra;
+        package = pkgs.gnome3.gnome-themes-extra;
       };
       iconTheme = {
-        name = "Adwaita-dark";
+        name = "Adwaita";
         package = pkgs.gnome3.adwaita-icon-theme;
       };
       font = {
-        name = "Cantarell 11";
+        name = "Cantarell";
         package = pkgs.cantarell-fonts;
       };
     };
 
     qt = {
       enable = true;
-      platformTheme = "gnome";
+      platformTheme = "gtk";
     };
   };
 }
