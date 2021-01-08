@@ -29,6 +29,10 @@
         (interactive)
         (vterm-shell-command "env PAGER=less man configuration.nix"))
 
+      (defun home-configuration-help ()
+        (interactive)
+        (vterm-shell-command "env PAGER=less man home-configuration.nix"))
+
       (defmacro defcmd (name body &rest cdr)
         `(defun ,name () (interactive) ,body ,@cdr))
 
