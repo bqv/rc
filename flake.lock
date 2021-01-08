@@ -171,6 +171,22 @@
         "type": "github"
       }
     },
+    "brig": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1609713088,
+        "narHash": "sha256-0DCUBB4neEx6MCoBqP5nJ9pcEY3G8ztSuYaeviClxeI=",
+        "owner": "sahib",
+        "repo": "brig",
+        "rev": "cd3ba4a9f7b3eb55019e43b54d8ec6863537201a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sahib",
+        "repo": "brig",
+        "type": "github"
+      }
+    },
     "cachix": {
       "locked": {
         "lastModified": 1607856232,
@@ -1475,6 +1491,7 @@
         "apparmor": "apparmor",
         "baduk": "baduk",
         "bottom": "bottom",
+        "brig": "brig",
         "conix": "conix",
         "construct": "construct",
         "devshell": "devshell",

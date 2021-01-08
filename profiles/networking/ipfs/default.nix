@@ -66,6 +66,7 @@ in {
       ${pkgs.utillinux}/bin/unshare -rm
       if { mount -t tmpfs -o size=1K tmpfs /var/empty }
       if { redirfd -w 1 /var/empty/api echo "${api-addr}" }
+      #if { chmod 000 /var/empty/api }
       if { mount --bind /var/empty/api /var/lib/ipfs/api }
       if { umount /var/empty }
       ${pkgs.brig}/bin/brig $@
