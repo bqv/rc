@@ -15,6 +15,7 @@ in {
     };
 
     mounts = mkOption {
+      description = "Repositories to mount.";
       type = types.attrsOf (types.submodule ({ name, config, ... }: {
         options = {
           directory = mkOption {
@@ -81,8 +82,8 @@ in {
           invocation = mkOption {
             type = types.submodule {
               options = {
-                url = mkOption { type = types.str; };
-                params = mkOption { type = types.str; };
+                url = mkOption { type = types.str; description = "url"; };
+                params = mkOption { type = types.str; description = "params"; };
               };
             };
             internal = true;

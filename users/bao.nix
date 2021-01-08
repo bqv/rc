@@ -257,23 +257,34 @@
 
     gtk = {
       enable = true;
-      theme = {
-        name = "Adwaita-dark";
-        package = pkgs.gnome3.gnome-themes-extra;
+      font = {
+        name = "Roboto 9.75";
+        package = pkgs.roboto;
       };
       iconTheme = {
-        name = "Adwaita";
-        package = pkgs.gnome3.adwaita-icon-theme;
+        name = "Paper";
+        package = pkgs.paper-icon-theme;
       };
-      font = {
-        name = "Cantarell";
-        package = pkgs.cantarell-fonts;
+      theme = {
+        name = "Plata-Noir";
+        package = pkgs.plata-theme;
+      };
+      gtk2.extraConfig = ''
+        gtk-cursor-blink = 0
+        gtk-im-module = "xim"
+        gtk-key-theme-name = "Emacs"
+      '';
+      gtk3.extraConfig = {
+        gtk-application-prefer-dark-theme = 1;
+        gtk-cursor-blink = false;
+        gtk-im-module = "xim";
+        gtk-key-theme-name = "Emacs";
       };
     };
 
     qt = {
       enable = true;
-      platformTheme = "gtk";
+      platformTheme = "gnome";
     };
   };
 }
