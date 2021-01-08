@@ -585,8 +585,7 @@
             flake = inputs.self;
             fetchPullRequest = fetchPullRequestForSystem system;
 
-            domains = import ./secrets/domains.nix;
-            hosts = import ./secrets/hosts.nix;
+            inherit (inputs.self.lib.secrets) domains hosts;
 
             modules = systemModules ++ [
               { _module.args = specialArgs; }
@@ -776,7 +775,7 @@
               (builtins.readFile /etc/nix/nix.conf)}
             experimental-features = nix-command flakes ca-references
             print-build-logs = true
-            access-tokens = "github.com=${(import ./secrets/git.github.nix).oauth-token}"
+            access-tokens = "github.com=${inputs.self.lib.secrets.git.github.oauth-token}"
           '';
         in linkFarm "nix-conf-dir" ( [
           { name = "nix.conf"; path = writeText "flakes-nix.conf" nixConf; }
@@ -792,23 +791,14 @@
       inherit inputs channels config allSystems inputMap patchNixpkgs;
       patchedPkgs = patchNixpkgs (channels.modules.legacyPackages.x86_64-linux);
 
-      #$ git config secrets.providers "nix eval --raw .#lib.secrets"
-      secrets = import ./secrets { inherit lib; };
+      #$ git config secrets.providers "nix eval --raw .#lib.textFilter"
+      textFilter = with inputs.priv.lib.textFilter; join { inherit lib; } list;
+      inherit (inputs.priv.lib) secrets;
     };
 
     hydraJobs = rec {
-      tarball = forAllSystems ({ system, pkgs, key ? toString ./secrets/keys/git, ... }:
-      pkgs.runCommandLocal "nixrc" rec {
-        src = builtins.storePath inputs.self.outPath;
-        buildInputs = [ src pkgs.git pkgs.git-crypt ];
-        outputs = [ "out" "tgz" ];
-      } ''
-        git clone --depth=1 file://$src $out && cd $out
-        git-crypt unlock ${key}
-        tar cvz $out > $tgz
-      '');
       deployment = forAllSystems ({ system, ... }:
-        (import "${tarball}/configuration.nix" {}).defaultPackage.${system}
+        inputs.self.defaultPackage.${system}
       );
     };
   };
