@@ -56,22 +56,6 @@ in {
       cp -Lr --reflink=auto ${cfg.ipfsMountDir}/$hash $1
     '';
 
-    # Wrap brig to use the http api (breaks with unix sockets)
-    brig = let
-      ipfs-api = pkgs.writeText "ipfs-api" config.services.ipfs.apiAddress;
-      api-addr = config.services.ipfs.apiAddress;
-    in pkgs.writeScriptBin "brig" ''
-      #!${pkgs.execline}/bin/execlineb -Ws0
-      export NIX_REDIRECTS /var/lib/ipfs/api=${ipfs-api}
-      ${pkgs.utillinux}/bin/unshare -rm
-      if { mount -t tmpfs -o size=1K tmpfs /var/empty }
-      if { redirfd -w 1 /var/empty/api echo "${api-addr}" }
-      #if { chmod 000 /var/empty/api }
-      if { mount --bind /var/empty/api /var/lib/ipfs/api }
-      if { umount /var/empty }
-      ${pkgs.brig}/bin/brig $@
-    '';
-
     # Push a closure to ipfs using nix-ipfs
     nix-ipfs-push = pkgs.writeScriptBin "nix-ipfs-push" ''
       #!${pkgs.bash}/bin/bash
@@ -108,7 +92,7 @@ in {
         args = [ "'$DERIVATION'" ];
       })' --raw
     '';
-  in [ pkgs.ipfs-cluster brig toipfs fromipfs nix-ipfs-push ];
+  in [ pkgs.ipfs-cluster pkgs.brig toipfs fromipfs nix-ipfs-push ];
 
   services.ipfs = {
     enable = true;
@@ -125,6 +109,10 @@ in {
        #Swarm.AddrFilters = null;
       };
       Experimental.FilestoreEnabled = true;
+      Experimental.Libp2pStreamMounting = true;
+      Reprovider.Interval = "1h";
+      Swarm.ConnMgr.GracePeriod = "60s";
+      Swarm.EnableAutoRelay = true;
     };
     extraFlags = [ "--enable-pubsub-experiment" ];
     serviceFdlimit = 999999;
