@@ -8,8 +8,6 @@
   description = "A highly structured configuration database.";
 
   inputs = {
-    priv.url = "hg+ssh://bao@delta/../../srv/hg/nixpriv";
-
     master.url = "github:nixos/nixpkgs/master";               #|.
     staged.url = "github:nixos/nixpkgs/staging";              #| |-- Nix
     small.url  = "github:nixos/nixpkgs/nixos-unstable-small"; #| |--   pkgs
@@ -122,7 +120,7 @@
     giara = { url = "git+https://gitlab.gnome.org/world/giara"; flake = false; };
     ini2json = { url = "github:anubisss/ini2json"; flake = false; };
     mfs-replace-root = { url = "github:hsanjuan/mfs-replace-root"; flake = false; };
-    brig = { url = "github:sahib/brig/develop"; flake = false; };
+    brig = { url = "github:sahib/brig"; flake = false; };
   };
 
   outputs = inputs: with builtins; let

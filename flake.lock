@@ -183,7 +183,6 @@
       },
       "original": {
         "owner": "sahib",
-        "ref": "develop",
         "repo": "brig",
         "type": "github"
       }
@@ -1255,20 +1254,6 @@
         "type": "github"
       }
     },
-    "priv": {
-      "locked": {
-        "narHash": "sha256-7vfQ6pCIDne/TeaoSjECMv74qj3Ob9189nNkIhDnJkA=",
-        "ref": "default",
-        "rev": "0149e30dadce9e7402a6003229888494be4f856e",
-        "revCount": 2,
-        "type": "hg",
-        "url": "ssh://bao@delta/../../srv/hg/nixpriv"
-      },
-      "original": {
-        "type": "hg",
-        "url": "ssh://bao@delta/../../srv/hg/nixpriv"
-      }
-    },
     "prompt-bar": {
       "flake": false,
       "locked": {
@@ -1554,7 +1539,6 @@
         "pr93659": "pr93659",
         "pr96368": "pr96368",
         "pr99188": "pr99188",
-        "priv": "priv",
         "prompt-toolkit": "prompt-toolkit",
         "rel1803": "rel1803",
         "rel1809": "rel1809",
