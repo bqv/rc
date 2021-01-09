@@ -117,7 +117,8 @@
     sln-mode = { url = "github:sensorflo/sln-mode"; flake = false; };
     emacs-ffi = { url = "github:tromey/emacs-ffi"; flake = false; };
     explain-pause-mode = { url = "github:lastquestion/explain-pause-mode"; flake = false; };
-    gnome-network-displays = { url = "git+https://gitlab.gnome.org/gnome/gnome-network-displays"; flake = false; };
+    gnome-network-displays.follows = "explain-pause-mode";
+   #gnome-network-displays = { url = "git+https://gitlab.gnome.org/gnome/gnome-network-displays"; flake = false; };
     emacs-webkit = { url = "github:akirakyle/emacs-webkit"; flake = false; };
     giara = { url = "git+https://gitlab.gnome.org/world/giara"; flake = false; };
     ini2json = { url = "github:anubisss/ini2json"; flake = false; };

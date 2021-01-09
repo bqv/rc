@@ -615,17 +615,6 @@
         "type": "github"
       }
     },
-    "gnome-network-displays": {
-      "locked": {
-        "narHash": "sha256-DDrFK0W2z+D5WZKLnzsseVY86tPUz4qruI8BSaO5b1c=",
-        "path": "/srv/hg/nixpriv",
-        "type": "path"
-      },
-      "original": {
-        "type": "git",
-        "url": "https://gitlab.gnome.org/gnome/gnome-network-displays"
-      }
-    },
     "guix": {
       "inputs": {
         "nixpkgs": [
@@ -1521,7 +1510,9 @@
         "git-get": "git-get",
         "git-pullrequest": "git-pullrequest",
         "git-remote-ipfs": "git-remote-ipfs",
-        "gnome-network-displays": "gnome-network-displays",
+        "gnome-network-displays": [
+          "explain-pause-mode"
+        ],
         "guix": "guix",
         "hardware": "hardware",
         "haskell": "haskell",
