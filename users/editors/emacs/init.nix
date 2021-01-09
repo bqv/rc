@@ -286,7 +286,7 @@ in usr.elisp.writeFile {
   name = "init";
   description = "Initialization script";
   text = let
-    secrets = import ../../../secrets/emacs.user.nix;
+    secrets = usr.secrets.emacs.user;
   in ''
     ${startup-pre}
 

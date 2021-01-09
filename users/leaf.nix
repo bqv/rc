@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, usr, ... }:
 
 {
   imports = [
@@ -6,7 +6,7 @@
   ];
 
   environment.variables = {
-    GITHUB_TOKEN = (import ../secrets/git.github.nix).oauth-token;
+    GITHUB_TOKEN = usr.secrets.git.github.oauth-token;
   };
 
   services.dbus.packages = with pkgs; [ gnome3.dconf ];
@@ -17,7 +17,7 @@
     shell = pkgs.xonsh;
     isNormalUser = true;
     extraGroups = [ "wheel" "adbusers" ];
-  } // import ../secrets/leaf.password.nix;
+  } // usr.secrets.leaf.password;
 
   home-manager.users.leaf = let
     home-config = config.home-manager.users.leaf;

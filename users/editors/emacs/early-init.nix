@@ -4,7 +4,7 @@ usr.elisp.writeFile {
   name = "early-init";
   description = "Executed before initialization.";
   text = let
-    secrets = import ../../../secrets/emacs.user.nix;
+    secrets = usr.secrets.emacs.user;
   in ''
     (setq debug-on-error t)
 
