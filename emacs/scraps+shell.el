@@ -42,13 +42,23 @@
             :history 'shell-command-history))
 (defun ivy-shell-sync (&optional pfx)
   (interactive "p")
-  (ivy-shell nil :initial-input (if (= pfx -1) (car shell-command-history))))
+  (minibuffer-with-setup-hook
+      (lambda ()
+        (shell-completion-vars)
+        (setq-local minibuffer-default-add-function
+                    #'minibuffer-default-add-shell-commands))
+    (ivy-shell nil :initial-input (if (= (or pfx 1) -1) (car shell-command-history)))))
 (global-set-key (kbd "M-!") #'ivy-shell-sync)
 (global-set-key (kbd "´") #'ivy-shell-sync)
 (evil-define-key 'normal 'global (kbd "´") #'ivy-shell-sync)
 (defun ivy-shell-async (&optional pfx)
   (interactive "p")
-  (ivy-shell t :initial-input (if (= pfx -1) (car shell-command-history))))
+  (minibuffer-with-setup-hook
+      (lambda ()
+        (shell-completion-vars)
+        (setq-local minibuffer-default-add-function
+                    #'minibuffer-default-add-shell-commands))
+  (ivy-shell t :initial-input (if (= (or pfx 1) -1) (car shell-command-history)))))
 (global-set-key (kbd "M-&") #'ivy-shell-async)
 (global-set-key (kbd "`") #'ivy-shell-async)
 (evil-define-key 'normal 'global (kbd "`") #'ivy-shell-async)
