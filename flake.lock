@@ -615,6 +615,22 @@
         "type": "github"
       }
     },
+    "gnome-network-displays": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1607161314,
+        "narHash": "sha256-rPotvN2tKIAghxbyRkYHF0p0SNXw3VX4bW267zqsdo0=",
+        "ref": "master",
+        "rev": "385fd0e9a648234b9982e87b9ca8d0de62a37ab6",
+        "revCount": 201,
+        "type": "git",
+        "url": "https://gitlab.gnome.org/gnome/gnome-network-displays"
+      },
+      "original": {
+        "type": "git",
+        "url": "https://gitlab.gnome.org/gnome/gnome-network-displays"
+      }
+    },
     "guix": {
       "inputs": {
         "nixpkgs": [
@@ -1513,6 +1529,7 @@
         "git-get": "git-get",
         "git-pullrequest": "git-pullrequest",
         "git-remote-ipfs": "git-remote-ipfs",
+        "gnome-network-displays": "gnome-network-displays",
         "guix": "guix",
         "hardware": "hardware",
         "haskell": "haskell",
