@@ -1257,12 +1257,9 @@
     },
     "priv": {
       "locked": {
-        "narHash": "sha256-1uUSws1WzZrbxArZWpY9PhYochdWtBiGDn2cNgpYDbU=",
-        "ref": "default",
-        "rev": "1a192848d217b9af8aec48f710f02c728010edad",
-        "revCount": 6,
-        "type": "hg",
-        "url": "ssh://bao@delta/../../srv/hg/nixpriv"
+        "narHash": "sha256-DDrFK0W2z+D5WZKLnzsseVY86tPUz4qruI8BSaO5b1c=",
+        "path": "/srv/hg/nixpriv",
+        "type": "path"
       },
       "original": {
         "type": "hg",
