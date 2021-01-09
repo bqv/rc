@@ -233,25 +233,25 @@
     hnix
   ];
 
-  environment.etc."nix/id_zeta.ed25519".source = ../../secrets/keys/nix/id_zeta.ed25519;
+  environment.etc."nix/id_zeta.ed25519".source = "${usr.secrets.keyDir}/nix/id_zeta.ed25519";
   environment.etc."nix/id_zeta.ed25519".mode = "0400";
-  environment.etc."ssh/ssh_host_rsa_key".source = ../../secrets/keys/deltassh/ssh_host_rsa_key;
+  environment.etc."ssh/ssh_host_rsa_key".source = "${usr.secrets.keyDir}/deltassh/ssh_host_rsa_key";
   environment.etc."ssh/ssh_host_rsa_key".mode = "0400";
-  environment.etc."ssh/ssh_host_rsa_key.pub".source = ../../secrets/keys/deltassh/ssh_host_rsa_key.pub;
-  environment.etc."ssh/ssh_host_ed25519_key".source = ../../secrets/keys/deltassh/ssh_host_ed25519_key;
+  environment.etc."ssh/ssh_host_rsa_key.pub".source = "${usr.secrets.keyDir}/deltassh/ssh_host_rsa_key.pub";
+  environment.etc."ssh/ssh_host_ed25519_key".source = "${usr.secrets.keyDir}/deltassh/ssh_host_ed25519_key";
   environment.etc."ssh/ssh_host_ed25519_key".mode = "0400";
-  environment.etc."ssh/ssh_host_ed25519_key.pub".source = ../../secrets/keys/deltassh/ssh_host_ed25519_key.pub;
-  environment.etc."ssh/ssh_host_dsa_key".source = ../../secrets/keys/deltassh/ssh_host_dsa_key;
+  environment.etc."ssh/ssh_host_ed25519_key.pub".source = "${usr.secrets.keyDir}/deltassh/ssh_host_ed25519_key.pub";
+  environment.etc."ssh/ssh_host_dsa_key".source = "${usr.secrets.keyDir}/deltassh/ssh_host_dsa_key";
   environment.etc."ssh/ssh_host_dsa_key".mode = "0400";
-  environment.etc."ssh/ssh_host_dsa_key-cert.pub".source = ../../secrets/keys/deltassh/ssh_host_dsa_key-cert.pub;
-  environment.etc."ssh/ssh_host_dsa_key.pub".source = ../../secrets/keys/deltassh/ssh_host_dsa_key.pub;
-  environment.etc."ssh/ssh_host_ecdsa_key".source = ../../secrets/keys/deltassh/ssh_host_ecdsa_key;
+  environment.etc."ssh/ssh_host_dsa_key-cert.pub".source = "${usr.secrets.keyDir}/deltassh/ssh_host_dsa_key-cert.pub";
+  environment.etc."ssh/ssh_host_dsa_key.pub".source = "${usr.secrets.keyDir}/deltassh/ssh_host_dsa_key.pub";
+  environment.etc."ssh/ssh_host_ecdsa_key".source = "${usr.secrets.keyDir}/deltassh/ssh_host_ecdsa_key";
   environment.etc."ssh/ssh_host_ecdsa_key".mode = "0400";
-  environment.etc."ssh/ssh_host_ecdsa_key-cert.pub".source = ../../secrets/keys/deltassh/ssh_host_ecdsa_key-cert.pub;
-  environment.etc."ssh/ssh_host_ecdsa_key.pub".source = ../../secrets/keys/deltassh/ssh_host_ecdsa_key.pub;
-  environment.etc."ssh/ssh_host_ed25519_key-cert.pub".source = ../../secrets/keys/deltassh/ssh_host_ed25519_key-cert.pub;
-  environment.etc."ssh/ssh_host_rsa_key-cert.pub".source = ../../secrets/keys/deltassh/ssh_host_rsa_key-cert.pub;
+  environment.etc."ssh/ssh_host_ecdsa_key-cert.pub".source = "${usr.secrets.keyDir}/deltassh/ssh_host_ecdsa_key-cert.pub";
+  environment.etc."ssh/ssh_host_ecdsa_key.pub".source = "${usr.secrets.keyDir}/deltassh/ssh_host_ecdsa_key.pub";
+  environment.etc."ssh/ssh_host_ed25519_key-cert.pub".source = "${usr.secrets.keyDir}/deltassh/ssh_host_ed25519_key-cert.pub";
+  environment.etc."ssh/ssh_host_rsa_key-cert.pub".source = "${usr.secrets.keyDir}/deltassh/ssh_host_rsa_key-cert.pub";
   environment.etc."ssh/ssh_revoked_keys".text = "";
-  environment.etc."ssh/ssh_user-ca.pub".source = ../../secrets/keys/deltassh/ssh_user-ca.pub;
-  environment.etc."ssh/ssh_host-ca.pub".source = ../../secrets/keys/deltassh/ssh_host-ca.pub;
+  environment.etc."ssh/ssh_user-ca.pub".source = "${usr.secrets.keyDir}/deltassh/ssh_user-ca.pub";
+  environment.etc."ssh/ssh_host-ca.pub".source = "${usr.secrets.keyDir}/deltassh/ssh_host-ca.pub";
 }
