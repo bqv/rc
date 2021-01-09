@@ -16,7 +16,6 @@ in {
     hydraURL = "https://hydra.${domains.home}";
     notificationSender = "hydra@${domains.home}";
     logo = null;
-   #buildMachinesFiles = [];
     useSubstitutes = true;
     extraConfig = ''
       using_frontend_proxy 1
@@ -24,4 +23,6 @@ in {
       evaluator_initial_heap_size = 4294967296
     '';
   };
+
+  nix.allowedUsers = lib.mkIf cfg.enable [ "hydra" "hydra-www" ];
 }
