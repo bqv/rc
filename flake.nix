@@ -794,11 +794,30 @@
 
     lib = rec {
       inherit inputs channels config allSystems inputMap patchNixpkgs;
-      patchedPkgs = patchNixpkgs (channels.modules.legacyPackages.x86_64-linux);
+      patchedPkgs = forAllSystems ({ system, ... }:
+        patchNixpkgs (channels.modules.legacyPackages.${system})
+      );
 
       #$ git config secrets.providers "nix eval --raw .#lib.textFilter"
-      textFilter = with inputs.priv.lib.textFilter; join { inherit lib; } list;
+      textFilter = with inputs.priv.lib { inherit lib; }; textFilter.lines;
       inherit (inputs.priv.lib) secrets;
+
+      forecast = let
+        inherit (channels.pkgs.legacyPackages.${builtins.currentSystem}) pkgs;
+        date = builtins.readFile (pkgs.runCommand "forecast-name" {
+        } "date -Iminutes | tr 'T\\-:' '---' | cut -d+ -f1 | tr -d '\n' > $out");
+      in pkgs.runCommandLocal "forecast-${date}" {
+        buildInputs = [ pkgs.git pkgs.nixUnstable pkgs.cacert ];
+        __noChroot = true;
+      } ''
+        git clone ${./.} $out
+        export NIX_REMOTE=local?real=$PWD/nix/store\&store=/nix/store
+        export NIX_STATE_DIR=$PWD/nix/var NIX_LOG_DIR=$PWD/nix/var/log
+        export HOME=$PWD
+        cd $out
+        nix flake update \
+          --experimental-features "nix-command flakes ca-references"
+      '';
     };
 
     hydraJobs = rec {
