@@ -4,7 +4,11 @@ let
   cfg = config.services.hydra;
 in {
   services.hydra = lib.mkIf cfg.enable {
-    package = pkgs.hydra-unstable;
+    package = pkgs.hydra-unstable.overrideAttrs (drv: {
+      postUnpack = ''
+        sed -i 's/restrictEval = true/restrictEval = false/' source/src/hydra-eval-jobs/hydra-eval-jobs.cc
+      '';
+    });
     listenHost = "0.0.0.0";
     port = 9999;
     minimumDiskFree = 20; # in GB
