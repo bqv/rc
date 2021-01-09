@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, usr, ... }:
 
 with lib; let
   cfg = config.services.spotifyd;
@@ -11,7 +11,7 @@ in {
     ];
 
     services.spotifyd.settings = {
-      global = import ../../../secrets/spotify.credentials.nix;
+      global = usr.secrets.spotify.credentials;
     };
   };
 }

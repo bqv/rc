@@ -4,7 +4,7 @@
   emacs-loader.steam = {
     demand = true;
     config = let
-      creds = import ../secrets/steam.credentials.nix;
+      creds = usr.secrets.steam.credentials;
     in ''
       (setq steam-username "${creds.user}")
     '';

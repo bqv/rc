@@ -11,10 +11,9 @@
     iwd = {
       enable = useIwd;
       networks = lib.mkIf (useIwd)
-        (lib.mapAttrs (k: v: { passphrase = v.psk; }) (import ../../secrets/wifi.networks.nix));
+        (lib.mapAttrs (k: v: { passphrase = v.psk; }) usr.secrets.wifi.networks);
     };
-    networks = lib.mkIf (!useIwd)
-      (import ../../secrets/wifi.networks.nix);
+    networks = lib.mkIf (!useIwd) usr.secrets.wifi.networks;
 
     interfaces = [ "wlp0s20f3" ];
     userControlled.enable = true;

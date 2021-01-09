@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, usr, ... }:
 
 let
   hostAddress = "10.8.0.1";
@@ -13,9 +13,11 @@ in {
 
       config =
         { config, stdenv, ... }:
- 
+
         {
-          imports = [ 
+          _module.args = { inherit usr; };
+
+          imports = [
             ../modules/services/hydroxide
             ../profiles/services/hydroxide
           ];

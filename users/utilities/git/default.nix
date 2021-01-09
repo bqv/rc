@@ -1,4 +1,4 @@
-{ config, lib, pkgs, domains, ... }:
+{ config, lib, pkgs, usr, domains, ... }:
 
 with lib; let
   cfg = config.programs.git;
@@ -20,7 +20,7 @@ in {
       ];
 
     programs.git = {
-      inherit (import ../../../secrets/git.user.nix) userName userEmail;
+      inherit (usr.secrets.git.user) userName userEmail;
 
       package = pkgs.hiPrio pkgs.gitAndTools.gitFull;
       aliases = lib.mkForce { }; # We hate aliases
@@ -76,7 +76,7 @@ in {
           };
         };
         github = {
-          inherit (import ../../../secrets/git.github.nix) user oauth-token;
+          inherit (usr.secrets.git.github) user oauth-token;
         };
 
         format.pretty = "oneline";
@@ -107,7 +107,7 @@ in {
         gitget = {
           root = "/srv/git";
         };
-        inherit (import ../../../secrets/git.github.nix) git-bug;
+        inherit (usr.secrets.git.github) git-bug;
       };
     };
   };

@@ -1,6 +1,8 @@
+{ usr, ... }:
+
 {
   users.users.root = {
-  } // import ../secrets/root.password.nix;
+  } // usr.secrets.root.password;
 
   home-manager.users.root = {
     imports = [

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, hosts, ... }:
+{ config, lib, pkgs, usr, hosts, ... }:
 
 {
   imports = [
@@ -17,15 +17,15 @@
       "Alpha CA" = {
         certAuthority = true;
         hostNames = [ "*" ];
-        publicKeyFile = ../../secrets/keys/deltassh/ssh_host-ca.pub;
+        publicKeyFile = "${usr.secrets.keyDir}/deltassh/ssh_host-ca.pub";
       };
       "delta" = {
         hostNames = [ "localhost" "127.0.0.1" "::1" ];
-        publicKeyFile = ../../secrets/keys/deltassh/ssh_host_ed25519_key.pub;
+        publicKeyFile = "${usr.secrets.keyDir}/deltassh/ssh_host_ed25519_key.pub";
       };
       "zeta" = {
         hostNames = [ hosts.wireguard.zeta ];
-        publicKeyFile = ../../secrets/keys/zetassh/ssh_host_ed25519_key.pub;
+        publicKeyFile = "${usr.secrets.keyDir}/zetassh/ssh_host_ed25519_key.pub";
       };
     };
     hostKeys = [
