@@ -1526,7 +1526,6 @@
         "git-get": "git-get",
         "git-pullrequest": "git-pullrequest",
         "git-remote-ipfs": "git-remote-ipfs",
-        "gnome-network-displays": "gnome-network-displays",
         "guix": "guix",
         "hardware": "hardware",
         "haskell": "haskell",
