@@ -245,6 +245,9 @@
           nix-ipfs = inputs.nix-ipfs.packages.${system}.nix;
           nix-ipfs-static = inputs.nix-ipfs.packages.${system}.nix-static;
         })
+        inputs.hydra.overlay (final: prev: {
+          hydra-unstable = final.hydra;
+        })
         inputs.guix.overlay
         inputs.construct.overlay (final: prev: {
           riot-web = final.element-web;
@@ -601,6 +604,7 @@
           inherit (inputs.guix.nixosModules) guix;
           inherit (inputs.construct.nixosModules) matrix-construct;
           inherit (inputs.agenix.nixosModules) age;
+          hydra = "${inputs.hydra}/hydra-module.nix";
           apparmor-nix = inputs.apparmor.nixosModule;
 
           # Some common basic stuff
@@ -730,7 +734,8 @@
 
           systemModules = flakeModules ++ [
             core global iwd gnupg
-            dwarffs guix matrix-construct impermanence age apparmor-nix
+            dwarffs guix matrix-construct hydra
+            impermanence age apparmor-nix
           ];
 
           userModules = [
