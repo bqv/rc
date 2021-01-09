@@ -270,6 +270,7 @@
         inputs.xontribs.overlay
         inputs.wayland.overlay
         inputs.agenix.overlay
+        inputs.hydra.overlay
         inputs.apparmor.overlay
         inputs.devshell.overlay
         inputs.self.overlay
@@ -601,6 +602,7 @@
           inherit (inputs.guix.nixosModules) guix;
           inherit (inputs.construct.nixosModules) matrix-construct;
           inherit (inputs.agenix.nixosModules) age;
+          inherit (inputs.hydra.nixosModules) hydra;
           apparmor-nix = inputs.apparmor.nixosModule;
 
           # Some common basic stuff
@@ -730,7 +732,8 @@
 
           systemModules = flakeModules ++ [
             core global iwd gnupg
-            dwarffs guix matrix-construct impermanence age apparmor-nix
+            dwarffs guix matrix-construct hydra
+            impermanence age apparmor-nix
           ];
 
           userModules = [
