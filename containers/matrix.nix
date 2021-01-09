@@ -1,4 +1,4 @@
-{ config, pkgs, lib, domains, flake, ... }:
+{ config, pkgs, lib, usr, flake, ... }:
 
 let
   hostAddress = "10.7.0.1";
@@ -33,12 +33,12 @@ in {
           };
           services.matrix-synapse = rec {
             enable = true;
-            server_name = "sn.${domains.srvc}";
+            server_name = "sn.${usr.secrets.domains.srvc}";
             enable_registration = true;
-            inherit (import ../secrets/matrix.synapse.nix) registration_shared_secret;
-            public_baseurl = "https://matrix.${domains.srvc}/";
-            tls_certificate_path = "/var/lib/acme/${domains.srvc}/fullchain.pem";
-            tls_private_key_path = "/var/lib/acme/${domains.srvc}/key.pem";
+            inherit (usr.secrets.matrix.synapse) registration_shared_secret;
+            public_baseurl = "https://matrix.${usr.secrets.domains.srvc}/";
+            tls_certificate_path = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
+            tls_private_key_path = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
             database_type = "psycopg2";
             database_args = {
               user = "matrix-synapse";
@@ -85,7 +85,7 @@ in {
           services.matrix-construct = {
             enable = true;
             useScreen = false;
-            server = "cs.${domains.srvc}";
+            server = "cs.${usr.secrets.domains.srvc}";
             package = pkgs.matrix-construct.overrideAttrs (_: {
               doInstallCheck = true;
             });

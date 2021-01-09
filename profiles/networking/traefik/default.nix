@@ -1,4 +1,4 @@
-{ config, lib, pkgs, domains, hosts, ... }:
+{ config, lib, pkgs, usr, domains, hosts, ... }:
 
 {
   systemd.services.traefik.serviceConfig.LimitNPROC = lib.mkForce null; # Ridiculous and broken
@@ -178,7 +178,7 @@
         middlewares = {
           redirect-nixrc = {
             redirectRegex = let
-              gitcreds = import ../../../secrets/git.github.nix;
+              gitcreds = usr.secrets.git.github;
             in {
               permanent = false;
               regex = "^(https?)://rc.${domains.home}/(.*)";

@@ -1,4 +1,4 @@
-{ config, pkgs, lib, domains, fetchPullRequest, ... }:
+{ config, pkgs, lib, usr, ... }:
 
 let
   cfg = config.services.mastodon;
@@ -6,7 +6,7 @@ let
   hostAddress = "10.6.0.1";
   localAddress = "10.6.0.2";
 
-  twitterCfg = with import ../secrets/mastodon.twitter.nix; {
+  twitterCfg = with usr.secrets.mastodon.twitter; {
     inherit key crt;
     keyFile = pkgs.writeText "selfsigned.key" key;
     crtFile = pkgs.writeText "selfsigned.crt" crt;
@@ -51,17 +51,17 @@ in {
           services.mastodon.automaticMigrations = false;
           services.mastodon.extraConfig = {
             EMAIL_DOMAIN_WHITELIST = lib.concatStringsSep "|" [
-              domains.home
-             #domains.wife
+              usr.secrets.domains.home
+             #usr.secrets.domains.wife
             ];
             ALTERNATE_DOMAINS = lib.concatStringsSep "," [
-              "mastodon.${domains.srvc}"
-              "microblog.${domains.srvc}"
-              "ublog.${domains.srvc}"
+              "mastodon.${usr.secrets.domains.srvc}"
+              "microblog.${usr.secrets.domains.srvc}"
+              "ublog.${usr.secrets.domains.srvc}"
             ];
-            WEB_DOMAIN = "u.${domains.srvc}";
+            WEB_DOMAIN = "u.${usr.secrets.domains.srvc}";
           };
-          services.mastodon.localDomain = domains.srvc;
+          services.mastodon.localDomain = usr.secrets.domains.srvc;
           services.mastodon.redis = {
             createLocally = true;
           };
@@ -71,10 +71,10 @@ in {
           };
           services.mastodon.smtp = {
             createLocally = true;
-            fromAddress = "mastodon@${domains.srvc}";
+            fromAddress = "mastodon@${usr.secrets.domains.srvc}";
           };
           services.mastodon.configureNginx = true;
-          services.mastodon.package = with fetchPullRequest {
+          services.mastodon.package = with usr.fetchPullRequest {
             id = 78810;
             sha256 = "1d2927gwvjh1l2jajvfk4l6q3dsgwi7iq8kndiff06yqi203hv8s";
           }; mastodon;
@@ -87,8 +87,8 @@ in {
             virtualHosts."${cfg.localDomain}" = {
               #enableACME = lib.mkForce false;
               serverAliases = [
-                "u.${domains.srvc}"
-                domains.srvc
+                "u.${usr.secrets.domains.srvc}"
+                usr.secrets.domains.srvc
                 "localhost"
                 "127.0.0.1"
                 localAddress
@@ -105,7 +105,7 @@ in {
           networking.extraHosts = ''${localAddress} twitter.com'';
 
           security.acme.acceptTerms = true;
-          security.acme.email = "ssl@${domains.home}";
+          security.acme.email = "ssl@${usr.secrets.domains.home}";
           security.pki.certificates = [ twitterCfg.crt ];
 
           boot.enableContainers = true;
@@ -132,7 +132,7 @@ in {
                   systemd.services.twitterpub = {
                     serviceConfig = let
                       configToml = pkgs.writeText "twitterpub.toml" ''
-                        Domain = "tw.${domains.srvc}"
+                        Domain = "tw.${usr.secrets.domains.srvc}"
                         Listen = ":443"
                         TLS = true
                         CertFile = "${twitterCfg.crtFile}"

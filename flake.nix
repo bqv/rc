@@ -577,15 +577,17 @@
             megabytes = k: k * 1024;
             gigabytes = m: m * 1024;
           };
+          inherit (inputs.self.lib) secrets;
+          fetchPullRequest = fetchPullRequestForSystem system;
         };
 
         modulesFor = hostName: appendModules: let
           specialArgs = {
             inherit usr;
             flake = inputs.self;
-            fetchPullRequest = fetchPullRequestForSystem system;
 
-            inherit (inputs.self.lib.secrets) domains hosts;
+            fetchPullRequest = fetchPullRequestForSystem system;
+            inherit (inputs.self.lib.secrets) hosts domains;
 
             modules = systemModules ++ [
               { _module.args = specialArgs; }

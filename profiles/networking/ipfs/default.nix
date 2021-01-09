@@ -1,9 +1,9 @@
-{ config, lib, pkgs, inputs, hosts, ... }:
+{ config, lib, pkgs, usr, inputs, hosts, ... }:
 
 let
   cfg = config.services.ipfs;
 
-  clusterSecrets = import ../../../secrets/ipfs.cluster.nix;
+  clusterSecrets = usr.secrets.ipfs.cluster;
 
   mfs-replace-root = pkgs.buildGo114Module {
     name = "mfs-replace-root";
@@ -126,7 +126,7 @@ in {
     settings = {
       cluster.secret = clusterSecrets.secret;
       cluster.peer_addresses = let
-        inherit (import ../../../secrets/ipfs.repo.nix) proxyPeerID;
+        inherit (usr.secrets.ipfs.repo) proxyPeerID;
       in [
         "/ip4/${hosts.wireguard.delta}/tcp/9096/p2p/${proxyPeerID.delta}"
         "/ip4/${hosts.wireguard.zeta }/tcp/9096/p2p/${proxyPeerID.zeta }"

@@ -1,4 +1,4 @@
-{ config, lib, usr, pkgs, domains, ... }:
+{ config, lib, usr, pkgs, ... }:
 
 {
   emacs-loader.weechat = {
@@ -6,7 +6,7 @@
     package = epkgs: epkgs.weechat-patched;
     after = [ "tracking" ];
     config = let
-      creds = import ../secrets/weechat.credentials.nix;
+      creds = usr.secrets.weechat.credentials;
     in ''
       (setq weechat-auto-monitor-buffers t
             weechat-completing-read-function 'weechat--try-ivy
@@ -25,7 +25,7 @@
       (defun bqv/weechat (&rest args)
         "Connect to WeeChat [zeta]."
         (interactive)
-        (weechat-connect "zeta.${domains.home}" 6697 "${creds.password}" 'ssl))
+        (weechat-connect "zeta.${usr.secrets.domains.home}" 6697 "${creds.password}" 'ssl))
       (defun bqv/weechat-local (&rest args)
         "Connect to WeeChat [localhost]."
         (interactive)

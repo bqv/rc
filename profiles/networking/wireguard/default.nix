@@ -1,7 +1,7 @@
-{ config, lib, hosts, ... }:
+{ config, lib, usr, hosts, ... }:
 
 let
-  pubkeys = import ../../../secrets/wireguard.pubkeys.nix;
+  pubkeys = usr.secrets.wireguard.pubkeys;
 
   network = 24;
   peers = {
@@ -72,7 +72,7 @@ in {
 
   secrets.files = {
     wireguard = {
-      file = ../../../secrets/keys/wireguard + "/${config.networking.hostName}.key";
+      file = usr.secrets.keyDir + "/wireguard/${config.networking.hostName}.key";
      #user = "root";
      #group = "root";
     };

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, usr, ... }:
 
 {
   nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
@@ -87,7 +87,7 @@
       experimental-features = nix-command flakes ca-references recursive-nix
       preallocate-contents = true
       print-build-logs = true
-      access-tokens = "github.com=${(import ../secrets/git.github.nix).oauth-token}"
+      access-tokens = "github.com=${usr.secrets.git.github.oauth-token}"
     '';
 
     binaryCaches = [

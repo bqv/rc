@@ -1,8 +1,8 @@
-{ config, lib, pkgs, domains, ... }:
+{ config, lib, pkgs, usr, ... }:
 
 {
   services.hydroxide = {
     enable = true;
-    userauths = lib.mapAttrs (_: u: u.auth) (import ../../../secrets/hydroxide.auth.nix);
+    userauths = lib.mapAttrs (_: u: u.auth) (usr.secrets.hydroxide.auth);
   };
 }
