@@ -39,15 +39,13 @@
     naersk.url = "github:nmattia/naersk";      #|- Naersk
     naersk.inputs.nixpkgs.follows = "/master"; #|
 
-    hydra.url = "github:nixos/hydra";              #|- Hydra
-    hydra.inputs.nix.follows = "/nix";             #|
-    hydra.inputs.nixpkgs.follows = "/nix/nixpkgs"; #|
-
     guix.url = "github:emiller88/guix";      #|- Guix
     guix.inputs.nixpkgs.follows = "/master"; #|
 
     construct.url = "github:matrix-construct/construct"; #|- Construct
     construct.inputs.nixpkgs.follows = "/large";         #|
+
+    hydra.url = "github:nixos/hydra"; #|- Hydra
 
     apparmor.url = "github:bqv/apparmor-nix"; #|- Apparmor
 
@@ -244,6 +242,9 @@
           inherit (inputs.nix.packages.${system}) nix-static;
           nix-ipfs = inputs.nix-ipfs.packages.${system}.nix;
           nix-ipfs-static = inputs.nix-ipfs.packages.${system}.nix-static;
+        })
+        inputs.hydra.overlay (final: prev: {
+          hydra-unstable = inputs.hydra.defaultPackage.${system};
         })
         inputs.guix.overlay
         inputs.construct.overlay (final: prev: {
@@ -601,6 +602,7 @@
           inherit (inputs.guix.nixosModules) guix;
           inherit (inputs.construct.nixosModules) matrix-construct;
           inherit (inputs.agenix.nixosModules) age;
+          hydra = "${inputs.hydra}/hydra-module.nix";
           apparmor-nix = inputs.apparmor.nixosModule;
 
           # Some common basic stuff
@@ -730,7 +732,8 @@
 
           systemModules = flakeModules ++ [
             core global iwd gnupg
-            dwarffs guix matrix-construct impermanence age apparmor-nix
+            dwarffs guix matrix-construct hydra
+            impermanence age apparmor-nix
           ];
 
           userModules = [

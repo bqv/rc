@@ -3,7 +3,14 @@
 let
   cfg = config.services.hydra;
 in {
-  services.hydra = lib.mkIf cfg.enable {
+  disabledModules = [
+    "services/continuous-integration/hydra/default.nix"
+  ];
+
+  options.services.hydra.enable = lib.mkEnableOption "Hydra services";
+
+  config.services.hydra-dev = lib.mkIf cfg.enable {
+    enable = true;
     package = pkgs.hydra-unstable.overrideAttrs (drv: {
       postUnpack = ''
         sed -i 's/restrictEval = true/restrictEval = false/' source/src/hydra-eval-jobs/hydra-eval-jobs.cc
@@ -24,5 +31,5 @@ in {
     '';
   };
 
-  nix.allowedUsers = lib.mkIf cfg.enable [ "hydra" "hydra-www" ];
+  config.nix.allowedUsers = lib.mkIf cfg.enable [ "@hydra" ];
 }

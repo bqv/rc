@@ -751,10 +751,9 @@
     },
     "hydra": {
       "inputs": {
-        "nix": [
-          "nix"
-        ],
+        "nix": "nix",
         "nixpkgs": [
+          "hydra",
           "nix",
           "nixpkgs"
         ]
@@ -855,7 +854,7 @@
     },
     "lisp": {
       "inputs": {
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "lastModified": 1607800657,
@@ -888,6 +887,22 @@
       }
     },
     "lowdown-src_2": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1598695561,
+        "narHash": "sha256-gyH/5j+h/nWw0W8AcR2WKvNBUsiQ7QuxqSJNXAwV+8E=",
+        "owner": "kristapsdz",
+        "repo": "lowdown",
+        "rev": "1705b4a26fbf065d9574dce47a94e8c7c79e052f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "kristapsdz",
+        "repo": "lowdown",
+        "type": "github"
+      }
+    },
+    "lowdown-src_3": {
       "flake": false,
       "locked": {
         "lastModified": 1598695561,
@@ -1007,27 +1022,25 @@
     "nix": {
       "inputs": {
         "lowdown-src": "lowdown-src",
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1606826948,
-        "narHash": "sha256-mRCRXXcS3AD8PeXbLtN2lz7ONDGrrgrtbxmt2+0tzfw=",
-        "owner": "nixos",
+        "lastModified": 1609520816,
+        "narHash": "sha256-IGO7tfJXsv9u2wpW76VCzOsHYapRZqH9pHGVsoffPrI=",
+        "owner": "NixOS",
         "repo": "nix",
-        "rev": "cbab2885290ed0f96b1e75f2fe0a191b8cd4f350",
+        "rev": "8a2ce0f455da32bc20978e68c0aad9efb4560abc",
         "type": "github"
       },
       "original": {
-        "owner": "nixos",
-        "ref": "progress-bar",
-        "repo": "nix",
-        "type": "github"
+        "id": "nix",
+        "type": "indirect"
       }
     },
     "nix-ipfs": {
       "inputs": {
-        "lowdown-src": "lowdown-src_2",
-        "nixpkgs": "nixpkgs_4"
+        "lowdown-src": "lowdown-src_3",
+        "nixpkgs": "nixpkgs_5"
       },
       "locked": {
         "lastModified": 1602773364,
@@ -1040,6 +1053,26 @@
       "original": {
         "owner": "obsidiansystems",
         "ref": "ipfs-develop",
+        "repo": "nix",
+        "type": "github"
+      }
+    },
+    "nix_2": {
+      "inputs": {
+        "lowdown-src": "lowdown-src_2",
+        "nixpkgs": "nixpkgs_4"
+      },
+      "locked": {
+        "lastModified": 1606826948,
+        "narHash": "sha256-mRCRXXcS3AD8PeXbLtN2lz7ONDGrrgrtbxmt2+0tzfw=",
+        "owner": "nixos",
+        "repo": "nix",
+        "rev": "cbab2885290ed0f96b1e75f2fe0a191b8cd4f350",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "progress-bar",
         "repo": "nix",
         "type": "github"
       }
@@ -1062,6 +1095,21 @@
     },
     "nixpkgs_2": {
       "locked": {
+        "lastModified": 1602702596,
+        "narHash": "sha256-fqJ4UgOb4ZUnCDIapDb4gCrtAah5Rnr2/At3IzMitig=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "ad0d20345219790533ebe06571f82ed6b034db31",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-20.09-small",
+        "type": "indirect"
+      }
+    },
+    "nixpkgs_3": {
+      "locked": {
         "lastModified": 1607018170,
         "narHash": "sha256-C9VzUgeVCfNrzij2exmWupx8RNu7wxNbD8eReMLGy9I=",
         "owner": "nixos",
@@ -1076,7 +1124,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1608102263,
         "narHash": "sha256-vUFG/KDGvewBfWkyM9zMs4Y+wZgx97PCYIxU5+UU9Y8=",
@@ -1091,7 +1139,7 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_4": {
+    "nixpkgs_5": {
       "locked": {
         "lastModified": 1591633336,
         "narHash": "sha256-oVXv4xAnDJB03LvZGbC72vSVlIbbJr8tpjEW5o/Fdek=",
@@ -1547,7 +1595,7 @@
         "mozilla": "mozilla",
         "naersk": "naersk",
         "napalm": "napalm",
-        "nix": "nix",
+        "nix": "nix_2",
         "nix-ipfs": "nix-ipfs",
         "nyxt": "nyxt",
         "pr75800": "pr75800",
