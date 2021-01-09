@@ -77,7 +77,7 @@
 
     useSandbox = "relaxed";
 
-    allowedUsers = [ "@wheel" "hydra" ];
+    allowedUsers = [ "@wheel" ];
 
     trustedUsers = [ "root" "@wheel" ];
 
