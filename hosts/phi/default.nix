@@ -1,4 +1,4 @@
-{ config, pkgs, lib, domains, ... }:
+{ config, pkgs, lib, usr, domains, ... }:
 
 {
   imports = [
@@ -150,7 +150,7 @@
       name = "AndroidTV";
       host = "192.168.178.128";
     }];
-    tuya = import ../../secrets/hass.tuya.nix;
+    tuya = usr.secrets.hass.tuya;
     zeroconf = {};
     frontend = {};
     mobile_app = {};

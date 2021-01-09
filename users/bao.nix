@@ -1,4 +1,4 @@
-{ config, pkgs, lib, flake, ... }:
+{ config, pkgs, lib, usr, flake, ... }:
 
 {
   imports = [
@@ -6,7 +6,7 @@
   ];
 
   environment.variables = {
-    GITHUB_TOKEN = (import ../secrets/git.github.nix).oauth-token;
+    GITHUB_TOKEN = usr.secrets.git.github.oauth-token;
   };
 
   services.dbus.packages = with pkgs; [ gnome3.dconf ];
@@ -39,8 +39,8 @@
       "adbusers" "dwarffs" "audit"
       "ipfs" "syncthing" "aria2"
     ];
-  } // import ../secrets/user.password.nix
-    // import ../secrets/user.description.nix;
+  } // usr.secrets.user.password
+    // usr.secrets.user.description;
 
   home-manager.users.bao = let
     home-config = config.home-manager.users.bao;

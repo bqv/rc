@@ -1,10 +1,10 @@
-{ nixosConfig, config, lib, pkgs, hosts, domains, ... }:
+{ nixosConfig, config, lib, pkgs, usr, hosts, domains, ... }:
 
 {
   config = {
     home.file.".config/nyxt/init.lisp".force = true;
     home.file.".config/nyxt/init.lisp".text = let
-      secrets = import ../../../secrets/nyxt.autofill.nix;
+      secrets = usr.secrets.nyxt.autofill;
     in ''
       #+sbcl(declaim (sb-ext:muffle-conditions cl:warning)) ; my GOD sbcl is noisy
 
