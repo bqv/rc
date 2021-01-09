@@ -45,7 +45,7 @@
     construct.url = "github:matrix-construct/construct"; #|- Construct
     construct.inputs.nixpkgs.follows = "/large";         #|
 
-    hydra.url = "github:nixos/hydra"; #|- Hydra
+    hydra.url = "github:nixos/hydra/f64230b45edf07d1"; #|- Hydra
 
     apparmor.url = "github:bqv/apparmor-nix"; #|- Apparmor
 
@@ -244,7 +244,7 @@
           nix-ipfs-static = inputs.nix-ipfs.packages.${system}.nix-static;
         })
         inputs.hydra.overlay (final: prev: {
-          hydra-unstable = inputs.hydra.defaultPackage.${system};
+          hydra-unstable = final.hydra;
         })
         inputs.guix.overlay
         inputs.construct.overlay (final: prev: {
