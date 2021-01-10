@@ -192,13 +192,31 @@
       nixrc = {
         directory = "/run/git/nixrc";
         remote = "/srv/git/github.com/bqv/nixrc";
-        branch = "live";
+        branch = "substrate";
       };
      #"/run/git/nixpkgs" = {
      #  github.owner = "nixos";
      #  github.repo = "nixpkgs";
      #};
     };
+  };
+  systemd.services.flake-ci = {
+    enable = true;
+    description = "Flake CI";
+    path = [ pkgs.nixUnstable ];
+    serviceConfig.Type = "oneshot";
+    serviceConfig.User = config.users.users.bao.name;
+    serviceConfig.WorkingDirectory = "/srv/git/github.com/bqv/nixrc";
+    serviceConfig.ExecStart = "nix develop -c forecast master small";
+  };
+  systemd.timers.flake-ci = {
+    enable = true;
+    description = "Flake CI timer";
+    timerConfig = {
+      OnCalendar = "hourly";
+      Unit = "flake-ci.service";
+    };
+    wantedBy = [ "timers.target" ];
   };
 
   dysnomia.enableLegacyModules = false;

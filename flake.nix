@@ -39,15 +39,13 @@
     naersk.url = "github:nmattia/naersk";      #|- Naersk
     naersk.inputs.nixpkgs.follows = "/master"; #|
 
-    hydra.url = "github:nixos/hydra";              #|- Hydra
-    hydra.inputs.nix.follows = "/nix";             #|
-    hydra.inputs.nixpkgs.follows = "/nix/nixpkgs"; #|
-
     guix.url = "github:emiller88/guix";      #|- Guix
     guix.inputs.nixpkgs.follows = "/master"; #|
 
     construct.url = "github:matrix-construct/construct"; #|- Construct
     construct.inputs.nixpkgs.follows = "/large";         #|
+
+    hydra.url = "github:nixos/hydra/f64230b45edf07d1"; #|- Hydra
 
     apparmor.url = "github:bqv/apparmor-nix"; #|- Apparmor
 
@@ -245,6 +243,9 @@
           nix-ipfs = inputs.nix-ipfs.packages.${system}.nix;
           nix-ipfs-static = inputs.nix-ipfs.packages.${system}.nix-static;
         })
+        inputs.hydra.overlay (final: prev: {
+          hydra-unstable = final.hydra;
+        })
         inputs.guix.overlay
         inputs.construct.overlay (final: prev: {
           riot-web = final.element-web;
@@ -270,7 +271,6 @@
         inputs.xontribs.overlay
         inputs.wayland.overlay
         inputs.agenix.overlay
-        inputs.hydra.overlay
         inputs.apparmor.overlay
         inputs.devshell.overlay
         inputs.self.overlay
@@ -602,7 +602,7 @@
           inherit (inputs.guix.nixosModules) guix;
           inherit (inputs.construct.nixosModules) matrix-construct;
           inherit (inputs.agenix.nixosModules) age;
-          inherit (inputs.hydra.nixosModules) hydra;
+          hydra = "${inputs.hydra}/hydra-module.nix";
           apparmor-nix = inputs.apparmor.nixosModule;
 
           # Some common basic stuff
@@ -788,17 +788,64 @@
           { name = "machines"; path = /etc/nix/machines; }
         ] );
 
+        commands = [{
+          name = "forecast";
+          category = "automation";
+          command = ''
+            export ARGS="$*"
+            REPO=$(
+              nix build --impure --json --no-link '.#lib.forecast' \
+              | jq '.[] | .outputs.out' -r \
+            )
+            git fetch $REPO substrate:substrate
+            git branch -f substrate FETCH_HEAD
+          '';
+        }];
+
         motd = "";
       }
     );
 
     lib = rec {
       inherit inputs channels config allSystems inputMap patchNixpkgs;
-      patchedPkgs = patchNixpkgs (channels.modules.legacyPackages.x86_64-linux);
+      patchedPkgs = forAllSystems ({ system, ... }:
+        patchNixpkgs (channels.modules.legacyPackages.${system})
+      );
 
       #$ git config secrets.providers "nix eval --raw .#lib.textFilter"
-      textFilter = with inputs.priv.lib.textFilter; join { inherit lib; } list;
+      textFilter = with inputs.priv.lib { inherit lib; }; textFilter.lines;
       inherit (inputs.priv.lib) secrets;
+
+      forecast = let
+        inherit (channels.pkgs.legacyPackages.${builtins.currentSystem}) pkgs;
+        date = builtins.readFile (pkgs.runCommandLocal "forecast-name" {
+          nonce = builtins.currentTime;
+        } "date -Iminutes | tr 'T\\-:' '---' | cut -d+ -f1 | tr -d '\n' > $out");
+      in pkgs.runCommandLocal "forecast-${date}" rec {
+        repo = builtins.getEnv "PWD";
+        inputs = builtins.getEnv "ARGS";
+        buildInputs = [ pkgs.git pkgs.nixUnstable pkgs.cacert ];
+        PAGER = "cat";
+        GIT_AUTHOR_NAME = "ci";
+        GIT_AUTHOR_EMAIL = "nix@system";
+        GIT_COMMITTER_NAME = "systemd";
+        GIT_COMMITTER_EMAIL = "timer@service";
+        __noChroot = true;
+      } ''
+        git clone $repo $out
+        export NIX_REMOTE=local?real=$PWD/nix/store\&store=/nix/store
+        export NIX_STATE_DIR=$PWD/nix/var NIX_LOG_DIR=$PWD/nix/var/log
+        export HOME=$PWD
+        cd $out
+        git switch -c substrate live
+        git commit-tree -m "merge: live" -p HEAD -p origin/live origin/live:
+        git reset --hard origin/live
+        for INPUT in $inputs; do
+          nix flake update --update-input $INPUT \
+            --experimental-features "nix-command flakes ca-references"
+          git commit -m "flake(lock): autoupdate $INPUT" flake.lock
+        done
+      '';
     };
 
     hydraJobs = rec {
