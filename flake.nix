@@ -788,6 +788,12 @@
           { name = "machines"; path = /etc/nix/machines; }
         ] );
 
+        commands.forecast = ''
+          REPO=$(nix build --impure --json --no-link '.#lib.forecast' | jq '.[] | .outputs.out' -r)
+          git fetch $REPO substrate:substrate
+          git branch -f substrate FETCH_HEAD
+        '';
+
         motd = "";
       }
     );
@@ -804,19 +810,36 @@
 
       forecast = let
         inherit (channels.pkgs.legacyPackages.${builtins.currentSystem}) pkgs;
-        date = builtins.readFile (pkgs.runCommand "forecast-name" {
+        date = builtins.readFile (pkgs.runCommandLocal "forecast-name" {
+          nonce = builtins.currentTime;
         } "date -Iminutes | tr 'T\\-:' '---' | cut -d+ -f1 | tr -d '\n' > $out");
-      in pkgs.runCommandLocal "forecast-${date}" {
+      in pkgs.runCommandLocal "forecast-${date}" rec {
+        repo = builtins.getEnv "PWD";
         buildInputs = [ pkgs.git pkgs.nixUnstable pkgs.cacert ];
+        PAGER = "cat";
+        GIT_AUTHOR_NAME = "ci";
+        GIT_AUTHOR_EMAIL = "nix@system";
+        GIT_COMMITTER_NAME = "systemd";
+        GIT_COMMITTER_EMAIL = "timer@service";
+        INPUTS = (with builtins.mapAttrs lib.const inputs; [
+          master
+          small
+        ]);
         __noChroot = true;
       } ''
-        git clone ${./.} $out
+        git clone $repo $out
         export NIX_REMOTE=local?real=$PWD/nix/store\&store=/nix/store
         export NIX_STATE_DIR=$PWD/nix/var NIX_LOG_DIR=$PWD/nix/var/log
         export HOME=$PWD
         cd $out
-        nix flake update \
-          --experimental-features "nix-command flakes ca-references"
+        git switch -c substrate live
+        git commit-tree -m "merge: live" -p HEAD -p origin/live origin/live:
+        git reset --hard origin/live
+        for INP in $INPUTS; do
+          nix flake update --update-input $INP \
+            --experimental-features "nix-command flakes ca-references"
+          git commit -m "flake(lock): autoupdate $INP" flake.lock
+        done
       '';
     };
 
