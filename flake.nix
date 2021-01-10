@@ -788,11 +788,19 @@
           { name = "machines"; path = /etc/nix/machines; }
         ] );
 
-        commands.forecast = ''
-          REPO=$(nix build --impure --json --no-link '.#lib.forecast' | jq '.[] | .outputs.out' -r)
-          git fetch $REPO substrate:substrate
-          git branch -f substrate FETCH_HEAD
-        '';
+        commands = [{
+          name = "forecast";
+          category = "automation";
+          command = ''
+            export ARGS="$*"
+            REPO=$(
+              nix build --impure --json --no-link '.#lib.forecast' \
+              | jq '.[] | .outputs.out' -r \
+            )
+            git fetch $REPO substrate:substrate
+            git branch -f substrate FETCH_HEAD
+          '';
+        }];
 
         motd = "";
       }
@@ -815,16 +823,13 @@
         } "date -Iminutes | tr 'T\\-:' '---' | cut -d+ -f1 | tr -d '\n' > $out");
       in pkgs.runCommandLocal "forecast-${date}" rec {
         repo = builtins.getEnv "PWD";
+        inputs = builtins.getEnv "ARGS";
         buildInputs = [ pkgs.git pkgs.nixUnstable pkgs.cacert ];
         PAGER = "cat";
         GIT_AUTHOR_NAME = "ci";
         GIT_AUTHOR_EMAIL = "nix@system";
         GIT_COMMITTER_NAME = "systemd";
         GIT_COMMITTER_EMAIL = "timer@service";
-        INPUTS = (with builtins.mapAttrs lib.const inputs; [
-          master
-          small
-        ]);
         __noChroot = true;
       } ''
         git clone $repo $out
@@ -835,10 +840,10 @@
         git switch -c substrate live
         git commit-tree -m "merge: live" -p HEAD -p origin/live origin/live:
         git reset --hard origin/live
-        for INP in $INPUTS; do
-          nix flake update --update-input $INP \
+        for INPUT in $inputs; do
+          nix flake update --update-input $INPUT \
             --experimental-features "nix-command flakes ca-references"
-          git commit -m "flake(lock): autoupdate $INP" flake.lock
+          git commit -m "flake(lock): autoupdate $INPUT" flake.lock
         done
       '';
     };
