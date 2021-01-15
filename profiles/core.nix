@@ -4,7 +4,7 @@
   nix.systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
 
   boot = {
-    kernelPackages = lib.mkDefault (pkgs.large.linuxPackages_latest);
+    kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
     tmpOnTmpfs = true;
     cleanTmpDir = true;

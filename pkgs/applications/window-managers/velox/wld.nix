@@ -1,12 +1,12 @@
-{ lib, stdenv, flake, pkgconfig
+{ lib, stdenv, withSources, pkgconfig
 , wayland, fontconfig, pixman, freetype, libdrm
 }:
 
 stdenv.mkDerivation rec {
   name = "wld-${version}";
-  version = flake.inputs.wld.shortRev;
+  version = src.shortRev;
 
-  src = flake.inputs.wld;
+  src = withSources.wld;
 
   nativeBuildInputs = [ pkgconfig ];
 

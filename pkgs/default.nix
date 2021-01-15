@@ -1,5 +1,5 @@
 final: prev: let
-  inherit (prev.lib) recurseIntoAttrs;
+  inherit (prev.withLib.lib) recurseIntoAttrs;
   emacsOverride = self: super: {
     _0xc = null;
     _2048-game = null;
@@ -46,7 +46,7 @@ in rec {
 
   git-remote-ipfs = prev.callPackage ./applications/version-management/git-remote-ipfs { };
 
-  greetd = prev.callPackage ./applications/display-managers/greetd { };
+  greetd = prev.withNaersk.callPackage ./applications/display-managers/greetd { };
 
   guix-ns = prev.callPackage ./tools/misc/guix-ns { };
 
@@ -62,7 +62,7 @@ in rec {
 
   nodePackages = recurseIntoAttrs prev.nodePackages;
 
-  pleroma = builtins.trace "pkgs.pleroma: see instead nixpkgs#103138" (prev.callPackage ./servers/pleroma { });
+  pleroma = prev.callPackage ./servers/pleroma { };
 
   pure = prev.callPackage ./shells/zsh/pure { };
 
@@ -74,7 +74,7 @@ in rec {
 
   velox = prev.callPackage ./applications/window-managers/velox { };
 
-  vervis = final.rel2003.callPackage ./applications/version-management/vervis { inherit fetchdarcs; };
+  vervis = prev.withRel2003.callPackage ./applications/version-management/vervis { inherit fetchdarcs; };
 
   yacy = prev.callPackage ./servers/yacy { };
 }
