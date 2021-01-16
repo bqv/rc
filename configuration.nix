@@ -21,10 +21,5 @@ in rec { inherit flake-compat flake; inherit self; inputs = self.lib.inputs // {
 // maybe self.defaultPackage.${system}.config.nodes.${hostname}.configuration
 // maybe {
   inherit (self.defaultPackage.${system}.config.nodes.${hostname}.configuration._pkgs) pkgs lib;
-  options = rec {
-    deploy = self.defaultPackage.x86_64-linux.options;
-    nodes = deploy.nodes.type.getSubOptions [];
-    nixos = nodes.configuration.type.getSubOptions [];
-    home = nixos.home-manager.users.type.getSubOptions [];
-  };
+  options = (self.defaultPackage.x86_64-linux.options.nodes.type.getSubOptions []).configuration.type.getSubOptions [];
 }
