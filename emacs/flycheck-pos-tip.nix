@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.flycheck-elsa = {
+  emacs-loader.flycheck-pos-tip = {
     demand = true;
     after = [ "flycheck" ];
     config = ''
