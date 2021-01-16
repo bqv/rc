@@ -106,6 +106,9 @@ switch() {
 
 fail() {
   echo failure > current/status
+  if [ "@rollbackOnFailure@" != 1 ]; then
+      exit 1
+  fi
   echo "Rolling back.." >&2
   switch "$1" switch
 
