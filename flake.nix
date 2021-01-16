@@ -588,7 +588,7 @@
             fetchPullRequest = fetchPullRequestForSystem system;
             inherit (inputs.self.lib.secrets) hosts domains;
 
-            modules = systemModules ++ [
+            modules = systemModules ++ userModules ++ [
               { _module.args = specialArgs; }
             ];
             extraModules = [];
