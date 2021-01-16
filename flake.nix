@@ -309,10 +309,7 @@
       in tryGetValue (builtins.tryEval (lib.concatMap lib.attrValues (lib.attrValues s6))));
     };
   in {
-    nixosConfigurations = builtins.mapAttrs (host: node: let
-      system = "x86_64-linux"; # So far it always is...
-      pkgs = channels.modules.legacyPackages.${system};
-    in {
+    nixosConfigurations = builtins.mapAttrs (host: node: {
       config = node.configuration;
     }) inputs.self.defaultPackage.x86_64-linux.config.nodes;
 
@@ -591,7 +588,7 @@
             fetchPullRequest = fetchPullRequestForSystem system;
             inherit (inputs.self.lib.secrets) hosts domains;
 
-            modules = systemModules ++ [
+            modules = modules ++ [
               { _module.args = specialArgs; }
             ];
             extraModules = [];
@@ -661,11 +658,12 @@
               ln -sfn /run/current-system/flake/input/self /etc/nixos || \
               true
             '';
+          };
 
-            nixpkgs = {
-              pkgs = pkgs // {
-                iptables = pkgs.iptables-nftables-compat;
-              };
+          nixpkgs = { config, ... }: {
+            config.nixpkgs = {
+              inherit pkgs;
+              system = config.platform;
             };
           };
 
@@ -692,6 +690,7 @@
                   baduk
                 ];
               });
+              visible = false;
             };
 
             config.home-manager = {
@@ -731,19 +730,14 @@
           # Actual host config
           configuration = import "${toString ./hosts}/${hostName}";
 
-          systemModules = flakeModules ++ [
-            core global iwd gnupg
-            dwarffs guix matrix-construct hydra
+          modules = flakeModules ++ [
+            core global nixpkgs iwd home gnupg
+            home-manager dwarffs guix matrix-construct hydra
             impermanence age apparmor-nix
-          ];
-
-          userModules = [
-            home
-            home-manager
           ];
         in {
           inherit system specialArgs;
-          modules = systemModules ++ userModules ++ [
+          modules = modules ++ [
             configuration
           ] ++ appendModules;
         };
