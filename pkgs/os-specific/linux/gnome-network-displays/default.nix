@@ -1,11 +1,11 @@
-{ stdenv, flake, meson, ninja, pkg-config, wrapGAppsHook, writeText, python3
+{ stdenv, withSources, meson, ninja, pkg-config, wrapGAppsHook, writeText, python3
 , gtk3, glib, gsettings-desktop-schemas, gst_all_1, networkmanager, libpulseaudio, desktop-file-utils }:
 
 stdenv.mkDerivation rec {
   pname = "gnome-network-displays";
   version = src.shortRev;
 
-  src = flake.inputs.gnome-network-displays;
+  src = withSources.gnome-network-displays;
 
   nativeBuildInputs = [ meson ninja pkg-config wrapGAppsHook ];
   buildInputs = [ gtk3 glib gsettings-desktop-schemas networkmanager libpulseaudio python3 desktop-file-utils ]

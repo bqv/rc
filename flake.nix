@@ -142,7 +142,7 @@
       }) [
         {
           description = "nixos/anbox: use mainline drivers when available";
-          id = 102341; hash = "zaQSv78mfV670eQZGmcTh6w4x02fGaSxMYQpiJjavr0=";
+          id = 102341; hash = "68IzjRPbRuDQ9Lk8WHbYTbxvTr0pHH3wIuSh7ISaqiQ=";
         }
       ];
       patches = map basePkgs.fetchpatch pullReqs;
@@ -182,103 +182,100 @@
           overlays = attrValues inputs.self.overlays;
         } // (removeAttrs args [ "id" "rev" "hash" ]));
 
-    # Nonstandard channel wrapper for build visibility
-    channelToOverlay = { system, config, flake, branch }: (final: prev: { ${flake} =
-      mapAttrs (k: v: diffTrace (baseNameOf inputs.${flake}) (baseNameOf prev.path) "pkgs.${k} pinned to nixpkgs/${branch}" v)
-      (import inputs.${flake} { inherit config system; overlays = []; });
-    });
-    # Loopback flake wrapper for build visibility
-    flakeToOverlay = { system, flake, name }: (final: prev: { ${flake} =
-      mapAttrs (k: v: diffTrace (baseNameOf inputs.${flake}) (baseNameOf prev.path) "pkgs.${k} pinned to ${name}" v)
-      inputs.${flake}.legacyPackages.${system};
-    });
-
     # Packages for nixos configs
     pkgsForSystem = system: import channels.pkgs rec {
       inherit system config;
-      overlays = (attrValues inputs.self.overlays) ++ [
-        (channelToOverlay { inherit system config; flake = "master"; branch = "master"; })
-        (channelToOverlay { inherit system config; flake = "staged"; branch = "staging"; })
-        (channelToOverlay { inherit system config; flake = "small"; branch = "nixos-unstable-small"; })
-        (channelToOverlay { inherit system config; flake = "large"; branch = "nixos-unstable"; })
-        (channelToOverlay { inherit system config; flake = "rel2009"; branch = "nixos-20.09"; })
-        (channelToOverlay { inherit system config; flake = "rel2003"; branch = "nixos-20.03"; })
-        (channelToOverlay { inherit system config; flake = "rel1909"; branch = "nixos-19.09"; })
-        (channelToOverlay { inherit system config; flake = "rel1903"; branch = "nixos-19.03"; })
-        (channelToOverlay { inherit system config; flake = "rel1809"; branch = "nixos-18.09"; })
-        (channelToOverlay { inherit system config; flake = "rel1803"; branch = "nixos-18.03"; })
-        (final: prev: { broken = import channels.pkgs {
-          inherit system overlays;
-          config = config // { allowBroken = true; };
-        }; })
-        (final: prev: { insecuressl = import channels.pkgs {
-          inherit system;
-          config = config // { permittedInsecurePackages = [ "openssl-1.0.2u" ]; };
-        }; })
-        (flakeToOverlay { inherit system; flake = "lg400"; name = "delta/system-400-link"; })
-        (import inputs.mozilla)
-        (pkgs: raw: {
-          inherit raw;
-          naersk = inputs.naersk.lib.${system};
-          snack = pkgs.callPackage (import "${inputs.snack}/snack-lib");
-          napalm = pkgs.callPackage inputs.napalm;
-          inherit (inputs.haskell.legacyPackages.${system}) haskell-nix; # ignore overlay, we want cache hits
-        })
-        inputs.nix.overlay (final: prev: rec {
-          nixFlakes = nix;
-          nixUnstable = nix;
-          nix = inputs.nix.packages.${system}.nix.overrideAttrs (drv: {
-            patches = (drv.patches or []) ++ [
-              (final.fetchpatch {
-                name = "libfetcher-file.patch";
-                url = "https://github.com/nixos/nix/pull/4153.diff";
-                sha256 = "JfcswqOG0V5qlolxxYFOpqXJgENC4Adfk4J8r//tgfA=";
-              })
-            ];
-            passthru = {
-              inherit (inputs.nix.packages.${system}.nix) perl-bindings;
+      overlays = builtins.map (o: o // { value = lib.fix o.__functor; }) [{
+        # Project each overlay through recursive subsets
+        __functor = overlaysBase: final: prev: let
+          overlaySets = lib.mapAttrs' (ident: overlay: {
+            name = "with" + (with lib.strings; let
+              ch = stringToCharacters ident;
+              ch' = [(toUpper (head ch))] ++ tail ch;
+            in concatStringsSep "" ch');
+            value = import final.path {
+              inherit (prev) system config;
+              overlays = prev.overlays ++ [{
+                value = final: prev: {
+                  inherit overlay;
+                  pkgsParent = prev;
+                } // overlay final prev;
+                __functor = x: x.value;
+                name = ident;
+              }];
             };
-          });
-          inherit (inputs.nix.packages.${system}) nix-static;
-          nix-ipfs = inputs.nix-ipfs.packages.${system}.nix;
-          nix-ipfs-static = inputs.nix-ipfs.packages.${system}.nix-static;
-        })
-        inputs.hydra.overlay (final: prev: {
-          hydra-unstable = final.hydra;
-        })
-        inputs.guix.overlay
-        inputs.construct.overlay (final: prev: {
-          riot-web = final.element-web;
-          matrix-construct = (final.callPackage "${inputs.construct}/default.nix" { pkgs = final; }).overrideAttrs (_: {
-            EXTRA_CXXFLAGS = "-mabm -mbmi";
-            patchPhase = '' sed '/RB_INC_EXECUTION/d' -i ./include/ircd/stdinc.h '';
-            preAutoreconf = let
-              VERSION_COMMIT_CMD = "git rev-parse --short HEAD";
-              VERSION_BRANCH_CMD = "git rev-parse --abbrev-ref HEAD";
-              VERSION_TAG_CMD = "git describe --tags --abbrev=0 --dirty --always --broken";
-              VERSION_CMD = "git describe --tags --always";
-            in ''
-              substituteInPlace configure.ac --replace "${VERSION_COMMIT_CMD}" "echo ${inputs.construct.rev}"
-              substituteInPlace configure.ac --replace "${VERSION_BRANCH_CMD}" "echo master"
-              substituteInPlace configure.ac --replace "${VERSION_TAG_CMD}" "echo ${inputs.construct.rev}"
-              substituteInPlace configure.ac --replace "${VERSION_CMD}" "echo ${inputs.construct.rev}"
-            '';
-            src = builtins.toPath "${inputs.construct}/.";
-          });
-        })
-        inputs.emacs.overlay
-        inputs.lisp.overlay
-        inputs.xontribs.overlay
-        inputs.wayland.overlay
-        inputs.agenix.overlay
-        inputs.apparmor.overlay
-        inputs.devshell.overlay
-        inputs.self.overlay
-        (pkgs: lib.const {
-          inherit (inputs.small.legacyPackages.${system}) firefox firefox-unwrapped; # slow and broken
-          inherit (inputs.large.legacyPackages.${system}) thunderbird obs-studio webkitgtk chromium qemu; # slow
-        })
-      ];
+          }) inputs.self.overlays;
+        in overlaySets // {
+          inherit overlaySets;
+          overlay = overlaysBase;
+          overlaysBase = [overlaysBase];
+          pkgsParent = prev // { overlays = []; };
+          appendOverlays = extensions: prev.appendOverlays (let
+          in [rec {
+            inherit extensions;
+            value = lib.fold lib.composeExtensions (self: lib.id) extensions;
+            __functor = x: x.value;
+            provides = builtins.listToAttrs (lib.imap0 (n: ext: {
+              name = "_${toString n}";
+              value = builtins.attrNames (ext {} {});
+            }) extensions);
+            name = "config";
+          }]);
+        };
+        name = "index";
+      } {
+        # Flatten pkgs architecture superficially for convenient maintenance
+        __functor = _: final: prev: let
+          overlayPkgs = with prev; {
+            inherit (withGuixFlake) guix;
+            inherit (withEmacsFlake.withEmacs.withEmacs-weechat) emacsPgtkGcc emacsPgtkGccClient emacsPgtkGccPackages;
+            inherit (withGiara) giara;
+            inherit (withLbry) lbry;
+            inherit (withCordless) cordless;
+            inherit (withMaster.withHnix) hnix;
+            inherit (withNix) nixFlakes nix-static nix-ipfs nix-ipfs-static;
+            inherit (withInsecureSSL) epsxe;
+            inherit (withNix.withHydraFlake.withHydra) hydra;
+            inherit (withApparmorFlake) apparmorRulesFromClosure;
+            iputils = iputils // { inherit (withApparmorFlake.iputils) apparmor; }; # shh it's fine
+            inetutils = inetutils // { inherit (withApparmorFlake.inetutils) apparmor; }; # shh it's fine
+            emacsPackagesFor = with pkgsParent.withEmacsFlake.withSelfFlake; arg: emacsPackagesFor arg // {
+              inherit (emacsPackages) bitwarden ivy-exwm;
+              inherit (emacsPackages) flycheck-purescript eterm-256color;
+              inherit (emacsPackages) envrc emacsbridge font-lock-ext sln-mode;
+              inherit (emacsPackages) emacs-ffi explain-pause-mode;
+            };
+            emacsPackages = with withEmacsFlake.withSelfFlake; emacsPackages // {
+              inherit (emacsPackages) bitwarden ivy-exwm;
+              inherit (emacsPackages) flycheck-purescript eterm-256color;
+              inherit (emacsPackages) envrc emacsbridge font-lock-ext sln-mode;
+              inherit (emacsPackages) emacs-ffi explain-pause-mode;
+            };
+            dotnetPackages = dotnetPackages // {
+              inherit (withSelfFlake.dotnetPackages) azure-functions-core-tools;
+            };
+            inherit (withNaersk.withSelfFlake) greetd;
+            inherit (withSelfFlake) velox electronmail;
+            haskellPackages = haskellPackages // {
+              inherit (withRel2009.haskellPackages) pointfree-fancy;
+            };
+            inherit (withSelfFlake) dejavu_nerdfont;
+           #inherit (withRel2003.withSelfFlake) vervis;
+
+           #inherit (pkgs') dgit electronmail;
+           #inherit (pkgs') flarectl fsnoop git-pr-mirror greetd ini2json ipfscat;
+           #inherit (pkgs'.pleroma) pleroma_be pleroma_fe masto_fe;
+           #inherit (pkgs') pure shflags twitterpub velox vervis yacy;
+
+           #inherit (withIni2Json) ini2json;
+           #inherit (withWeechat) weechatScripts;
+          };
+        in overlayPkgs // {
+          inherit overlayPkgs;
+          pkgsParent = prev // { overlays = prev.overlaysBase; };
+        };
+        name = "pins";
+      }];
     };
 
     forAllSystems = f: lib.genAttrs allSystems (system: f {
@@ -309,10 +306,7 @@
       in tryGetValue (builtins.tryEval (lib.concatMap lib.attrValues (lib.attrValues s6))));
     };
   in {
-    nixosConfigurations = builtins.mapAttrs (host: node: let
-      system = "x86_64-linux"; # So far it always is...
-      pkgs = channels.modules.legacyPackages.${system};
-    in {
+    nixosConfigurations = builtins.mapAttrs (host: node: {
       config = node.configuration;
     }) inputs.self.defaultPackage.x86_64-linux.config.nodes;
 
@@ -355,21 +349,120 @@
 
     overlay = import ./pkgs;
 
-    overlays = listToAttrs (map (name: {
-      name = lib.removeSuffix ".nix" name;
-      value = import (./overlays + "/${name}") inputs;
-    }) (builtins.filter (file: lib.hasSuffix ".nix" file) (attrNames (readDir ./overlays))));
+    overlays = let
+      channelOverlay = { flake, branch }: { ${flake} = final: prev:
+        mapAttrs (k: v: diffTrace (baseNameOf inputs.${flake}) (baseNameOf prev.path) "pkgs.${k} pinned to nixpkgs/${branch}" v)
+        (import inputs.${flake} { inherit (prev) config system; overlays = prev.overlaysBase; });
+      };
+      flakeOverlay = { flake, name }: { ${flake} = final: prev:
+        mapAttrs (k: v: diffTrace (baseNameOf inputs.${flake}) (baseNameOf prev.path) "pkgs.${k} pinned to ${name}" v)
+        inputs.${flake}.legacyPackages.${prev.system};
+      };
+      inputsOverlay = builtins.listToAttrs (builtins.filter (v: v != null)
+        (builtins.map (name: if inputs.${name} ? overlay then {
+          name = "${name}Flake";
+          value = inputs.${name}.overlay;
+        } else null) (builtins.attrNames inputs)));
+      configOverlay = config: final: prev: import prev.path {
+        inherit (prev) system;
+        overlays = [(builtins.head prev.overlays)];
+        config = prev.config // config;
+      };
+    in lib.fold (lib.mergeAttrsNoOverride {}) {} [
+      {
+        broken = configOverlay { allowBroken = true; };
+        insecureSSL = configOverlay { permittedInsecurePackages = [ "openssl-1.0.2u" ]; };
+        sources = final: prev: inputs;
+        lib = final: prev: { inherit lib; };
+      }
+      {
+        mozilla = final: prev: import inputs.mozilla final prev;
+        naersk = final: prev: { naersk = inputs.naersk.lib.${prev.system}; };
+        snack = final: prev: { snack = final.callPackage "${inputs.snack}/snack-lib"; };
+        napalm = final: prev: { napalm = final.callPackage inputs.napalm; };
+        nix = final: prev: let inherit (prev) system; in rec {
+          nixFlakes = nix;
+          nixUnstable = nix;
+          nix = inputs.nix.packages.${system}.nix.overrideAttrs (drv: {
+            patches = (drv.patches or []) ++ [
+              (final.fetchpatch {
+                name = "libfetcher-file.patch";
+                url = "https://github.com/nixos/nix/pull/4153.diff";
+                sha256 = "JfcswqOG0V5qlolxxYFOpqXJgENC4Adfk4J8r//tgfA=";
+              })
+            ];
+            passthru = {
+              inherit (inputs.nix.packages.${system}.nix) perl-bindings;
+            };
+          });
+          inherit (inputs.nix.packages.${system}) nix-static;
+          nix-ipfs = inputs.nix-ipfs.packages.${system}.nix;
+          nix-ipfs-static = inputs.nix-ipfs.packages.${system}.nix-static;
+        };
+        hydra = final: prev: {
+          hydra-unstable = final.hydra;
+        };
+        construct = final: prev: {
+          riot-web = final.element-web;
+          matrix-construct = (final.callPackage "${inputs.construct}/default.nix" { pkgs = final; }).overrideAttrs (_: {
+            EXTRA_CXXFLAGS = "-mabm -mbmi";
+            patchPhase = '' sed '/RB_INC_EXECUTION/d' -i ./include/ircd/stdinc.h '';
+            preAutoreconf = let
+              VERSION_COMMIT_CMD = "git rev-parse --short HEAD";
+              VERSION_BRANCH_CMD = "git rev-parse --abbrev-ref HEAD";
+              VERSION_TAG_CMD = "git describe --tags --abbrev=0 --dirty --always --broken";
+              VERSION_CMD = "git describe --tags --always";
+            in ''
+              substituteInPlace configure.ac --replace "${VERSION_COMMIT_CMD}" "echo ${inputs.construct.rev}"
+              substituteInPlace configure.ac --replace "${VERSION_BRANCH_CMD}" "echo master"
+              substituteInPlace configure.ac --replace "${VERSION_TAG_CMD}" "echo ${inputs.construct.rev}"
+              substituteInPlace configure.ac --replace "${VERSION_CMD}" "echo ${inputs.construct.rev}"
+            '';
+            src = builtins.toPath "${inputs.construct}/.";
+          });
+        };
+        delay = final: prev: let inherit (prev) system; in {
+          inherit (inputs.small.legacyPackages.${system}) firefox firefox-unwrapped;
+          inherit (inputs.large.legacyPackages.${system}) thunderbird obs-studio webkitgtk chromium qemu;
+        };
+      }
+     #(flakeOverlay { flake = "lg400"; name = "delta/system-400-link"; })
+      (channelOverlay { flake = "master"; branch = "master"; })
+      (channelOverlay { flake = "staged"; branch = "staging"; })
+      (channelOverlay { flake = "small"; branch = "nixos-unstable-small"; })
+      (channelOverlay { flake = "large"; branch = "nixos-unstable"; })
+      (channelOverlay { flake = "rel2009"; branch = "nixos-20.09"; })
+      (channelOverlay { flake = "rel2003"; branch = "nixos-20.03"; })
+      (channelOverlay { flake = "rel1909"; branch = "nixos-19.09"; })
+      (channelOverlay { flake = "rel1903"; branch = "nixos-19.03"; })
+      (channelOverlay { flake = "rel1809"; branch = "nixos-18.09"; })
+      (channelOverlay { flake = "rel1803"; branch = "nixos-18.03"; })
+      (listToAttrs (map
+        (name: {
+          name = lib.removeSuffix ".nix" name;
+          value = final: prev: #builtins.trace "reading overlay ${name}"
+            (import (./overlays + "/${name}") inputs final prev);
+        })
+        (builtins.filter
+          (file: lib.hasSuffix ".nix" file || file == "default.nix")
+          (attrNames (readDir ./overlays)))))
+      inputsOverlay
+    ];
 
-    packages = forAllSystems ({ pkgs, ... }: lib.filterAttrs (_: p: (p.meta.broken or null) != true) {
-      inherit (pkgs.emacsPackages) bitwarden ivy-exwm;
-      inherit (pkgs.emacsPackages) flycheck-purescript eterm-256color;
-      inherit (pkgs.emacsPackages) envrc emacsbridge font-lock-ext sln-mode;
-      inherit (pkgs.emacsPackages) emacs-ffi explain-pause-mode;
-      inherit (pkgs.dotnetPackages) azure-functions-core-tools;
-      inherit (pkgs) dgit dejavu_nerdfont electronmail;
-      inherit (pkgs) flarectl fsnoop git-pr-mirror greetd ini2json ipfscat;
-      inherit (pkgs.pleroma) pleroma_be pleroma_fe masto_fe;
-      inherit (pkgs) pure shflags twitterpub velox vervis yacy;
+    packages = forAllSystems ({ pkgs, ... }: let
+      pkgs' = pkgs // { pleroma = builtins.trace "pkgs.pleroma: see instead nixpkgs#103138" {
+        inherit (pkgs.withSelfFlake) pleroma;
+      }; };
+    in lib.filterAttrs (_: p: (p.meta.broken or null) != true) {
+     #inherit (pkgs'.emacsPackages) bitwarden ivy-exwm;
+     #inherit (pkgs'.emacsPackages) flycheck-purescript eterm-256color;
+     #inherit (pkgs'.emacsPackages) envrc emacsbridge font-lock-ext sln-mode;
+     #inherit (pkgs'.emacsPackages) emacs-ffi explain-pause-mode;
+     #inherit (pkgs'.dotnetPackages) azure-functions-core-tools;
+     #inherit (pkgs') dgit dejavu_nerdfont electronmail;
+     #inherit (pkgs') flarectl fsnoop git-pr-mirror greetd ini2json ipfscat;
+     #inherit (pkgs'.pleroma) pleroma_be pleroma_fe masto_fe;
+     #inherit (pkgs') pure shflags twitterpub velox vervis yacy;
     });
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }: let
@@ -617,7 +710,7 @@
             documentation.nixos.extraModuleSources = [./.]
               ++ lib.mapAttrsToList (_: x: x.outPath) inputs;
 
-            nix.package = lib.mkDefault pkgs.nixFlakes;
+            nix.package = lib.mkDefault pkgs.withNixFlake.withNix.nixFlakes;
             nix.registry = lib.mapAttrs (id: flake: {
               inherit flake;
               from = { inherit id; type = "indirect"; };
@@ -660,11 +753,12 @@
               ln -sfn /run/current-system/flake/input/self /etc/nixos || \
               true
             '';
+          };
 
-            nixpkgs = {
-              pkgs = pkgs // {
-                iptables = pkgs.iptables-nftables-compat;
-              };
+          nixpkgs = { config, ... }: {
+            config.nixpkgs = {
+              inherit pkgs;
+              system = config.platform;
             };
           };
 
@@ -691,6 +785,7 @@
                   baduk
                 ];
               });
+              visible = false;
             };
 
             config.home-manager = {
@@ -731,7 +826,7 @@
           configuration = import "${toString ./hosts}/${hostName}";
 
           systemModules = flakeModules ++ [
-            core global iwd gnupg
+            core global nixpkgs iwd gnupg
             dwarffs guix matrix-construct hydra
             impermanence age apparmor-nix
           ];
