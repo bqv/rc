@@ -1,12 +1,12 @@
-{ stdenv, lib, flake, pkgconfig, writeText
+{ stdenv, lib, withSources, pkgconfig, writeText
 , ncurses, wayland, wayland-protocols, wld, libxkbcommon, fontconfig, pixman
 , conf, patches }:
 
 stdenv.mkDerivation rec {
   name = "st-velox-${version}";
-  version = flake.inputs.st-wl.shortRev;
+  version = src.shortRev;
 
-  src = flake.inputs.st-wl;
+  src = withSources.st-wl;
 
   inherit patches;
 
