@@ -120,7 +120,7 @@
     optimise.automatic = true;
     optimise.dates = [ "17:30" "02:00" ];
 
-    maxJobs = 8;
+    maxJobs = 16;
     nrBuildUsers = 64;
 
     extraOptions = with usr.units; ''

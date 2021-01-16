@@ -1,10 +1,10 @@
-{ stdenv, lib, withSources, swc, wld, wayland, libxkbcommon, pixman, fontconfig }:
+{ stdenv, lib, flake, swc, wld, wayland, libxkbcommon, pixman, fontconfig }:
 
 stdenv.mkDerivation rec {
   name = "dmenu-velox-${version}";
-  version = src.shortRev;
+  version = flake.inputs.dmenu.shortRev;
 
-  src = withSources.dmenu;
+  src = flake.inputs.dmenu;
 
   buildInputs = [ swc wld wayland libxkbcommon pixman fontconfig ];
 
