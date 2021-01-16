@@ -239,27 +239,29 @@
             inherit (withApparmorFlake) apparmorRulesFromClosure;
             iputils = iputils // { inherit (withApparmorFlake.iputils) apparmor; }; # shh it's fine
             inetutils = inetutils // { inherit (withApparmorFlake.inetutils) apparmor; }; # shh it's fine
-            emacsPackagesFor = with pkgsParent.withEmacsFlake.withSelfFlake; arg: emacsPackagesFor arg // {
-              inherit (emacsPackages) bitwarden ivy-exwm;
-              inherit (emacsPackages) flycheck-purescript eterm-256color;
-              inherit (emacsPackages) envrc emacsbridge font-lock-ext sln-mode;
-              inherit (emacsPackages) emacs-ffi explain-pause-mode;
-            };
-            emacsPackages = with withEmacsFlake.withSelfFlake; emacsPackages // {
-              inherit (emacsPackages) bitwarden ivy-exwm;
-              inherit (emacsPackages) flycheck-purescript eterm-256color;
-              inherit (emacsPackages) envrc emacsbridge font-lock-ext sln-mode;
-              inherit (emacsPackages) emacs-ffi explain-pause-mode;
-            };
+           #inherit (withSelfFlake) nixos-rebuild;
+            inherit (withNaersk.withSelfFlake) greetd;
+            velox = {};
+           #inherit (withSelfFlake) velox electronmail;
             dotnetPackages = dotnetPackages // {
               inherit (withSelfFlake.dotnetPackages) azure-functions-core-tools;
             };
-            inherit (withNaersk.withSelfFlake) greetd;
-            inherit (withSelfFlake) velox electronmail;
-            haskellPackages = haskellPackages // {
-              inherit (withRel2009.haskellPackages) pointfree-fancy;
-            };
-            inherit (withSelfFlake) dejavu_nerdfont;
+           #emacsPackagesFor = with pkgsParent.withEmacsFlake.withSelfFlake; arg: emacsPackagesFor arg // {
+           #  inherit (emacsPackages) bitwarden ivy-exwm;
+           #  inherit (emacsPackages) flycheck-purescript eterm-256color;
+           #  inherit (emacsPackages) envrc emacsbridge font-lock-ext sln-mode;
+           #  inherit (emacsPackages) emacs-ffi explain-pause-mode;
+           #};
+           #emacsPackages = with withEmacsFlake.withSelfFlake; emacsPackages // {
+           #  inherit (emacsPackages) bitwarden ivy-exwm;
+           #  inherit (emacsPackages) flycheck-purescript eterm-256color;
+           #  inherit (emacsPackages) envrc emacsbridge font-lock-ext sln-mode;
+           #  inherit (emacsPackages) emacs-ffi explain-pause-mode;
+           #};
+           #haskellPackages = haskellPackages // {
+           #  inherit (withRel2009.haskellPackages) pointfree-fancy;
+           #};
+           #inherit (withSelfFlake) dejavu_nerdfont;
            #inherit (withRel2003.withSelfFlake) vervis;
 
            #inherit (pkgs') dgit electronmail;
