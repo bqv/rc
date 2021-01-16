@@ -1,4 +1,4 @@
-{ lib, stdenv, flake, pkgconfig, makeWrapper, newScope
+{ lib, stdenv, withSources, pkgconfig, makeWrapper, newScope
 , libxkbcommon, wayland, pixman, fontconfig, libinput
 , stConf ? null, stPatches ? []
 }:
@@ -16,9 +16,9 @@ let
   };
 in stdenv.mkDerivation rec {
   name = "velox-${version}";
-  version = flake.inputs.velox.shortRev;
+  version = src.shortRev;
 
-  src = flake.inputs.velox;
+  src = withSources.velox;
 
   nativeBuildInputs = [ pkgconfig makeWrapper ];
 

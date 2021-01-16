@@ -25,7 +25,7 @@ inputs@{...}: final: prev: let
       ];
     });
   };
-in with final.lib; rec {
+in with prev.lib; rec {
   emacsPackagesFor = emacs: (prev.emacsPackagesFor emacs).overrideScope' override;
   emacsPackages = prev.emacsPackages.overrideScope' override;
 }
