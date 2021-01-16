@@ -1,5 +1,5 @@
 final: prev: let
-  inherit (final.lib) recurseIntoAttrs;
+  inherit (prev.lib) recurseIntoAttrs;
   emacsOverride = self: super: {
     _0xc = null;
     _2048-game = null;
@@ -62,7 +62,7 @@ in rec {
 
   nodePackages = recurseIntoAttrs prev.nodePackages;
 
-  pleroma = prev.callPackage ./servers/pleroma { };
+  pleroma = builtins.trace "pkgs.pleroma: see instead nixpkgs#103138" (prev.callPackage ./servers/pleroma { });
 
   pure = prev.callPackage ./shells/zsh/pure { };
 
@@ -74,7 +74,7 @@ in rec {
 
   velox = prev.callPackage ./applications/window-managers/velox { };
 
-  vervis = prev.callPackage ./applications/version-management/vervis { inherit fetchdarcs; };
+  vervis = final.rel2003.callPackage ./applications/version-management/vervis { inherit fetchdarcs; };
 
   yacy = prev.callPackage ./servers/yacy { };
 }

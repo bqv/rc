@@ -1,12 +1,12 @@
-{ lib, stdenv, withSources, pkgconfig, makeWrapper
+{ lib, stdenv, flake, pkgconfig, makeWrapper
 , wld, wayland, wayland-protocols, fontconfig, pixman, libdrm, libinput, libevdev, libxkbcommon, libxcb, xcbutilwm
 }:
 
 stdenv.mkDerivation rec {
   name = "swc-${version}";
-  version = src.shortRev;
+  version = flake.inputs.swc.shortRev;
 
-  src = withSources.swc;
+  src = flake.inputs.swc;
 
   patches = [
    #./hardcode-screen-order.patch # committed

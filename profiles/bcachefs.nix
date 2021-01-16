@@ -7,7 +7,7 @@
 
   boot.supportedFilesystems = [ "bcachefs" ];
 
-  boot.kernelPackages = lib.mkForce pkgs.linuxPackages_testing_bcachefs;
+  boot.kernelPackages = lib.mkForce pkgs.large.linuxPackages_testing_bcachefs;
   boot.kernelPatches = [{
     name = "bcachefs-acl";
     patch = null;
