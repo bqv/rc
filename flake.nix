@@ -309,10 +309,7 @@
       in tryGetValue (builtins.tryEval (lib.concatMap lib.attrValues (lib.attrValues s6))));
     };
   in {
-    nixosConfigurations = builtins.mapAttrs (host: node: let
-      system = "x86_64-linux"; # So far it always is...
-      pkgs = channels.modules.legacyPackages.${system};
-    in {
+    nixosConfigurations = builtins.mapAttrs (host: node: {
       config = node.configuration;
     }) inputs.self.defaultPackage.x86_64-linux.config.nodes;
 
