@@ -6,7 +6,7 @@ inputs@{...}: final: prev: {
     src = final.fetchgit {
       url = drv.src.meta.homepage;
       rev = "5f66650f7c99545369895539aa0824d285d39370";
-      sha256 = "c9amvmxU03P14NygJK2hTNR0lTdFK7eEj1eoqv2FTDs=";
+      sha256 = "daLkYJEjNqsicgC0JJHigRzmBVz0phjDn4o1HYyPvX0=";
     };
   });
 }
