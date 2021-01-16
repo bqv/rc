@@ -1,6 +1,6 @@
 inputs@{ hnix-overlay, ... }: final: prev: {
   hnix = let
-    inherit (final) haskellPackages haskell;
+    inherit (final.master) haskellPackages haskell;
   in haskell.lib.overrideSrc (haskellPackages.override {
     overrides = self: super: {
       hnix-store-core = self.hnix-store-core_0_4_0_0;
