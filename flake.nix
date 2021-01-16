@@ -661,11 +661,12 @@
               ln -sfn /run/current-system/flake/input/self /etc/nixos || \
               true
             '';
+          };
 
-            nixpkgs = {
-              pkgs = pkgs // {
-                iptables = pkgs.iptables-nftables-compat;
-              };
+          nixpkgs = { config, ... }: {
+            config.nixpkgs = {
+              inherit pkgs;
+              system = config.platform;
             };
           };
 
