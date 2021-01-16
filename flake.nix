@@ -734,7 +734,7 @@
           configuration = import "${toString ./hosts}/${hostName}";
 
           systemModules = flakeModules ++ [
-            core global iwd gnupg
+            core global nixpkgs iwd gnupg
             dwarffs guix matrix-construct hydra
             impermanence age apparmor-nix
           ];
