@@ -5,7 +5,7 @@ let
 
   nodeOptions = node@{ name, pkgs, config, ... }: let
     switchScript = pkgs.runCommandNoCC "switch" {
-      inherit (config) switchTimeout successTimeout ignoreFailingSystemdUnits privilegeEscalationCommand systemSwitcherDir panicAction;
+      inherit (config) switchTimeout successTimeout ignoreFailingSystemdUnits privilegeEscalationCommand systemSwitcherDir panicAction rollbackOnFailure;
       inherit (nixus.pkgs) execline;
     } ''
       mkdir -p $out/bin
@@ -108,6 +108,14 @@ let
         default = "/var/lib/system-switcher/";
         description = ''
           Path that will contain the system switcher data
+        '';
+      };
+
+      rollbackOnFailure = lib.mkOption {
+        type = lib.types.bool;
+        default = true;
+        description = ''
+          Whether to rollback if activation signals failure
         '';
       };
 

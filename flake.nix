@@ -488,8 +488,8 @@
         nodes = let
           hosts = builtins.attrNames inputs.self.nixosModules.hosts.${system};
         in (lib.genAttrs hosts (_: {})) // {
-          delta.panicAction = "false"; # rebooting this is getting annoying
           delta.hasFastConnection = true; # it's local!
+          delta.rollbackOnFailure = false; # accidentally rebooting this gets annoying
           image.enabled = false;
           zeta.panicAction = "false"; # we shouldn't reboot this carelessly
           zeta.hasFastConnection = true;
