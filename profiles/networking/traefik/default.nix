@@ -142,12 +142,12 @@
             ];
           };
           jellyfin-http = {
-            entryPoints = [ "http" "jellyfin" ];
+            entryPoints = [ "http" ];
             rule = "Host(`media.${domains.home}`)";
             service = "jellyfin";
           };
           jellyfin-https = jellyfin-http // {
-            entryPoints = [ "https" "jellyfin-tls" ];
+            entryPoints = [ "https" ];
             tls.domains = [
               { main = "media.${domains.home}"; }
             ];
@@ -731,12 +731,6 @@
         };
         yacy = {
           address = ":8090/tcp";
-        };
-        jellyfin = {
-          address = ":8096/tcp";
-        };
-        jellyfin-tls = {
-          address = ":8920/tcp";
         };
         anki = {
           address = ":27701/tcp";
