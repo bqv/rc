@@ -1,10 +1,10 @@
-{ stdenv, flake, openssl, pkgconfig, rustPlatform }:
+{ stdenv, withSources, openssl, pkgconfig, rustPlatform }:
 
 stdenv.mkDerivation rec {
   name = "pure-${version}";
-  version = flake.inputs.zsh-pure.shortRev;
+  version = srcs.shortRev;
 
-  srcs = flake.inputs.zsh-pure;
+  srcs = withSources.zsh-pure;
 
   buildPhase = "true";
 

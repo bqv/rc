@@ -1,10 +1,10 @@
-{ stdenv, flake, runtimeShell, getopt }:
+{ stdenv, withSources, runtimeShell, getopt }:
 
 stdenv.mkDerivation rec {
   pname = "shflags";
-  version = flake.inputs.shflags.shortRev;
+  version = src.shortRev;
 
-  src = flake.inputs.shflags;
+  src = withSources.shflags;
 
   buildInputs = [ getopt ];
 

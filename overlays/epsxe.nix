@@ -1,5 +1,5 @@
 inputs@{...}: final: prev: {
-  epsxe = final.insecuressl.epsxe.overrideAttrs ({ installPhase, ... }: {
+  epsxe = final.epsxe.overrideAttrs ({ installPhase, ... }: {
     installPhase = let
       bios = final.fetchurl {
         url = "https://ps1emulator.com/SCPH1001.BIN";
