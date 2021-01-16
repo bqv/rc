@@ -588,7 +588,7 @@
             fetchPullRequest = fetchPullRequestForSystem system;
             inherit (inputs.self.lib.secrets) hosts domains;
 
-            modules = systemModules ++ userModules ++ [
+            modules = modules ++ [
               { _module.args = specialArgs; }
             ];
             extraModules = [];
@@ -730,19 +730,14 @@
           # Actual host config
           configuration = import "${toString ./hosts}/${hostName}";
 
-          systemModules = flakeModules ++ [
-            core global nixpkgs iwd gnupg
-            dwarffs guix matrix-construct hydra
+          modules = flakeModules ++ [
+            core global nixpkgs iwd home gnupg
+            home-manager dwarffs guix matrix-construct hydra
             impermanence age apparmor-nix
-          ];
-
-          userModules = [
-            home
-            home-manager
           ];
         in {
           inherit system specialArgs;
-          modules = systemModules ++ userModules ++ [
+          modules = modules ++ [
             configuration
           ] ++ appendModules;
         };
