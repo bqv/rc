@@ -142,7 +142,7 @@
       }) [
         {
           description = "nixos/anbox: use mainline drivers when available";
-          id = 102341; hash = "zaQSv78mfV670eQZGmcTh6w4x02fGaSxMYQpiJjavr0=";
+          id = 102341; hash = "68IzjRPbRuDQ9Lk8WHbYTbxvTr0pHH3wIuSh7ISaqiQ=";
         }
       ];
       patches = map basePkgs.fetchpatch pullReqs;
