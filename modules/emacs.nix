@@ -51,7 +51,7 @@ let
         default = {};
       };
       package = mkOption {
-        type = types.unspecified;
+        type = types.anything;
         default = epkgs: epkgs.${config.name};
         defaultText = "epkgs: epkgs.${config.name}";
       };
@@ -60,7 +60,7 @@ let
         default = "";
       };
       script = mkOption {
-        type = types.unspecified;
+        type = types.anything;
         default = epkgs: let
           configPkg = epkgs.trivialBuild rec {
             pname = "load-${name}";
