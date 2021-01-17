@@ -239,7 +239,7 @@
                   inherit (withMaster.withHnix) hnix;
                   inherit (withNix) nixFlakes nix-static nix-ipfs nix-ipfs-static;
                   inherit (withInsecureSSL) epsxe;
-                  inherit (withNix.withHydraFlake.withHydra) hydra;
+                  inherit (withNix.withHydraFlake.withHydra) hydra hydra-unstable;
                   inherit (withApparmorFlake) apparmorRulesFromClosure;
                   iputils = iputils // { inherit (withApparmorFlake.iputils) apparmor; }; # shh it's fine
                   inetutils = inetutils // { inherit (withApparmorFlake.inetutils) apparmor; }; # shh it's fine
