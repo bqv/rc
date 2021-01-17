@@ -2,7 +2,7 @@
 #+author: bqv
 #+email: nixos@fron.io
 #+options: toc:nil num:nil
- 
+
 #+BEGIN_SRC nix
 {
   description = "A highly structured configuration database.";
