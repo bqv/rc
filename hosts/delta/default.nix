@@ -65,8 +65,8 @@
       fsType = "btrfs";
     };
     ssd = {
-      device = "/dev/disk/by-uuid/586c219f-a156-4088-8631-2a4a08bf9dc7";
-      fsType = "btrfs";
+      device = "/dev/sda1";
+      fsType = "bcachefs";
     };
   in {
     "/" = {
@@ -78,10 +78,10 @@
     "/var" = hdd // { options = [ "subvol=var" ]; };
     "/home" = hdd // { options = [ "subvol=home" ]; };
     "/srv" = hdd // { options = [ "subvol=srv" ]; };
-    "/nix" = ssd // { options = [ "subvol=nix" "noatime" "nodiratime" "discard=async" "compress=lzo" ]; };
+    "/nix" = ssd // { options = [ "noatime" "nodiratime" ]; };
     "/games" = hdd // { options = [ "subvol=games" ]; };
     "/run/hdd" = hdd // { options = [ "subvolid=0" ]; };
-    "/run/ssd" = ssd // { options = [ "subvolid=0" "noatime" "nodiratime" "discard=async" ]; };
+   #"/run/ssd" = ssd // { options = [ "subvolid=0" "noatime" "nodiratime" "discard=async" ]; };
 
     ${config.services.ipfs.dataDir} = hdd // { options = [ "subvol=ipfs" ]; };
 
