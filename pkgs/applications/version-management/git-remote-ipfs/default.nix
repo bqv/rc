@@ -1,11 +1,11 @@
-{ lib, buildGoModule, flake, makeWrapper, git }:
+{ lib, buildGoModule, withSources, makeWrapper, git }:
 
 buildGoModule rec {
   pname = "git-remote-ipfs";
-  version = flake.inputs.git-remote-ipfs.shortRev;
+  version = src.shortRev;
   vendorSha256 = "14m0kalmjrf49bqp5lnkrhp3crmqfhnjh10iyxhn50hji1cb6lzd";
 
-  src = flake.inputs.git-remote-ipfs;
+  src = withSources.git-remote-ipfs;
 
   doCheck = false;
   checkInputs = [
