@@ -2,11 +2,10 @@
 
 {
   emacs-loader.flycheck-posframe = {
-    enable = false;
     demand = true;
     after = [ "flycheck" "lsp-mode" ];
     hook = [
-      { flycheck-mode-hook = "flycheck-posframe-mode"; }
+   #  { flycheck-mode-hook = "flycheck-posframe-mode"; }
     ];
     config = ''
       (defun turn-off-lsp-ui (&rest r)
