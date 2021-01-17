@@ -2,7 +2,7 @@
 #+author: bqv
 #+email: nixos@fron.io
 #+options: toc:nil num:nil
-
+ 
 #+BEGIN_SRC nix
 {
   description = "A highly structured configuration database.";
@@ -45,7 +45,7 @@
     construct.url = "github:matrix-construct/construct"; #|- Construct
     construct.inputs.nixpkgs.follows = "/large";         #|
 
-    hydra.url = "github:nixos/hydra"; #|- Hydra
+    hydra.url = "github:nixos/hydra/f64230b45edf07d1"; #|- Hydra
 
     apparmor.url = "github:bqv/apparmor-nix"; #|- Apparmor
 
@@ -142,7 +142,7 @@
       }) [
         {
           description = "nixos/anbox: use mainline drivers when available";
-          id = 102341; hash = "zaQSv78mfV670eQZGmcTh6w4x02fGaSxMYQpiJjavr0=";
+          id = 102341; hash = "68IzjRPbRuDQ9Lk8WHbYTbxvTr0pHH3wIuSh7ISaqiQ=";
         }
       ];
       patches = map basePkgs.fetchpatch pullReqs;
