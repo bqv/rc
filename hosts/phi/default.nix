@@ -156,7 +156,7 @@
     mobile_app = {};
   };
   services.home-assistant.configWritable = true;
-  services.home-assistant.package = pkgs.home-assistant.override {
+  services.home-assistant.package = pkgs.master.home-assistant.override {
     extraComponents = [
       "homeassistant"
       "frontend"

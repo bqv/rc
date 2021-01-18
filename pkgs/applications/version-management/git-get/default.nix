@@ -1,11 +1,11 @@
-{ lib, buildGoModule, withSources, makeWrapper }:
+{ lib, buildGoModule, flake, makeWrapper }:
 
 buildGoModule rec {
   pname = "git-get";
-  version = src.shortRev;
+  version = flake.inputs.git-get.shortRev;
   vendorSha256 = "05k6w4knk7fdjm9qm272nlrk47rzjr18g0fp4j57f5ncq26cxr8b";
 
-  src = withSources.git-get;
+  src = flake.inputs.git-get;
 
   nativeBuildInputs = [ makeWrapper ];
   postInstall = ''
