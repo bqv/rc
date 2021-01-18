@@ -65,7 +65,7 @@
       fsType = "btrfs";
     };
     ssd = {
-      device = "/dev/sda2";
+      device = "/dev/disk/by-path/pci-0000:00:17.0-ata-3-part1";
       fsType = "bcachefs";
     };
   in {
@@ -78,7 +78,7 @@
     "/var" = hdd // { options = [ "subvol=var" ]; };
     "/home" = hdd // { options = [ "subvol=home" ]; };
     "/srv" = hdd // { options = [ "subvol=srv" ]; };
-    "/nix" = ssd // { options = [ "noatime" "nodiratime" ]; };
+    "/nix" = ssd // { options = [ "noatime" "nodiratime" "reflink" ]; };
     "/games" = hdd // { options = [ "subvol=games" ]; };
     "/run/hdd" = hdd // { options = [ "subvolid=0" ]; };
    #"/run/ssd" = ssd // { options = [ "subvolid=0" "noatime" "nodiratime" "discard=async" ]; };
