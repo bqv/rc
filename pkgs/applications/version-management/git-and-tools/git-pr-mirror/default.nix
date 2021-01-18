@@ -1,12 +1,12 @@
-{ lib, buildGoModule, withSources }:
+{ lib, buildGoModule, flake }:
 
 buildGoModule rec {
   pname = "git-pull-request-mirror-unstable";
-  version = src.shortRev;
+  version = flake.inputs.git-pullrequest.shortRev;
 
   vendorSha256 = "0789v1r6my256pncs0105yji28ifchj6ppfiy8gavglgclq3cgvn";
 
-  src = withSources.git-pullrequest;
+  src = flake.inputs.git-pullrequest;
 
   postInstall = ''
     for bin in $out/bin/*; do
