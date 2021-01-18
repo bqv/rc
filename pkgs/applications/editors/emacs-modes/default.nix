@@ -1,11 +1,11 @@
-{ lib, flake, emacsPackages, fetchurl, lzip, pkgs, libffi, libtool, ... }:
+{ lib, withSources, emacsPackages, fetchurl, lzip, pkgs, libffi, libtool, ... }:
 
 let
   inherit (emacsPackages) trivialBuild emacs;
   inputs = {
-    inherit (flake.inputs) emacs-bitwarden ivy-exwm flycheck-purescript;
-    inherit (flake.inputs) eterm-256color envrc emacsbridge emacs-webkit;
-    inherit (flake.inputs) font-lock-ext sln-mode emacs-ffi explain-pause-mode;
+    inherit (withSources) emacs-bitwarden ivy-exwm flycheck-purescript;
+    inherit (withSources) eterm-256color envrc emacsbridge emacs-webkit;
+    inherit (withSources) font-lock-ext sln-mode emacs-ffi explain-pause-mode;
   };
 in lib.recurseIntoAttrs rec {
 

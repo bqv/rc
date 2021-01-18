@@ -6,7 +6,7 @@
   ];
 
   programs.mosh.enable = true;
-  programs.x2goserver.enable = builtins.trace "pkgs.x2goserver: broken" false;
+  programs.x2goserver.enable = true;
 
   # Enable the OpenSSH daemon.
   services.openssh = {
