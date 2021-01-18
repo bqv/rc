@@ -37,10 +37,14 @@ in {
       leaf auto-compile gcmh diminish epkg log4e bug-hunter use-package
     ]);
 
-    programs.emacs = rec {
-      package = pkgs.emacsPgtkGcc;
+    programs.emacs = {
+      package = lib.fix (self: pkgs.emacsPgtkGcc.overrideAttrs (drv: {
+        passthru = {
+          pkgs = pkgs.emacsPackagesFor self;
+          nativeComp = drv.nativeComp or false;
+        };
+      }));
       extraPackages = epkgs: forEachPackage (p: p.package epkgs);
-      overrides = self: super: pkgs.emacsPgtkGccPackages;
     };
 
     systemd.user.services.emacs = {

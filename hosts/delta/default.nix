@@ -65,7 +65,7 @@
       fsType = "btrfs";
     };
     ssd = {
-      device = "/dev/sda2";
+      device = "/dev/sda1";
       fsType = "bcachefs";
     };
   in {

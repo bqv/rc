@@ -13,7 +13,7 @@ in {
           };
           patches = [ worktreePatch ];
         });
-      in [
+      in with gitAndTools; [
         git-bug git-appraise git-pr-mirror git-remote-ipfs
         hub lab git-crypt git-secrets
         git-filter-repo git-absorb git-get
@@ -22,7 +22,7 @@ in {
     programs.git = {
       inherit (usr.secrets.git.user) userName userEmail;
 
-      package = pkgs.hiPrio pkgs.gitFull;
+      package = pkgs.hiPrio pkgs.gitAndTools.gitFull;
       aliases = lib.mkForce { }; # We hate aliases
       ignores = [ ];
       delta = {
