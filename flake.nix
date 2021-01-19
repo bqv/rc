@@ -598,7 +598,7 @@
           zeta.switchTimeout = 240; # maybe due to wireguard reloading?
         };
       });
-    in pkgs.runCommand "deployment" {
+    in pkgs.runCommandLocal "deployment" {
       outputs = [ "out" "systems" ] ++ builtins.attrNames (
         lib.filterAttrs (_: n: n.enabled) deployment.config.nodes
       );
