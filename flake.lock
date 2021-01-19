@@ -955,11 +955,11 @@
     "mfs-replace-root": {
       "flake": false,
       "locked": {
-        "lastModified": 1587542606,
-        "narHash": "sha256-/jWp69OGh6V9Nt6lDND0xezS3t0nx+8fjKZwJoIUync=",
+        "lastModified": 1611064231,
+        "narHash": "sha256-DHQyVn4N4en94y9/NEQCKa8ybGrAG1Bov0rLJsTzeh8=",
         "owner": "hsanjuan",
         "repo": "mfs-replace-root",
-        "rev": "f4dce405d10c1543a8c2cf408de8ac46802b177b",
+        "rev": "5502708ff19beaf9fc737a0b5ac30317145315f9",
         "type": "github"
       },
       "original": {

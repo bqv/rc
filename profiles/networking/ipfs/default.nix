@@ -5,17 +5,16 @@ let
 
   clusterSecrets = usr.secrets.ipfs.cluster;
 
-  mfs-replace-root = pkgs.buildGo114Module {
+  mfs-replace-root = pkgs.buildGoModule {
     name = "mfs-replace-root";
     src = pkgs.fetchgit {
       url = "https://github.com/hsanjuan/mfs-replace-root";
-      rev = "f4dce405d10c1543a8c2cf408de8ac46802b177b";
-      sha256 = "0xya2j12cw56ihgyzir7vpgd5v65yk80r9fy6rysb1w6sgmsjdgy";
+      rev = "5502708ff19beaf9fc737a0b5ac30317145315f9";
+      sha256 = "07vsyg22djsapxl506y0d9n35br909238zrgwgyykq8dgrb34x0c";
+      # date = 2021-01-19T14:50:31+01:00;
     };
-    vendorSha256 = "J9YjS47IwpKcNOizjswPBZaadeRFsczmIyp0Y4fitrU=";
-    patches = [
-      ./mfs-replace-root_update-ipfs.patch
-    ];
+    vendorSha256 = "ZrpHFy3FVAXRfWY81VLy0kL4fX9PuNHX1cD3cbYYNqM=";
+    installCheckPhase = "$out/bin/mfs-replace-root --help";
   };
 in {
   environment.systemPackages = let
@@ -92,7 +91,7 @@ in {
         args = [ "'$DERIVATION'" ];
       })' --raw
     '';
-  in [ pkgs.ipfs-cluster pkgs.brig toipfs fromipfs nix-ipfs-push ];
+  in [ pkgs.ipfs-cluster pkgs.brig toipfs fromipfs nix-ipfs-push mfs-replace-root ];
 
   services.ipfs = {
     enable = true;
