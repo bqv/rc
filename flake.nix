@@ -45,7 +45,7 @@
     construct.url = "github:matrix-construct/construct"; #|- Construct
     construct.inputs.nixpkgs.follows = "/large";         #|
 
-    hydra.url = "github:nixos/hydra"; #|- Hydra
+    hydra.url = "github:nixos/hydra/f64230b45edf07d1"; #|- Hydra
 
     apparmor.url = "github:bqv/apparmor-nix"; #|- Apparmor
 
@@ -228,18 +228,19 @@
               # Flatten pkgs architecture superficially for convenient maintenance
               value = _final: _prev: let
                 overlayPkgs = with final; {
+                  # hack to prioritize config overlays
                   appendOverlays = exts: (final.appendOverlays exts).withPins;
 
                   # this is one light breeze away from infrec
                   inherit (withGuixFlake) guix;
-                  inherit (withEmacsFlake.withSelfFlake.withEmacs-weechat.withEmacs) emacsPgtkGcc emacsPgtkGccClient emacsPgtkGccPackages;
+                  inherit (withEmacsFlake.withSelfFlake.withEmacs) emacsPgtkGcc emacsPgtkGccClient emacsPgtkGccPackages;
                   inherit (withGiara) giara;
                   inherit (withLbry) lbry;
                   inherit (withCordless) cordless;
                   inherit (withMaster.withHnix) hnix;
                   inherit (withNix) nixFlakes nix-static nix-ipfs nix-ipfs-static;
                   inherit (withInsecureSSL) epsxe;
-                  inherit (withNix.withHydraFlake.withHydra) hydra hydra-unstable;
+                  inherit (withHydraFlake.withNix.withHydra) hydra hydra-unstable;
                   inherit (withApparmorFlake) apparmorRulesFromClosure;
                   iputils = iputils // { inherit (withApparmorFlake.iputils) apparmor; }; # shh it's fine
                   inetutils = inetutils // { inherit (withApparmorFlake.inetutils) apparmor; }; # shh it's fine
@@ -254,7 +255,7 @@
                   inherit (withSelfFlake) dejavu_nerdfont;
                   emacsPackagesFor = emacs: let
                     inherit (withEmacsFlake) emacsPackagesFor;
-                    epkgs = withEmacsFlake.withSelfFlake.withEmacs-weechat.withEmacs.emacsPackagesFor emacs;
+                    epkgs = withEmacsFlake.withSelfFlake.withEmacs.emacsPackagesFor emacs;
                   in emacsPackagesFor emacs // {
                     inherit (epkgs) bitwarden ivy-exwm emacs-webkit;
                     inherit (epkgs) flycheck-purescript eterm-256color;
