@@ -14,7 +14,9 @@ in lib.mkIf cfg.enable {
     server.default_locale = "en";
     ui.default_theme = "oscar";
     ui.theme_args.oscar_style = "logicodev-dark";
-    engines = {
+    engines = lib.mapAttrsToList (name: value: {
+      inherit name;
+    } // value) {
       "bitbucket".disabled = false;
       "ccc-tv".disabled = false;
       "ddg definitions".disabled = false;

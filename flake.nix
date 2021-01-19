@@ -45,7 +45,7 @@
     construct.url = "github:matrix-construct/construct"; #|- Construct
     construct.inputs.nixpkgs.follows = "/large";         #|
 
-    hydra.url = "github:nixos/hydra"; #|- Hydra
+    hydra.url = "github:nixos/hydra/f64230b45edf07d1"; #|- Hydra
 
     apparmor.url = "github:bqv/apparmor-nix"; #|- Apparmor
 
