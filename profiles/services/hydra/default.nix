@@ -11,7 +11,7 @@ in {
 
   config.services.hydra-dev = lib.mkIf cfg.enable {
     enable = true;
-    package = pkgs.hydra-unstable.overrideAttrs (drv: {
+    package = pkgs.hydra.overrideAttrs (drv: {
       postUnpack = ''
         sed -i 's/restrictEval = true/restrictEval = false/' source/src/hydra-eval-jobs/hydra-eval-jobs.cc
       '';
