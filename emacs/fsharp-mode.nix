@@ -2,6 +2,7 @@
 
 {
   emacs-loader.fsharp-mode = {
+    enable = false;
     demand = true;
     hook = [
       { fsharp-mode-hook = "dotnet-mode"; }
