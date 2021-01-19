@@ -22,6 +22,7 @@
     rel1809 = { url = "github:nixos/nixpkgs/nixos-18.09"; flake = false; };
     rel1803 = { url = "github:nixos/nixpkgs/18.03"; flake = false; };
     pr75800.url = "github:nixos/nixpkgs/517b290754f6a7cc487ce11932a8b750f868324d"; #|\ Pull
+    pr78810.url = "github:happy-river/nixpkgs/fe73376fcfe2eb1f72ab4ea52ad3bb0a12adc8d3"; #|\ Pull
     pr93659.url = "github:ju1m/nixpkgs/security.pass";                             #|/ Reqs
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
     pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
@@ -125,7 +126,6 @@
 
   outputs = inputs: with builtins; let
     allSystems = [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
-    diffTrace = left: right: string: value: if left != right then trace string value else value;
 
     # Nixos Config
     config = {
@@ -168,19 +168,6 @@
       modules = master;   # For nixos modules
       lib = master;       # For flake-wide lib
     }; inherit (channels.lib) lib; # this ^
-
-    # Fetch PR prepatched nixpkgs by id and hash
-    fetchPullRequestForSystem = system: args@{ id, rev ? null, sha256 ? lib.fakeSha256, ... }:
-      mapAttrs (k: v: trace "pkgs.${k} pinned to nixpks/pull/${toString id}" v)
-        (import (builtins.fetchTarball {
-          name = "nixpkgs-pull-request-${toString id}"; inherit sha256;
-          url = if ! builtins.isNull rev
-                then "https://github.com/NixOS/nixpkgs/archive/${rev}.zip"
-                else "https://github.com/NixOS/nixpkgs/archive/pull/${toString id}/head.zip";
-        }) {
-          inherit system config;
-          overlays = attrValues inputs.self.overlays;
-        } // (removeAttrs args [ "id" "rev" "hash" ]));
 
     # Packages for nixos configs
     pkgsForSystem = system: import channels.pkgs rec {
@@ -268,6 +255,7 @@
                   inherit (withConstructFlake.withConstruct) matrix-construct;
                   inherit (withSelfFlake) yacy;
                   inherit (withRel2003.withSelfFlake) vervis;
+                  inherit (withPr78810) mastodon;
 
                   inherit (withSelfFlake) dgit flarectl fsnoop ini2json pure shflags;
                   inherit (withSelfFlake.pleroma) pleroma_be pleroma_fe masto_fe;
@@ -361,13 +349,22 @@
     overlay = import ./pkgs;
 
     overlays = let
-      channelOverlay = { flake, branch }: { ${flake} = final: prev:
-        mapAttrs (k: v: diffTrace (baseNameOf inputs.${flake}) (baseNameOf prev.path) "pkgs.${k} pinned to nixpkgs/${branch}" v)
-        (import inputs.${flake} { inherit (prev) config system; overlays = [(builtins.head prev.overlays)]; });
+      diffTrace = left: right: string: value: if left != right then trace string value else value;
+      silentKeys = [ "config" "system" "path" "stdenv" "lib" ];
+
+      channelOverlay = { flake, branch }: { ${flake} = final: prev: let
+        mapWarn = mapAttrs (k: v: if lib.elem k silentKeys then v
+          else if lib.elem k ([ "overlaySets" ] ++ builtins.attrNames prev.overlaySets) then mapWarn v
+          else diffTrace (baseNameOf inputs.${flake}) (baseNameOf prev.path) "pkgs.${k} pinned to nixpkgs/${branch}" v);
+      in
+        mapWarn (import inputs.${flake} { inherit (prev) config system; overlays = [(builtins.head prev.overlays)]; });
       };
-      flakeOverlay = { flake, name }: { ${flake} = final: prev:
-        mapAttrs (k: v: diffTrace (baseNameOf inputs.${flake}) (baseNameOf prev.path) "pkgs.${k} pinned to ${name}" v)
-        inputs.${flake}.legacyPackages.${prev.system};
+      flakeOverlay = { flake, name }: { ${flake} = final: prev: let
+        mapWarn = mapAttrs (k: v: if lib.elem k silentKeys then v
+          else if lib.elem k ([ "overlaySets" ] ++ builtins.attrNames prev.overlaySets) then mapWarn v
+          else diffTrace (baseNameOf inputs.${flake}) (baseNameOf prev.path) "pkgs.${k} pinned to ${name}" v);
+      in
+        mapWarn inputs.${flake}.legacyPackages.${prev.system};
       };
       inputsOverlay = builtins.listToAttrs (builtins.filter (v: v != null)
         (builtins.map (name: if inputs.${name} ? overlay then {
@@ -448,11 +445,11 @@
       (channelOverlay { flake = "rel1903"; branch = "nixos-19.03"; })
       (channelOverlay { flake = "rel1809"; branch = "nixos-18.09"; })
       (channelOverlay { flake = "rel1803"; branch = "nixos-18.03"; })
+      (channelOverlay { flake = "pr78810"; branch = "feature/mastodon"; })
       (listToAttrs (map
         (name: {
           name = lib.removeSuffix ".nix" name;
-          value = final: prev: #builtins.trace "reading overlay ${name}"
-            (import (./overlays + "/${name}") inputs final prev);
+          value = import (./overlays + "/${name}") inputs;
         })
         (builtins.filter
           (file: lib.hasSuffix ".nix" file || file == "default.nix")
@@ -684,7 +681,6 @@
             gigabytes = m: m * 1024;
           };
           inherit (inputs.self.lib) secrets;
-          fetchPullRequest = fetchPullRequestForSystem system;
         };
 
         modulesFor = hostName: appendModules: let
@@ -692,7 +688,6 @@
             inherit usr;
             flake = inputs.self;
 
-            fetchPullRequest = fetchPullRequestForSystem system;
             inherit (inputs.self.lib.secrets) hosts domains;
 
             modules = modules ++ [

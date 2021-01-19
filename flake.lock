@@ -1256,6 +1256,22 @@
         "type": "github"
       }
     },
+    "pr78810": {
+      "locked": {
+        "lastModified": 1609354945,
+        "narHash": "sha256-Gm04gIjYG+BcbHYiHE/kT7eBDSXTbamkoAHKzd8RSbQ=",
+        "owner": "happy-river",
+        "repo": "nixpkgs",
+        "rev": "fe73376fcfe2eb1f72ab4ea52ad3bb0a12adc8d3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "happy-river",
+        "repo": "nixpkgs",
+        "rev": "fe73376fcfe2eb1f72ab4ea52ad3bb0a12adc8d3",
+        "type": "github"
+      }
+    },
     "pr93659": {
       "locked": {
         "lastModified": 1607673026,
@@ -1600,6 +1616,7 @@
         "nix-ipfs": "nix-ipfs",
         "nyxt": "nyxt",
         "pr75800": "pr75800",
+        "pr78810": "pr78810",
         "pr93659": "pr93659",
         "pr96368": "pr96368",
         "pr99188": "pr99188",

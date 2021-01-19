@@ -74,10 +74,7 @@ in {
             fromAddress = "mastodon@${usr.secrets.domains.srvc}";
           };
           services.mastodon.configureNginx = true;
-          services.mastodon.package = with usr.fetchPullRequest {
-            id = 78810;
-            sha256 = "1d2927gwvjh1l2jajvfk4l6q3dsgwi7iq8kndiff06yqi203hv8s";
-          }; mastodon;
+          services.mastodon.package = pkgs.mastodon;
           services.postfix.submissionOptions = {
             mynetworks = "127.0.0.0/8 10.0.0.0/8";
           };
