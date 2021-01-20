@@ -8,10 +8,8 @@ in
 
 {
   imports = [
-    ./swc-servers/default.nix
+    ./swc-servers
   ];
-
-  ###### interface
 
   options = {
     # TODO: Since there is no login screen (yet), add option to specify login user.
@@ -54,9 +52,6 @@ in
       };
     };
   };
-
-
-  ###### implementation
 
   config = mkIf cfg.enable {
     environment.systemPackages =

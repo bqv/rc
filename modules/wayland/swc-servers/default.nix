@@ -11,17 +11,14 @@ in
     ./velox.nix
   ];
 
-
-  ###### interface
-
   options = {
     services.swc-launch.server = {
-#      name = mkOption {
-#        type = types.str;
-#        default = null;
-#        example = "velox";
-#        description = "libswc server to be launched";
-#      };
+     #name = mkOption {
+     #  type = types.str;
+     #  default = null;
+     #  example = "velox";
+     #  description = "libswc server to be launched";
+     #};
       active_server = mkOption {
         type = types.str;
         internal = true;
@@ -41,9 +38,6 @@ in
       };
     };
   };
-
-
-  ###### implementation
 
   config = {
     # Determine the server to be used. Must only be one server active.
