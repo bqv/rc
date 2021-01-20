@@ -12,4 +12,5 @@
   ./misc/headless.nix
   ./misc/attrmods.nix
   ./misc/platform.nix
+  ./misc/qemu.nix
 ]
