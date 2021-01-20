@@ -1,10 +1,6 @@
 { config, pkgs, lib, ... }:
 
 {
-  imports = [
-    ./services/wayland/swc-launch.nix
-  ];
-
   config = {
     environment.systemPackages = with pkgs; with velox; [
       dmenu (pkgs.lowPrio dmenu-velox)
