@@ -597,6 +597,15 @@
           zeta.successTimeout = 240; # Zeta seems very slow...
           zeta.switchTimeout = 240; # maybe due to wireguard reloading?
         };
+
+        ssh.access = {
+          delta.keys = {
+            bao-ed25519 = {
+              publicKey = "";
+              hasAccessTo.zeta.bao = true;
+            };
+          };
+        };
       });
     in pkgs.runCommandLocal "deployment" {
       outputs = [ "out" "systems" ] ++ builtins.attrNames (
@@ -680,7 +689,7 @@
             megabytes = k: k * 1024;
             gigabytes = m: m * 1024;
           };
-          inherit (inputs.self.lib) secrets;
+          inherit (inputs.self.passthru) secrets;
         };
 
         modulesFor = hostName: appendModules: let
@@ -688,7 +697,7 @@
             inherit usr;
             flake = inputs.self;
 
-            inherit (inputs.self.lib.secrets) hosts domains;
+            inherit (inputs.self.passthru.secrets) hosts domains;
 
             modules = modules ++ [
               { _module.args = specialArgs; }
@@ -878,7 +887,7 @@
               (builtins.readFile /etc/nix/nix.conf)}
             experimental-features = nix-command flakes ca-references
             print-build-logs = true
-            access-tokens = "github.com=${inputs.self.lib.secrets.git.github.oauth-token}"
+            access-tokens = "github.com=${inputs.self.passthru.secrets.git.github.oauth-token}"
           '';
         in linkFarm "nix-conf-dir" ( [
           { name = "nix.conf"; path = writeText "flakes-nix.conf" nixConf; }
@@ -904,13 +913,13 @@
       }
     );
 
-    lib = rec {
+    passthru = rec {
       inherit inputs channels config allSystems inputMap patchNixpkgs;
       patchedPkgs = forAllSystems ({ system, ... }:
         patchNixpkgs (channels.modules.legacyPackages.${system})
       );
 
-      #$ git config secrets.providers "nix eval --raw .#lib.textFilter"
+      #$ git config secrets.providers "nix eval --raw .#passthru.textFilter"
       textFilter = with inputs.priv.lib { inherit lib; }; textFilter.lines;
       inherit (inputs.priv.lib) secrets;
 
