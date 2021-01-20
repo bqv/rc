@@ -722,11 +722,12 @@
               inherit flake;
               from = { inherit id; type = "indirect"; };
             }) (inputs // { nixpkgs = inputs.master; });
-            nix.nixPath = [
-              "nixpkgs=${channels.pkgs}"
-              "nixos=${inputs.self}/configuration.nix"
-              "self=/run/current-system/flake/input/self/configuration.nix"
-            ];
+            nix.nixPath = lib.mapAttrsToList (k: v: "${k}=${toString v}") {
+              nixpkgs = "${channels.pkgs}";
+              nixos = "${inputs.self}/configuration.nix";
+              self = "/run/current-system/flake/input/self/configuration.nix";
+              flake = "/srv/git/github.com/bqv/nixrc/configuration.nix";
+            };
 
             system.configurationRevision = inputs.self.rev or "dirty";
             system.nixos.versionSuffix = let inherit (inputs) self;
