@@ -15,7 +15,6 @@
     ../../containers/jellyfin.nix  # 10.11.0.x
    #../../containers/lemmy.nix     # 10.12.0.x
     ../../profiles/meta/fatal-warnings.nix
-    ../../profiles/misc/qemu.nix
     ../../profiles/misc/restartssh.nix
     ../../profiles/security/sudo.nix
     ../../profiles/networking/wireguard
