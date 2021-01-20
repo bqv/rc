@@ -35,7 +35,7 @@ in {
 
         {
           imports = [
-            ../profiles/services/mastodon
+            ../modules/services/mastodon
           ];
 
           nixpkgs.pkgs = pkgs;
