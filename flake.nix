@@ -597,6 +597,24 @@
           zeta.successTimeout = 240; # Zeta seems very slow...
           zeta.switchTimeout = 240; # maybe due to wireguard reloading?
         };
+
+        ssh.access = {
+          delta.keys = {
+            bao-ed25519 = {
+              publicKey = "";
+              hasAccessTo.zeta.bao = true;
+            };
+          };
+          zeta.keys = {
+            bao-ed25519 = {
+              publicKey = "";
+            };
+          };
+        };
+
+        vpn.networks = {
+          # TBC
+        };
       });
     in pkgs.runCommandLocal "deployment" {
       outputs = [ "out" "systems" ] ++ builtins.attrNames (
