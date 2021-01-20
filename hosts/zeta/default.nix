@@ -22,7 +22,6 @@
     ../../profiles/networking/tor
     ../../profiles/networking/traefik
     ../../profiles/networking/mdns.nix
-    ../../profiles/services/mastodon
     ../../profiles/services/minecraft
     ../../profiles/services/syncthing
     ../../users/root.nix

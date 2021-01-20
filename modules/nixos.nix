@@ -4,6 +4,7 @@
   ./services/gitfs.nix
   ./services/hydroxide/default.nix
   ./services/ipfs-cluster/default.nix
+  ./services/mastodon/default.nix
   ./security/mitigations.nix
   ./networking/nftables.nix
   ./networking/wireguard-mesh.nix
