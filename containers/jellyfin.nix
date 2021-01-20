@@ -36,7 +36,6 @@ in {
               enable = true;
               settings.download-dir = "/srv/ftp";
             };
-            #doas chmod a+rx /srv/ftp
             systemd.services.transmission = {
               environment.TRANSMISSION_WEB_HOME = pkgs.fetchFromGitHub {
                 owner = "Secretmapper";
@@ -60,6 +59,6 @@ in {
   '';
 
   systemd.tmpfiles.rules = [
-    "z /srv/ftp 2775 root root"
-  ];
+    "d /srv/ftp 2775 root root"
+  ]; #doas chmod a+rx /srv/ftp
 }
