@@ -260,6 +260,7 @@
                   inherit (withSelfFlake) dgit flarectl fsnoop ini2json pure shflags;
                   inherit (withSelfFlake.pleroma) pleroma_be pleroma_fe masto_fe;
                   inherit (withNix.withDwarffsFlake) dwarffs;
+                  inherit (withNaersk) naersk;
 
                   inherit (withWeechat) weechatScripts;
                   inherit (withRel2003) bcachefs-tools; # to match kernel ver
