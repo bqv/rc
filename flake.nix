@@ -309,7 +309,7 @@
   in {
     nixosConfigurations = builtins.mapAttrs (host: node: {
       config = node.configuration;
-    }) {};# inputs.self.defaultPackage.x86_64-linux.config.nodes;
+    }) inputs.self.defaultPackage.x86_64-linux.config.nodes;
 
     homeConfigurations = lib.genAttrs (builtins.attrNames inputs.self.nixosConfigurations)
       (host: inputs.self.nixosConfigurations.${host}.config.home-manager.users) //
@@ -405,7 +405,7 @@
               inherit (inputs.nix.packages.${system}.nix) perl-bindings;
             };
           });
-          inherit (inputs.nix.packages.${system}) nix-static;
+          nix-static = inputs.nix.packages.${system}.nix-static or null;
           nix-ipfs = inputs.nix-ipfs.packages.${system}.nix;
          #nix-ipfs-static = inputs.nix-ipfs.packages.${system}.nix-static;
         };
@@ -460,7 +460,7 @@
     ];
 
     packages = forAllSystems ({ pkgs, ... }: lib.filterAttrs (_: p:
-      lib.isDerivation p && (p.meta.broken or null) != true
+      (lib.isDerivation p || p.recurseForDerivations or false) && (p.meta.broken or null) != true
     ) pkgs.overlayPkgs);
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }: let
