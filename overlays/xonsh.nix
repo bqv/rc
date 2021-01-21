@@ -1,13 +1,21 @@
-inputs@{ prompt-toolkit, ... }: final: prev: let
+inputs@{ ... }: final: prev: let
   super = {
-    inherit (final.master.xonsh) overridePythonAttrs propagatedBuildInputs;
+    inherit (prev.xonsh) overridePythonAttrs propagatedBuildInputs;
   };
   pythonOverrides = self: super: {
-    prompt_toolkit = super.prompt_toolkit.overridePythonAttrs (_: {
-      src = prompt-toolkit;
+    prompt_toolkit = super.prompt_toolkit.overridePythonAttrs (_: rec {
+      version = "3.0.11";
+      src = self.fetchPypi {
+        pname = "prompt_toolkit";
+        inherit version;
+        sha256 = "3IPmNosO3ZzqvhegVfLiL27ZW5qjnb1Z0LTzWFvf6e0=";
+      };
     });
   };
-  python = (prev.lib.last super.propagatedBuildInputs).pkgs.python.override {
+  python = let
+    py = prev.lib.findFirst (p: p.pname == "python3") null super.propagatedBuildInputs;
+  in if prev.lib.versionAtLeast py.pkgs.prompt_toolkit.version "3.0.11"
+  then py else py.pkgs.python.override {
     self = python;
     packageOverrides = pythonOverrides;
   };
