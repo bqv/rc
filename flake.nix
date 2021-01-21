@@ -589,6 +589,32 @@
           zeta.switchTimeout = 240; # maybe due to wireguard reloading?
         };
 
+        ssh.access = let
+          collapse = attrs: lib.fold (a: b: a // b) {}
+            (builtins.concatMap builtins.attrValues (builtins.attrValues
+              (lib.mapAttrs (u: lib.mapAttrs (t: v: {
+                "${u}-${t}" = v;
+              })) attrs)));
+        in {
+          delta = {
+            hostKeys = {};
+            keys = collapse {
+              bao.ed25519 = {
+                publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvcvk1nLYImKqjhL8HdAb1sM2vXcEGu+rMZJ8XIG4H7 bao@delta";
+                hasAccessTo.zeta.bao = true;
+              };
+            };
+          };
+          zeta = {
+            hostKeys = {};
+            keys = collapse {
+              bao.ed25519 = {
+                publicKey = "";
+              };
+            };
+          };
+        };
+
         vpn.networks = {
           # TBC
         };
