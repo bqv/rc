@@ -262,6 +262,7 @@
                   inherit (withNix.withDwarffsFlake) dwarffs;
                   inherit (withNaersk) naersk;
                   inherit (withXonsh.withXontribsFlake) xonsh;
+                  inherit (withNyxt) nyxt;
 
                   inherit (withWeechat) weechatScripts;
                   inherit (withRel2003) bcachefs-tools; # to match kernel ver
