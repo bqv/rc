@@ -1227,16 +1227,16 @@
     "powerline": {
       "flake": false,
       "locked": {
-        "lastModified": 1591956383,
-        "narHash": "sha256-HXUZJwPbNI4ysTo6jnbZaZuuncIJJELyJFuPxul0YsA=",
-        "owner": "laloch",
-        "repo": "xontrib-powerline",
-        "rev": "aaa8c4c5674ea2eaef51396246abc326e514d7be",
+        "lastModified": 1609577428,
+        "narHash": "sha256-jAd5kS3IExWRpJVMwRy8o4Me1ZJsim2BpZ7bwaIwBQM=",
+        "owner": "jnoortheen",
+        "repo": "xontrib-powerline3",
+        "rev": "096acdbbfa9249f5c63706e5d380332a8216abe5",
         "type": "github"
       },
       "original": {
-        "owner": "laloch",
-        "repo": "xontrib-powerline",
+        "owner": "jnoortheen",
+        "repo": "xontrib-powerline3",
         "type": "github"
       }
     },
