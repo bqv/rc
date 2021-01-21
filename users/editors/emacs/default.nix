@@ -46,6 +46,10 @@ in {
     systemd.user.services.emacs = {
      #Service.Type = "notify";
       Service.Restart = lib.mkForce "no";
+      Service.ExecStopPost = "${pkgs.writeShellScript "emacs-relink-socket" ''
+        rm ~/.emacs.d/server/server
+        ln -sf /run/user/1000/emacs/server ~/.emacs.d/server/server
+      ''}";
       Install.WantedBy = lib.mkForce [];
     };
 

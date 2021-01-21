@@ -595,7 +595,7 @@
               (lib.mapAttrs (u: lib.mapAttrs (t: v: {
                 "${u}-${t}" = v;
               })) attrs)));
-        in {
+        in lib.mkIf false {
           delta = {
             hostKeys = {};
             keys = collapse {
