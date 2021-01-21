@@ -1384,22 +1384,6 @@
         "type": "github"
       }
     },
-    "pure": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1535038503,
-        "narHash": "sha256-EunQrPf59ivzIbsL9RfCUSUBPuJ9HYrMu67UVwrtPcM=",
-        "owner": "popkirby",
-        "repo": "xonsh-pure",
-        "rev": "75a6f9af523ff06d1e0a1990bd1a2b7fb01fab4d",
-        "type": "github"
-      },
-      "original": {
-        "owner": "popkirby",
-        "repo": "xonsh-pure",
-        "type": "github"
-      }
-    },
     "pyenv": {
       "flake": false,
       "locked": {
@@ -2044,7 +2028,6 @@
         "powerline": "powerline",
         "prompt-bar": "prompt-bar",
         "prompt-vi-mode": "prompt-vi-mode",
-        "pure": "pure",
         "pyenv": "pyenv",
         "pygments-cache": "pygments-cache",
         "readable-traceback": "readable-traceback",
