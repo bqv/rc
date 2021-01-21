@@ -224,7 +224,7 @@
                   inherit (withLbry) lbry;
                   inherit (withCordless) cordless;
                   inherit (withMaster.withHnix) hnix;
-                  inherit (withNix) nixFlakes nix-static nix-ipfs nix-ipfs-static;
+                  inherit (withNix) nixFlakes nix-static nix-ipfs;
                   inherit (withInsecureSSL) epsxe;
                   inherit (withHydraFlake.withNix.withHydra) hydra hydra-unstable;
                   inherit (withApparmorFlake) apparmorRulesFromClosure;
@@ -256,7 +256,8 @@
                   inherit (withRel2003.withSelfFlake) vervis;
                   inherit (withPr78810) mastodon;
 
-                  inherit (withSelfFlake) dgit flarectl fsnoop ini2json pure shflags;
+                  inherit (withSelfFlake) dgit flarectl fsnoop pure shflags;
+                  inherit (withIni2json) ini2json;
                   inherit (withSelfFlake.pleroma) pleroma_be pleroma_fe masto_fe;
                   inherit (withNix.withDwarffsFlake) dwarffs;
                   inherit (withNaersk) naersk;
@@ -308,7 +309,7 @@
   in {
     nixosConfigurations = builtins.mapAttrs (host: node: {
       config = node.configuration;
-    }) inputs.self.defaultPackage.x86_64-linux.config.nodes;
+    }) {};# inputs.self.defaultPackage.x86_64-linux.config.nodes;
 
     homeConfigurations = lib.genAttrs (builtins.attrNames inputs.self.nixosConfigurations)
       (host: inputs.self.nixosConfigurations.${host}.config.home-manager.users) //
@@ -406,7 +407,7 @@
           });
           inherit (inputs.nix.packages.${system}) nix-static;
           nix-ipfs = inputs.nix-ipfs.packages.${system}.nix;
-          nix-ipfs-static = inputs.nix-ipfs.packages.${system}.nix-static;
+         #nix-ipfs-static = inputs.nix-ipfs.packages.${system}.nix-static;
         };
         hydra = final: prev: {
           hydra-unstable = final.hydra;
@@ -458,21 +459,9 @@
       inputsOverlay
     ];
 
-    packages = forAllSystems ({ pkgs, ... }: let
-      pkgs' = pkgs // { pleroma = builtins.trace "pkgs.pleroma: see instead nixpkgs#103138" {
-        inherit (pkgs.withSelfFlake) pleroma;
-      }; };
-    in lib.filterAttrs (_: p: (p.meta.broken or null) != true) {
-     #inherit (pkgs'.emacsPackages) bitwarden ivy-exwm;
-     #inherit (pkgs'.emacsPackages) flycheck-purescript eterm-256color;
-     #inherit (pkgs'.emacsPackages) envrc emacsbridge font-lock-ext sln-mode;
-     #inherit (pkgs'.emacsPackages) emacs-ffi explain-pause-mode;
-     #inherit (pkgs'.dotnetPackages) azure-functions-core-tools;
-     #inherit (pkgs') dgit dejavu_nerdfont electronmail;
-     #inherit (pkgs') flarectl fsnoop git-pr-mirror greetd ini2json ipfscat;
-     #inherit (pkgs'.pleroma) pleroma_be pleroma_fe masto_fe;
-     #inherit (pkgs') pure shflags twitterpub velox vervis yacy;
-    });
+    packages = forAllSystems ({ pkgs, ... }: lib.filterAttrs (_: p:
+      lib.isDerivation p && (p.meta.broken or null) != true
+    ) pkgs.overlayPkgs);
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }: let
       deployment = import ./deploy {
@@ -727,7 +716,7 @@
               nixpkgs = "${channels.pkgs}";
               nixos = "${inputs.self}/configuration.nix";
               self = "/run/current-system/flake/input/self/configuration.nix";
-              flake = "/srv/git/github.com/bqv/nixrc/configuration.nix";
+              flake = "/srv/git/github.com/bqv/nixrc";
             };
 
             system.configurationRevision = inputs.self.rev or "dirty";
