@@ -684,11 +684,11 @@
     "hist-navigator": {
       "flake": false,
       "locked": {
-        "lastModified": 1606900234,
-        "narHash": "sha256-qaIZi+x0NFjtxCIWnS89qwML69thLqDSUVn8YG6RgkA=",
+        "lastModified": 1609675203,
+        "narHash": "sha256-NNkjW4FaYKWWgHjhVwG6FqrDktraVqxg1bNc+GnOFfo=",
         "owner": "jnoortheen",
         "repo": "xontrib-hist-navigator",
-        "rev": "76966816404f870e500d341059d428c069047a78",
+        "rev": "8a4f92d46d296f61b6a59ac8d2d3c921714c16f6",
         "type": "github"
       },
       "original": {
@@ -1435,11 +1435,11 @@
     "readable-traceback": {
       "flake": false,
       "locked": {
-        "lastModified": 1572961500,
-        "narHash": "sha256-gcxDiymcvJRrKm/Rul9DkTvZ+NxbeV+hQbNTn7BtGBo=",
+        "lastModified": 1609124409,
+        "narHash": "sha256-ZX1RGyJA6Z5bZn9+l7kUrNMF+DbrSLvw7P3K6B7MvBU=",
         "owner": "6syun9",
         "repo": "xontrib-readable-traceback",
-        "rev": "6b496bae6d95346c5e771f68d18f6262fe7f5f8f",
+        "rev": "2d84a2bddf6a373948c353f2b95dfd83951cbcf1",
         "type": "github"
       },
       "original": {
