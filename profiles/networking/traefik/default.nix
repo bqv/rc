@@ -525,6 +525,11 @@
          #    passthrough = true;
          #  };
          #};
+          transmission = {
+            entryPoints = [ "transmission-rpc" ];
+            rule = "HostSNI(`*`)";
+            service = "transmission";
+          };
         };
         services = {
           ssh.loadBalancer = {
@@ -554,6 +559,12 @@
           irc.loadBalancer = {
             servers = [
               { address = "${hosts.wireguard.delta}:6697"; }
+            ];
+            terminationDelay = 100;
+          };
+          transmission.loadBalancer = {
+            servers = [
+              { address = "10.11.0.2:9091"; }
             ];
             terminationDelay = 100;
           };
@@ -719,6 +730,9 @@
         };
         ssh-alt = {
           address = ":5022/tcp";
+        };
+        transmission-rpc = {
+          address = ":9091/tcp";
         };
         irc = {
           address = ":6667/tcp";
