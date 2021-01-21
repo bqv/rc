@@ -55,7 +55,7 @@ in {
         # Needed for both networking between clients and for client -> internet
         boot.kernel.sysctl."net.ipv4.conf.${interface}.forwarding" = true;
 
-        networking.wg-quick.interfaces.${interface} = {
+        networking.wireguard.interfaces.${interface} = {
           address = [ "${net.server.subnetIp}/${toString parsedSubnet.cidr}" ];
           listenPort = net.server.port;
           privateKeyFile = net.server.wireguard.privateKeyFile;
@@ -75,7 +75,7 @@ in {
           internalInterfaces = [ interface ];
         };
 
-        networking.wg-quick.interfaces.${interface} = {
+        networking.wireguard.interfaces.${interface} = {
           postUp = ''
             iptables -t nat -A POSTROUTING -j MASQUERADE \
               -s ${parsedSubnet.subnet} -o ${net.server.internetGatewayInterface}
@@ -93,7 +93,7 @@ in {
 
   // lib.flip lib.mapAttrs net.clients (clientNode: clientValue: {
 
-    configuration.networking.wg-quick.interfaces.${interface} = {
+    configuration.networking.wireguard.interfaces.${interface} = {
       address = [ "${clientValue.subnetIp}/${toString parsedSubnet.cidr}" ];
       privateKeyFile = clientValue.wireguard.privateKeyFile;
 
