@@ -1351,23 +1351,6 @@
         "type": "github"
       }
     },
-    "prompt-toolkit": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1600754464,
-        "narHash": "sha256-5lgMehJuRFL49Whi3uM1OKCTv/wFofc69l6C/+wy7S8=",
-        "owner": "bobhy",
-        "repo": "python-prompt-toolkit",
-        "rev": "546b5787ebb2317a6866c5cdd4af59f99b72ea70",
-        "type": "github"
-      },
-      "original": {
-        "owner": "bobhy",
-        "ref": "th-threadsafe-load-2",
-        "repo": "python-prompt-toolkit",
-        "type": "github"
-      }
-    },
     "prompt-vi-mode": {
       "flake": false,
       "locked": {
@@ -1621,7 +1604,6 @@
         "pr96368": "pr96368",
         "pr99188": "pr99188",
         "priv": "priv",
-        "prompt-toolkit": "prompt-toolkit",
         "rel1803": "rel1803",
         "rel1809": "rel1809",
         "rel1903": "rel1903",
