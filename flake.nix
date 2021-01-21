@@ -597,7 +597,7 @@
               (lib.mapAttrs (u: lib.mapAttrs (t: v: {
                 "${u}-${t}" = v;
               })) attrs)));
-        in {
+        in lib.mkIf false {
           delta = {
             hostKeys = lib.genAttrs [ "rsa" "ecdsa" "ed25519" "dsa" ] (type:
               lib.removeSuffix "\n" (builtins.readFile "${secrets.keyDir}/deltassh/ssh_host_${type}_key.pub")
