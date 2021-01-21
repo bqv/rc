@@ -588,6 +588,10 @@
           zeta.successTimeout = 240; # Zeta seems very slow...
           zeta.switchTimeout = 240; # maybe due to wireguard reloading?
         };
+
+        vpn.networks = {
+          # TBC
+        };
       });
     in pkgs.runCommandLocal "deployment" {
       outputs = [ "out" "systems" ] ++ builtins.attrNames (
