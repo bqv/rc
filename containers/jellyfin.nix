@@ -35,6 +35,8 @@ in {
             services.transmission = {
               enable = true;
               settings.download-dir = "/srv/ftp";
+              settings.rpc-host-whitelist-enabled = false;
+              settings.rpc-whitelist-enabled = false;
             };
             systemd.services.transmission = {
               environment.TRANSMISSION_WEB_HOME = pkgs.fetchFromGitHub {
