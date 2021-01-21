@@ -12,7 +12,10 @@ inputs@{ ... }: final: prev: let
       };
     });
   };
-  python = (prev.lib.last super.propagatedBuildInputs).pkgs.python.override {
+  python = let
+    py = prev.lib.findFirst (p: p.pname == "python3") null super.propagatedBuildInputs;
+  in if prev.lib.versionAtLeast py.pkgs.prompt_toolkit.version "3.0.11"
+  then py else py.pkgs.python.override {
     self = python;
     packageOverrides = pythonOverrides;
   };
