@@ -1334,6 +1334,23 @@
         "url": "ssh://bao@delta/../../srv/hg/nixpriv"
       }
     },
+    "processmgmt": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1611182783,
+        "narHash": "sha256-+uhkYQaf5LiQStTRWpwioYY5ltPfH+ZBPPRRNhdZwXU=",
+        "owner": "svanderburg",
+        "repo": "nix-processmgmt",
+        "rev": "80e74014efecf236595e8f9fff1deec6217e5320",
+        "type": "github"
+      },
+      "original": {
+        "owner": "svanderburg",
+        "ref": "s6-rc",
+        "repo": "nix-processmgmt",
+        "type": "github"
+      }
+    },
     "prompt-bar": {
       "flake": false,
       "locked": {
@@ -1604,6 +1621,7 @@
         "pr96368": "pr96368",
         "pr99188": "pr99188",
         "priv": "priv",
+        "processmgmt": "processmgmt",
         "rel1803": "rel1803",
         "rel1809": "rel1809",
         "rel1903": "rel1903",
