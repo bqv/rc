@@ -31,14 +31,17 @@ let
   }) (lib.groupBy (conn: conn.to.host) connections);
 
   knownHostsConfig = lib.mapAttrs (fromHost: fromHostConnections: {
-    configuration.programs.ssh.knownHosts = lib.mapAttrs (toHost: toHostConnections:
+    configuration.programs.ssh.knownHosts = lib.mkMerge (lib.mapAttrsToList (toHost: toHostConnections:
       if config.ssh.access.${toHost}.hostKeys == {}
       then throw "Host ssh.access.${toHost}.hostKey isn't specified, but we need it to give secure access from ${fromHost}."
-      else lib.mapAttrsToList (_: publicKey: {
-        hostNames = [ toHost ] ++ config.ssh.access.${toHost}.hostNames ++ lib.optional (fromHost == toHost) "localhost";
-        inherit publicKey;
+      else lib.mapAttrs' (hostKeyName: publicKey: {
+        name = "${toHost}-${hostKeyName}";
+        value = {
+          hostNames = [ toHost ] ++ config.ssh.access.${toHost}.hostNames ++ lib.optional (fromHost == toHost) "localhost";
+          inherit publicKey;
+        };
       }) config.ssh.access.${toHost}.hostKeys
-    ) (lib.groupBy (conn: conn.to.host) fromHostConnections);
+    ) (lib.groupBy (conn: conn.to.host) fromHostConnections));
   }) (lib.groupBy (conn: conn.from.host) connections);
 
 
