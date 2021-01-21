@@ -307,6 +307,8 @@
         s6 = lib.concatMap lib.attrValues (lib.attrValues s5);
       in tryGetValue (builtins.tryEval (lib.concatMap lib.attrValues (lib.attrValues s6))));
     };
+
+    inherit (inputs.self.passthru) secrets;
   in {
     nixosConfigurations = builtins.mapAttrs (host: node: {
       config = node.configuration;
@@ -597,7 +599,9 @@
               })) attrs)));
         in {
           delta = {
-            hostKeys = {};
+            hostKeys = lib.genAttrs [ "rsa" "ecdsa" "ed25519" "dsa" ] (type:
+              lib.removeSuffix "\n" (builtins.readFile "${secrets.keyDir}/deltassh/ssh_host_${type}_key.pub")
+            );
             keys = collapse {
               bao.ed25519 = {
                 publicKey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvcvk1nLYImKqjhL8HdAb1sM2vXcEGu+rMZJ8XIG4H7 bao@delta";
@@ -606,7 +610,9 @@
             };
           };
           zeta = {
-            hostKeys = {};
+            hostKeys = lib.genAttrs [ "rsa" "ecdsa" "ed25519" "dsa" ] (type:
+              lib.removeSuffix "\n" (builtins.readFile "${secrets.keyDir}/zetassh/ssh_host_${type}_key.pub")
+            );
             keys = collapse {
               bao.ed25519 = {
                 publicKey = "";
@@ -709,7 +715,7 @@
             inherit usr;
             flake = inputs.self;
 
-            inherit (inputs.self.passthru.secrets) hosts domains;
+            inherit (secrets) hosts domains;
 
             modules = modules ++ [
               { _module.args = specialArgs; }
@@ -899,7 +905,7 @@
               (builtins.readFile /etc/nix/nix.conf)}
             experimental-features = nix-command flakes ca-references
             print-build-logs = true
-            access-tokens = "github.com=${inputs.self.passthru.secrets.git.github.oauth-token}"
+            access-tokens = "github.com=${secrets.git.github.oauth-token}"
           '';
         in linkFarm "nix-conf-dir" ( [
           { name = "nix.conf"; path = writeText "flakes-nix.conf" nixConf; }
