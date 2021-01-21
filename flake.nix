@@ -460,7 +460,7 @@
     ];
 
     packages = forAllSystems ({ pkgs, ... }: lib.filterAttrs (_: p:
-      (lib.isDerivation p || p.recurseForDerivations or false) && (p.meta.broken or null) != true
+      (lib.isDerivation p) && (p.meta.broken or null) != true
     ) pkgs.overlayPkgs);
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }: let
@@ -713,9 +713,9 @@
               from = { inherit id; type = "indirect"; };
             }) (inputs // { nixpkgs = inputs.master; });
             nix.nixPath = lib.mapAttrsToList (k: v: "${k}=${toString v}") {
-              nixpkgs = "${channels.pkgs}";
-              nixos = "${inputs.self}/configuration.nix";
-              self = "/run/current-system/flake/input/self/configuration.nix";
+              nixpkgs = "${channels.pkgs}/";
+              nixos = "${inputs.self}/";
+              self = "/run/current-system/flake/input/self/";
               flake = "/srv/git/github.com/bqv/nixrc";
             };
 
