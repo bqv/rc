@@ -152,6 +152,18 @@
               { main = "media.${domains.home}"; }
             ];
           };
+          transmission-http = {
+            entryPoints = [ "http" "transmission-rpc" ];
+            rule = "Host(`torrent.${domains.home}`)" +
+            " || (Host(`media.${domains.home}`) && PathPrefix(`/transmission`))";
+            service = "transmission";
+          };
+          transmission-https = transmission-http // {
+            entryPoints = [ "https" ];
+            tls.domains = [
+              { main = "torrent.${domains.home}"; }
+            ];
+          };
          #Router1 = {
          #  entryPoints = [ "foobar" "foobar" ];
          #  middlewares = [ "foobar" "foobar" ];
@@ -471,6 +483,12 @@
               { url = "http://10.11.0.2:8096"; }
             ];
           };
+          transmission.loadBalancer = {
+            passHostHeader = true;
+            servers = [
+              { url = "http://10.11.0.2:9091"; }
+            ];
+          };
          #mirror-sample.mirroring = {
          #  maxBodySize = 42;
          #  mirrors = [
@@ -525,11 +543,6 @@
          #    passthrough = true;
          #  };
          #};
-          transmission = {
-            entryPoints = [ "transmission-rpc" ];
-            rule = "HostSNI(`*`)";
-            service = "transmission";
-          };
         };
         services = {
           ssh.loadBalancer = {
@@ -559,12 +572,6 @@
           irc.loadBalancer = {
             servers = [
               { address = "${hosts.wireguard.delta}:6697"; }
-            ];
-            terminationDelay = 100;
-          };
-          transmission.loadBalancer = {
-            servers = [
-              { address = "10.11.0.2:9091"; }
             ];
             terminationDelay = 100;
           };
