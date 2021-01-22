@@ -1240,6 +1240,22 @@
         "type": "github"
       }
     },
+    "pr110381": {
+      "locked": {
+        "lastModified": 1611334084,
+        "narHash": "sha256-cDWucW1fxRbeLRyGDZ/WSZwK2qw46kPIZcZUSiHtrB0=",
+        "owner": "svanderburg",
+        "repo": "nixpkgs",
+        "rev": "35cd2f7b70baedad3c91bde5688fc1fab3659a05",
+        "type": "github"
+      },
+      "original": {
+        "owner": "svanderburg",
+        "ref": "update-skaware-packages",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "pr75800": {
       "locked": {
         "lastModified": 1596390228,
@@ -1615,6 +1631,7 @@
         "nix": "nix_2",
         "nix-ipfs": "nix-ipfs",
         "nyxt": "nyxt",
+        "pr110381": "pr110381",
         "pr75800": "pr75800",
         "pr78810": "pr78810",
         "pr93659": "pr93659",
