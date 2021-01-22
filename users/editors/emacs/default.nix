@@ -40,7 +40,6 @@ in {
     programs.emacs = rec {
       package = pkgs.emacsPgtkGcc;
       extraPackages = epkgs: forEachPackage (p: p.package epkgs);
-      overrides = self: super: package.pkgs;
     };
 
     systemd.user.services.emacs = {

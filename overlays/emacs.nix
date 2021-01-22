@@ -35,7 +35,7 @@ in with prev.lib; rec {
   emacsPgtkGcc = prev.emacsPgtkGcc.overrideAttrs (drv: {
     passthru = drv.passthru // {
       nativeComp = true;
-     #pkgs = final.emacsPackagesFor final.emacsPgtkGcc;
+      pkgs = final.emacsPackagesFor final.emacsPgtkGcc;
     };
   });
 
