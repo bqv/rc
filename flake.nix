@@ -122,7 +122,7 @@
     ini2json = { url = "github:anubisss/ini2json"; flake = false; };
     mfs-replace-root = { url = "github:hsanjuan/mfs-replace-root"; flake = false; };
     brig = { url = "github:sahib/brig/develop"; flake = false; };
-    emacs-straight = { url = "github:raxod502/staight.el"; flake = false; };
+    emacs-straight = { url = "github:raxod502/straight.el"; flake = false; };
   };
 
   outputs = inputs: with builtins; let
