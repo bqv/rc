@@ -149,6 +149,10 @@
           description = "nixos/nat: substitute iptables for compat under nftables";
           id = 85462; hash = "vU53uZUhhO6U2RGElAnZqAy3KForw/yyPiU5Rg1hL74=";
         }
+        {
+          description = "emacs: disable trampoline generation when installing packages";
+          id = 109370; hash = "uVlMZ92myOvB64QIC2MZMmBZwpMrB+qxa48W86oVqZU=";
+        }
       ];
       patches = map basePkgs.fetchpatch pullReqs;
       patchedTree = basePkgs.applyPatches {
@@ -162,8 +166,8 @@
         '';
       };
 
-      import_nixpkgs = args: import patchedTree ({ inherit (basePkgs) system; } // args);
-    in patchedTree // {
+      import_nixpkgs = args: import patchedTree ({ inherit (basePkgs) system config overlays; } // args);
+    in import_nixpkgs {} // patchedTree // {
       lib = (import_nixpkgs {}).lib;
       legacyPackages = basePkgs.lib.genAttrs allSystems (system: _: import_nixpkgs { inherit system; });
     };
@@ -175,7 +179,7 @@
     }; inherit (channels.lib) lib; # this ^
 
     # Packages for nixos configs
-    pkgsForSystem = system: import channels.pkgs rec {
+    pkgsForSystem = system: patchNixpkgs (import channels.pkgs rec {
       inherit system config;
       overlays = builtins.map (o: o // { value = lib.fix o.__functor; }) [{
         # Project each overlay through recursive subsets
@@ -285,7 +289,7 @@
         };
         name = "index";
       }];
-    };
+    });
 
     forAllSystems = f: lib.genAttrs allSystems (system: f {
       inherit system;
