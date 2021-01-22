@@ -144,6 +144,10 @@
           description = "nixos/anbox: use mainline drivers when available";
           id = 102341; hash = "68IzjRPbRuDQ9Lk8WHbYTbxvTr0pHH3wIuSh7ISaqiQ=";
         }
+        {
+          description = "nixos/nat: substitute iptables for compat under nftables";
+          id = 85462; hash = "vU53uZUhhO6U2RGElAnZqAy3KForw/yyPiU5Rg1hL74=";
+        }
       ];
       patches = map basePkgs.fetchpatch pullReqs;
       patchedTree = basePkgs.applyPatches {
@@ -265,7 +269,6 @@
                   inherit (withNaersk) naersk;
                   inherit (withXonsh.withXontribsFlake) xonsh;
                   inherit (withNyxt) nyxt;
-                  inherit (withNftables) iptables;
 
                   inherit (withWeechat) weechatScripts;
                   inherit (withRel2003) bcachefs-tools; # to match kernel ver

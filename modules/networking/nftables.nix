@@ -152,8 +152,8 @@ in {
 
     networking.firewall.enable = !cfg.enable;
     networking.firewall.package = if cfg.enable
-      then lib.mkDefault pkgs.iptables-nftables-compat
-      else lib.mkDefault pkgs.iptables;
+      then pkgs.iptables-nftables-compat
+      else pkgs.iptables;
 
     networking.nftables.enable = lib.mkDefault true;
     networking.nftables.ruleset = lib.mkDefault
