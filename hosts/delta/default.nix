@@ -73,7 +73,7 @@
     "/" = {
       device = "none";
       fsType = "tmpfs";
-      options = [ "defaults" "size=2G" "mode=755" ];
+      options = [ "defaults" "size=2G" "mode=755" "nr_inodes=8M" ];
     };
 
     "/var" = hdd // { options = [ "subvol=var" ]; };
@@ -96,6 +96,7 @@
     script = "${pkgs.acl}/bin/setfacl -Rdm g:users:rwX /srv";
     wantedBy = [ "local-fs.target" ];
   };
+  systemd.mounts = lib.mkForce [];
 
   swapDevices = [
    #{ device = "/dev/disk/by-uuid/86868083-921c-452a-bf78-ae18f26b78bf"; }
