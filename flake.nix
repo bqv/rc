@@ -458,6 +458,7 @@
       (channelOverlay { flake = "rel1809"; branch = "nixos-18.09"; })
       (channelOverlay { flake = "rel1803"; branch = "nixos-18.03"; })
       (channelOverlay { flake = "pr78810"; branch = "feature/mastodon"; })
+      (channelOverlay { flake = "pr110381"; branch = "update-skaware-packages"; })
       (listToAttrs (map
         (name: {
           name = lib.removeSuffix ".nix" name;
