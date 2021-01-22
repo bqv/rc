@@ -391,6 +391,22 @@
         "type": "github"
       }
     },
+    "emacs-straight": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1608525256,
+        "narHash": "sha256-dWKJRXROhORtRnlyitOyvr0JqLwIFYS3uwxqlOGXT6g=",
+        "owner": "raxod502",
+        "repo": "straight.el",
+        "rev": "2d407bccd9378f1d5218f8ba2ae85c6be73fbaf1",
+        "type": "github"
+      },
+      "original": {
+        "owner": "raxod502",
+        "repo": "straight.el",
+        "type": "github"
+      }
+    },
     "emacs-webkit": {
       "flake": false,
       "locked": {
@@ -1581,6 +1597,7 @@
         "emacs": "emacs",
         "emacs-bitwarden": "emacs-bitwarden",
         "emacs-ffi": "emacs-ffi",
+        "emacs-straight": "emacs-straight",
         "emacs-webkit": "emacs-webkit",
         "emacsbridge": "emacsbridge",
         "envrc": "envrc",
