@@ -244,6 +244,7 @@
                     inherit (withEmacsFlake) emacsPackagesFor;
                     epkgs = withEmacsFlake.withSelfFlake.withEmacs.emacsPackagesFor emacs;
                   in emacsPackagesFor emacs // {
+                    inherit emacs; # bug?
                     inherit (epkgs) bitwarden ivy-exwm emacs-webkit;
                     inherit (epkgs) flycheck-purescript eterm-256color;
                     inherit (epkgs) envrc emacsbridge font-lock-ext sln-mode;
