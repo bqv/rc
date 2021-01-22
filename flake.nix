@@ -243,13 +243,12 @@
                   emacsPackagesFor = emacs: let
                     inherit (withEmacsFlake) emacsPackagesFor;
                     epkgs = withEmacsFlake.withSelfFlake.withEmacs.emacsPackagesFor emacs;
-                  in emacsPackagesFor emacs // {
-                    inherit emacs; # bug?
+                  in (emacsPackagesFor emacs).overrideScope' (_: _: {
                     inherit (epkgs) bitwarden ivy-exwm emacs-webkit;
                     inherit (epkgs) flycheck-purescript eterm-256color;
                     inherit (epkgs) envrc emacsbridge font-lock-ext sln-mode;
                     inherit (epkgs) emacs-ffi explain-pause-mode weechat-patched;
-                  };
+                  });
                   inherit (withSelfFlake) git-pr-mirror git-remote-ipfs git-get ipfscat;
                   inherit (import path { inherit system; }) notmuch; # ouch
                   inherit (withSelfFlake) guix-ns twitterpub;
