@@ -235,7 +235,7 @@
     clipmenu bitwarden bitwarden-cli pass protonmail-bridge
 
     ckb-next element-desktop nheko discord ripcord
-    vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine
+    brave vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine
     qutebrowser firefox thunderbird electronmail mpv apvlv
 
     dunst catt termite rxvt_unicode
