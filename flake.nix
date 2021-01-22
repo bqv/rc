@@ -149,10 +149,10 @@
           description = "nixos/nat: substitute iptables for compat under nftables";
           id = 85462; hash = "vU53uZUhhO6U2RGElAnZqAy3KForw/yyPiU5Rg1hL74=";
         }
-        {
-          description = "emacs: disable trampoline generation when installing packages";
-          id = 109370; hash = "uVlMZ92myOvB64QIC2MZMmBZwpMrB+qxa48W86oVqZU=";
-        }
+       #{
+       #  description = "emacs: disable trampoline generation when installing packages";
+       #  id = 109370; hash = "uVlMZ92myOvB64QIC2MZMmBZwpMrB+qxa48W86oVqZU=";
+       #}
       ];
       patches = map basePkgs.fetchpatch pullReqs;
       patchedTree = basePkgs.applyPatches {
