@@ -75,7 +75,6 @@
       nixpkgs.follows = "/master";
       prompt-bar = { url = "github:anki-code/xontrib-prompt-bar/68b3487e156ed3dce80578ebe552b6afa94c7eb8"; flake = false; };
       pipeliner = { url = "github:anki-code/xontrib-pipeliner/daccb6c8a67bbda799dfa2d6d8d829b5e9151c92"; flake = false; };
-      powerline = { url = "github:jnoortheen/xontrib-powerline3"; flake = false; };
     };
 
     processmgmt = { url = "github:svanderburg/nix-processmgmt/s6-rc"; flake = false; }; # ProcessMgmt

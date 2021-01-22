@@ -171,7 +171,7 @@ in {
           ''${...}["GPG_TTY"] = $(tty).strip()
         ''${...}["SSH_AUTH_SOCK"] = $(gpgconf --list-dirs agent-ssh-socket).strip()
 
-        xontrib load powerline3
+        #xontrib load powerline
         date
 
         ${pkgs.fortune}/bin/fortune -as linux linuxcookie paradoxum computers science definitions | tee -a /tmp/fortune.log | ${pkgs.cowsay}/bin/cowsay
