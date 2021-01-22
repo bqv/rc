@@ -6,7 +6,7 @@
   boot = {
     kernelPackages = lib.mkDefault pkgs.linuxPackages_latest;
 
-    tmpOnTmpfs = true;
+    tmpOnTmpfs = lib.mkDefault true;
     cleanTmpDir = true;
 
     kernel.sysctl = {

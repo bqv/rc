@@ -58,6 +58,7 @@
   boot.postBootCommands = ''
     echo 0000:04:00.0 > /sys/bus/pci/drivers/xhci_hcd/unbind
   ''; # usb4 is faulty
+  boot.tmpOnTmpfs = false;
 
   fileSystems = let
     hdd = {
@@ -65,8 +66,8 @@
       fsType = "btrfs";
     };
     ssd = {
-      device = "/dev/disk/by-path/pci-0000:00:17.0-ata-3-part1";
-      fsType = "bcachefs";
+      device = "/dev/sda2";
+      fsType = "btrfs";
     };
   in {
     "/" = {
@@ -78,10 +79,10 @@
     "/var" = hdd // { options = [ "subvol=var" ]; };
     "/home" = hdd // { options = [ "subvol=home" ]; };
     "/srv" = hdd // { options = [ "subvol=srv" ]; };
-    "/nix" = ssd // { options = [ "noatime" "nodiratime" "reflink" ]; };
+    "/nix" = ssd // { options = [ "noatime" "nodiratime" "discard=async" ]; };
     "/games" = hdd // { options = [ "subvol=games" ]; };
     "/run/hdd" = hdd // { options = [ "subvolid=0" ]; };
-   #"/run/ssd" = ssd // { options = [ "subvolid=0" "noatime" "nodiratime" "discard=async" ]; };
+    "/run/ssd" = ssd // { options = [ "subvolid=0" "noatime" "nodiratime" "discard=async" ]; };
 
     ${config.services.ipfs.dataDir} = hdd // { options = [ "subvol=ipfs" ]; };
 

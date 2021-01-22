@@ -265,6 +265,7 @@
                   inherit (withNaersk) naersk;
                   inherit (withXonsh.withXontribsFlake) xonsh;
                   inherit (withNyxt) nyxt;
+                  inherit (withNftables) iptables;
 
                   inherit (withWeechat) weechatScripts;
                   inherit (withRel2003) bcachefs-tools; # to match kernel ver
