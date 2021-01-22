@@ -198,6 +198,7 @@
       mimeApps = let
         nyxt = "nyxt.desktop";
         vivaldi = "vivaldi-stable.desktop";
+        brave = "brave-browser.desktop";
        #qutebrowser = "org.qutebrowser.qutebrowser.desktop";
        #firefox = "firefox.desktop";
         thunderbird = "thunderbird.desktop";

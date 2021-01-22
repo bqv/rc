@@ -27,7 +27,7 @@
       action spawn_terminal   spawn   exec st-wl
       action spawn_emacs      spawn   exec emacsclient -c
       action spawn_firefox    spawn   exec firefox-safe-wl
-      action spawn_browser    spawn   exec vivaldi
+      action spawn_browser    spawn   exec brave
       action spawn_nyxt       spawn   exec systemd-cat -t nyxt-browser nyxt
       action spawn_xnest      spawn   exec xinit ${pkgs.writeShellScript "start-awesome" ''
         unset WAYLAND_DISPLAY

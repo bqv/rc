@@ -144,10 +144,10 @@
           description = "nixos/anbox: use mainline drivers when available";
           id = 102341; hash = "68IzjRPbRuDQ9Lk8WHbYTbxvTr0pHH3wIuSh7ISaqiQ=";
         }
-        {
-          description = "emacs: disable trampoline generation when installing packages";
-          id = 109370; hash = "uVlMZ92myOvB64QIC2MZMmBZwpMrB+qxa48W86oVqZU=";
-        }
+       #{
+       #  description = "emacs: disable trampoline generation when installing packages";
+       #  id = 109370; hash = "uVlMZ92myOvB64QIC2MZMmBZwpMrB+qxa48W86oVqZU=";
+       #}
       ];
       patches = map basePkgs.fetchpatch pullReqs;
       patchedTree = basePkgs.applyPatches {
