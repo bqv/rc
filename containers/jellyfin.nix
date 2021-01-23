@@ -64,6 +64,6 @@ in {
   '';
 
   systemd.tmpfiles.rules = [
-    "d /srv/ftp 2775 root root"
+    "d /srv/ftp 2777 root root"
   ]; #doas chmod a+rx /srv/ftp
 }
