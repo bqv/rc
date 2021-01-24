@@ -16,7 +16,7 @@ in {
       in [
         git-bug git-appraise git-pr-mirror git-remote-ipfs
         hub lab git-crypt git-secrets
-        git-filter-repo git-absorb git-get
+        git-filter-repo git-absorb git-get stagit
       ];
 
     programs.git = {
