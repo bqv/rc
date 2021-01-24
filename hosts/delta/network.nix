@@ -59,12 +59,12 @@
         };
         ipfs-api-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "tcp"; field = "dport";
-          value = 4001;
+          value = [ 4001 5001 ];
           policy = "accept";
         };
         ipfs-api-udp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "udp"; field = "dport";
-          value = 4001;
+          value = [ 4001 5001 ];
           policy = "accept";
         };
         ipfs-gw-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {

@@ -164,6 +164,61 @@
               { main = "torrent.${domains.home}"; }
             ];
           };
+          sonarr-http = {
+            entryPoints = [ "http" ];
+            rule = "Host(`media.${domains.home}`) && PathPrefix(`/sonarr`)";
+            service = "sonarr";
+          };
+          sonarr-https = sonarr-http // {
+            entryPoints = [ "https" ];
+            tls.domains = [
+              { main = "media.${domains.home}"; }
+            ];
+          };
+          radarr-http = {
+            entryPoints = [ "http" ];
+            rule = "Host(`media.${domains.home}`) && PathPrefix(`/radarr`)";
+            service = "radarr";
+          };
+          radarr-https = radarr-http // {
+            entryPoints = [ "https" ];
+            tls.domains = [
+              { main = "media.${domains.home}"; }
+            ];
+          };
+          jackett-http = {
+            entryPoints = [ "http" ];
+            rule = "Host(`media.${domains.home}`) && PathPrefix(`/jackett`)";
+            service = "jackett";
+          };
+          jackett-https = jackett-http // {
+            entryPoints = [ "https" ];
+            tls.domains = [
+              { main = "media.${domains.home}"; }
+            ];
+          };
+          lidarr-http = {
+            entryPoints = [ "http" ];
+            rule = "Host(`media.${domains.home}`) && PathPrefix(`/lidarr`)";
+            service = "lidarr";
+          };
+          lidarr-https = lidarr-http // {
+            entryPoints = [ "https" ];
+            tls.domains = [
+              { main = "media.${domains.home}"; }
+            ];
+          };
+          bazarr-http = {
+            entryPoints = [ "http" ];
+            rule = "Host(`media.${domains.home}`) && PathPrefix(`/bazarr`)";
+            service = "bazarr";
+          };
+          bazarr-https = bazarr-http // {
+            entryPoints = [ "https" ];
+            tls.domains = [
+              { main = "media.${domains.home}"; }
+            ];
+          };
          #Router1 = {
          #  entryPoints = [ "foobar" "foobar" ];
          #  middlewares = [ "foobar" "foobar" ];
@@ -487,6 +542,36 @@
             passHostHeader = true;
             servers = [
               { url = "http://10.11.0.2:9091"; }
+            ];
+          };
+          sonarr.loadBalancer = {
+            passHostHeader = true;
+            servers = [
+              { url = "http://10.11.0.2:8989"; }
+            ];
+          };
+          radarr.loadBalancer = {
+            passHostHeader = true;
+            servers = [
+              { url = "http://10.11.0.2:7878"; }
+            ];
+          };
+          jackett.loadBalancer = {
+            passHostHeader = true;
+            servers = [
+              { url = "http://10.11.0.2:9117"; }
+            ];
+          };
+          lidarr.loadBalancer = {
+            passHostHeader = true;
+            servers = [
+              { url = "http://10.11.0.2:8686"; }
+            ];
+          };
+          bazarr.loadBalancer = {
+            passHostHeader = true;
+            servers = [
+              { url = "http://10.11.0.2:6767"; }
             ];
           };
          #mirror-sample.mirroring = {

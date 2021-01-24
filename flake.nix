@@ -26,6 +26,7 @@
     pr93659.url = "github:ju1m/nixpkgs/security.pass";                             #|/ Reqs
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
     pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
+    pr110381.url = "github:svanderburg/nixpkgs/update-skaware-packages";           #||
 
     nix.url = "github:nixos/nix/progress-bar";                #|- Nix
     nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; #|  ^^^IPFS
@@ -97,7 +98,7 @@
     zsh-pure = { url = "github:sindresorhus/pure"; flake = false; };
     fsnoop = { url = "github:jeffwalter/fsnoop"; flake = false; };
     shflags = { url = "github:kward/shflags"; flake = false; };
-    git-remote-ipfs = { url = "github:cryptix/git-remote-ipfs"; flake = false; };
+    git-remote-ipfs = { url = "github:dhappy/git-remote-ipfs/3f31ffbb"; flake = false; };
     git-get = { url = "github:grdl/git-get"; flake = false; };
     git-pullrequest = { url = "github:google/git-pull-request-mirror"; flake = false; };
     dgit = { url = "github:quorumcontrol/dgit/v0.0.14-alpha"; flake = false; };
@@ -144,6 +145,10 @@
         {
           description = "nixos/anbox: use mainline drivers when available";
           id = 102341; hash = "68IzjRPbRuDQ9Lk8WHbYTbxvTr0pHH3wIuSh7ISaqiQ=";
+        }
+        {
+          description = "nixos/nat: substitute iptables for compat under nftables";
+          id = 85462; hash = "vU53uZUhhO6U2RGElAnZqAy3KForw/yyPiU5Rg1hL74=";
         }
        #{
        #  description = "emacs: disable trampoline generation when installing packages";
@@ -261,6 +266,7 @@
                   inherit (withSelfFlake) yacy;
                   inherit (withRel2003.withSelfFlake) vervis;
                   inherit (withPr78810) mastodon;
+                  inherit (withPr110381) execline;
 
                   inherit (withSelfFlake) dgit flarectl fsnoop pure shflags;
                   inherit (withIni2json) ini2json;
@@ -457,6 +463,7 @@
       (channelOverlay { flake = "rel1809"; branch = "nixos-18.09"; })
       (channelOverlay { flake = "rel1803"; branch = "nixos-18.03"; })
       (channelOverlay { flake = "pr78810"; branch = "feature/mastodon"; })
+      (channelOverlay { flake = "pr110381"; branch = "update-skaware-packages"; })
       (listToAttrs (map
         (name: {
           name = lib.removeSuffix ".nix" name;

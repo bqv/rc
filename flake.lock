@@ -618,15 +618,16 @@
     "git-remote-ipfs": {
       "flake": false,
       "locked": {
-        "lastModified": 1576750284,
-        "narHash": "sha256-QUD2KNgz5Abhg0Z88Y68Qz03Hej2GC4SzzayzfK8k20=",
-        "owner": "cryptix",
+        "lastModified": 1588246001,
+        "narHash": "sha256-QGo3a26fgwVpBiUyzuevNb8xaWFux2fC8igeQYNSSXM=",
+        "owner": "dhappy",
         "repo": "git-remote-ipfs",
-        "rev": "241d12485ebb3fccf2db32e6e24ba9f6035d7435",
+        "rev": "3f31ffbb1682cc25f10388a9291a937a7b77f3d7",
         "type": "github"
       },
       "original": {
-        "owner": "cryptix",
+        "owner": "dhappy",
+        "ref": "3f31ffbb",
         "repo": "git-remote-ipfs",
         "type": "github"
       }
@@ -752,11 +753,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1610791052,
-        "narHash": "sha256-2sqrLo1O0OmutNyPZTg5lXDNPDgjcrlvAkQbo7pFUUY=",
+        "lastModified": 1611270612,
+        "narHash": "sha256-tLQWDaKnrRTbkqm1am5fJM/eYNJUt/Mpr+6F7h28wNw=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "8127799f79ee96129b295d78294f40a54078131f",
+        "rev": "2c0e3f61da903613cc316cb992c8c07d92e1d186",
         "type": "github"
       },
       "original": {
@@ -1256,6 +1257,22 @@
         "type": "github"
       }
     },
+    "pr110381": {
+      "locked": {
+        "lastModified": 1611334084,
+        "narHash": "sha256-cDWucW1fxRbeLRyGDZ/WSZwK2qw46kPIZcZUSiHtrB0=",
+        "owner": "svanderburg",
+        "repo": "nixpkgs",
+        "rev": "35cd2f7b70baedad3c91bde5688fc1fab3659a05",
+        "type": "github"
+      },
+      "original": {
+        "owner": "svanderburg",
+        "ref": "update-skaware-packages",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
     "pr75800": {
       "locked": {
         "lastModified": 1596390228,
@@ -1632,6 +1649,7 @@
         "nix": "nix_2",
         "nix-ipfs": "nix-ipfs",
         "nyxt": "nyxt",
+        "pr110381": "pr110381",
         "pr75800": "pr75800",
         "pr78810": "pr78810",
         "pr93659": "pr93659",

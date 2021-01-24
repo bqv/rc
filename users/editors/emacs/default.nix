@@ -30,7 +30,7 @@ in {
       ".emacs.d/init.el".source = (import ./init.nix args).out;
     };
 
-    home.packages = with pkgs; packageDeps ++ systemDeps ++ [
+    home.packages = with pkgs; systemDeps ++ [
       nixfmt w3m findutils cmake gnumake gcc libtool gtk3 age emacsWrapper
       (hiPrio emacsPgtkGccClient)
     ] ++ (with cfg.package.pkgs; [
