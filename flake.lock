@@ -618,15 +618,16 @@
     "git-remote-ipfs": {
       "flake": false,
       "locked": {
-        "lastModified": 1576750284,
-        "narHash": "sha256-QUD2KNgz5Abhg0Z88Y68Qz03Hej2GC4SzzayzfK8k20=",
-        "owner": "cryptix",
+        "lastModified": 1588246001,
+        "narHash": "sha256-QGo3a26fgwVpBiUyzuevNb8xaWFux2fC8igeQYNSSXM=",
+        "owner": "dhappy",
         "repo": "git-remote-ipfs",
-        "rev": "241d12485ebb3fccf2db32e6e24ba9f6035d7435",
+        "rev": "3f31ffbb1682cc25f10388a9291a937a7b77f3d7",
         "type": "github"
       },
       "original": {
-        "owner": "cryptix",
+        "owner": "dhappy",
+        "ref": "3f31ffbb",
         "repo": "git-remote-ipfs",
         "type": "github"
       }

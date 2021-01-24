@@ -3,7 +3,7 @@
 buildGoModule rec {
   pname = "git-remote-ipfs";
   version = src.shortRev;
-  vendorSha256 = "14m0kalmjrf49bqp5lnkrhp3crmqfhnjh10iyxhn50hji1cb6lzd";
+  vendorSha256 = "hkenInaS6PFnu/Z0oz32Y4B4BmM5+l5AB2/K1f/LxqA=";
 
   src = withSources.git-remote-ipfs;
 
@@ -11,6 +11,10 @@ buildGoModule rec {
   checkInputs = [
     git
   ];
+
+  postInstall = ''
+    ln -s $out/bin/git-remote-ipfs $out/bin/git-remote-ipns
+  '';
 
   meta = with lib; {
     platforms = platforms.unix;
