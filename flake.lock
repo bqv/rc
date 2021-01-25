@@ -204,6 +204,22 @@
         "type": "github"
       }
     },
+    "cloudflare-cli": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1609888748,
+        "narHash": "sha256-CDltkye8CQzwAXaoGsiotlHOqSUYaFHg/kVI0Zh9fUQ=",
+        "owner": "danielpigott",
+        "repo": "cloudflare-cli",
+        "rev": "628e1e80ac65d0307907980b5bbcd3d32e1b2a22",
+        "type": "github"
+      },
+      "original": {
+        "owner": "danielpigott",
+        "repo": "cloudflare-cli",
+        "type": "github"
+      }
+    },
     "conix": {
       "flake": false,
       "locked": {
@@ -1604,6 +1620,7 @@
         "baduk": "baduk",
         "bottom": "bottom",
         "brig": "brig",
+        "cloudflare-cli": "cloudflare-cli",
         "conix": "conix",
         "construct": "construct",
         "devshell": "devshell",

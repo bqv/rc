@@ -124,6 +124,7 @@
     mfs-replace-root = { url = "github:hsanjuan/mfs-replace-root"; flake = false; };
     brig = { url = "github:sahib/brig/develop"; flake = false; };
     emacs-straight = { url = "github:raxod502/straight.el"; flake = false; };
+    cloudflare-cli = { url = "github:danielpigott/cloudflare-cli"; flake = false; };
   };
 
   outputs = inputs: with builtins; let
@@ -268,7 +269,7 @@
                   inherit (withPr78810) mastodon;
                   inherit (withPr110381) execline;
 
-                  inherit (withSelfFlake) dgit flarectl fsnoop pure shflags;
+                  inherit (withSelfFlake) cfcli dgit fsnoop pure shflags;
                   inherit (withIni2json) ini2json;
                   inherit (withSelfFlake.pleroma) pleroma_be pleroma_fe masto_fe;
                   inherit (withNix.withDwarffsFlake) dwarffs;
