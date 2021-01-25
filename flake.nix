@@ -98,7 +98,7 @@
     zsh-pure = { url = "github:sindresorhus/pure"; flake = false; };
     fsnoop = { url = "github:jeffwalter/fsnoop"; flake = false; };
     shflags = { url = "github:kward/shflags"; flake = false; };
-    git-remote-ipfs = { url = "github:dhappy/git-remote-ipfs/3f31ffbb"; flake = false; };
+    git-remote-ipfs = { url = "github:bqv/git-remote-ipfs"; flake = false; };
     git-get = { url = "github:grdl/git-get"; flake = false; };
     git-pullrequest = { url = "github:google/git-pull-request-mirror"; flake = false; };
     dgit = { url = "github:quorumcontrol/dgit/v0.0.14-alpha"; flake = false; };
