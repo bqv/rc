@@ -31,8 +31,10 @@
     ltrace
     mercurial
     ncdu
+    nethogs
     nix-diff
     nix-top
+    nload
     page
     pass
     psmisc
