@@ -176,9 +176,9 @@
            (quri:copy-uri url :host "old.reddit.com"))))
 
       (progn
-        (setq trivial-clipboard::*clipboard-in-command* "${pkgs.xsel}/bin/xsel")
+        (setq trivial-clipboard::*clipboard-in-command* "/usr/bin/env xsel")
         (setq trivial-clipboard::*clipboard-in-args* `("--display" ,(uiop:getenv "DISPLAY") "-i" "-b"))
-        (setq trivial-clipboard::*clipboard-out-command* "${pkgs.xsel}/bin/xsel")
+        (setq trivial-clipboard::*clipboard-out-command* "/usr/bin/env xsel")
         (setq trivial-clipboard::*clipboard-out-args* `("--display" ,(uiop:getenv "DISPLAY") "-o" "-b")))
 
       (let ((handlers (list ;; doi://path -> https url
