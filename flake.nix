@@ -124,6 +124,7 @@
     mfs-replace-root = { url = "github:hsanjuan/mfs-replace-root"; flake = false; };
     brig = { url = "github:sahib/brig/develop"; flake = false; };
     emacs-straight = { url = "github:raxod502/straight.el"; flake = false; };
+    cloudflare-cli = { url = "github:danielpigott/cloudflare-cli"; flake = false; };
   };
 
   outputs = inputs: with builtins; let
