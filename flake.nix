@@ -269,7 +269,7 @@
                   inherit (withPr78810) mastodon;
                   inherit (withPr110381) execline;
 
-                  inherit (withSelfFlake) dgit flarectl fsnoop pure shflags;
+                  inherit (withSelfFlake) cfcli dgit fsnoop pure shflags;
                   inherit (withIni2json) ini2json;
                   inherit (withSelfFlake.pleroma) pleroma_be pleroma_fe masto_fe;
                   inherit (withNix.withDwarffsFlake) dwarffs;
