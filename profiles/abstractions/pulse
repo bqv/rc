@@ -1,0 +1,9 @@
+#include <abstractions/audio>
+
+# Started on-demand
+/usr/@{multiarch}bin/pulseaudio px,
+
+## Site-local symlinks
+/etc/core/sys/pulse/* r,
+/etc/core/sys/asound.conf r,
+/etc/core/sys/secure/pulse.cookie rk,
