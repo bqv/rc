@@ -1,7 +1,7 @@
 { pkgs, ... }:
 
 {
-  imports = [ ./fish ./tmux ./haskell ./python ./dotnet ./android ./javascript ];
+  imports = [ ./fish ./tmux ./haskell ./python ./dotnet ./android ./javascript ./golang ];
 
   environment.shellAliases = {
  #  v = "$EDITOR";
