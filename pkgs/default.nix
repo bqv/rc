@@ -35,7 +35,7 @@ in rec {
 
   fetchdarcs = prev.callPackage ./build-support/fetchdarcs { };
 
-  flarectl = prev.callPackage ./applications/misc/flarectl { };
+  cfcli = prev.callPackage ./applications/misc/cfcli { };
 
   fsnoop = prev.callPackage ./tools/misc/fsnoop { };
 
