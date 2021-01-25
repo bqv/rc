@@ -141,6 +141,18 @@
               { main = "rc.${domains.home}"; }
             ];
           };
+          ipfs-http = {
+            entryPoints = [ "http" ];
+            rule = "Host(`ipfs.${domains.home}`) && PathPrefix(`/ipfs`)" +
+            " || PathPrefix(`/ipns`) || PathPrefix(`/ipld`)";
+            service = "ipfs";
+          };
+          ipfs-https = ipfs-http // {
+            entryPoints = [ "https" ];
+            tls.domains = [
+              { main = "ipfs.${domains.home}"; }
+            ];
+          };
           jellyfin-http = {
             entryPoints = [ "http" "jellyfin" ];
             rule = "Host(`media.${domains.home}`)";
@@ -530,6 +542,12 @@
             passHostHeader = true;
             servers = [
               { url = "http://10.10.0.2:3000"; }
+            ];
+          };
+          ipfs.loadBalancer = {
+            servers = [
+              { url = "http://${hosts.ipv4.zeta}:${lib.last (
+                lib.splitString "/" config.services.ipfs.gatewayAddress)}"; }
             ];
           };
           jellyfin.loadBalancer = {
