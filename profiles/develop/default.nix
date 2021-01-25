@@ -37,6 +37,7 @@
     nload
     page
     pass
+    pijul
     psmisc
     strace
     socat
