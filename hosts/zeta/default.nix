@@ -11,9 +11,8 @@
     ../../containers/matrix.nix    # 10. 7.0.x
     ../../containers/hydroxide.nix # 10. 8.0.x
     ../../containers/anki.nix      # 10. 9.0.x
-    ../../containers/vervis.nix    # 10.10.0.x
+    ../../containers/klaus.nix     # 10.10.0.x
     ../../containers/jellyfin.nix  # 10.11.0.x
-   #../../containers/lemmy.nix     # 10.12.0.x
     ../../profiles/meta/fatal-warnings.nix
     ../../profiles/misc/restartssh.nix
     ../../profiles/security/sudo.nix
@@ -156,23 +155,12 @@
     (let
       mastodon = config.services.mastodon.database;
      in ''
-      # Generated file; do not edit!
       local all all              ident
       host  all all 127.0.0.1/32 md5
       host  all all ::1/128      md5
       host  ${mastodon.name} ${mastodon.user} 10.6.0.0/24 trust
       host  matrix-synapse matrix-synapse 10.7.0.0/24 trust
-      host  mx-puppet-discord mx-puppet-discord 10.7.0.0/24 trust
-      host  vervis vervis 10.10.0.0/24 trust
-      host  lemmy lemmy ${hosts.wireguard.delta}/32 trust
      '');
-  services.postgresql.ensureUsers = [
-    {
-      name = "lemmy";
-      ensurePermissions."DATABASE \"lemmy\"" = "ALL PRIVILEGES";
-    }
-  ];
-  services.postgresql.ensureDatabases = [ "lemmy" ];
   services.openssh.enable = true;
   services.openssh.forwardX11 = true;
   services.openssh.allowSFTP = true;
