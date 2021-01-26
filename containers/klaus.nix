@@ -28,7 +28,7 @@ in {
           ];
 
           systemd.services.klaus = {
-            path = [ pkgs.git ];
+            path = [ pkgs.git pkgs.ctags ];
             environment = {
               PORT = "3000";
               HOST = "0.0.0.0";
