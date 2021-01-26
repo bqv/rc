@@ -1,0 +1,30 @@
+diff --git a/libswc/screen.c b/libswc/screen.c
+index fd1c361..b353e39 100644
+--- a/libswc/screen.c
++++ b/libswc/screen.c
+@@ -132,6 +132,22 @@ screen_new(uint32_t crtc, struct output *output, struct plane *cursor_plane)
+ 	wl_list_insert(&screen->outputs, &output->link);
+ 	wl_list_init(&screen->modifiers);
+ 
++	int y = wl_list_length(&swc.screens);
++	switch (y)
++	{
++	case 0:
++		x = 0000;
++		break;
++	case 1:
++		x = 3840;
++		break;
++	case 2:
++		x = 1920;
++		break;
++	default:
++		break;
++	};
++	DEBUG("Putting screen %d (%d) at %d\n", screen->id, y, x);
+ 	view_move(&screen->planes.primary.view, x, 0);
+ 	screen->base.geometry = screen->planes.primary.view.geometry;
+ 	screen->base.usable_geometry = screen->base.geometry;
+--
+2.27.0
+

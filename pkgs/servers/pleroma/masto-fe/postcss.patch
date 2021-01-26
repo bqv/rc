@@ -1,0 +1,11 @@
+diff -s -ruN a/config/webpack/rules/css.js b/config/webpack/rules/css.js
+--- a/config/webpack/rules/css.js	1970-01-01 00:00:01.000000000 +0000
++++ b/config/webpack/rules/css.js	2020-01-18 07:34:10.909005284 +0000
+@@ -15,6 +15,7 @@
+       loader: 'postcss-loader',
+       options: {
+         sourceMap: true,
++        plugins: function() { return []; },
+       },
+     },
+     {
