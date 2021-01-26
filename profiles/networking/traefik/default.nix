@@ -128,13 +128,13 @@
             rule = "Host(`anki.${domains.home}`)";
             service = "anki";
           };
-          vervis-http = {
+          klaus-http = {
             entryPoints = [ "http" ];
             rule = "Host(`dev.${domains.home}`) || Host(`rc.${domains.home}`)";
-            service = "vervis";
+            service = "klaus";
             middlewares = [ "redirect-nixrc" ];
           };
-          vervis-https = vervis-http // {
+          klaus-https = klaus-http // {
             entryPoints = [ "https" ];
             tls.domains = [
               { main = "dev.${domains.home}"; }
@@ -261,7 +261,7 @@
             in {
               permanent = false;
               regex = "^(https?)://rc.${domains.home}/(.*)";
-              replacement = "\${1}://dev.${domains.home}/s/${gitcreds.user}/r/nixrc/s/live/\${2}";
+              replacement = "\${1}://dev.${domains.home}/nixrc/live/\${2}";
             };
           };
          #Middleware00 = { addPrefix = { prefix = "foobar"; }; };
@@ -538,7 +538,7 @@
               { url = "http://10.9.0.2:27701"; }
             ];
           };
-          vervis.loadBalancer = {
+          klaus.loadBalancer = {
             passHostHeader = true;
             servers = [
               { url = "http://10.10.0.2:3000"; }
@@ -636,7 +636,7 @@
           gitssh = {
             entryPoints = [ "ssh-alt" ];
             rule = "HostSNI(`*`)";
-            service = "vervis";
+            service = "klaus";
           };
          #irc = {
          #  entryPoints = [ "ircs" ];
@@ -666,7 +666,7 @@
             ];
             terminationDelay = 100;
           };
-          vervis.loadBalancer = {
+          klaus.loadBalancer = {
             servers = [
               { address = "10.10.0.2:5022"; }
             ];
