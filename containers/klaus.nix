@@ -24,7 +24,7 @@ in {
           networking.firewall.enable = false;
 
           environment.systemPackages = with pkgs; [
-            klaus yq yj jq git darcs pijul svn hg
+            klaus yq yj jq git darcs pijul subversion mercurial
           ];
 
           systemd.services.klaus = {
