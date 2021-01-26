@@ -3,9 +3,15 @@
 let
   hostAddress = "10.10.0.1";
   localAddress = "10.10.0.2";
+
+  klaus = pkgs.klaus.overrideAttrs (v: {
+    propagatedBuildInputs = v.propagatedBuildInputs ++ [
+      pkgs.python3.pkgs.python-ctags3
+    ];
+  });
 in {
   environment.systemPackages = [
-    pkgs.klaus
+    klaus
   ];
 
   containers.klaus =
@@ -23,9 +29,9 @@ in {
 
           networking.firewall.enable = false;
 
-          environment.systemPackages = with pkgs; [
-            klaus yq yj jq git darcs pijul subversion mercurial
-          ];
+          environment.systemPackages = (with pkgs; [
+            yq yj jq git darcs pijul subversion mercurial
+          ]) ++ [ klaus ];
 
           systemd.services.klaus = {
             path = [ pkgs.git pkgs.ctags ];
@@ -39,7 +45,7 @@ in {
               ];
             };
             serviceConfig = {
-              ExecStart = "${pkgs.klaus}/bin/klaus --host $HOST --port $PORT --site-name $DOMAIN --ctags $CTAGS --smarthttp $PATHS";
+              ExecStart = "${klaus}/bin/klaus --host $HOST --port $PORT --site-name $DOMAIN --ctags $CTAGS --smarthttp $PATHS";
             };
             wantedBy = [ "default.target" ];
           };
