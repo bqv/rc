@@ -494,9 +494,10 @@
             args = { config = null; options = null; inherit lib; } // specialArgs;
           in (mergeModules [] (collectModules "" modules args)).matchedOptions.platform.value;
 
-          nixos = with inputs.self.nixosModules;
-            let platform = (getPlatform hosts.${system}.${name});
-            in hosts.${platform}.${name};
+          nixos = with inputs.self.nixosModules; let
+            base = hosts.${system}.${name} or null;
+            platform = getPlatform base;
+          in if base == null then hosts.${system}.image else hosts.${platform}.${name};
 
           vmsystem = { modules, pkgs, specialArgs, ... }: {
             system.build.vm = (evalConfig {
@@ -541,56 +542,66 @@
             };
           };
         in {
-          host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
-
-          configuration = {
-            imports = nixos.modules ++ [
-             #linkage # TODO: figure out how to make this work
-              vmsystem
-            ];
-            config = {
-              secrets.baseDirectory = "/var/lib/secrets";
-              _module.args = nixos.specialArgs;
+          options = {
+            configuration = lib.mkOption {
+              type = lib.types.submoduleWith {
+                inherit (nixos) modules;
+              };
             };
           };
 
-          # Filter out "added to list of known hosts" spam from output
-          deployScriptPhases.filter-known-hosts = lib.dag.entryBefore ["copy-closure"] ''
-            # Remove known hosts spam
-            pipeline -w { ${pkgs.gnugrep}/bin/grep --line-buffered -v "list of known hosts" }
-            fdswap 1 2
-            pipeline -w { ${pkgs.gnugrep}/bin/grep --line-buffered -v "list of known hosts" }
-            fdswap 2 1
-          '';
+          config = {
+            host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
 
-          # Git tag all systems and deployments
-          deployScriptPhases.git-tag = let
-            inherit (config.configuration) system;
-          in lib.dag.entryAfter ["trigger-switch"] ''
-            foreground {
-              backtick -i -n systemstorepath { basename "${system.build.toplevel.outPath}" }
-              importas -i systemstorepath systemstorepath
-              define systempath "nix/store/''${systemstorepath}"
-              importas -i id ID
-              define systemnum "${name}/system-''${id}"
+            configuration = {
+              imports = [
+               #linkage # TODO: figure out how to make this work
+                vmsystem
+              ];
+              config = {
+                secrets.baseDirectory = "/var/lib/secrets";
+                _module.args = nixos.specialArgs;
+              };
+            };
+
+            # Filter out "added to list of known hosts" spam from output
+            deployScriptPhases.filter-known-hosts = lib.dag.entryBefore ["copy-closure"] ''
+              # Remove known hosts spam
+              pipeline -w { ${pkgs.gnugrep}/bin/grep --line-buffered -v "list of known hosts" }
               fdswap 1 2
-              foreground { echo Tagging $systempath }
-              foreground { ${pkgs.git}/bin/git tag $systempath "${system.configurationRevision}" }
-              foreground { echo Tagging $systemnum }
-              foreground { ${pkgs.git}/bin/git tag $systemnum "${system.configurationRevision}" }
-              exit 0
-            }
-          '';
+              pipeline -w { ${pkgs.gnugrep}/bin/grep --line-buffered -v "list of known hosts" }
+              fdswap 2 1
+            '';
 
-          privilegeEscalationCommand = []; # already root
+            # Git tag all systems and deployments
+            deployScriptPhases.git-tag = let
+              inherit (config.configuration) system;
+            in lib.dag.entryAfter ["trigger-switch"] ''
+              foreground {
+                backtick -i -n systemstorepath { basename "${system.build.toplevel.outPath}" }
+                importas -i systemstorepath systemstorepath
+                define systempath "nix/store/''${systemstorepath}"
+                importas -i id ID
+                define systemnum "${name}/system-''${id}"
+                fdswap 1 2
+                foreground { echo Tagging $systempath }
+                foreground { ${pkgs.git}/bin/git tag $systempath "${system.configurationRevision}" }
+                foreground { echo Tagging $systemnum }
+                foreground { ${pkgs.git}/bin/git tag $systemnum "${system.configurationRevision}" }
+                exit 0
+              }
+            '';
 
-          successTimeout = lib.mkDefault 120;
-          switchTimeout = lib.mkDefault 120;
+            privilegeEscalationCommand = []; # already root
 
-          ignoreFailingSystemdUnits = true;
-          systemSwitcherDir = "/nix/node/";
+            successTimeout = lib.mkDefault 120;
+            switchTimeout = lib.mkDefault 120;
 
-          dirty = ! (inputs.self ? rev);
+            ignoreFailingSystemdUnits = true;
+            systemSwitcherDir = "/nix/node/";
+
+            dirty = ! (inputs.self ? rev);
+          };
         };
 
         nodes = let
