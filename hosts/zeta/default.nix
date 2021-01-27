@@ -29,6 +29,12 @@
     ./certificate.nix
   ];
 
+  isolation = {
+    makeHostAddress = { id, ... }: "10.${toString id}.0.1";
+    makeLocalAddress = { id, ... }: "10.${toString id}.0.2";
+    scopes.klaus.id = 10;
+  };
+
   platform = "x86_64-linux";
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usbhid" "sd_mod" ];
