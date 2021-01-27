@@ -1,4 +1,4 @@
-{ baseModules, config, pkgs, lib, modules, ... }:
+{ config, pkgs, lib, extraModules, ... }:
 
 let
   cfg = config.isolation;
@@ -40,16 +40,26 @@ in {
               inherit (config) id name;
             };
           };
+          baseModules = mkOption {
+            type = types.listOf types.anything;
+            default = import (pkgs.path + "/nixos/modules/module-list.nix");
+          };
+          extraModules = mkOption {
+            type = types.listOf types.anything;
+            default = extraModules;
+          };
           nixos = mkOption {
             type = types.nullOr (types.submoduleWith {
               inherit specialArgs;
-              modules = baseModules ++ [(let
+              modules = config.baseModules ++ config.extraModules ++ [(let
                 inherit (config) name;
               in { config, ... }: {
                 boot.isContainer = true;
                 networking.hostName = mkDefault name;
                 networking.useDHCP = false;
                 nixpkgs.system = pkgs.system;
+                nixpkgs.pkgs = pkgs;
+                nix.package = pkgs.nixFlakes;
               })];
             });
             default = null;
