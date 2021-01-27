@@ -1694,6 +1694,7 @@
         "velox": "velox",
         "wayland": "wayland",
         "weechat-matrix": "weechat-matrix",
+        "wgvanity": "wgvanity",
         "wld": "wld",
         "xontribs": "xontribs",
         "zsh-pure": "zsh-pure"
@@ -2038,6 +2039,22 @@
         "owner": "poljar",
         "ref": "d4158416",
         "repo": "weechat-matrix",
+        "type": "github"
+      }
+    },
+    "wgvanity": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1585358264,
+        "narHash": "sha256-VSiPPZTf7aipTckrC8YSuowXTUA16rVImAJ4e4c2m9g=",
+        "owner": "warner",
+        "repo": "wireguard-vanity-address",
+        "rev": "d36eeac325ba3f27111ef4b17d171e695ff75552",
+        "type": "github"
+      },
+      "original": {
+        "owner": "warner",
+        "repo": "wireguard-vanity-address",
         "type": "github"
       }
     },
