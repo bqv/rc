@@ -76,7 +76,7 @@ in {
     };
   };
 
-  systemd.services.wireguard-wg0.serviceConfig.Before = [ "sshd.service" ];
+  systemd.services.wireguard-wg0.unitConfig.Before = [ "sshd.service" ];
 
   secrets.files = {
     wireguard = {

@@ -75,5 +75,7 @@ in rec {
 
   vervis = prev.callPackage ./applications/version-management/vervis { inherit fetchdarcs; };
 
+  wgvanity = prev.callPackage ./tools/system/wgvanity { };
+
   yacy = prev.callPackage ./servers/yacy { };
 }

@@ -126,8 +126,6 @@
     extra-substituters = ipfs://
   '';
 
-  #powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-
   services.disnix.enable = true;
   dysnomia.enableLegacyModules = false;
 

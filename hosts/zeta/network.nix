@@ -22,8 +22,8 @@ let
   };
 in {
   imports = [
-    ../../containers/secure.nix    # 10. 1.0.x
-    ../../containers/sandbox.nix   # 10. 2.0.x
+    ../../containers/sandbox.nix   # 10. 1.0.x
+    ../../containers/secure.nix    # 10. 2.0.x
    #../../containers/certmon.nix   # 10. 3.0.x
     ../../containers/authority.nix # 10. 4.0.x
     ../../containers/search.nix    # 10. 5.0.x
