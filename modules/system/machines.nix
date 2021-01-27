@@ -11,13 +11,25 @@ let
 in {
   options.isolation = with lib; {
     makeHostAddress = mkOption {
-      type = unaryStringFunctionType;
+      type = types.nullOr unaryStringFunctionType;
       example = literalExample ''{ id, ... }: "10.''${id}".0.1'';
+      default = null;
     };
+   #makeHostAddress6 = mkOption {
+   #  type = types.nullOr unaryStringFunctionType;
+   #  example = literalExample ''{ id, ... }: "10.''${id}".0.1'';
+   #  default = null;
+   #};
     makeLocalAddress = mkOption {
-      type = unaryStringFunctionType;
+      type = types.nullOr unaryStringFunctionType;
       example = literalExample ''{ id, ... }: "10.''${id}".0.2'';
+      default = null;
     };
+   #makeLocalAddress6 = mkOption {
+   #  type = types.nullOr unaryStringFunctionType;
+   #  example = literalExample ''{ id, ... }: "10.''${id}".0.2'';
+   #  default = null;
+   #};
     scopes = mkOption {
       type = types.attrsOf (types.submodule ({ config, name, ... }: {
         options = {
@@ -58,8 +70,9 @@ in {
                 networking.hostName = mkDefault name;
                 networking.useDHCP = false;
                 nixpkgs.system = pkgs.system;
-                nixpkgs.pkgs = pkgs;
+                nixpkgs.pkgs = pkgs.path;
                 nix.package = pkgs.nixFlakes;
+                documentation.nixos.enable = false;
               })];
             });
             default = null;
