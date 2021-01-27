@@ -729,7 +729,7 @@
     // {
       hosts = forAllSystems ({ pkgs, system, ... }: (let
         usr = {
-          utils = import ./lib/utils.nix {
+          tools = import ./lib/utils.nix {
             inherit lib;
           };
           elisp = import ./lib/elisp.nix {
@@ -756,7 +756,9 @@
             modules = modules ++ [
               { _module.args = specialArgs; }
             ];
-            extraModules = [];
+            extraModules = [
+              ./profiles/core.nix
+            ];
           };
 
           # External modules
@@ -780,7 +782,7 @@
             documentation.nixos.extraModuleSources = [./.]
               ++ lib.mapAttrsToList (_: x: x.outPath) inputs;
 
-            nix.package = lib.mkDefault pkgs.withNixFlake.withNix.nixFlakes;
+            nix.package = lib.mkDefault pkgs.nixFlakes;
             nix.registry = lib.mapAttrs (id: flake: {
               inherit flake;
               from = { inherit id; type = "indirect"; };
@@ -908,7 +910,7 @@
           ] ++ appendModules;
         };
 
-        forEachHost = do: usr.utils.recImport {
+        forEachHost = do: usr.tools.recImport {
           # Build a nixos system for each dir in ./hosts using modulesFor
           dir = ./hosts;
           _import = do;
