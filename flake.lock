@@ -890,11 +890,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1607800657,
-        "narHash": "sha256-puyh/FIHhUZM8sBJdSCuawpOLJbQPLvK3laCyXi6wVA=",
+        "lastModified": 1611535491,
+        "narHash": "sha256-mXjeRxW7LyY7EPEl1nPIN2ppyR5uu2EdkdOYVrdrLsk=",
         "owner": "nix-lisp",
         "repo": "lisp-overlay",
-        "rev": "37b7b50e9156ae208be4d4e98125cc7c3d798c32",
+        "rev": "22194e9565cf7d8141961d4ea3b0ef2eb1d5c257",
         "type": "github"
       },
       "original": {
@@ -1194,11 +1194,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1609953055,
-        "narHash": "sha256-vG+cBUaGoi1tmXq8+JYo22MVjYt+DIQ34AWm+BqjjwM=",
+        "lastModified": 1611594804,
+        "narHash": "sha256-smxT6rn9GR9MFub7jDVgPdb+9ZO5XdUiE0stPXqyBe8=",
         "owner": "atlas-engineer",
         "repo": "nyxt",
-        "rev": "817459e7c3783ccd6a45b3ce64647f4ba1fbf1fe",
+        "rev": "cdd100973836e6e9e74c0399672ab2d2d1c97c50",
         "type": "github"
       },
       "original": {
