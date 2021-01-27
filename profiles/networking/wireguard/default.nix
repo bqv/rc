@@ -4,6 +4,7 @@ let
   pubkeys = usr.secrets.wireguard.pubkeys;
 
   network = 24;
+  network6 = 112;
   peers = {
     zeta = {
       ip = hosts.wireguard.zeta;
@@ -15,7 +16,7 @@ let
     theta = {
       ip = hosts.wireguard.theta;
       ip6 = hosts.wireguard6.theta;
-      routes.zeta = [ "10.0.0.0/24" ];
+      routes.zeta = [ hosts.cidr.ipv4 hosts.cidr.ipv6 ];
       publicKey = pubkeys.theta;
     };
 
@@ -56,7 +57,7 @@ in {
     interfaces.wg0 = {
       ips = [
         "${currentPeer.ip}/${toString network}"
-        "${currentPeer.ip6}/${toString network}"
+        "${currentPeer.ip6}/${toString network6}"
       ];
       privateKeyFile = "${config.secrets.files.wireguard.file}";
       generatePrivateKeyFile = false;
@@ -64,7 +65,7 @@ in {
 
       peers = lib.mapAttrsToList (hostname: hostcfg: {
         inherit (hostcfg) publicKey;
-        allowedIPs = [ "${hostcfg.ip}/32" "${hostcfg.ip6}/32" ]
+        allowedIPs = [ "${hostcfg.ip}/32" "${hostcfg.ip6}/128" ]
           ++ (hostcfg.routes.${config.networking.hostName} or []);
       } // (lib.optionalAttrs (builtins.length (endpointsOf hostcfg) > 0) {
         endpoint = "${builtins.head (endpointsOf hostcfg)}:${toString hostcfg.port or "51820"}";
