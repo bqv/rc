@@ -21,6 +21,28 @@ let
     };
   };
 in {
+  imports = [
+    ../../containers/secure.nix    # 10. 1.0.x
+    ../../containers/sandbox.nix   # 10. 2.0.x
+   #../../containers/certmon.nix   # 10. 3.0.x
+    ../../containers/authority.nix # 10. 4.0.x
+    ../../containers/search.nix    # 10. 5.0.x
+    ../../containers/mastodon.nix  # 10. 6.0.x
+    ../../containers/matrix.nix    # 10. 7.0.x
+    ../../containers/hydroxide.nix # 10. 8.0.x
+    ../../containers/anki.nix      # 10. 9.0.x
+    ../../containers/klaus.nix     # 10.10.0.x
+    ../../containers/jellyfin.nix  # 10.11.0.x
+  ];
+
+  isolation = {
+    makeHostAddress = { id, ... }: "10.${toString id}.0.1";
+    makeHostAddress6 = { id, ... }: "2001:bc8:3de4::${toString id}:1";
+    makeLocalAddress = { id, ... }: "10.${toString id}.0.2";
+    makeLocalAddress6 = { id, ... }: "2001:bc8:3de4::${toString id}:2";
+    scopes.klaus.id = 10;
+  };
+
   networking.interfaces.${wanInterface} = {
     ipv4.addresses = [
       { address = hosts.ipv4.zeta; prefixLength = 24; }
@@ -48,7 +70,7 @@ in {
   networking.nat.internalInterfaces = ["ve-+"];
   networking.nat.externalInterface = wanInterface;
   systemd.services.nat.path = with pkgs; lib.mkForce [
-    iptables-nftables-compat coreutils 
+    iptables-nftables-compat coreutils
   ];
 
   networking.firewall.enable = false;
@@ -59,22 +81,22 @@ in {
         # Block all incomming connections traffic except SSH and "ping".
         chain input {
           type filter hook input priority 0;
-    
+
           # accept any localhost traffic
           iifname lo accept
-    
+
           # accept traffic originated from us
           ct state {established, related} accept
-    
+
           # ICMP
           # routers may also want: mld-listener-query, nd-router-solicit
           ip6 nexthdr icmpv6 icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert } accept
           ip protocol icmp icmp type { destination-unreachable, router-advertisement, time-exceeded, parameter-problem } accept
-    
+
           # allow "ping"
-          ip6 nexthdr icmpv6 icmpv6 type echo-request accept   
-          ip protocol icmp icmp type echo-request accept   
-    
+          ip6 nexthdr icmpv6 icmpv6 type echo-request accept
+          ip protocol icmp icmp type echo-request accept
+
           # accept SSH connections (required for a server)
           tcp dport 22 accept
 
@@ -99,18 +121,18 @@ in {
           udp dport 51820 accept
           udp dport 60000-61000 accept
           udp dport 60000-61000 accept
-    
+
           # count and drop any other traffic
           #counter drop
           counter accept
-        } 
-    
+        }
+
         # Allow all outgoing connections.
         chain output {
           type filter hook output priority 0;
           accept
-        }   
-    
+        }
+
         chain forward {
           type filter hook forward priority 0;
           accept
@@ -120,7 +142,7 @@ in {
   };
 
   networking.wireguard.interfaces.wg0 = {
-    postSetup = let 
+    postSetup = let
       wanInterface = vlanInterface 1;
       nat = "${pkgs.iptables}/bin/iptables -w -t nat";
       proto = proto: "-p ${proto} -m ${proto}";

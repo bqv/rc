@@ -2,17 +2,6 @@
 
 {
   imports = [
-    ../../containers/secure.nix    # 10. 1.0.x
-    ../../containers/sandbox.nix   # 10. 2.0.x
-   #../../containers/certmon.nix   # 10. 3.0.x
-    ../../containers/authority.nix # 10. 4.0.x
-    ../../containers/search.nix    # 10. 5.0.x
-    ../../containers/mastodon.nix  # 10. 6.0.x
-    ../../containers/matrix.nix    # 10. 7.0.x
-    ../../containers/hydroxide.nix # 10. 8.0.x
-    ../../containers/anki.nix      # 10. 9.0.x
-    ../../containers/klaus.nix     # 10.10.0.x
-    ../../containers/jellyfin.nix  # 10.11.0.x
     ../../profiles/meta/fatal-warnings.nix
     ../../profiles/misc/restartssh.nix
     ../../profiles/security/sudo.nix
