@@ -2,18 +2,23 @@
 
 let
   cfg = config.isolation;
+
+  unaryFunctionType = with lib.types; addCheck anything (f:
+    lib.isFunction f && lib.isString (f (lib.functionArgs f))
+  ) // { description = "unary function"; };
 in {
   options.isolation = with lib; {
     makeHostAddress = mkOption {
-      type = types.function;
+      type = unaryFunctionType;
       example = literalExample ''{ id, ... }: "10.''${id}".0.1'';
+      default = { id, ... }: "a";
     };
     makeLocalAddress = mkOption {
-      type = types.function;
+      type = types.addCheck types.anything lib.isFunction;
       example = literalExample ''{ id, ... }: "10.''${id}".0.2'';
     };
     scopes = mkOption {
-      type = types.addCheck (types.listOf types.submodule ({ config, ... }: {
+      type = types.addCheck (types.listOf (types.submodule ({ config, ... }: {
         options = {
           id = mkOption {
             type = types.ints.u8;
@@ -61,19 +66,20 @@ in {
         config = {
           _module.args = { inherit (config) hostAddress localAddress; };
         };
-      })) (xs: let
+      }))) (xs: let
         left = builtins.attrNames (builtins.listToAttrs (map (x: {
           inherit (x) name; value = null;
         }) xs));
         right = map (x: x.name) xs;
       in lib.length left == lib.length right);
+      default = [];
     };
     machines = mkOption {
       type = types.attrsOf types.package;
       default = builtins.listToAttrs (map (value: {
         inherit (value) name;
         inherit value;
-      }) config.scopes);
+      }) cfg.scopes);
       internal = true;
     };
   };
