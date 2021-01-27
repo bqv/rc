@@ -6,7 +6,6 @@
   ./services/ipfs-cluster/default.nix
   ./services/mastodon/default.nix
   ./security/mitigations.nix
-  ./system/machines.nix
   ./networking/nftables.nix
   ./networking/wireguard-mesh.nix
   ./networking/namespacing.nix
