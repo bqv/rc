@@ -3,18 +3,17 @@
 let
   cfg = config.isolation;
 
-  unaryFunctionType = with lib.types; addCheck anything (f:
+  unaryStringFunctionType = with lib.types; addCheck anything (f:
     lib.isFunction f && lib.isString (f (lib.functionArgs f))
-  ) // { description = "unary function"; };
+  ) // { description = "unary function returning string"; };
 in {
   options.isolation = with lib; {
     makeHostAddress = mkOption {
-      type = unaryFunctionType;
+      type = unaryStringFunctionType;
       example = literalExample ''{ id, ... }: "10.''${id}".0.1'';
-      default = { id, ... }: "a";
     };
     makeLocalAddress = mkOption {
-      type = types.addCheck types.anything lib.isFunction;
+      type = unaryStringFunctionType;
       example = literalExample ''{ id, ... }: "10.''${id}".0.2'';
     };
     scopes = mkOption {
