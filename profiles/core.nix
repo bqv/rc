@@ -119,7 +119,7 @@
     apparmor = {
       enable = true;
     };
-    audit.enable = true;
+    audit.enable = lib.mkDefault true;
     auditd.enable = true;
 
     hideProcessInformation = true;
