@@ -729,7 +729,7 @@
     // {
       hosts = forAllSystems ({ pkgs, system, ... }: (let
         usr = {
-          tools = import ./lib/utils.nix {
+          utils = import ./lib/utils.nix {
             inherit lib;
           };
           elisp = import ./lib/elisp.nix {
@@ -756,7 +756,7 @@
             modules = modules ++ [
               { _module.args = specialArgs; }
             ];
-            inherit extraModules;
+            extraModules = [];
           };
 
           # External modules
@@ -773,12 +773,14 @@
 
           # The flake-ier common basic stuff
           global = {
+            environment.etc."machine-id".text = builtins.hashString "md5" hostName;
             environment.pathsToLink = [ "/share/bios" ];
+            networking = { inherit hostName; };
 
             documentation.nixos.extraModuleSources = [./.]
               ++ lib.mapAttrsToList (_: x: x.outPath) inputs;
 
-            nix.package = lib.mkDefault pkgs.nixFlakes;
+            nix.package = lib.mkDefault pkgs.withNixFlake.withNix.nixFlakes;
             nix.registry = lib.mapAttrs (id: flake: {
               inherit flake;
               from = { inherit id; type = "indirect"; };
@@ -824,14 +826,6 @@
             '';
           };
 
-          # Host-specific basic stuff
-          host = {
-            environment.etc."machine-id".text = builtins.hashString "md5" hostName;
-
-            networking = { inherit hostName; };
-          };
-
-          # Nixos eval settings
           nixpkgs = { config, ... }: {
             config.nixpkgs = {
               inherit pkgs;
@@ -896,31 +890,24 @@
             ];
           };
 
-          # Our modules
           flakeModules = import ./modules/nixos.nix;
 
           # Actual host config
           configuration = import "${toString ./hosts}/${hostName}";
 
-          # Modules to propagate to containers
-          extraModules = [
-            core global
-          ];
-
-          # Final modules set
-          modules = flakeModules ++ extraModules ++ [
-            home nixpkgs iwd gnupg
-            home-manager dwarffs matrix-construct hydra
-            impermanence age guix apparmor-nix
+          modules = flakeModules ++ [
+            core global nixpkgs iwd home gnupg
+            home-manager dwarffs guix matrix-construct hydra
+            impermanence age apparmor-nix
           ];
         in {
           inherit system specialArgs;
           modules = modules ++ [
-            host configuration
+            configuration
           ] ++ appendModules;
         };
 
-        forEachHost = do: usr.tools.recImport {
+        forEachHost = do: usr.utils.recImport {
           # Build a nixos system for each dir in ./hosts using modulesFor
           dir = ./hosts;
           _import = do;
