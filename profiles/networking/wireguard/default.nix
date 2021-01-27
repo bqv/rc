@@ -7,18 +7,21 @@ let
   peers = {
     zeta = {
       ip = hosts.wireguard.zeta;
+      ip6 = hosts.wireguard6.zeta;
       wideArea = [ hosts.ipv4.zeta ]; # Note: Wireguard won't retry DNS resolution if it fails
       publicKey = pubkeys.zeta;
     };
 
     theta = {
       ip = hosts.wireguard.theta;
+      ip6 = hosts.wireguard6.theta;
       routes.zeta = [ "10.0.0.0/24" ];
       publicKey = pubkeys.theta;
     };
 
     delta = {
       ip = hosts.wireguard.delta;
+      ip6 = hosts.wireguard6.delta;
       wideArea = [ hosts.ipv4.home ];
       localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
       publicKey = pubkeys.delta;
@@ -26,6 +29,7 @@ let
 
     phi = {
       ip = hosts.wireguard.phi;
+      ip6 = hosts.wireguard6.phi;
       localArea = [ hosts.lan.phi ];
       publicKey = pubkeys.phi;
     };
@@ -50,14 +54,17 @@ in {
   networking.wireguard = {
     enable = true;
     interfaces.wg0 = {
-      ips = [ "${currentPeer.ip}/${toString network}" ];
+      ips = [
+        "${currentPeer.ip}/${toString network}"
+        "${currentPeer.ip6}/${toString network}"
+      ];
       privateKeyFile = "${config.secrets.files.wireguard.file}";
       generatePrivateKeyFile = false;
       listenPort = currentPeer.port or 51820;
 
       peers = lib.mapAttrsToList (hostname: hostcfg: {
         inherit (hostcfg) publicKey;
-        allowedIPs = [ "${hostcfg.ip}/32" ]
+        allowedIPs = [ "${hostcfg.ip}/32" "${hostcfg.ip6}/32" ]
           ++ (hostcfg.routes.${config.networking.hostName} or []);
       } // (lib.optionalAttrs (builtins.length (endpointsOf hostcfg) > 0) {
         endpoint = "${builtins.head (endpointsOf hostcfg)}:${toString hostcfg.port or "51820"}";
