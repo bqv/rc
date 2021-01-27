@@ -856,7 +856,6 @@
                   baduk
                 ];
               });
-              visible = false;
             };
 
             config.home-manager = {
