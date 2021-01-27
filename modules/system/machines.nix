@@ -27,7 +27,7 @@ in {
     };
     makeLocalAddress6 = mkOption {
       type = types.nullOr unaryStringFunctionType;
-      example = literalExample ''{ id, ... }: "fc00:''${id}::2"'';
+      example = literalExample ''{ id, ... }: "fc00:''${id}::0"'';
       default = null;
     };
     scopes = mkOption {
@@ -66,16 +66,17 @@ in {
               modules = config.baseModules ++ config.extraModules ++ [(let
                 inherit (config) name;
               in { config, ... }: {
+                _module.args.pkgs = pkgs;
                 boot.isContainer = true;
                 networking.hostName = mkDefault name;
                 networking.useDHCP = false;
                 nixpkgs.system = pkgs.system;
                 nixpkgs.pkgs = pkgs;
-                nix.package = pkgs.nixFlakes;
-                documentation.nixos.enable = false;
+                nix.optimise.automatic = false;
+                documentation.nixos.enable = lib.mkForce false;
+                users.mutableUsers = lib.mkForce true;
               })];
             });
-            default = null;
           };
           system = mkOption {
             type = types.package;
@@ -85,14 +86,19 @@ in {
         };
         config = {
           _module.args = { inherit (config) hostAddress localAddress; };
+          nixos = lib.mkMerge cfg.common.nixos;
         };
       }));
       default = {};
     };
+    common.nixos = mkOption {
+      type = with types; coercedTo anything singleton (listOf anything);
+      default = {...}: {};
+    };
     machines = mkOption {
       type = types.listOf types.anything;
       default = map (scope: {
-        inherit (scope) name;
+        inherit (scope) id name;
         value = { inherit (scope) hostAddress localAddress system; };
       }) (builtins.attrValues cfg.scopes);
       internal = true;
@@ -100,7 +106,7 @@ in {
   };
 
   config = {
-    containers = lib.mapAttrs (machine: {
+    containers = lib.mapAttrs (name: machine: {
       autoStart = true;
       enableTun = true;
       privateNetwork = true;
@@ -108,5 +114,17 @@ in {
 
       path = machine.system;
     }) (builtins.listToAttrs cfg.machines);
+
+    assertions = lib.concatMap (attr: lib.mapAttrsToList (id: machines: {
+      assertion = lib.any (m: m.id == null) machines || lib.length machines == 1;
+      message = ''Overlap of container.*.${attr} between: ${
+        lib.concatMapStringsSep "" (m: "\n  + ${m.name} = ${id}") machines}'';
+    }) (lib.groupBy (x: toString x.id) (lib.mapAttrsToList (name: value: {
+      inherit name value;
+      id = value.${attr};
+    }) config.containers))) [
+      "hostAddress" "hostAddress6"
+      "localAddress" "localAddress6"
+    ];
   };
 }
