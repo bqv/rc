@@ -81,13 +81,15 @@ in {
         config = {
           inherit extraModules;
           _module.args = { inherit (config) hostAddress hostAddress6 localAddress localAddress6; };
-          nixos = lib.mkMerge [{
-            networking.hostName = mkDefault (strings.sanitizeDerivationName name);
-            networking.useDHCP = false;
-            nix.optimise.automatic = false;
-            documentation.nixos.enable = lib.mkForce false;
-            users.mutableUsers = lib.mkForce true;
-          }] ++ cfg.common.nixos;
+          nixos = {
+            config = lib.mkMerge ([{
+              networking.hostName = mkDefault (strings.sanitizeDerivationName name);
+              networking.useDHCP = false;
+              nix.optimise.automatic = false;
+              documentation.nixos.enable = lib.mkForce false;
+              users.mutableUsers = lib.mkForce true;
+            }] ++ cfg.common.nixos);
+          };
           hostAddress = lib.mkDefault (cfg.makeHostAddress { inherit (config) id name; });
           hostAddress6 = lib.mkDefault (cfg.makeHostAddress6 { inherit (config) id name; });
           localAddress = lib.mkDefault (cfg.makeLocalAddress { inherit (config) id name; });
@@ -98,7 +100,7 @@ in {
     };
     common.nixos = mkOption {
       type = with types; coercedTo anything singleton (listOf anything);
-      default = {...}: {};
+      default = {};
     };
     machines = mkOption {
       type = types.listOf types.anything;
