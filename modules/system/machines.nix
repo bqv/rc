@@ -6,11 +6,11 @@ in {
   options.isolation = with lib; {
     makeHostAddress = mkOption {
       type = types.function;
-      exampleText = ''{ id, ... }: "10.''${id}".0.1'';
+      example = literalExample ''{ id, ... }: "10.''${id}".0.1'';
     };
     makeLocalAddress = mkOption {
       type = types.function;
-      exampleText = ''{ id, ... }: "10.''${id}".0.2'';
+      example = literalExample ''{ id, ... }: "10.''${id}".0.2'';
     };
     scopes = mkOption {
       type = types.addCheck (types.listOf types.submodule ({ config, ... }: {
