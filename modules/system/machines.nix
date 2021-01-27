@@ -1,7 +1,9 @@
-{ config, pkgs, lib, ... }:
+{ baseModules, config, pkgs, lib, modules, ... }:
 
 let
   cfg = config.isolation;
+
+  specialArgs = config._module.args;
 
   unaryStringFunctionType = with lib.types; addCheck anything (f:
     lib.isFunction f && lib.isString (f (lib.functionArgs f))
@@ -17,13 +19,14 @@ in {
       example = literalExample ''{ id, ... }: "10.''${id}".0.2'';
     };
     scopes = mkOption {
-      type = types.addCheck (types.listOf (types.submodule ({ config, ... }: {
+      type = types.attrsOf (types.submodule ({ config, name, ... }: {
         options = {
           id = mkOption {
             type = types.ints.u8;
           };
           name = mkOption {
-            type = types.str;
+            type = types.addCheck types.str (name: lib.stringLength name < 12);
+            default = name;
           };
           hostAddress = mkOption {
             type = types.str;
@@ -38,47 +41,37 @@ in {
             };
           };
           nixos = mkOption {
-            type = types.listOf types.submodule (let
-              inherit (config) name;
-            in { config, ... }: {
-              boot.isContainer = true;
-              networking.hostName = mkDefault name;
-              networking.useDHCP = false;
-              assertions = [
-                {
-                  assertion =  config.privateNetwork -> lib.stringLength name < 12;
-                  message = ''
-                    Container name `${name}` is too long: When `privateNetwork` is enabled, container names can
-                    not be longer than 11 characters, because the container's interface name is derived from it.
-                    This might be fixed in the future. See https://github.com/NixOS/nixpkgs/issues/38509
-                  '';
-                }
-              ];
+            type = types.nullOr (types.submoduleWith {
+              inherit specialArgs;
+              modules = baseModules ++ [(let
+                inherit (config) name;
+              in { config, ... }: {
+                boot.isContainer = true;
+                networking.hostName = mkDefault name;
+                networking.useDHCP = false;
+                nixpkgs.system = pkgs.system;
+              })];
             });
+            default = null;
           };
           system = mkOption {
             type = types.package;
-            default = config.nixos.config.system.build.toplevel;
+            default = config.nixos.system.build.toplevel;
             internal = true;
           };
         };
         config = {
           _module.args = { inherit (config) hostAddress localAddress; };
         };
-      }))) (xs: let
-        left = builtins.attrNames (builtins.listToAttrs (map (x: {
-          inherit (x) name; value = null;
-        }) xs));
-        right = map (x: x.name) xs;
-      in lib.length left == lib.length right);
-      default = [];
+      }));
+      default = {};
     };
     machines = mkOption {
-      type = types.attrsOf types.package;
-      default = builtins.listToAttrs (map (value: {
-        inherit (value) name;
-        inherit value;
-      }) cfg.scopes);
+      type = types.listOf types.anything;
+      default = map (scope: {
+        inherit (scope) name;
+        value = { inherit (scope) hostAddress localAddress system; };
+      }) (builtins.attrValues cfg.scopes);
       internal = true;
     };
   };
@@ -91,6 +84,6 @@ in {
       inherit (machine) hostAddress localAddress;
 
       config.system.build.toplevel = machine.system;
-    }) cfg.machines;
+    }) (builtins.listToAttrs cfg.machines);
   };
 }
