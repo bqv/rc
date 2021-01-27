@@ -42,15 +42,15 @@ in {
           };
           hostAddress = mkOption {
             type = types.str;
-            default = cfg.makeHostAddress {
-              inherit (config) id name;
-            };
+          };
+          hostAddress6 = mkOption {
+            type = types.str;
           };
           localAddress = mkOption {
             type = types.str;
-            default = cfg.makeLocalAddress {
-              inherit (config) id name;
-            };
+          };
+          localAddress6 = mkOption {
+            type = types.str;
           };
           baseModules = mkOption {
             type = types.listOf types.anything;
@@ -58,7 +58,6 @@ in {
           };
           extraModules = mkOption {
             type = types.listOf types.anything;
-            default = extraModules;
           };
           nixos = mkOption {
             type = types.nullOr (types.submoduleWith {
@@ -66,17 +65,12 @@ in {
               modules = config.baseModules ++ config.extraModules ++ [(let
                 inherit (config) name;
               in { config, ... }: {
-                _module.args.pkgs = pkgs;
                 boot.isContainer = true;
-                networking.hostName = mkDefault name;
-                networking.useDHCP = false;
                 nixpkgs.system = pkgs.system;
                 nixpkgs.pkgs = pkgs;
-                nix.optimise.automatic = false;
-                documentation.nixos.enable = lib.mkForce false;
-                users.mutableUsers = lib.mkForce true;
               })];
             });
+            visible = false;
           };
           system = mkOption {
             type = types.package;
@@ -85,8 +79,19 @@ in {
           };
         };
         config = {
-          _module.args = { inherit (config) hostAddress localAddress; };
-          nixos = lib.mkMerge cfg.common.nixos;
+          inherit extraModules;
+          _module.args = { inherit (config) hostAddress hostAddress6 localAddress localAddress6; };
+          nixos = lib.mkMerge [{
+            networking.hostName = mkDefault (strings.sanitizeDerivationName name);
+            networking.useDHCP = false;
+            nix.optimise.automatic = false;
+            documentation.nixos.enable = lib.mkForce false;
+            users.mutableUsers = lib.mkForce true;
+          }] ++ cfg.common.nixos;
+          hostAddress = lib.mkDefault (cfg.makeHostAddress { inherit (config) id name; });
+          hostAddress6 = lib.mkDefault (cfg.makeHostAddress6 { inherit (config) id name; });
+          localAddress = lib.mkDefault (cfg.makeLocalAddress { inherit (config) id name; });
+          localAddress6 = lib.mkDefault (cfg.makeLocalAddress6 { inherit (config) id name; });
         };
       }));
       default = {};
