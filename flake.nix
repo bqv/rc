@@ -756,9 +756,7 @@
             modules = modules ++ [
               { _module.args = specialArgs; }
             ];
-            extraModules = [
-              ./profiles/core.nix
-            ];
+            inherit extraModules;
           };
 
           # External modules
@@ -775,9 +773,7 @@
 
           # The flake-ier common basic stuff
           global = {
-            environment.etc."machine-id".text = builtins.hashString "md5" hostName;
             environment.pathsToLink = [ "/share/bios" ];
-            networking = { inherit hostName; };
 
             documentation.nixos.extraModuleSources = [./.]
               ++ lib.mapAttrsToList (_: x: x.outPath) inputs;
@@ -828,6 +824,14 @@
             '';
           };
 
+          # Host-specific basic stuff
+          host = {
+            environment.etc."machine-id".text = builtins.hashString "md5" hostName;
+
+            networking = { inherit hostName; };
+          };
+
+          # Nixos eval settings
           nixpkgs = { config, ... }: {
             config.nixpkgs = {
               inherit pkgs;
@@ -893,20 +897,27 @@
             ];
           };
 
+          # Our modules
           flakeModules = import ./modules/nixos.nix;
 
           # Actual host config
           configuration = import "${toString ./hosts}/${hostName}";
 
-          modules = flakeModules ++ [
-            core global nixpkgs iwd home gnupg
-            home-manager dwarffs guix matrix-construct hydra
-            impermanence age apparmor-nix
+          # Modules to propagate to containers
+          extraModules = [
+            core global
+          ];
+
+          # Final modules set
+          modules = flakeModules ++ extraModules ++ [
+            home nixpkgs iwd gnupg
+            home-manager dwarffs matrix-construct hydra
+            impermanence age guix apparmor-nix
           ];
         in {
           inherit system specialArgs;
           modules = modules ++ [
-            configuration
+            host configuration
           ] ++ appendModules;
         };
 
