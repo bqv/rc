@@ -44,7 +44,7 @@ in {
     in
       [ (morph v6Block) ] ++ map transform (builtins.attrNames v6Subnets);
     ipv6.routes = [
-      { address = "2001:bc8:2::1:142:1"; prefixLength = 128; }
+      { address = hosts.ipv6.r-zeta; prefixLength = 128; }
     ];
   };
   networking.vlans.${vlanInterface 1} = {
