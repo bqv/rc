@@ -2,21 +2,24 @@
 
 let
   pubkeys = usr.secrets.wireguard.pubkeys;
+  iptables = pkgs.iptables-nftables-compat;
 
-  network = 24;
+  network = 16;#24;
   network6 = 112;
   peers = {
     zeta = {
       ip = hosts.wireguard.zeta;
       ip6 = hosts.wireguard6.zeta;
       wideArea = [ hosts.ipv4.zeta ]; # Note: Wireguard won't retry DNS resolution if it fails
+      wideArea6 = [ hosts.ipv6.zeta ]; # Note: Wireguard won't retry DNS resolution if it fails
       publicKey = pubkeys.zeta;
     };
 
     theta = {
       ip = hosts.wireguard.theta;
       ip6 = hosts.wireguard6.theta;
-      routes.zeta = [ hosts.cidr.ipv4 hosts.cidr.ipv6 ];
+      routes.zeta = [ hosts.cidr.ipv4 ];
+      routes6.zeta = [ hosts.cidr.ipv6 ];
       publicKey = pubkeys.theta;
     };
 
@@ -24,6 +27,7 @@ let
       ip = hosts.wireguard.delta;
       ip6 = hosts.wireguard6.delta;
       wideArea = [ hosts.ipv4.home ];
+      wideArea6 = [ hosts.ipv6.home ];
       localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
       publicKey = pubkeys.delta;
     };
@@ -38,8 +42,11 @@ let
 
   currentPeer = peers."${config.networking.hostName}";
   isLan = peer: builtins.length (peers.${peer}.localArea or []) > 0;
+  isLan6 = peer: builtins.length (peers.${peer}.localArea6 or []) > 0;
   isWan = peer: !(isLan peer);
+  isWan6 = peer: !(isLan6 peer);
   endpointsOf = peer: (peer.wideArea or []) ++ (peer.localArea or []);
+  endpointsOf6 = peer: (peer.wideArea6 or []) ++ (peer.localArea6 or []);
   peerable = from: to: builtins.all lib.id [
     (from != to)
     (peers.${to} ? publicKey)
@@ -57,6 +64,36 @@ in {
     interfaces.wg0 = {
       ips = [
         "${currentPeer.ip}/${toString network}"
+      ];
+      privateKeyFile = "${config.secrets.files.wireguard.file}";
+      generatePrivateKeyFile = false;
+      listenPort = currentPeer.port or 51820;
+
+      peers = lib.mapAttrsToList (hostname: hostcfg: {
+        inherit (hostcfg) publicKey;
+        allowedIPs = [ "${hostcfg.ip}/32" ]
+          ++ (hostcfg.routes.${config.networking.hostName} or []);
+      } // (lib.optionalAttrs (builtins.length (endpointsOf hostcfg) > 0) {
+        endpoint = "${builtins.head (endpointsOf hostcfg)}:${toString hostcfg.port or "51820"}";
+        persistentKeepalive = 30;
+      })) (lib.filterAttrs (hostname: _:
+        peerable config.networking.hostName hostname
+      ) peers);
+
+      # Allow wireguard to route traffic to the internet
+      postUp = ''
+        ${iptables}/bin/iptables -A FORWARD -i wg0 -j ACCEPT
+        ${iptables}/bin/iptables -t nat -A POSTROUTING -s ${currentPeer.ip}/24 -o eno1 -j MASQUERADE
+      '';
+
+      # Undo the above
+      preDown = ''
+        ${iptables}/bin/iptables -D FORWARD -i wg0 -j ACCEPT
+        ${iptables}/bin/iptables -t nat -D POSTROUTING -s ${currentPeer.ip}/24 -o eno1 -j MASQUERADE
+      '';
+    };
+    interfaces.wg0v6 = {
+      ips = [
         "${currentPeer.ip6}/${toString network6}"
       ];
       privateKeyFile = "${config.secrets.files.wireguard.file}";
@@ -65,18 +102,31 @@ in {
 
       peers = lib.mapAttrsToList (hostname: hostcfg: {
         inherit (hostcfg) publicKey;
-        allowedIPs = [ "${hostcfg.ip}/32" "${hostcfg.ip6}/128" ]
+        allowedIPs = [ "${hostcfg.ip6}/128" ]
           ++ (hostcfg.routes.${config.networking.hostName} or []);
-      } // (lib.optionalAttrs (builtins.length (endpointsOf hostcfg) > 0) {
-        endpoint = "${builtins.head (endpointsOf hostcfg)}:${toString hostcfg.port or "51820"}";
+      } // (lib.optionalAttrs (builtins.length (endpointsOf6 hostcfg) > 0) {
+        endpoint = "${builtins.head (endpointsOf6 hostcfg)}:${toString hostcfg.port or "51820"}";
         persistentKeepalive = 30;
       })) (lib.filterAttrs (hostname: _:
         peerable config.networking.hostName hostname
       ) peers);
+
+      # Allow wireguard to route traffic to the internet
+      postUp = ''
+        ${iptables}/bin/ip6tables -A FORWARD -i wg0v6 -j ACCEPT
+        ${iptables}/bin/ip6tables -t nat -A POSTROUTING -s ${currentPeer.ip6}/96 -o eno? -j MASQUERADE
+      '';
+
+      # Undo the above
+      preDown = ''
+        ${iptables}/bin/ip6tables -D FORWARD -i wg0v6 -j ACCEPT
+        ${iptables}/bin/ip6tables -t nat -D POSTROUTING -s ${currentPeer.ip6}/96 -o eno? -j MASQUERADE
+      '';
     };
   };
 
   systemd.services.wireguard-wg0.unitConfig.Before = [ "sshd.service" ];
+  systemd.services.wireguard-wg1.unitConfig.Before = [ "sshd.service" ];
 
   secrets.files = {
     wireguard = {
