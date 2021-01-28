@@ -53,7 +53,7 @@ in {
   };
   networking.interfaces.${vlanInterface 1} = {
     ipv4.addresses = [
-      { address = "195.154.56.65"; prefixLength = 32; }
+      { address = hosts.ipv4.zeta-alt; prefixLength = 32; }
     ];
   };
 
