@@ -8,18 +8,9 @@ let
     block = "${hosts.ipv6.zeta.prefix}:";
     subnet = "${block}/${toString prefix}";
     duid = hosts.duid.${addr};
-    prefix = 48;
+    prefix = hosts.ipv6.zeta.length;
   };
-  v6Subnets = {
-    "2001:bc8:3de4:800::1" = {
-      duid = "00:03:00:01:70:b7:ec:21:44:79";
-      prefix = 56;
-    };
-    "2001:bc8:3de4:8cb::1" = {
-      duid = "00:03:00:01:3e:bf:b2:66:2d:8e";
-      prefix = 64;
-    };
-  };
+  v6Subnets = hosts.duid;
 in {
   imports = [
     ../../containers/sandbox.nix   # 10. 1.0.x
@@ -48,8 +39,8 @@ in {
       { address = hosts.ipv4.zeta; prefixLength = 24; }
     ];
     ipv6.addresses = let
-      morph = block: { address = block.addr; prefixLength = block.prefix; };
-      transform = addr: { address = addr; prefixLength = v6Subnets.${addr}.prefix; };
+      morph = block: { address = block.addr; prefixLength = block.length; };
+      transform = addr: { address = addr; prefixLength = v6Subnets.${addr}.length; };
     in
       [ (morph v6Block) ] ++ map transform (builtins.attrNames v6Subnets);
     ipv6.routes = [
