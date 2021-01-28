@@ -6,9 +6,8 @@ let
   v6Block = rec {
     addr = "${block}1";
     block = "${hosts.ipv6.zeta.prefix}:";
-    subnet = "${block}/${toString prefix}";
-    duid = hosts.duid.${addr};
-    prefix = hosts.ipv6.zeta.length;
+    subnet = "${block}/${toString length}";
+    inherit (hosts.ipv6.zeta) duid length;
   };
   v6Subnets = hosts.duid;
 in {
