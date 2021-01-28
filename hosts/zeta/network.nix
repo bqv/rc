@@ -38,7 +38,7 @@ in {
     ];
     ipv6.addresses = let
       morph = block: { address = block.addr; prefixLength = block.length; };
-      transform = addr: { address = addr; prefixLength = v6Subnets.${addr}.length; };
+      transform = addr: { address = "${addr}:1"; prefixLength = v6Subnets.${addr}.length; };
     in
       [ (morph v6Block) ] ++ map transform (builtins.attrNames v6Subnets);
     ipv6.routes = [
