@@ -4,10 +4,9 @@ let
   wanInterface = "eno1";
   vlanInterface = idx: "fo${toString idx}";
   v6Block = rec {
-    addr = "${block}1";
-    block = "${hosts.ipv6.zeta.prefix}:";
-    subnet = "${block}/${toString length}";
-    inherit (hosts.ipv6.zeta) duid length;
+    addr = "${prefix}:1";
+    subnet = "${prefix}:/${toString length}";
+    inherit (hosts.ipv6.zeta) prefix duid length;
   };
   v6Subnets = hosts.duid;
 in {
