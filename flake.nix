@@ -988,7 +988,7 @@
       );
 
       #$ git config secrets.providers "nix eval --raw .#passthru.textFilter"
-      textFilter = with inputs.priv.lib { inherit lib; }; textFilter.lines;
+      textFilter = with inputs.priv.lib.textFilter { inherit lib; }; lines;
       inherit (inputs.priv.lib) secrets;
 
       forecast = let

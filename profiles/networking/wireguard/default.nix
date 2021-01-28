@@ -1,4 +1,4 @@
-{ config, lib, usr, hosts, ... }:
+{ config, pkgs, lib, usr, hosts, ... }:
 
 let
   pubkeys = usr.secrets.wireguard.pubkeys;
@@ -45,12 +45,12 @@ let
     (peers.${to} ? publicKey)
   ];
 in {
+  environment.systemPackages = [ pkgs.wgvanity ];
   environment.etc."wireguard/private.key".source = config.secrets.files.wireguard.file;
 
+  networking.firewall.checkReversePath = "loose";
   networking.firewall.allowedUDPPorts =
     lib.mkIf (currentPeer ? "port") [ currentPeer.port ];
-
-  networking.wg-quick = { };
 
   networking.wireguard = {
     enable = true;
