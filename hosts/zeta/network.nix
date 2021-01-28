@@ -5,9 +5,9 @@ let
   vlanInterface = idx: "fo${toString idx}";
   v6Block = rec {
     addr = "${block}1";
-    block = "${hosts.ipv6.zeta.prefix}";
+    block = "${hosts.ipv6.zeta.prefix}:";
     subnet = "${block}/${toString prefix}";
-    duid = "00:03:00:01:55:a4:d9:88:19:43";
+    duid = hosts.duid.${addr};
     prefix = 48;
   };
   v6Subnets = {
