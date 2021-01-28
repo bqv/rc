@@ -8,7 +8,7 @@ let
     subnet = "${prefix}:/${toString length}";
     inherit (hosts.ipv6.zeta) prefix duid length;
   };
-  v6Subnets = hosts.duid;
+  v6Subnets = hosts.zeta.subnets;
 in {
   imports = [
     ../../containers/sandbox.nix   # 10. 1.0.x
