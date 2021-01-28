@@ -37,10 +37,12 @@ in {
       { address = hosts.ipv4.zeta; prefixLength = 24; }
     ];
     ipv6.addresses = let
-      morph = block: { address = block.addr; prefixLength = block.length; };
-      transform = addr: { address = "${addr}:1"; prefixLength = v6Subnets.${addr}.length; };
+      addrs = { ${hosts.ipv6.zeta.prefix} = hosts.ipv6.zeta; } // hosts.ipv6.zeta.subnets;
     in
-      [ (morph v6Block) ] ++ map transform (builtins.attrNames v6Subnets);
+    lib.mapAttrsToList (address: { length, ... }: {
+      inherit address;
+      prefixLength = length;
+    }) addrs;
     ipv6.routes = [
       { address = hosts.ipv6.r-zeta; prefixLength = 128; }
     ];
