@@ -28,9 +28,9 @@ in {
 
   isolation = {
     makeHostAddress = { id, ... }: "10.${toString id}.0.1";
-    makeHostAddress6 = { id, ... }: "2001:bc8:3de4::${toString id}:1";
+    makeHostAddress6 = { id, ... }: "${hosts.ipv6.zeta}:${toString id}:1";
     makeLocalAddress = { id, ... }: "10.${toString id}.0.2";
-    makeLocalAddress6 = { id, ... }: "2001:bc8:3de4::${toString id}:2";
+    makeLocalAddress6 = { id, ... }: "${hosts.ipv6.zeta}:${toString id}:2";
     scopes.klaus.id = 10;
   };
 
