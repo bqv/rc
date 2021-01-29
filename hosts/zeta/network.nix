@@ -65,22 +65,7 @@ in {
     inherit (usr) dag;
   in {
     enable = true;
-    ruleset = ''
-      table inet filter {
-        # Block all incomming connections traffic except SSH and "ping".
-        chain input {
-          type filter hook input priority 0;
 
-          # restrict imap and smtp to vpn
-          tcp dport { 1143 } drop
-          tcp dport { 1025 } drop
-
-          # count and drop any other traffic
-          #counter drop
-          counter accept
-        }
-      }
-    '';
     rules = {
       inet.filter.input = {
         wireguard = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
