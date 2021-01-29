@@ -67,7 +67,6 @@ in {
                 address = hosts.wireguard.ipv6.zeta;
                 host = "${hosts.ipv6.zeta.prefix}:1";
               };
-              publicKey = pubkeys.zeta;
             };
 
             theta = rec {
@@ -79,7 +78,6 @@ in {
                 address = hosts.wireguard.ipv6.theta;
                 routes = [ "${hosts.wireguard.ipv6.theta}/112" ];
               };
-              publicKey = pubkeys.theta;
             };
 
             delta = rec {
@@ -91,7 +89,6 @@ in {
                 address = hosts.wireguard.ipv6.delta;
                 host = hosts.ipv6.r-home.address;
               };
-              publicKey = pubkeys.delta;
             };
 
             phi = rec {
@@ -101,7 +98,6 @@ in {
               ipv6 = {
                 address = hosts.wireguard.ipv6.phi;
               };
-              publicKey = pubkeys.phi;
             };
           };
           theta = {
