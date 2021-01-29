@@ -1,159 +1,163 @@
 { config, pkgs, lib, usr, hosts, ... }:
 
 let
+  cfg = config.networking.wireguard;
+
   pubkeys = usr.secrets.wireguard.pubkeys;
   iptables = pkgs.iptables-nftables-compat;
 
   network = 16;#24;
   network6 = 112;
 
-  currentPeer = peers."${config.networking.hostName}";
-  isLan = peer: builtins.length (peers.${peer}.localArea or []) > 0;
-  isLan6 = peer: builtins.length (peers.${peer}.localArea6 or []) > 0;
+  currentPeer = cfg.peers."${config.networking.hostName}";
+  isLan = peer: builtins.length (cfg.peers.${peer}.localArea or []) > 0;
+  isLan6 = peer: builtins.length (cfg.peers.${peer}.localArea6 or []) > 0;
   isWan = peer: !(isLan peer);
   isWan6 = peer: !(isLan6 peer);
   endpointsOf = peer: (peer.wideArea or []) ++ (peer.localArea or []);
   endpointsOf6 = peer: (peer.wideArea6 or []) ++ (peer.localArea6 or []);
   peerable = from: to: builtins.all lib.id [
     (from != to)
-    (peers.${to} ? publicKey)
+    (cfg.peers.${to} ? publicKey)
   ];
 in {
   options = {
-    networking.wireguard.peers = lib.mkOption {
-      type = with lib.types; attrsOf (attrsOf (attrsOf anything));
-      default = {
-        # Note: Wireguard won't retry DNS resolution if it fails
-        zeta = {
-          zeta = rec {
-            ipv4 = hosts.wireguard.ipv4.zeta;
-            ipv6 = hosts.wireguard.ipv6.zeta;
-            wideArea4 = [ hosts.ipv4.zeta.address ];
-            wideArea6 = [ "${hosts.ipv6.zeta.prefix}:1" ];
-            publicKey = pubkeys.zeta;
-          };
+    networking.wireguard = {
+      peers = lib.mkOption {
+        type = with lib.types; attrsOf (attrsOf (attrsOf anything));
+        default = {
+          # Note: Wireguard won't retry DNS resolution if it fails
+          zeta = {
+            zeta = rec {
+              ipv4 = hosts.wireguard.ipv4.zeta;
+              ipv6 = hosts.wireguard.ipv6.zeta;
+              wideArea4 = [ hosts.ipv4.zeta.address ];
+              wideArea6 = [ "${hosts.ipv6.zeta.prefix}:1" ];
+              publicKey = pubkeys.zeta;
+            };
 
-          theta = rec {
-            ipv4 = hosts.wireguard.ipv4.theta;
-            ipv6 = hosts.wireguard.ipv6.theta;
-            routes4.zeta = [ "${hosts.wireguard.ipv4.theta}/24" ];
-            routes6.zeta = [ "${hosts.wireguard.ipv6.theta}/112" ];
-            publicKey = pubkeys.theta;
-          };
+            theta = rec {
+              ipv4 = hosts.wireguard.ipv4.theta;
+              ipv6 = hosts.wireguard.ipv6.theta;
+              routes4.zeta = [ "${hosts.wireguard.ipv4.theta}/24" ];
+              routes6.zeta = [ "${hosts.wireguard.ipv6.theta}/112" ];
+              publicKey = pubkeys.theta;
+            };
 
-          delta = rec {
-            ipv4 = hosts.wireguard.ipv4.delta;
-            ipv6 = hosts.wireguard.ipv6.delta;
-            wideArea4 = [ hosts.ipv4.r-home.address ];
-            wideArea6 = [ hosts.ipv6.r-home.address ];
-            localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
-            publicKey = pubkeys.delta;
-          };
+            delta = rec {
+              ipv4 = hosts.wireguard.ipv4.delta;
+              ipv6 = hosts.wireguard.ipv6.delta;
+              wideArea4 = [ hosts.ipv4.r-home.address ];
+              wideArea6 = [ hosts.ipv6.r-home.address ];
+              localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
+              publicKey = pubkeys.delta;
+            };
 
-          phi = rec {
-            ipv4 = hosts.wireguard.ipv4.phi;
-            ipv6 = hosts.wireguard.ipv6.phi;
-            localArea = [ hosts.lan.phi ];
-            publicKey = pubkeys.phi;
+            phi = rec {
+              ipv4 = hosts.wireguard.ipv4.phi;
+              ipv6 = hosts.wireguard.ipv6.phi;
+              localArea = [ hosts.lan.phi ];
+              publicKey = pubkeys.phi;
+            };
           };
-        };
-        theta = {
-          zeta = rec {
-            ipv4 = hosts.wireguard.ipv4.zeta;
-            ipv6 = hosts.wireguard.ipv6.zeta;
-            wideArea4 = [ hosts.ipv4.zeta.address ];
-            wideArea6 = [ "${hosts.ipv6.zeta.prefix}:1" ];
-            publicKey = pubkeys.zeta;
-          };
+          theta = {
+            zeta = rec {
+              ipv4 = hosts.wireguard.ipv4.zeta;
+              ipv6 = hosts.wireguard.ipv6.zeta;
+              wideArea4 = [ hosts.ipv4.zeta.address ];
+              wideArea6 = [ "${hosts.ipv6.zeta.prefix}:1" ];
+              publicKey = pubkeys.zeta;
+            };
 
-          theta = rec {
-            ipv4 = hosts.wireguard.ipv4.theta;
-            ipv6 = hosts.wireguard.ipv6.theta;
-            routes4.zeta = [ "${hosts.wireguard.ipv4.theta}/24" ];
-            routes6.zeta = [ "${hosts.wireguard.ipv6.theta}/112" ];
-            publicKey = pubkeys.theta;
-          };
+            theta = rec {
+              ipv4 = hosts.wireguard.ipv4.theta;
+              ipv6 = hosts.wireguard.ipv6.theta;
+              routes4.zeta = [ "${hosts.wireguard.ipv4.theta}/24" ];
+              routes6.zeta = [ "${hosts.wireguard.ipv6.theta}/112" ];
+              publicKey = pubkeys.theta;
+            };
 
-          delta = rec {
-            ipv4 = hosts.wireguard.ipv4.delta;
-            ipv6 = hosts.wireguard.ipv6.delta;
-            wideArea4 = [ hosts.ipv4.r-home.address ];
-            wideArea6 = [ hosts.ipv6.r-home.address ];
-            localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
-            publicKey = pubkeys.delta;
-          };
+            delta = rec {
+              ipv4 = hosts.wireguard.ipv4.delta;
+              ipv6 = hosts.wireguard.ipv6.delta;
+              wideArea4 = [ hosts.ipv4.r-home.address ];
+              wideArea6 = [ hosts.ipv6.r-home.address ];
+              localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
+              publicKey = pubkeys.delta;
+            };
 
-          phi = rec {
-            ipv4 = hosts.wireguard.ipv4.phi;
-            ipv6 = hosts.wireguard.ipv6.phi;
-            localArea = [ hosts.lan.phi ];
-            publicKey = pubkeys.phi;
+            phi = rec {
+              ipv4 = hosts.wireguard.ipv4.phi;
+              ipv6 = hosts.wireguard.ipv6.phi;
+              localArea = [ hosts.lan.phi ];
+              publicKey = pubkeys.phi;
+            };
           };
-        };
-        delta = {
-          zeta = rec {
-            ipv4 = hosts.wireguard.ipv4.zeta;
-            ipv6 = hosts.wireguard.ipv6.zeta;
-            wideArea4 = [ hosts.ipv4.zeta.address ];
-            wideArea6 = [ "${hosts.ipv6.zeta.prefix}:1" ];
-            publicKey = pubkeys.zeta;
-          };
+          delta = {
+            zeta = rec {
+              ipv4 = hosts.wireguard.ipv4.zeta;
+              ipv6 = hosts.wireguard.ipv6.zeta;
+              wideArea4 = [ hosts.ipv4.zeta.address ];
+              wideArea6 = [ "${hosts.ipv6.zeta.prefix}:1" ];
+              publicKey = pubkeys.zeta;
+            };
 
-          theta = rec {
-            ipv4 = hosts.wireguard.ipv4.theta;
-            ipv6 = hosts.wireguard.ipv6.theta;
-            routes4.zeta = [ "${hosts.wireguard.ipv4.theta}/24" ];
-            routes6.zeta = [ "${hosts.wireguard.ipv6.theta}/112" ];
-            publicKey = pubkeys.theta;
-          };
+            theta = rec {
+              ipv4 = hosts.wireguard.ipv4.theta;
+              ipv6 = hosts.wireguard.ipv6.theta;
+              routes4.zeta = [ "${hosts.wireguard.ipv4.theta}/24" ];
+              routes6.zeta = [ "${hosts.wireguard.ipv6.theta}/112" ];
+              publicKey = pubkeys.theta;
+            };
 
-          delta = rec {
-            ipv4 = hosts.wireguard.ipv4.delta;
-            ipv6 = hosts.wireguard.ipv6.delta;
-            wideArea4 = [ hosts.ipv4.r-home.address ];
-            wideArea6 = [ hosts.ipv6.r-home.address ];
-            localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
-            publicKey = pubkeys.delta;
-          };
+            delta = rec {
+              ipv4 = hosts.wireguard.ipv4.delta;
+              ipv6 = hosts.wireguard.ipv6.delta;
+              wideArea4 = [ hosts.ipv4.r-home.address ];
+              wideArea6 = [ hosts.ipv6.r-home.address ];
+              localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
+              publicKey = pubkeys.delta;
+            };
 
-          phi = rec {
-            ipv4 = hosts.wireguard.ipv4.phi;
-            ipv6 = hosts.wireguard.ipv6.phi;
-            localArea = [ hosts.lan.phi ];
-            publicKey = pubkeys.phi;
+            phi = rec {
+              ipv4 = hosts.wireguard.ipv4.phi;
+              ipv6 = hosts.wireguard.ipv6.phi;
+              localArea = [ hosts.lan.phi ];
+              publicKey = pubkeys.phi;
+            };
           };
-        };
-        phi = {
-          zeta = rec {
-            ipv4 = hosts.wireguard.ipv4.zeta;
-            ipv6 = hosts.wireguard.ipv6.zeta;
-            wideArea4 = [ hosts.ipv4.zeta.address ];
-            wideArea6 = [ "${hosts.ipv6.zeta.prefix}:1" ];
-            publicKey = pubkeys.zeta;
-          };
+          phi = {
+            zeta = rec {
+              ipv4 = hosts.wireguard.ipv4.zeta;
+              ipv6 = hosts.wireguard.ipv6.zeta;
+              wideArea4 = [ hosts.ipv4.zeta.address ];
+              wideArea6 = [ "${hosts.ipv6.zeta.prefix}:1" ];
+              publicKey = pubkeys.zeta;
+            };
 
-          theta = rec {
-            ipv4 = hosts.wireguard.ipv4.theta;
-            ipv6 = hosts.wireguard.ipv6.theta;
-            routes4.zeta = [ "${hosts.wireguard.ipv4.theta}/24" ];
-            routes6.zeta = [ "${hosts.wireguard.ipv6.theta}/112" ];
-            publicKey = pubkeys.theta;
-          };
+            theta = rec {
+              ipv4 = hosts.wireguard.ipv4.theta;
+              ipv6 = hosts.wireguard.ipv6.theta;
+              routes4.zeta = [ "${hosts.wireguard.ipv4.theta}/24" ];
+              routes6.zeta = [ "${hosts.wireguard.ipv6.theta}/112" ];
+              publicKey = pubkeys.theta;
+            };
 
-          delta = rec {
-            ipv4 = hosts.wireguard.ipv4.delta;
-            ipv6 = hosts.wireguard.ipv6.delta;
-            wideArea4 = [ hosts.ipv4.r-home.address ];
-            wideArea6 = [ hosts.ipv6.r-home.address ];
-            localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
-            publicKey = pubkeys.delta;
-          };
+            delta = rec {
+              ipv4 = hosts.wireguard.ipv4.delta;
+              ipv6 = hosts.wireguard.ipv6.delta;
+              wideArea4 = [ hosts.ipv4.r-home.address ];
+              wideArea6 = [ hosts.ipv6.r-home.address ];
+              localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
+              publicKey = pubkeys.delta;
+            };
 
-          phi = rec {
-            ipv4 = hosts.wireguard.ipv4.phi;
-            ipv6 = hosts.wireguard.ipv6.phi;
-            localArea = [ hosts.lan.phi ];
-            publicKey = pubkeys.phi;
+            phi = rec {
+              ipv4 = hosts.wireguard.ipv4.phi;
+              ipv6 = hosts.wireguard.ipv6.phi;
+              localArea = [ hosts.lan.phi ];
+              publicKey = pubkeys.phi;
+            };
           };
         };
       };
@@ -186,7 +190,7 @@ in {
           persistentKeepalive = 30;
         })) (lib.filterAttrs (hostname: _:
           peerable config.networking.hostName hostname
-        ) peers);
+        ) cfg.peers);
 
         # Allow wireguard to route traffic to the internet
         postUp = ''
@@ -217,7 +221,7 @@ in {
           persistentKeepalive = 30;
         })) (lib.filterAttrs (hostname: _:
           peerable config.networking.hostName hostname
-        ) peers);
+        ) cfg.peers);
 
         # Allow wireguard to route traffic to the internet
         postUp = ''
