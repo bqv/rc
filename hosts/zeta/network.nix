@@ -93,12 +93,12 @@ in {
           value = 1025;
           policy = "drop";
         };
-        ipfs-api-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+        ipfs-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "tcp"; field = "dport";
           value = [ 4001 5001 ];
           policy = "accept";
         };
-        ipfs-api-udp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+        ipfs-udp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "udp"; field = "dport";
           value = [ 4001 5001 ];
           policy = "accept";
