@@ -23,7 +23,7 @@ in {
       peers = lib.mkOption {
         type = with lib.types; attrsOf (attrsOf (submodule {
           options = let
-            peer = lib.types.submodule {
+            peer = {
               options = {
                 address = lib.mkOption {
                   type = lib.types.str;
@@ -42,10 +42,10 @@ in {
               type = lib.types.str;
             };
             ipv4 = lib.mkOption {
-              type = peer;
+              type = lib.types.submodule peer;
             };
             ipv6 = lib.mkOption {
-              type = peer;
+              type = lib.types.submodule peer;
             };
           };
 
