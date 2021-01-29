@@ -103,10 +103,20 @@ in {
           value = [ 4001 5001 ];
           policy = "accept";
         };
+        mdns = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "udp"; field = "dport";
+          value = 5353;
+          policy = "accept";
+        };
         udpports = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "udp"; field = "dport";
           value = map (x: x+60000) (lib.genList (x: x+1) (65535-60000));
           # mosh: 60000-65535
+          policy = "accept";
+        };
+        syncthing = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "udp"; field = "dport";
+          value = 21027;
           policy = "accept";
         };
         basic-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
@@ -116,19 +126,10 @@ in {
             5432# postgres
             8090# yacy
             8448# synapse
-            25565# minecraft
           ];
           policy = "accept";
         };
-        basic-udp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
-          protocol = "udp"; field = "dport";
-          value = [
-            5353# mdns
-            21027# syncthing
-            25565# minecraft
-          ];
-          policy = "accept";
-        };
+        default.data.policy = "accept";
       };
     };
   };
