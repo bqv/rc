@@ -38,9 +38,17 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
+    grub = {
+      enable= true;
+      efiInstallAsRemovable = true;
+      efiSupport = true;
+      memtest86.enable = true;
+      useOSProber = true;
+      configurationLimit = 64;
+    };
     efi.canTouchEfiVariables = true;
     systemd-boot = {
-      enable = true;
+      enable = false;
       configurationLimit = 64;
       memtest86.enable = true;
     };
