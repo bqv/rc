@@ -44,7 +44,7 @@
         "/dev/disk/by-path/pci-0000:00:17.0-ata-3"
         "/dev/disk/by-path/pci-0000:06:00.0-nvme-1"
       ];
-      efiInstallAsRemovable = true;
+     #efiInstallAsRemovable = true;
       efiSupport = true;
       memtest86.enable = true;
       useOSProber = true;
