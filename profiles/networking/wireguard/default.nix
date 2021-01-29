@@ -18,6 +18,8 @@ in {
         type = lib.types.ints.between 0 128;
         default = 112;
       };
+      currentPeer = lib.mkOption {
+      };
       peers = lib.mkOption {
         type = with lib.types; attrsOf (attrsOf (submodule {
           options = let
