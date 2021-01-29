@@ -165,7 +165,7 @@ in {
     target = "dhcp/dhclient6.conf";
     text = ''
       interface "${wanInterface}" {
-         send dhcp6.client-id ${v6Block.duid};
+         send dhcp6.client-id ${hosts.ipv6.zeta.duid};
       }
     '';
   };
