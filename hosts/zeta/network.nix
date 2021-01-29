@@ -39,10 +39,10 @@ in {
     ipv6.addresses = let
       addrs = { ${hosts.ipv6.zeta.prefix} = hosts.ipv6.zeta; } // hosts.ipv6.zeta.subnets;
     in
-    lib.mapAttrsToList (address: { length, ... }: {
-      inherit address;
-      prefixLength = length;
-    }) addrs;
+      lib.mapAttrsToList (address: { length, ... }: {
+        inherit address;
+        prefixLength = length;
+      }) addrs;
     ipv6.routes = [
       { address = hosts.ipv6.r-zeta; prefixLength = 128; }
     ];
