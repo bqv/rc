@@ -140,7 +140,7 @@ in {
       ipnat = "${pkgs.iptables}/bin/iptables -w -t nat";
       proto = proto: "-p ${proto} -m ${proto}";
       icmp-echo = "--icmp-type 8";
-      from-failover = "-d ${hosts.ipv4.zeta-alt}";
+      from-failover = "-d ${hosts.ipv4.zeta-alt.address}";
       to-delta = "--to-destination ${hosts.wireguard.delta}";
       lanInterface = "wg0";
     in ''
@@ -160,7 +160,7 @@ in {
     '';
   };
 
-  networking.defaultGateway = hosts.ipv4.r-zeta;
+  networking.defaultGateway = hosts.ipv4.r-zeta.address;
   networking.nameservers = [ "9.9.9.9" ];
 
   environment.etc.dhclient6 = {
