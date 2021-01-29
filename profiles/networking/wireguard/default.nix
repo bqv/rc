@@ -153,87 +153,94 @@ let
     (peers.${to} ? publicKey)
   ];
 in {
-  environment.systemPackages = [ pkgs.wgvanity ];
-  environment.etc."wireguard/private.key".source = config.secrets.files.wireguard.file;
-
-  networking.firewall.checkReversePath = "loose";
-  networking.firewall.allowedUDPPorts =
-    lib.mkIf (currentPeer ? "port") [ currentPeer.port ];
-
-  networking.wireguard = {
-    enable = true;
-    interfaces.wg0 = {
-      ips = [
-        "${currentPeer.ip}/${toString network}"
-      ];
-      privateKeyFile = "${config.secrets.files.wireguard.file}";
-      generatePrivateKeyFile = false;
-      listenPort = currentPeer.port or 51820;
-
-      peers = lib.mapAttrsToList (hostname: hostcfg: {
-        inherit (hostcfg) publicKey;
-        allowedIPs = [ "${hostcfg.ip}/32" ]
-          ++ (hostcfg.routes.${config.networking.hostName} or []);
-      } // (lib.optionalAttrs (builtins.length (endpointsOf hostcfg) > 0) {
-        endpoint = "${builtins.head (endpointsOf hostcfg)}:${toString hostcfg.port or "51820"}";
-        persistentKeepalive = 30;
-      })) (lib.filterAttrs (hostname: _:
-        peerable config.networking.hostName hostname
-      ) peers);
-
-      # Allow wireguard to route traffic to the internet
-      postUp = ''
-        ${iptables}/bin/iptables -A FORWARD -i wg0 -j ACCEPT
-        ${iptables}/bin/iptables -t nat -A POSTROUTING -s ${currentPeer.ip}/24 -o eno1 -j MASQUERADE
-      '';
-
-      # Undo the above
-      preDown = ''
-        ${iptables}/bin/iptables -D FORWARD -i wg0 -j ACCEPT
-        ${iptables}/bin/iptables -t nat -D POSTROUTING -s ${currentPeer.ip}/24 -o eno1 -j MASQUERADE
-      '';
-    };
-    interfaces.wg0v6 = {
-      ips = [
-        "${currentPeer.ip6}/${toString network6}"
-      ];
-      privateKeyFile = "${config.secrets.files.wireguard.file}";
-      generatePrivateKeyFile = false;
-      listenPort = currentPeer.port or 51820;
-
-      peers = lib.mapAttrsToList (hostname: hostcfg: {
-        inherit (hostcfg) publicKey;
-        allowedIPs = [ "${hostcfg.ip6}/128" ]
-          ++ (hostcfg.routes.${config.networking.hostName} or []);
-      } // (lib.optionalAttrs (builtins.length (endpointsOf6 hostcfg) > 0) {
-        endpoint = "${builtins.head (endpointsOf6 hostcfg)}:${toString hostcfg.port or "51820"}";
-        persistentKeepalive = 30;
-      })) (lib.filterAttrs (hostname: _:
-        peerable config.networking.hostName hostname
-      ) peers);
-
-      # Allow wireguard to route traffic to the internet
-      postUp = ''
-        ${iptables}/bin/ip6tables -A FORWARD -i wg0v6 -j ACCEPT
-        ${iptables}/bin/ip6tables -t nat -A POSTROUTING -s ${currentPeer.ip6}/96 -o eno? -j MASQUERADE
-      '';
-
-      # Undo the above
-      preDown = ''
-        ${iptables}/bin/ip6tables -D FORWARD -i wg0v6 -j ACCEPT
-        ${iptables}/bin/ip6tables -t nat -D POSTROUTING -s ${currentPeer.ip6}/96 -o eno? -j MASQUERADE
-      '';
+  options = {
+    networking.wireguard.peers = lib.mkOption {
+      type = with lib.types; attrsOf (attrsOf (attrsOf anything));
     };
   };
+  config = {
+    environment.systemPackages = [ pkgs.wgvanity ];
+    environment.etc."wireguard/private.key".source = config.secrets.files.wireguard.file;
 
-  systemd.services.wireguard-wg0.unitConfig.Before = [ "sshd.service" ];
-  systemd.services.wireguard-wg1.unitConfig.Before = [ "sshd.service" ];
+    networking.firewall.checkReversePath = "loose";
+    networking.firewall.allowedUDPPorts =
+      lib.mkIf (currentPeer ? "port") [ currentPeer.port ];
 
-  secrets.files = {
-    wireguard = {
-      file = usr.secrets.keyDir + "/wireguard/${config.networking.hostName}.key";
-     #user = "root";
-     #group = "root";
+    networking.wireguard = {
+      enable = true;
+      interfaces.wg0 = {
+        ips = [
+          "${currentPeer.ip}/${toString network}"
+        ];
+        privateKeyFile = "${config.secrets.files.wireguard.file}";
+        generatePrivateKeyFile = false;
+        listenPort = currentPeer.port or 51820;
+
+        peers = lib.mapAttrsToList (hostname: hostcfg: {
+          inherit (hostcfg) publicKey;
+          allowedIPs = [ "${hostcfg.ip}/32" ]
+            ++ (hostcfg.routes.${config.networking.hostName} or []);
+        } // (lib.optionalAttrs (builtins.length (endpointsOf hostcfg) > 0) {
+          endpoint = "${builtins.head (endpointsOf hostcfg)}:${toString hostcfg.port or "51820"}";
+          persistentKeepalive = 30;
+        })) (lib.filterAttrs (hostname: _:
+          peerable config.networking.hostName hostname
+        ) peers);
+
+        # Allow wireguard to route traffic to the internet
+        postUp = ''
+          ${iptables}/bin/iptables -A FORWARD -i wg0 -j ACCEPT
+          ${iptables}/bin/iptables -t nat -A POSTROUTING -s ${currentPeer.ip}/24 -o eno1 -j MASQUERADE
+        '';
+
+        # Undo the above
+        preDown = ''
+          ${iptables}/bin/iptables -D FORWARD -i wg0 -j ACCEPT
+          ${iptables}/bin/iptables -t nat -D POSTROUTING -s ${currentPeer.ip}/24 -o eno1 -j MASQUERADE
+        '';
+      };
+      interfaces.wg0v6 = {
+        ips = [
+          "${currentPeer.ip6}/${toString network6}"
+        ];
+        privateKeyFile = "${config.secrets.files.wireguard.file}";
+        generatePrivateKeyFile = false;
+        listenPort = currentPeer.port or 51820;
+
+        peers = lib.mapAttrsToList (hostname: hostcfg: {
+          inherit (hostcfg) publicKey;
+          allowedIPs = [ "${hostcfg.ip6}/128" ]
+            ++ (hostcfg.routes.${config.networking.hostName} or []);
+        } // (lib.optionalAttrs (builtins.length (endpointsOf6 hostcfg) > 0) {
+          endpoint = "${builtins.head (endpointsOf6 hostcfg)}:${toString hostcfg.port or "51820"}";
+          persistentKeepalive = 30;
+        })) (lib.filterAttrs (hostname: _:
+          peerable config.networking.hostName hostname
+        ) peers);
+
+        # Allow wireguard to route traffic to the internet
+        postUp = ''
+          ${iptables}/bin/ip6tables -A FORWARD -i wg0v6 -j ACCEPT
+          ${iptables}/bin/ip6tables -t nat -A POSTROUTING -s ${currentPeer.ip6}/96 -o eno? -j MASQUERADE
+        '';
+
+        # Undo the above
+        preDown = ''
+          ${iptables}/bin/ip6tables -D FORWARD -i wg0v6 -j ACCEPT
+          ${iptables}/bin/ip6tables -t nat -D POSTROUTING -s ${currentPeer.ip6}/96 -o eno? -j MASQUERADE
+        '';
+      };
+    };
+
+    systemd.services.wireguard-wg0.unitConfig.Before = [ "sshd.service" ];
+    systemd.services.wireguard-wg1.unitConfig.Before = [ "sshd.service" ];
+
+    secrets.files = {
+      wireguard = {
+        file = usr.secrets.keyDir + "/wireguard/${config.networking.hostName}.key";
+       #user = "root";
+       #group = "root";
+      };
     };
   };
 }
