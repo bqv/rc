@@ -490,12 +490,12 @@
           };
           searx.loadBalancer = {
             servers = [
-              { url = "http://${hosts.wireguard.delta}:8888"; }
+              { url = "http://${hosts.wireguard.ipv4.delta}:8888"; }
             ];
           };
           hydra.loadBalancer = {
             servers = [
-              { url = "http://${hosts.wireguard.delta}:9999"; }
+              { url = "http://${hosts.wireguard.ipv4.delta}:9999"; }
             ];
           };
           yacy.loadBalancer = {
@@ -546,7 +546,7 @@
           };
           ipfs.loadBalancer = {
             servers = [
-              { url = "http://${hosts.ipv4.zeta}:${lib.last (
+              { url = "http://${hosts.ipv4.zeta.address}:${lib.last (
                 lib.splitString "/" config.services.ipfs.gatewayAddress)}"; }
             ];
           };
@@ -650,7 +650,7 @@
         services = {
           ssh.loadBalancer = {
             servers = [
-              { address = "${hosts.ipv4.zeta}:22"; }
+              { address = "${hosts.ipv4.zeta.address}:22"; }
             ];
             terminationDelay = 100;
           };
@@ -674,7 +674,7 @@
           };
           irc.loadBalancer = {
             servers = [
-              { address = "${hosts.wireguard.delta}:6697"; }
+              { address = "${hosts.wireguard.ipv4.delta}:6697"; }
             ];
             terminationDelay = 100;
           };
@@ -791,7 +791,7 @@
           address = ":443/tcp";
           forwardedHeaders = {
             insecure = true;
-            trustedIPs = [ "127.0.0.1" "${hosts.wireguard.zeta}/8" ];
+            trustedIPs = [ "127.0.0.1" "${hosts.wireguard.ipv4.zeta}/8" ];
           };
          #http = {
          # #middlewares = [ "auth@file" "strip@file" ];
@@ -812,7 +812,7 @@
          #};
           proxyProtocol = {
             insecure = true;
-            trustedIPs = [ "127.0.0.1" "${hosts.wireguard.zeta}/8" ];
+            trustedIPs = [ "127.0.0.1" "${hosts.wireguard.ipv4.zeta}/8" ];
           };
           transport = {
             lifeCycle = {

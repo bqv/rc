@@ -553,7 +553,7 @@
           };
 
           config = {
-            host = "root@${nixos.specialArgs.hosts.wireguard.${name}}";
+            host = "root@${nixos.specialArgs.hosts.wireguard.ipv4.${name}}";
 
             configuration = {
               imports = [

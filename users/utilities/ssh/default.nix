@@ -19,7 +19,7 @@ in {
       matchBlocks = {
         zeta = rec {
           host = "${hostname} zeta.${domains.home} zeta";
-          hostname = hosts.wireguard.zeta;
+          hostname = hosts.wireguard.ipv4.zeta;
           user = "bao";
           extraOptions = {
             StrictHostKeyChecking = "no";
@@ -27,7 +27,7 @@ in {
           };
         };
         theta = rec {
-          host = "${hosts.wireguard.theta} ${hostname} theta";
+          host = "${hosts.wireguard.ipv4.theta} ${hostname} theta";
           hostname = hosts.lan.phi;
           user = "leaf";
           extraOptions = {
@@ -35,13 +35,13 @@ in {
           };
         };
         delta = rec {
-          host = "${hosts.wireguard.delta} delta";
+          host = "${hosts.wireguard.ipv4.delta} delta";
           extraOptions = {
             StrictHostKeyChecking = "no";
           };
         };
         phi = rec {
-          host = "${hosts.wireguard.phi} ${hostname} phi";
+          host = "${hosts.wireguard.ipv4.phi} ${hostname} phi";
           hostname = hosts.lan.phi;
           user = "leaf";
           extraOptions = {
