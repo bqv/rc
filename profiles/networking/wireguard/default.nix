@@ -27,8 +27,8 @@ let
       delta = {
         ipv4 = hosts.wireguard.ipv4.delta;
         ipv6 = hosts.wireguard.ipv6.delta;
-        wideArea4 = [ hosts.ipv4.home.address ];
-        wideArea6 = [ "${hosts.ipv6.home.prefix}:1" ];
+        wideArea4 = [ hosts.ipv4.r-home.address ];
+        wideArea6 = [ hosts.ipv6.r-home.address ];
         localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
         publicKey = pubkeys.delta;
       };
