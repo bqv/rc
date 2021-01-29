@@ -25,7 +25,7 @@ in {
         default = 112;
       };
       peers = lib.mkOption {
-        type = with lib.types; attrsOf (attrsOf (attrsOf (submodule {
+        type = with lib.types; attrsOf (attrsOf (submodule {
           options = let
             peer = lib.types.submodule {
               options = {
@@ -50,7 +50,7 @@ in {
           };
 
           config = {};
-        })));
+        }));
         default = {
           # Note: Wireguard won't retry DNS resolution if it fails
           zeta = {
