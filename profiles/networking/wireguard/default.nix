@@ -26,8 +26,12 @@ in {
                 address = lib.mkOption {
                   type = lib.types.str;
                 };
+                host = lib.mkOption {
+                  type = lib.types.str;
+                };
                 routes = lib.mkOption {
                   type = with lib.types; listOf str;
+                  default = [];
                 };
               };
             };
@@ -49,7 +53,10 @@ in {
           # Note: Wireguard won't retry DNS resolution if it fails
           zeta = {
             zeta = rec {
-              ipv4 = hosts.wireguard.ipv4.zeta;
+              ipv4 = {
+                address = hosts.wireguard.ipv4.zeta;
+                host = hosts.ipv4.zeta.address;
+              };
               ipv6 = hosts.wireguard.ipv6.zeta;
               wideArea4 = [ hosts.ipv4.zeta.address ];
               wideArea6 = [ "${hosts.ipv6.zeta.prefix}:1" ];
