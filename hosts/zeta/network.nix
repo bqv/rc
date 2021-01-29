@@ -3,12 +3,6 @@
 let
   wanInterface = "eno1";
   vlanInterface = idx: "fo${toString idx}";
-  v6Block = rec {
-    addr = "${prefix}:1";
-    subnet = "${prefix}:/${toString length}";
-    inherit (hosts.ipv6.zeta) prefix duid length;
-  };
-  v6Subnets = hosts.zeta.subnets;
 in {
   imports = [
     ../../containers/sandbox.nix   # 10. 1.0.x
@@ -26,25 +20,27 @@ in {
 
   isolation = {
     makeHostAddress = { id, ... }: "10.${toString id}.0.1";
-    makeHostAddress6 = { id, ... }: "${hosts.ipv6.zeta}:${toString id}:1";
+    makeHostAddress6 = { id, ... }: "${hosts.ipv6.zeta.prefix}:${toString id}:1";
     makeLocalAddress = { id, ... }: "10.${toString id}.0.2";
-    makeLocalAddress6 = { id, ... }: "${hosts.ipv6.zeta}:${toString id}:2";
+    makeLocalAddress6 = { id, ... }: "${hosts.ipv6.zeta.prefix}:${toString id}:2";
     scopes.klaus.id = 10;
   };
 
   networking.interfaces.${wanInterface} = {
     ipv4.addresses = [
-      hosts.ipv4.zeta
+      hosts.ipv4.zeta.address
     ];
     ipv6.addresses = let
-      addrs = { ${hosts.ipv6.zeta.prefix} = hosts.ipv6.zeta; } // hosts.ipv6.zeta.subnets;
+      addrs = {
+        ${hosts.ipv6.zeta.prefix} = hosts.ipv6.zeta;
+      } // hosts.ipv6.zeta.subnets;
     in
       lib.mapAttrsToList (address: { length, ... }: {
         inherit address;
         prefixLength = length;
       }) addrs;
     ipv6.routes = [
-      { address = hosts.ipv6.r-zeta; prefixLength = 128; }
+      hosts.ipv6.r-zeta
     ];
   };
   networking.vlans.${vlanInterface 1} = {
@@ -53,7 +49,7 @@ in {
   };
   networking.interfaces.${vlanInterface 1} = {
     ipv4.addresses = [
-      { address = hosts.ipv4.zeta-alt; prefixLength = 32; }
+      hosts.ipv4.zeta-alt
     ];
   };
 
