@@ -71,12 +71,7 @@ in {
         chain input {
           type filter hook input priority 0;
 
-          # accept SSL connections
-          tcp dport 80 accept
-          tcp dport 443 accept
-
           # restrict imap and smtp to vpn
-          ip saddr 10.0.0.0/24 accept
           tcp dport { 1143 } drop
           tcp dport { 1025 } drop
 
@@ -98,6 +93,16 @@ in {
           value = [ 80 443 ];
           policy = "accept";
         };
+        imap = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping" "wireguard"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = [ 1143 ];
+          policy = "drop";
+        };
+        smtp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping" "wireguard"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = [ 1025 ];
+          policy = "drop";
+        };
         ipfs-api-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "tcp"; field = "dport";
           value = [ 4001 5001 ];
@@ -108,15 +113,13 @@ in {
           value = [ 4001 5001 ];
           policy = "accept";
         };
-        unknown-tcp-drop = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
-          protocol = "tcp"; field = "dport";
-          value = [
-            1143
-            1025
-          ];
-          policy = "drop";
+        udpports = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "udp"; field = "dport";
+          value = map (x: x+60000) (lib.genList (x: x+1) (65535-60000));
+          # mosh: 60000-65535
+          policy = "accept";
         };
-        unknown-tcp-accept = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+        unknown-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "tcp"; field = "dport";
           value = [
             4004
@@ -128,14 +131,7 @@ in {
           ];
           policy = "accept";
         };
-        udpports = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
-          protocol = "udp"; field = "dport";
-          value = map (x: x+60000) (lib.genList (x: x+1) (61000-60000));
-          # mosh: 60000-65535
-          # chromecast: 32768-61000
-          policy = "accept";
-        };
-        unknown-udp-accept = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+        unknown-udp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "udp"; field = "dport";
           value = [
             5353
