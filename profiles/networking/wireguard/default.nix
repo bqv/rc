@@ -65,10 +65,14 @@ in {
             };
 
             theta = rec {
-              ipv4 = hosts.wireguard.ipv4.theta;
-              ipv6 = hosts.wireguard.ipv6.theta;
-              routes4.zeta = [ "${hosts.wireguard.ipv4.theta}/24" ];
-              routes6.zeta = [ "${hosts.wireguard.ipv6.theta}/112" ];
+              ipv4 = {
+                address = hosts.wireguard.ipv4.theta;
+                routes = [ "${hosts.wireguard.ipv4.theta}/24" ];
+              };
+              ipv6 = {
+                address = hosts.wireguard.ipv6.theta;
+                routes = [ "${hosts.wireguard.ipv6.theta}/112" ];
+              };
               publicKey = pubkeys.theta;
             };
 
