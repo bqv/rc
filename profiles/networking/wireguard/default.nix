@@ -57,9 +57,10 @@ in {
                 address = hosts.wireguard.ipv4.zeta;
                 host = hosts.ipv4.zeta.address;
               };
-              ipv6 = hosts.wireguard.ipv6.zeta;
-              wideArea4 = [ hosts.ipv4.zeta.address ];
-              wideArea6 = [ "${hosts.ipv6.zeta.prefix}:1" ];
+              ipv6 = {
+                address = hosts.wireguard.ipv6.zeta;
+                host = "${hosts.ipv6.zeta.prefix}:1";
+              };
               publicKey = pubkeys.zeta;
             };
 
