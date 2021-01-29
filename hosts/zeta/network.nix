@@ -71,24 +71,6 @@ in {
         chain input {
           type filter hook input priority 0;
 
-          # accept any localhost traffic
-          iifname lo accept
-
-          # accept traffic originated from us
-          ct state {established, related} accept
-
-          # ICMP
-          # routers may also want: mld-listener-query, nd-router-solicit
-          ip6 nexthdr icmpv6 icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert } accept
-          ip protocol icmp icmp type { destination-unreachable, router-advertisement, time-exceeded, parameter-problem } accept
-
-          # allow "ping"
-          ip6 nexthdr icmpv6 icmpv6 type echo-request accept
-          ip protocol icmp icmp type echo-request accept
-
-          # accept SSH connections (required for a server)
-          tcp dport 22 accept
-
           # accept SSL connections
           tcp dport 80 accept
           tcp dport 443 accept
@@ -98,38 +80,24 @@ in {
           tcp dport { 1143 } drop
           tcp dport { 1025 } drop
 
-          tcp dport 4004 accept
-          tcp dport 5432 accept
-          tcp dport 8090 accept
-          tcp dport 8448 accept
-          tcp dport 22000 accept
-          tcp dport 25565 accept
-          udp dport 5353 accept
-          udp dport 21027 accept
-          udp dport 25565 accept
-          udp dport 51820 accept
-          udp dport 60000-61000 accept
-          udp dport 60000-61000 accept
-
           # count and drop any other traffic
           #counter drop
           counter accept
-        }
-
-        # Allow all outgoing connections.
-        chain output {
-          type filter hook output priority 0;
-          accept
-        }
-
-        chain forward {
-          type filter hook forward priority 0;
-          accept
         }
       }
     '';
     rules = {
       inet.filter.input = {
+        wireguard = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
+          protocol = "ip"; field = "saddr";
+          value = "${config.isolation.makeHostAddress 0}/24";
+          policy = "accept";
+        };
+        http = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = [ 80 443 ];
+          policy = "accept";
+        };
         ipfs-api-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "tcp"; field = "dport";
           value = [ 4001 5001 ];
@@ -140,19 +108,34 @@ in {
           value = [ 4001 5001 ];
           policy = "accept";
         };
-        hydra = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+        unknown-tcp-drop = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "tcp"; field = "dport";
-          value = 9999;
+          value = [
+            1143
+            1025
+          ];
+          policy = "drop";
+        };
+        unknown-tcp-accept = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = [
+            4004
+            5432
+            8090
+            8448
+            22000
+            25565
+          ];
           policy = "accept";
         };
         udpports = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "udp"; field = "dport";
-          value = map (x: x+60000) (lib.genList (x: x+1) (65535-60000));
+          value = map (x: x+60000) (lib.genList (x: x+1) (61000-60000));
           # mosh: 60000-65535
           # chromecast: 32768-61000
           policy = "accept";
         };
-        unknown = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
+        unknown-udp-accept = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "udp"; field = "dport";
           value = [
             5353
@@ -160,11 +143,6 @@ in {
             25565
             51820
           ];
-          policy = "accept";
-        };
-        wireguard = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
-          protocol = "ip"; field = "saddr";
-          value = "${config.isolation.makeHostAddress 0}/24";
           policy = "accept";
         };
       };
