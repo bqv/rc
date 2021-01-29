@@ -109,7 +109,7 @@ in {
           # mosh: 60000-65535
           policy = "accept";
         };
-        unknown-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+        basic-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "tcp"; field = "dport";
           value = [
             4004# construct
@@ -120,7 +120,7 @@ in {
           ];
           policy = "accept";
         };
-        unknown-udp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+        basic-udp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "udp"; field = "dport";
           value = [
             5353# mdns
