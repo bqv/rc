@@ -108,7 +108,7 @@ in {
           protocol = "tcp"; field = "dport";
           value = [
             4004# construct
-            5432# mastodon
+            5432# postgres
             8090
             8448
             22000
