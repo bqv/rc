@@ -154,10 +154,15 @@ in {
         };
         unknown = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
           protocol = "udp"; field = "dport";
-          value = 1900;
+          value = [
+            5353
+            21027
+            25565
+            51820
+          ];
           policy = "accept";
         };
-        omega = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
+        wireguard = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
           protocol = "ip"; field = "saddr";
           value = "${config.isolation.makeHostAddress 0}/24";
           policy = "accept";
