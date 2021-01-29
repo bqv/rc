@@ -19,6 +19,8 @@ in {
         default = 112;
       };
       currentPeer = lib.mkOption {
+        type = lib.types.anything;
+        default = config.networking.wireguard.peers.${config.networking.hostName};
       };
       peers = lib.mkOption {
         type = with lib.types; attrsOf (attrsOf (submodule {
