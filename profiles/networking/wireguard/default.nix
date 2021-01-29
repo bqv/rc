@@ -23,6 +23,14 @@ let
 in {
   options = {
     networking.wireguard = {
+      prefixLength.ipv4 = lib.mkOption {
+        type = lib.types.ints.between 0 32;
+        default = 24;
+      };
+      prefixLength.ipv6 = lib.mkOption {
+        type = lib.types.ints.between 0 128;
+        default = 112;
+      };
       peers = lib.mkOption {
         type = with lib.types; attrsOf (attrsOf (attrsOf anything));
         default = {
@@ -173,9 +181,10 @@ in {
 
     networking.wireguard = {
       enable = true;
+      prefixLength.ipv4 = 16;
       interfaces.wg0 = {
         ips = [
-          "${currentPeer.ip}/${toString network}"
+          "${currentPeer.ip}/${toString cfg.prefixLength.ipv4}"
         ];
         privateKeyFile = "${config.secrets.files.wireguard.file}";
         generatePrivateKeyFile = false;
@@ -202,37 +211,6 @@ in {
         preDown = ''
           ${iptables}/bin/iptables -D FORWARD -i wg0 -j ACCEPT
           ${iptables}/bin/iptables -t nat -D POSTROUTING -s ${currentPeer.ip}/24 -o eno1 -j MASQUERADE
-        '';
-      };
-      interfaces.wg0v6 = {
-        ips = [
-          "${currentPeer.ip6}/${toString network6}"
-        ];
-        privateKeyFile = "${config.secrets.files.wireguard.file}";
-        generatePrivateKeyFile = false;
-        listenPort = currentPeer.port or 51820;
-
-        peers = lib.mapAttrsToList (hostname: hostcfg: {
-          inherit (hostcfg) publicKey;
-          allowedIPs = [ "${hostcfg.ip6}/128" ]
-            ++ (hostcfg.routes.${config.networking.hostName} or []);
-        } // (lib.optionalAttrs (builtins.length (endpointsOf6 hostcfg) > 0) {
-          endpoint = "${builtins.head (endpointsOf6 hostcfg)}:${toString hostcfg.port or "51820"}";
-          persistentKeepalive = 30;
-        })) (lib.filterAttrs (hostname: _:
-          peerable config.networking.hostName hostname
-        ) cfg.peers);
-
-        # Allow wireguard to route traffic to the internet
-        postUp = ''
-          ${iptables}/bin/ip6tables -A FORWARD -i wg0v6 -j ACCEPT
-          ${iptables}/bin/ip6tables -t nat -A POSTROUTING -s ${currentPeer.ip6}/96 -o eno? -j MASQUERADE
-        '';
-
-        # Undo the above
-        preDown = ''
-          ${iptables}/bin/ip6tables -D FORWARD -i wg0v6 -j ACCEPT
-          ${iptables}/bin/ip6tables -t nat -D POSTROUTING -s ${currentPeer.ip6}/96 -o eno? -j MASQUERADE
         '';
       };
     };
