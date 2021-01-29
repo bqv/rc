@@ -222,18 +222,18 @@ in {
 
     networking.firewall.checkReversePath = "loose";
     networking.firewall.allowedUDPPorts =
-      lib.mkIf (currentPeer ? "port") [ currentPeer.port ];
+      lib.mkIf (cfg.currentPeer ? "port") [ cfg.currentPeer.port ];
 
     networking.wireguard = {
       enable = true;
       prefixLength.ipv4 = 16;
       interfaces.wg0 = {
         ips = [
-          "${currentPeer.ip}/${toString cfg.prefixLength.ipv4}"
+          "${cfg.currentPeer.ip}/${toString cfg.prefixLength.ipv4}"
         ];
         privateKeyFile = "${config.secrets.files.wireguard.file}";
         generatePrivateKeyFile = false;
-        listenPort = currentPeer.port or 51820;
+        listenPort = cfg.currentPeer.port or 51820;
 
         peers = lib.mapAttrsToList (hostname: hostcfg: {
           inherit (hostcfg) publicKey;
@@ -249,13 +249,13 @@ in {
         # Allow wireguard to route traffic to the internet
         postUp = ''
           ${iptables}/bin/iptables -A FORWARD -i wg0 -j ACCEPT
-          ${iptables}/bin/iptables -t nat -A POSTROUTING -s ${currentPeer.ip}/24 -o eno1 -j MASQUERADE
+          ${iptables}/bin/iptables -t nat -A POSTROUTING -s ${cfg.currentPeer.ip}/24 -o eno1 -j MASQUERADE
         '';
 
         # Undo the above
         preDown = ''
           ${iptables}/bin/iptables -D FORWARD -i wg0 -j ACCEPT
-          ${iptables}/bin/iptables -t nat -D POSTROUTING -s ${currentPeer.ip}/24 -o eno1 -j MASQUERADE
+          ${iptables}/bin/iptables -t nat -D POSTROUTING -s ${cfg.currentPeer.ip}/24 -o eno1 -j MASQUERADE
         '';
       };
     };
