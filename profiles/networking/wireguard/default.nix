@@ -7,12 +7,6 @@ let
   iptables = pkgs.iptables-nftables-compat;
 
   currentPeer = cfg.peers."${config.networking.hostName}";
-  isLan = peer: builtins.length (cfg.peers.${peer}.localArea or []) > 0;
-  isLan6 = peer: builtins.length (cfg.peers.${peer}.localArea6 or []) > 0;
-  isWan = peer: !(isLan peer);
-  isWan6 = peer: !(isLan6 peer);
-  endpointsOf = peer: (peer.wideArea or []) ++ (peer.localArea or []);
-  endpointsOf6 = peer: (peer.wideArea6 or []) ++ (peer.localArea6 or []);
 in {
   options = {
     networking.wireguard = {
