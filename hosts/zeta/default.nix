@@ -156,7 +156,7 @@
   services.openssh.permitRootLogin = "without-password";
   services.openssh.listenAddresses = [
     { addr = "127.0.0.1"; port = 22; }
-    { addr = hosts.wireguard.zeta; port = 22; }
+    { addr = hosts.wireguard.ipv4.zeta; port = 22; }
     { addr = "10.1.0.1"; port = 22; }
   ];
   services.openssh.passwordAuthentication = false;

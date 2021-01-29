@@ -1,25 +1,8 @@
-{ config, lib, pkgs, hosts, ... }:
+{ config, lib, usr, pkgs, hosts, ... }:
 
 let
   wanInterface = "eno1";
   vlanInterface = idx: "fo${toString idx}";
-  v6Block = rec {
-    addr = "${block}1";
-    block = "2001:bc8:3de4::";
-    subnet = "${block}/${toString prefix}";
-    duid = "00:03:00:01:55:a4:d9:88:19:43";
-    prefix = 48;
-  };
-  v6Subnets = {
-    "2001:bc8:3de4:800::1" = {
-      duid = "00:03:00:01:70:b7:ec:21:44:79";
-      prefix = 56;
-    };
-    "2001:bc8:3de4:8cb::1" = {
-      duid = "00:03:00:01:3e:bf:b2:66:2d:8e";
-      prefix = 64;
-    };
-  };
 in {
   imports = [
     ../../containers/sandbox.nix   # 10. 1.0.x
@@ -37,23 +20,27 @@ in {
 
   isolation = {
     makeHostAddress = { id, ... }: "10.${toString id}.0.1";
-    makeHostAddress6 = { id, ... }: "2001:bc8:3de4::${toString id}:1";
+    makeHostAddress6 = { id, ... }: "${hosts.ipv6.zeta.prefix}:${toString id}:1";
     makeLocalAddress = { id, ... }: "10.${toString id}.0.2";
-    makeLocalAddress6 = { id, ... }: "2001:bc8:3de4::${toString id}:2";
+    makeLocalAddress6 = { id, ... }: "${hosts.ipv6.zeta.prefix}:${toString id}:2";
     scopes.klaus.id = 10;
   };
 
   networking.interfaces.${wanInterface} = {
     ipv4.addresses = [
-      { address = hosts.ipv4.zeta; prefixLength = 24; }
+      hosts.ipv4.zeta
     ];
     ipv6.addresses = let
-      morph = block: { address = block.addr; prefixLength = block.prefix; };
-      transform = addr: { address = addr; prefixLength = v6Subnets.${addr}.prefix; };
+      addrs = {
+        ${hosts.ipv6.zeta.prefix} = hosts.ipv6.zeta;
+      } // hosts.ipv6.zeta.subnets;
     in
-      [ (morph v6Block) ] ++ map transform (builtins.attrNames v6Subnets);
+      lib.mapAttrsToList (address: { length, ... }: {
+        inherit address;
+        prefixLength = length;
+      }) addrs;
     ipv6.routes = [
-      { address = "2001:bc8:2::1:142:1"; prefixLength = 128; }
+      hosts.ipv6.r-zeta
     ];
   };
   networking.vlans.${vlanInterface 1} = {
@@ -62,7 +49,7 @@ in {
   };
   networking.interfaces.${vlanInterface 1} = {
     ipv4.addresses = [
-      { address = "195.154.56.65"; prefixLength = 32; }
+      hosts.ipv4.zeta-alt
     ];
   };
 
@@ -74,81 +61,87 @@ in {
   ];
 
   networking.firewall.enable = false;
-  networking.nftables = {
+  networking.nftables = let
+    inherit (usr) dag;
+  in {
     enable = true;
-    ruleset = ''
-      table inet filter {
-        # Block all incomming connections traffic except SSH and "ping".
-        chain input {
-          type filter hook input priority 0;
 
-          # accept any localhost traffic
-          iifname lo accept
-
-          # accept traffic originated from us
-          ct state {established, related} accept
-
-          # ICMP
-          # routers may also want: mld-listener-query, nd-router-solicit
-          ip6 nexthdr icmpv6 icmpv6 type { destination-unreachable, packet-too-big, time-exceeded, parameter-problem, nd-router-advert, nd-neighbor-solicit, nd-neighbor-advert } accept
-          ip protocol icmp icmp type { destination-unreachable, router-advertisement, time-exceeded, parameter-problem } accept
-
-          # allow "ping"
-          ip6 nexthdr icmpv6 icmpv6 type echo-request accept
-          ip protocol icmp icmp type echo-request accept
-
-          # accept SSH connections (required for a server)
-          tcp dport 22 accept
-
-          # accept SSL connections
-          tcp dport 80 accept
-          tcp dport 443 accept
-
-          # restrict imap and smtp to vpn
-          ip saddr 10.0.0.0/24 accept
-          tcp dport { 1143 } drop
-          tcp dport { 1025 } drop
-
-          tcp dport 4004 accept
-          tcp dport 5432 accept
-          tcp dport 8090 accept
-          tcp dport 8448 accept
-          tcp dport 22000 accept
-          tcp dport 25565 accept
-          udp dport 5353 accept
-          udp dport 21027 accept
-          udp dport 25565 accept
-          udp dport 51820 accept
-          udp dport 60000-61000 accept
-          udp dport 60000-61000 accept
-
-          # count and drop any other traffic
-          #counter drop
-          counter accept
-        }
-
-        # Allow all outgoing connections.
-        chain output {
-          type filter hook output priority 0;
-          accept
-        }
-
-        chain forward {
-          type filter hook forward priority 0;
-          accept
-        }
-      }
-    '';
+    rules = {
+      inet.filter.input = {
+        wireguard-ip = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
+          protocol = "ip"; field = "saddr";
+          value = "${config.isolation.makeHostAddress { id = 0; }}/24";
+          policy = "accept";
+        };
+        wireguard = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = 51820;
+          policy = "accept";
+        };
+        http = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = [ 80 443 ];
+          policy = "accept";
+        };
+        imap = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping" "wireguard-ip"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = 1143;
+          policy = "drop";
+        };
+        smtp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping" "wireguard-ip"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = 1025;
+          policy = "drop";
+        };
+        ipfs-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = [ 4001 5001 ];
+          policy = "accept";
+        };
+        ipfs-udp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "udp"; field = "dport";
+          value = [ 4001 5001 ];
+          policy = "accept";
+        };
+        mdns = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "udp"; field = "dport";
+          value = 5353;
+          policy = "accept";
+        };
+        udpports = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "udp"; field = "dport";
+          value = map (x: x+60000) (lib.genList (x: x+1) (65535-60000));
+          # mosh: 60000-65535
+          policy = "accept";
+        };
+        syncthing = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "udp"; field = "dport";
+          value = 21027;
+          policy = "accept";
+        };
+        basic-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = [
+            4004# construct
+            5432# postgres
+            8090# yacy
+            8448# synapse
+          ];
+          policy = "accept";
+        };
+        default.data.policy = "accept";
+      };
+    };
   };
 
   networking.wireguard.interfaces.wg0 = {
     postSetup = let
       wanInterface = vlanInterface 1;
-      nat = "${pkgs.iptables}/bin/iptables -w -t nat";
+      ipnat = "${pkgs.iptables}/bin/iptables -w -t nat";
       proto = proto: "-p ${proto} -m ${proto}";
       icmp-echo = "--icmp-type 8";
-      from-failover = "-d 195.154.56.65";
-      to-delta = "--to-destination ${hosts.wireguard.delta}";
+      from-failover = "-d ${hosts.ipv4.zeta-alt.address}";
+      to-delta = "--to-destination ${hosts.wireguard.ipv4.delta}";
       lanInterface = "wg0";
     in ''
       # Enable packet forwarding to/from the target for established/related connections
@@ -156,25 +149,25 @@ in {
      #iptables -A FORWARD -i ${lanInterface} -o ${wanInterface} -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
       # Enable masquerade on the target
-     #${nat} -A nixos-nat-post -o ${lanInterface} -s ${hosts.wireguard.delta} -j MASQUERADE
+     #${ipnat} -A nixos-nat-post -o ${lanInterface} -s ${hosts.wireguard.ipv4.delta} -j MASQUERADE
 
       # Forward from source to target
-     #${nat} -A nixos-nat-pre  -i ${wanInterface} ${proto "tcp" } ${from-failover} -j DNAT ${to-delta}
+     #${ipnat} -A nixos-nat-pre  -i ${wanInterface} ${proto "tcp" } ${from-failover} -j DNAT ${to-delta}
 
       # Hmm.
-     #${nat} -A nixos-nat-pre  -i ${wanInterface} ${proto "icmp"} ${from-failover} -j DNAT ${to-delta} ${icmp-echo}
-     #${nat} -A nixos-nat-pre  -i ${wanInterface} ${proto "udp" } ${from-failover} -j DNAT ${to-delta}
+     #${ipnat} -A nixos-nat-pre  -i ${wanInterface} ${proto "icmp"} ${from-failover} -j DNAT ${to-delta} ${icmp-echo}
+     #${ipnat} -A nixos-nat-pre  -i ${wanInterface} ${proto "udp" } ${from-failover} -j DNAT ${to-delta}
     '';
   };
 
-  networking.defaultGateway = "163.172.7.1";
+  networking.defaultGateway = hosts.ipv4.r-zeta.address;
   networking.nameservers = [ "9.9.9.9" ];
 
   environment.etc.dhclient6 = {
     target = "dhcp/dhclient6.conf";
     text = ''
       interface "${wanInterface}" {
-         send dhcp6.client-id ${v6Block.duid};
+         send dhcp6.client-id ${hosts.ipv6.zeta.duid};
       }
     '';
   };

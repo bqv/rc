@@ -49,7 +49,7 @@
           (apply #'call-interactively (cons #'vterm--ssh-run r))))
       (defun vterm--ssh-run (server command)
         "Launch COMMAND over ssh to SERVER, in a vterm buffer."
-        (interactive (list (completing-read "Server" '("${hosts.wireguard.zeta}"))
+        (interactive (list (completing-read "Server" '("${hosts.wireguard.ipv4.zeta}"))
                            (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
         (let* ((executable (car (split-string command " ")))
                (buffer-name (concat "*" executable "*"))
@@ -60,7 +60,7 @@
             (vterm buffer-name))))
       (defun vterm--ssh-run-sudo (server command)
         "Launch sudo COMMAND over ssh to SERVER, in a vterm buffer."
-        (interactive (list (completing-read "Server" '("${hosts.wireguard.zeta}"))
+        (interactive (list (completing-read "Server" '("${hosts.wireguard.ipv4.zeta}"))
                            (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
         (let* ((executable (car (split-string command " ")))
                (buffer-name (concat "*" executable "*"))

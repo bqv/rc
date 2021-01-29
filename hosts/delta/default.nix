@@ -38,9 +38,20 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
+    grub = {
+      enable= true;
+      devices = [
+        "/dev/disk/by-path/pci-0000:06:00.0-nvme-1"
+      ];
+     #efiInstallAsRemovable = true;
+      efiSupport = true;
+      memtest86.enable = true;
+      useOSProber = true;
+      configurationLimit = 64;
+    };
     efi.canTouchEfiVariables = true;
     systemd-boot = {
-      enable = true;
+      enable = false;
       configurationLimit = 64;
       memtest86.enable = true;
     };
@@ -140,7 +151,7 @@
      #  mandatoryFeatures = [ ];
      #})++
       (lib.optional true {
-        hostName = hosts.wireguard.zeta;
+        hostName = hosts.wireguard.ipv4.zeta;
         #sshUser = "nix-ssh";
         sshKey = "/etc/nix/id_zeta.ed25519";
         systems = ["x86_64-linux" "i686-linux" "armv6l-linux" "armv7l-linux"];
