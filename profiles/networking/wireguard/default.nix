@@ -235,7 +235,10 @@ in {
         generatePrivateKeyFile = false;
         listenPort = cfg.currentPeer.port or 51820;
 
-        peers = lib.mapAttrsToList (hostname: hostcfg: {
+        peers = let
+          endpointsOf = null;
+          peerable = null;
+        in lib.mapAttrsToList (hostname: hostcfg: {
           inherit (hostcfg) publicKey;
           allowedIPs = [ "${hostcfg.ip}/32" ]
             ++ (hostcfg.routes.${config.networking.hostName} or []);
