@@ -1,4 +1,4 @@
-{ config, lib, pkgs, hosts, ... }:
+{ config, lib, usr, pkgs, hosts, ... }:
 
 let
   wanInterface = "eno1";
@@ -61,7 +61,9 @@ in {
   ];
 
   networking.firewall.enable = false;
-  networking.nftables = {
+  networking.nftables = let
+    inherit (usr) dag;
+  in {
     enable = true;
     ruleset = ''
       table inet filter {
@@ -126,6 +128,42 @@ in {
         }
       }
     '';
+    rules = {
+      inet.filter.input = {
+        ipfs-api-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = [ 4001 5001 ];
+          policy = "accept";
+        };
+        ipfs-api-udp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "udp"; field = "dport";
+          value = [ 4001 5001 ];
+          policy = "accept";
+        };
+        hydra = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = 9999;
+          policy = "accept";
+        };
+        udpports = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "udp"; field = "dport";
+          value = map (x: x+32768) (lib.genList (x: x+1) (65535-32768));
+          # mosh: 60000-65535
+          # chromecast: 32768-61000
+          policy = "accept";
+        };
+        unknown = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
+          protocol = "udp"; field = "dport";
+          value = 1900;
+          policy = "accept";
+        };
+        omega = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
+          protocol = "ip"; field = "saddr";
+          value = "${config.isolation.makeHostAddress 0}/24";
+          policy = "accept";
+        };
+      };
+    };
   };
 
   networking.wireguard.interfaces.wg0 = {
