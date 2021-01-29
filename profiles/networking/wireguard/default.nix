@@ -89,9 +89,12 @@ in {
             };
 
             phi = rec {
-              ipv4 = hosts.wireguard.ipv4.phi;
-              ipv6 = hosts.wireguard.ipv6.phi;
-              localArea = [ hosts.lan.phi ];
+              ipv4 = {
+                address = hosts.wireguard.ipv4.phi;
+              };
+              ipv6 = {
+                address = hosts.wireguard.ipv6.phi;
+              };
               publicKey = pubkeys.phi;
             };
           };
