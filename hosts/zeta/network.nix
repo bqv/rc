@@ -109,7 +109,7 @@ in {
           value = [
             4004# construct
             5432# postgres
-            8090
+            8090# yacy
             8448
             22000
             25565
