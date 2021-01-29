@@ -135,7 +135,7 @@ in {
   networking.wireguard.interfaces.wg0 = {
     postSetup = let
       wanInterface = vlanInterface 1;
-      nat = "${pkgs.iptables}/bin/iptables -w -t nat";
+      ipnat = "${pkgs.iptables}/bin/iptables -w -t nat";
       proto = proto: "-p ${proto} -m ${proto}";
       icmp-echo = "--icmp-type 8";
       from-failover = "-d ${hosts.ipv4.zeta-alt}";
@@ -147,14 +147,14 @@ in {
      #iptables -A FORWARD -i ${lanInterface} -o ${wanInterface} -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
       # Enable masquerade on the target
-     #${nat} -A nixos-nat-post -o ${lanInterface} -s ${hosts.wireguard.delta} -j MASQUERADE
+     #${ipnat} -A nixos-nat-post -o ${lanInterface} -s ${hosts.wireguard.delta} -j MASQUERADE
 
       # Forward from source to target
-     #${nat} -A nixos-nat-pre  -i ${wanInterface} ${proto "tcp" } ${from-failover} -j DNAT ${to-delta}
+     #${ipnat} -A nixos-nat-pre  -i ${wanInterface} ${proto "tcp" } ${from-failover} -j DNAT ${to-delta}
 
       # Hmm.
-     #${nat} -A nixos-nat-pre  -i ${wanInterface} ${proto "icmp"} ${from-failover} -j DNAT ${to-delta} ${icmp-echo}
-     #${nat} -A nixos-nat-pre  -i ${wanInterface} ${proto "udp" } ${from-failover} -j DNAT ${to-delta}
+     #${ipnat} -A nixos-nat-pre  -i ${wanInterface} ${proto "icmp"} ${from-failover} -j DNAT ${to-delta} ${icmp-echo}
+     #${ipnat} -A nixos-nat-pre  -i ${wanInterface} ${proto "udp" } ${from-failover} -j DNAT ${to-delta}
     '';
   };
 
