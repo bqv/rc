@@ -6,13 +6,13 @@ let
 
   network = 16;#24;
   network6 = 112;
-  peers = {
+  peers = { # Note: Wireguard won't retry DNS resolution if it fails
     zeta = {
       zeta = {
         ipv4 = hosts.wireguard.ipv4.zeta;
         ipv6 = hosts.wireguard.ipv6.zeta;
-        wideArea = [ hosts.ipv4.zeta ]; # Note: Wireguard won't retry DNS resolution if it fails
-        wideArea6 = [ hosts.ipv6.zeta ]; # Note: Wireguard won't retry DNS resolution if it fails
+        wideArea4 = [ hosts.ipv4.zeta.address ];
+        wideArea6 = [ "${hosts.ipv6.zeta.prefix}:1" ];
         publicKey = pubkeys.zeta;
       };
 
@@ -27,8 +27,8 @@ let
       delta = {
         ipv4 = hosts.wireguard.ipv4.delta;
         ipv6 = hosts.wireguard.ipv6.delta;
-        wideArea = [ hosts.ipv4.home ];
-        wideArea6 = [ hosts.ipv6.home ];
+        wideArea4 = [ hosts.ipv4.home.address ];
+        wideArea6 = [ "${hosts.ipv6.home.prefix}:1" ];
         localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
         publicKey = pubkeys.delta;
       };
