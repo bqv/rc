@@ -141,7 +141,7 @@ in {
       proto = proto: "-p ${proto} -m ${proto}";
       icmp-echo = "--icmp-type 8";
       from-failover = "-d ${hosts.ipv4.zeta-alt.address}";
-      to-delta = "--to-destination ${hosts.wireguard.delta}";
+      to-delta = "--to-destination ${hosts.wireguard.ipv4.delta}";
       lanInterface = "wg0";
     in ''
       # Enable packet forwarding to/from the target for established/related connections
@@ -149,7 +149,7 @@ in {
      #iptables -A FORWARD -i ${lanInterface} -o ${wanInterface} -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
       # Enable masquerade on the target
-     #${ipnat} -A nixos-nat-post -o ${lanInterface} -s ${hosts.wireguard.delta} -j MASQUERADE
+     #${ipnat} -A nixos-nat-post -o ${lanInterface} -s ${hosts.wireguard.ipv4.delta} -j MASQUERADE
 
       # Forward from source to target
      #${ipnat} -A nixos-nat-pre  -i ${wanInterface} ${proto "tcp" } ${from-failover} -j DNAT ${to-delta}
