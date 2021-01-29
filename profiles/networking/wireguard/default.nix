@@ -144,7 +144,6 @@ in {
               };
               publicKey = pubkeys.phi;
             };
-
             theta = rec {
               ipv4 = hosts.wireguard.ipv4.theta;
               ipv6 = hosts.wireguard.ipv6.theta;
