@@ -108,7 +108,7 @@ in {
           protocol = "tcp"; field = "dport";
           value = [
             4004# construct
-            5432
+            5432# mastodon
             8090
             8448
             22000
