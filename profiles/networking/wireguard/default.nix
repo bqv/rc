@@ -43,9 +43,11 @@ in {
             };
             ipv4 = lib.mkOption {
               type = lib.types.submodule peer;
+              default = {};
             };
             ipv6 = lib.mkOption {
               type = lib.types.submodule peer;
+              default = {};
             };
           };
 
