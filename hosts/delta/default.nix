@@ -41,9 +41,7 @@
     grub = {
       enable= true;
       devices = [
-        "/dev/disk/by-path/pci-0000:00:17.0-ata-3"
         "/dev/disk/by-path/pci-0000:06:00.0-nvme-1"
-        "/dev/disk/by-path/pci-0000:06:00.0-nvme-1-part5"
       ];
      #efiInstallAsRemovable = true;
       efiSupport = true;

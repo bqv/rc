@@ -127,8 +127,8 @@ in {
       cluster.peer_addresses = let
         inherit (usr.secrets.ipfs.repo) proxyPeerID;
       in [
-        "/ip4/${hosts.wireguard.delta}/tcp/9096/p2p/${proxyPeerID.delta}"
-        "/ip4/${hosts.wireguard.zeta }/tcp/9096/p2p/${proxyPeerID.zeta }"
+        "/ip4/${hosts.wireguard.ipv4.delta}/tcp/9096/p2p/${proxyPeerID.delta}"
+        "/ip4/${hosts.wireguard.ipv4.zeta }/tcp/9096/p2p/${proxyPeerID.zeta }"
       ];
     };
   };

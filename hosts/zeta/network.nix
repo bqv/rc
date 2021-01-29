@@ -28,7 +28,7 @@ in {
 
   networking.interfaces.${wanInterface} = {
     ipv4.addresses = [
-      hosts.ipv4.zeta.address
+      hosts.ipv4.zeta
     ];
     ipv6.addresses = let
       addrs = {
@@ -70,7 +70,7 @@ in {
       inet.filter.input = {
         wireguard-ip = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
           protocol = "ip"; field = "saddr";
-          value = "${config.isolation.makeHostAddress 0}/24";
+          value = "${config.isolation.makeHostAddress { id = 0; }}/24";
           policy = "accept";
         };
         wireguard = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {

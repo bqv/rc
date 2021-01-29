@@ -1370,7 +1370,7 @@
     },
     "priv": {
       "locked": {
-        "narHash": "sha256-6IZrL9N3Ob3CeTx83Iba/xjBqfoiD5zqqSlRve78efk=",
+        "narHash": "sha256-c0JaIT6g88CbU/PCX0D+ISx8J52+9WXWU/9aBwvKMTg=",
         "path": "/srv/hg/nixpriv",
         "type": "path"
       },
