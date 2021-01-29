@@ -38,6 +38,7 @@
 
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
+    grub.efiInstallAsRemovable = true;
     efi.canTouchEfiVariables = true;
     systemd-boot = {
       enable = true;
