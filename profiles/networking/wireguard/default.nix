@@ -6,9 +6,6 @@ let
   pubkeys = usr.secrets.wireguard.pubkeys;
   iptables = pkgs.iptables-nftables-compat;
 
-  network = 16;#24;
-  network6 = 112;
-
   currentPeer = cfg.peers."${config.networking.hostName}";
   isLan = peer: builtins.length (cfg.peers.${peer}.localArea or []) > 0;
   isLan6 = peer: builtins.length (cfg.peers.${peer}.localArea6 or []) > 0;
