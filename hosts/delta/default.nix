@@ -40,9 +40,7 @@
   boot.loader = {
     grub = {
       enable= true;
-      devices = [
-        "/dev/disk/by-path/pci-0000:06:00.0-nvme-1"
-      ];
+      device = "nodev";
      #efiInstallAsRemovable = true;
       efiSupport = true;
       memtest86.enable = true;
