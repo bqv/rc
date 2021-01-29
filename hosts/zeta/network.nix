@@ -68,9 +68,14 @@ in {
 
     rules = {
       inet.filter.input = {
-        wireguard = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
+        wireguard-ip = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
           protocol = "ip"; field = "saddr";
           value = "${config.isolation.makeHostAddress 0}/24";
+          policy = "accept";
+        };
+        wireguard = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = 51820;
           policy = "accept";
         };
         http = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
@@ -78,12 +83,12 @@ in {
           value = [ 80 443 ];
           policy = "accept";
         };
-        imap = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping" "wireguard"] ["default"] {
+        imap = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping" "wireguard-ip"] ["default"] {
           protocol = "tcp"; field = "dport";
           value = [ 1143 ];
           policy = "drop";
         };
-        smtp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping" "wireguard"] ["default"] {
+        smtp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping" "wireguard-ip"] ["default"] {
           protocol = "tcp"; field = "dport";
           value = [ 1025 ];
           policy = "drop";
@@ -110,19 +115,17 @@ in {
             4004# construct
             5432# postgres
             8090# yacy
-            8448
-            22000
-            25565
+            8448# synapse
+            25565# minecraft
           ];
           policy = "accept";
         };
         unknown-udp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "udp"; field = "dport";
           value = [
-            5353
-            21027
-            25565
-            51820
+            5353# mdns
+            21027# syncthing
+            25565# minecraft
           ];
           policy = "accept";
         };
