@@ -157,7 +157,13 @@
        #  id = 109370; hash = "uVlMZ92myOvB64QIC2MZMmBZwpMrB+qxa48W86oVqZU=";
        #}
       ];
-      patches = map basePkgs.fetchpatch pullReqs;
+      patches = [
+        (basePkgs.fetchurl {
+          name = "grub-use-xkb-config";
+          url = "https://github.com/NixOS/nixpkgs/compare/master...mdevlamynck:4a709715e3de83bfc34b880b8044af41a558316e.diff";
+          sha256 = "1bkbr2znnwi5yc210vhnj638i1ls1w35sdhh3hfh6fnxlbjlmfbn";
+        })
+      ] ++ map basePkgs.fetchpatch pullReqs;
       patchedTree = basePkgs.applyPatches {
         name = "nixpkgs-patched";
         src = basePkgs.path;
@@ -942,6 +948,7 @@
               name = "support-worktree-simple-version.patch";
               url = "https://github.com/AGWA/git-crypt/files/2771938/git-crypt-support-worktree-simple-version-patch.txt";
               sha256 = "1k477m6g3zjdarjr38lndh0kpgkp0yi8lg2iqdispfd4c85krrax";
+              # date = 2021-01-29T23:45:21+0000;
             };
             patches = [ worktreePatch ];
           });
