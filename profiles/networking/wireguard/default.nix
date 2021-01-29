@@ -56,6 +56,14 @@ in {
         default = {
           # Note: Wireguard won't retry DNS resolution if it fails
           zeta = lib.mapAttrs (source: submodule: {
+            ipv4 = {
+              address = hosts.wireguard.ipv4.zeta;
+              host = hosts.ipv4.zeta.address;
+            };
+            ipv6 = {
+              address = hosts.wireguard.ipv6.zeta;
+              host = "${hosts.ipv6.zeta.prefix}:1";
+            };
             publicKey = pubkeys.zeta;
           }) {
             zeta = rec {
@@ -100,7 +108,9 @@ in {
               };
             };
           };
-          theta = {
+          theta = lib.mapAttrs (source: submodule: {
+            publicKey = pubkeys.theta;
+          }) {
             zeta = rec {
               ipv4 = {
                 address = hosts.wireguard.ipv4.zeta;
