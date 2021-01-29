@@ -34,7 +34,7 @@ in {
 
   networking.interfaces.${wanInterface} = {
     ipv4.addresses = [
-      { address = hosts.ipv4.zeta; prefixLength = 24; }
+      hosts.ipv4.zeta
     ];
     ipv6.addresses = let
       addrs = { ${hosts.ipv6.zeta.prefix} = hosts.ipv6.zeta; } // hosts.ipv6.zeta.subnets;
