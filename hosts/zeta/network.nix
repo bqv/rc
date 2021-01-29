@@ -85,12 +85,12 @@ in {
         };
         imap = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping" "wireguard-ip"] ["default"] {
           protocol = "tcp"; field = "dport";
-          value = [ 1143 ];
+          value = 1143;
           policy = "drop";
         };
         smtp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping" "wireguard-ip"] ["default"] {
           protocol = "tcp"; field = "dport";
-          value = [ 1025 ];
+          value = 1025;
           policy = "drop";
         };
         ipfs-api-tcp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
