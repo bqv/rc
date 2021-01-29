@@ -13,10 +13,6 @@ let
   isWan6 = peer: !(isLan6 peer);
   endpointsOf = peer: (peer.wideArea or []) ++ (peer.localArea or []);
   endpointsOf6 = peer: (peer.wideArea6 or []) ++ (peer.localArea6 or []);
-  peerable = from: to: builtins.all lib.id [
-    (from != to)
-    (cfg.peers.${to} ? publicKey)
-  ];
 in {
   options = {
     networking.wireguard = {
@@ -29,7 +25,32 @@ in {
         default = 112;
       };
       peers = lib.mkOption {
-        type = with lib.types; attrsOf (attrsOf (attrsOf anything));
+        type = with lib.types; attrsOf (attrsOf (attrsOf (submodule {
+          options = let
+            peer = lib.types.submodule {
+              options = {
+                address = lib.mkOption {
+                  type = lib.types.str;
+                };
+                routes = lib.mkOption {
+                  type = with lib.types; listOf str;
+                };
+              };
+            };
+          in {
+            publicKey = lib.mkOption {
+              type = lib.types.str;
+            };
+            ipv4 = lib.mkOption {
+              type = peer;
+            };
+            ipv6 = lib.mkOption {
+              type = peer;
+            };
+          };
+
+          config = {};
+        })));
         default = {
           # Note: Wireguard won't retry DNS resolution if it fails
           zeta = {
@@ -168,6 +189,7 @@ in {
       };
     };
   };
+
   config = {
     environment.systemPackages = [ pkgs.wgvanity ];
     environment.etc."wireguard/private.key".source = config.secrets.files.wireguard.file;
