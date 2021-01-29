@@ -5,8 +5,6 @@ let
 
   pubkeys = usr.secrets.wireguard.pubkeys;
   iptables = pkgs.iptables-nftables-compat;
-
-  currentPeer = cfg.peers."${config.networking.hostName}";
 in {
   options = {
     networking.wireguard = {
