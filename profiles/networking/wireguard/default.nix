@@ -273,16 +273,16 @@ in {
         ) cfg.peers);
 
         # Allow wireguard to route traffic to the internet
-        postUp = ''
-          ${iptables}/bin/iptables -A FORWARD -i wg0 -j ACCEPT
-          ${iptables}/bin/iptables -t nat -A POSTROUTING -s ${cfg.currentPeer.ip}/24 -o eno1 -j MASQUERADE
-        '';
+       #postUp = ''
+       #  ${iptables}/bin/iptables -A FORWARD -i wg0 -j ACCEPT
+       #  ${iptables}/bin/iptables -t nat -A POSTROUTING -s ${cfg.currentPeer.ip}/24 -o eno1 -j MASQUERADE
+       #'';
 
-        # Undo the above
-        preDown = ''
-          ${iptables}/bin/iptables -D FORWARD -i wg0 -j ACCEPT
-          ${iptables}/bin/iptables -t nat -D POSTROUTING -s ${cfg.currentPeer.ip}/24 -o eno1 -j MASQUERADE
-        '';
+       ## Undo the above
+       #preDown = ''
+       #  ${iptables}/bin/iptables -D FORWARD -i wg0 -j ACCEPT
+       #  ${iptables}/bin/iptables -t nat -D POSTROUTING -s ${cfg.currentPeer.ip}/24 -o eno1 -j MASQUERADE
+       #'';
       };
     };
 
