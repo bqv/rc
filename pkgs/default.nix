@@ -78,4 +78,6 @@ in rec {
   wgvanity = prev.callPackage ./tools/system/wgvanity { };
 
   yacy = prev.callPackage ./servers/yacy { };
+
+  wold = prev.stdenv.mkDerivation { src = pkgs.withSources.wold; name = "wold"; buildPhase = ''make all''; installPhase = ''make install PREFIX=$out''; };
 }
