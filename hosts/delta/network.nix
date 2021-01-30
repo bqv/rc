@@ -40,7 +40,7 @@
   };
   networking.enableIPv6 = true;
   networking.defaultGateway = { address = hosts.lan.router; interface = "enp0s31f6"; };
-  networking.defaultGateway6 = { address = "${hosts.ipv6.r-home.address}"; interface = "enp0s31f6"; };
+  networking.defaultGateway6 = { address = "${hosts.ipv6.home.address}"; interface = "enp0s31f6"; };
   networking.nameservers = [ "2a00:1098:2c::1" ];
   networking.interfaces.enp0s31f6 = {
     useDHCP = true;
