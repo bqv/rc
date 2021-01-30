@@ -18,6 +18,9 @@ in {
       };
       currentPeer = lib.mkOption {
         type = lib.types.anything;
+        default = lib.mapAttrs (to: peers:
+          peers.${config.networking.hostName}
+        ) config.networking.wireguard.peers;
       };
       peers = lib.mkOption {
         type = with lib.types; attrsOf (attrsOf (submodule {
@@ -94,8 +97,52 @@ in {
             phi = rec {};
           };
           delta = lib.mapAttrs (source: lib.recursiveUpdate {
+            ipv4 = {
+              address = hosts.wireguard.ipv4.delta;
+            };
+            ipv6 = {
+              address = hosts.wireguard.ipv6.delta;
+            };
             publicKey = pubkeys.delta;
           }) {
+            zeta = rec {
+              ipv4 = {
+                host = hosts.ipv4.home.address;
+              };
+              ipv6 = {
+                host = "${hosts.ipv6.home.prefix}:1";
+              };
+              publicKey = pubkeys.zeta;
+            };
+
+            theta = rec {
+              ipv4 = {
+                routes = [ "${hosts.lan.delta}/32" ];
+              };
+              ipv6 = {
+              };
+              publicKey = pubkeys.theta;
+            };
+
+            delta = rec {
+              ipv4 = {
+                host = hosts.ipv4.r-home.address;
+              };
+              ipv6 = {
+                host = hosts.ipv6.r-home.address;
+              };
+              publicKey = pubkeys.delta;
+            };
+
+            phi = rec {
+              ipv4 = {
+              };
+              ipv6 = {
+              };
+              publicKey = pubkeys.phi;
+            };
+          };
+          phi = {
             zeta = rec {
               ipv4 = {
                 address = hosts.wireguard.ipv4.zeta;
@@ -138,39 +185,6 @@ in {
               ipv6 = {
                 address = hosts.wireguard.ipv6.phi;
               };
-              publicKey = pubkeys.phi;
-            };
-          };
-          phi = {
-            zeta = rec {
-              ipv4.address = hosts.wireguard.ipv4.zeta;
-              ipv6.address = hosts.wireguard.ipv6.zeta;
-         #    wideArea4 = [ hosts.ipv4.zeta.address ];
-         #    wideArea6 = [ "${hosts.ipv6.zeta.prefix}:1" ];
-              publicKey = pubkeys.zeta;
-            };
-
-            theta = rec {
-              ipv4.address = hosts.wireguard.ipv4.theta;
-              ipv6.address = hosts.wireguard.ipv6.theta;
-         #    routes4.zeta = [ "${hosts.wireguard.ipv4.theta}/24" ];
-         #    routes6.zeta = [ "${hosts.wireguard.ipv6.theta}/112" ];
-              publicKey = pubkeys.theta;
-            };
-
-            delta = rec {
-              ipv4.address = hosts.wireguard.ipv4.delta;
-              ipv6.address = hosts.wireguard.ipv6.delta;
-         #    wideArea4 = [ hosts.ipv4.r-home.address ];
-         #    wideArea6 = [ hosts.ipv6.r-home.address ];
-         #    localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
-              publicKey = pubkeys.delta;
-            };
-
-            phi = rec {
-              ipv4.address = hosts.wireguard.ipv4.phi;
-              ipv6.address = hosts.wireguard.ipv6.phi;
-         #    localArea = [ hosts.lan.phi ];
               publicKey = pubkeys.phi;
             };
           };
@@ -224,9 +238,6 @@ in {
           ${iptables}/bin/iptables -t nat -D POSTROUTING -s ${cfg.currentPeer.ip}/24 -o eno1 -j MASQUERADE
         '';
       };
-        currentPeer = lib.mapAttrs (to: peers:
-          peers.${config.networking.hostName}
-        ) config.networking.wireguard.peers;
     };
 
     systemd.services.wireguard-wg0.unitConfig.Before = [ "sshd.service" ];
