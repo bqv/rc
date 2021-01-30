@@ -19,11 +19,11 @@
     userControlled.enable = true;
   };
 
-  networking.useNetworkd = true;
-  users.users.resolved.uid = 57; # unused: was network-manager
-  systemd.services.systemd-resolved.environment = {
-    LD_LIBRARY_PATH = "${lib.getLib pkgs.libidn2}/lib";
-  };
+ #networking.useNetworkd = true;
+ #users.users.resolved.uid = 57; # unused: was network-manager
+ #systemd.services.systemd-resolved.environment = {
+ #  LD_LIBRARY_PATH = "${lib.getLib pkgs.libidn2}/lib";
+ #};
   networking.useDHCP = false;
   networking.enableIPv6 = true;
   networking.defaultGateway = hosts.lan.router;
