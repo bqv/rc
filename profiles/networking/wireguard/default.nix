@@ -69,7 +69,8 @@ in {
             zeta = rec {};
 
             theta = rec {
-              routes = [ "${hosts.wireguard.ipv4.theta}/24" ];
+              ipv4.routes = [ "${hosts.wireguard.ipv4.theta}/24" ];
+              ipv6.routes = [ "${hosts.wireguard.ipv6.theta}/112" ];
             };
 
             delta = rec {};
