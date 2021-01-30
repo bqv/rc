@@ -251,9 +251,9 @@ in {
       enable = true;
       prefixLength.ipv4 = 16;
       interfaces.wg0 = {
-        ips = [
-          "${cfg.currentPeer.ip}/${toString cfg.prefixLength.ipv4}"
-        ];
+       #ips = [
+       #  "${cfg.currentPeer.ip}/${toString cfg.prefixLength.ipv4}"
+       #];
         privateKeyFile = "${config.secrets.files.wireguard.file}";
         generatePrivateKeyFile = false;
         listenPort = cfg.currentPeer.port or 51820;
