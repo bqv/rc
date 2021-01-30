@@ -25,8 +25,12 @@
  #  LD_LIBRARY_PATH = "${lib.getLib pkgs.libidn2}/lib";
  #};
   networking.useDHCP = false;
+  networking.dhcpcd = {
+    enable = true;
+    persistent = true;
+  };
   networking.enableIPv6 = true;
-  networking.defaultGateway = hosts.lan.router;
+ #networking.defaultGateway = hosts.lan.router;
   networking.nameservers = [ "2a00:1098:2c::1" ];
   networking.interfaces.enp0s31f6 = {
     useDHCP = true;
