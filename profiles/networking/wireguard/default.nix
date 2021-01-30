@@ -256,7 +256,7 @@ in {
        #];
         privateKeyFile = "${config.secrets.files.wireguard.file}";
         generatePrivateKeyFile = false;
-        listenPort = cfg.currentPeer.port or 51820;
+       #listenPort = cfg.currentPeer.port or 51820;
 
        #peers = let
        #  endpointsOf = null;
