@@ -146,8 +146,8 @@ in {
           };
           phi = {
             zeta = rec {
-              ipv4.address = hosts.wireguard.ipv4.zeta;
-              ipv6.address = hosts.wireguard.ipv6.zeta;
+              ipv4.host = hosts.wireguard.ipv4.zeta;
+              ipv6.host = hosts.wireguard.ipv6.zeta;
          #    wideArea4 = [ hosts.ipv4.zeta.address ];
          #    wideArea6 = [ "${hosts.ipv6.zeta.prefix}:1" ];
               publicKey = pubkeys.zeta;
