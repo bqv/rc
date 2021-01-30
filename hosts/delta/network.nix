@@ -7,7 +7,7 @@
     network.ssh.enable = true;
     network.ssh.authorizedKeys = [
       "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBILyD517o16vk3wOh2O4NNDJ0zoUOjaP4BSeonprVyurnw0HCuQ5T9rVhaDerI4Yndr85pSzqGU46LdzjibSwKA= ssh@theta"
-    ];#config.users.users.bao.openssh.authorizedKeys.keys;
+    ];
   };
   environment.systemPackages = with pkgs; [ dhcp dhcpcd ];
 
