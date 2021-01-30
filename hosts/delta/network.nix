@@ -5,6 +5,7 @@
     availableKernelModules = [ "e1000e" ];
     network.enable = true;
     network.ssh.enable = true;
+    network.ssh.hostKeys = map (f: f.path) config.services.openssh.hostKeys;
     network.ssh.authorizedKeys = [
       "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBILyD517o16vk3wOh2O4NNDJ0zoUOjaP4BSeonprVyurnw0HCuQ5T9rVhaDerI4Yndr85pSzqGU46LdzjibSwKA= ssh@theta"
     ];
