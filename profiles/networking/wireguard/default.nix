@@ -150,7 +150,7 @@ in {
          #    ipv6 = hosts.wireguard.ipv6.zeta;
          #    wideArea4 = [ hosts.ipv4.zeta.address ];
          #    wideArea6 = [ "${hosts.ipv6.zeta.prefix}:1" ];
-         #    publicKey = pubkeys.zeta;
+              publicKey = pubkeys.zeta;
             };
 
             theta = rec {
@@ -158,7 +158,7 @@ in {
          #    ipv6 = hosts.wireguard.ipv6.theta;
          #    routes4.zeta = [ "${hosts.wireguard.ipv4.theta}/24" ];
          #    routes6.zeta = [ "${hosts.wireguard.ipv6.theta}/112" ];
-         #    publicKey = pubkeys.theta;
+              publicKey = pubkeys.theta;
             };
 
             delta = rec {
@@ -167,14 +167,14 @@ in {
          #    wideArea4 = [ hosts.ipv4.r-home.address ];
          #    wideArea6 = [ hosts.ipv6.r-home.address ];
          #    localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
-         #    publicKey = pubkeys.delta;
+              publicKey = pubkeys.delta;
             };
 
             phi = rec {
          #    ipv4 = hosts.wireguard.ipv4.phi;
          #    ipv6 = hosts.wireguard.ipv6.phi;
          #    localArea = [ hosts.lan.phi ];
-         #    publicKey = pubkeys.phi;
+              publicKey = pubkeys.phi;
             };
           };
         };
