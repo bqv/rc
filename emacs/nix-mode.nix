@@ -16,7 +16,6 @@
           (interactive)
           (counsel-rg nil "/run/current-system/flake/input/${name}/" nil "[flake:${name}] rg: ")) '') inputs)}
 
-      (setq nix-repl-mode-hook (or nix-repl-mode-hook '())
       (add-to-list nix-repl-mode-hook 'company-mode)
       (define-key nix-repl-mode-map (kbd "<tab>") #'nix-repl-complete)
       (define-key nix-repl-mode-map (kbd "C-i") #'nix-repl-complete)
