@@ -42,9 +42,11 @@
   networking.interfaces.enp4s0u1 = {
     useDHCP = true;
     ipv4.addresses = [{ address = hosts.lan.delta-eth; prefixLength = 24; }];
+    ipv6.addresses = [ hosts.ipv6.delta ];
   }; systemd.services.network-link-enp4s0u1.before = [];
   networking.interfaces.enp0s20u3u1u2 = {
     useDHCP = true;
+    ipv6.addresses = [ hosts.ipv6.delta ];
   }; systemd.services.network-link-enp0s20u3u1u2.before = [];
 
   networking.nftables = let
