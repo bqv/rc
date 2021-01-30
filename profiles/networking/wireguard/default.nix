@@ -18,9 +18,6 @@ in {
       };
       currentPeer = lib.mkOption {
         type = lib.types.anything;
-        default = lib.mapAttrs (to: peers:
-          peers.${config.networking.hostName}
-        ) config.networking.wireguard.peers;
       };
       peers = lib.mkOption {
         type = with lib.types; attrsOf (attrsOf (submodule {
@@ -227,6 +224,9 @@ in {
           ${iptables}/bin/iptables -t nat -D POSTROUTING -s ${cfg.currentPeer.ip}/24 -o eno1 -j MASQUERADE
         '';
       };
+        currentPeer = lib.mapAttrs (to: peers:
+          peers.${config.networking.hostName}
+        ) config.networking.wireguard.peers;
     };
 
     systemd.services.wireguard-wg0.unitConfig.Before = [ "sshd.service" ];
