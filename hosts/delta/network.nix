@@ -40,10 +40,12 @@
   };
   networking.enableIPv6 = true;
   networking.defaultGateway = { address = hosts.lan.router; interface = "enp0s31f6"; };
+  networking.defaultGateway6 = { address = "${hosts.ipv6.r-home.address}"; interface = "enp0s31f6"; };
   networking.nameservers = [ "2a00:1098:2c::1" ];
   networking.interfaces.enp0s31f6 = {
- #  useDHCP = true;
+    useDHCP = true;
     ipv4.addresses = [{ address = hosts.lan.delta-wired; prefixLength = 24; }];
+    ipv4.routes = [{ address = hosts.lan.delta-wired; prefixLength = 24; }];
     ipv6.addresses = [ hosts.ipv6.delta ];
   };
   networking.interfaces.wlp0s20f3 = {
