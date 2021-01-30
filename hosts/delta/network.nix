@@ -39,7 +39,7 @@
     persistent = true;
   };
   networking.enableIPv6 = true;
-  networking.defaultGateway = { address = hosts.lan.router; prefixLength = 24; };
+  networking.defaultGateway = { address = hosts.lan.router; interface = "enp0s31f6"; };
   networking.nameservers = [ "2a00:1098:2c::1" ];
   networking.interfaces.enp0s31f6 = {
  #  useDHCP = true;
