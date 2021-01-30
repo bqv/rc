@@ -68,64 +68,30 @@ in {
           }) {
             zeta = rec {};
 
-            theta = rec {};
+            theta = rec {
+              routes = [ "${hosts.wireguard.ipv4.theta}/24" ];
+            };
 
             delta = rec {};
 
             phi = rec {};
           };
           theta = lib.mapAttrs (source: lib.recursiveUpdate {
-              ipv4 = {
-                address = hosts.wireguard.ipv4.zeta;
-              };
-              ipv6 = {
-                address = hosts.wireguard.ipv6.zeta;
-              };
+            ipv4 = {
+              address = hosts.wireguard.ipv4.zeta;
+            };
+            ipv6 = {
+              address = hosts.wireguard.ipv6.zeta;
+            };
             publicKey = pubkeys.theta;
           }) {
-            zeta = rec {
-              ipv4 = {
-                address = hosts.wireguard.ipv4.zeta;
-                host = hosts.ipv4.zeta.address;
-              };
-              ipv6 = {
-                address = hosts.wireguard.ipv6.zeta;
-                host = "${hosts.ipv6.zeta.prefix}:1";
-              };
-              publicKey = pubkeys.zeta;
-            };
+            zeta = rec {};
 
-            theta = rec {
-              ipv4 = {
-                address = hosts.wireguard.ipv4.theta;
-              };
-              ipv6 = {
-                address = hosts.wireguard.ipv6.theta;
-              };
-              publicKey = pubkeys.theta;
-            };
+            theta = rec {};
 
-            delta = rec {
-              ipv4 = {
-                address = hosts.wireguard.ipv4.delta;
-                host = hosts.ipv4.r-home.address;
-              };
-              ipv6 = {
-                address = hosts.wireguard.ipv6.delta;
-                host = hosts.ipv6.r-home.address;
-              };
-              publicKey = pubkeys.delta;
-            };
+            delta = rec {};
 
-            phi = rec {
-              ipv4 = {
-                address = hosts.wireguard.ipv4.phi;
-              };
-              ipv6 = {
-                address = hosts.wireguard.ipv6.phi;
-              };
-              publicKey = pubkeys.phi;
-            };
+            phi = rec {};
           };
           delta = lib.mapAttrs (source: lib.recursiveUpdate {
             publicKey = pubkeys.delta;
