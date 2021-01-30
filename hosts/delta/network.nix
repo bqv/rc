@@ -1,6 +1,10 @@
 { config, lib, pkgs, hosts, usr, ... }:
 
 {
+  boot.initrd = {
+    availableKernelModules = [ "e1000e" ];
+    network.enable = true;
+  };
   environment.systemPackages = with pkgs; [ dhcp dhcpcd ];
 
   networking.namespacing.enable = false;
