@@ -258,19 +258,19 @@ in {
         generatePrivateKeyFile = false;
         listenPort = cfg.currentPeer.port or 51820;
 
-        peers = let
-          endpointsOf = null;
-          peerable = null;
-        in lib.mapAttrsToList (hostname: hostcfg: {
-          inherit (hostcfg) publicKey;
-          allowedIPs = [ "${hostcfg.ip}/32" ]
-            ++ (hostcfg.routes.${config.networking.hostName} or []);
-        } // (lib.optionalAttrs (builtins.length (endpointsOf hostcfg) > 0) {
-          endpoint = "${builtins.head (endpointsOf hostcfg)}:${toString hostcfg.port or "51820"}";
-          persistentKeepalive = 30;
-        })) (lib.filterAttrs (hostname: _:
-          peerable config.networking.hostName hostname
-        ) cfg.peers);
+       #peers = let
+       #  endpointsOf = null;
+       #  peerable = null;
+       #in lib.mapAttrsToList (hostname: hostcfg: {
+       #  inherit (hostcfg) publicKey;
+       #  allowedIPs = [ "${hostcfg.ip}/32" ]
+       #    ++ (hostcfg.routes.${config.networking.hostName} or []);
+       #} // (lib.optionalAttrs (builtins.length (endpointsOf hostcfg) > 0) {
+       #  endpoint = "${builtins.head (endpointsOf hostcfg)}:${toString hostcfg.port or "51820"}";
+       #  persistentKeepalive = 30;
+       #})) (lib.filterAttrs (hostname: _:
+       #  peerable config.networking.hostName hostname
+       #) cfg.peers);
 
         # Allow wireguard to route traffic to the internet
        #postUp = ''
