@@ -27,22 +27,26 @@
   networking.useDHCP = false;
   networking.enableIPv6 = true;
   networking.defaultGateway = hosts.lan.router;
-  networking.nameservers = [ "9.9.9.9" "1.1.1.1" ];
+  networking.nameservers = [ "2a00:1098:2c::1" ];
   networking.interfaces.enp0s31f6 = {
     useDHCP = true;
     ipv4.addresses = [{ address = hosts.lan.delta-wired; prefixLength = 24; }];
+    ipv6.addresses = [ hosts.ipv6.delta ];
   };
   networking.interfaces.wlp0s20f3 = {
     useDHCP = true;
     ipv4.addresses = [{ address = hosts.lan.delta-wireless; prefixLength = 24; }];
+    ipv6.addresses = [ hosts.ipv6.delta ];
   };
 
   networking.interfaces.enp4s0u1 = {
     useDHCP = true;
     ipv4.addresses = [{ address = hosts.lan.delta-eth; prefixLength = 24; }];
+    ipv6.addresses = [ hosts.ipv6.delta ];
   }; systemd.services.network-link-enp4s0u1.before = [];
   networking.interfaces.enp0s20u3u1u2 = {
     useDHCP = true;
+    ipv6.addresses = [ hosts.ipv6.delta ];
   }; systemd.services.network-link-enp0s20u3u1u2.before = [];
 
   networking.nftables = let
