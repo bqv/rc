@@ -4,6 +4,8 @@
   boot.initrd = {
     availableKernelModules = [ "e1000e" ];
     network.enable = true;
+    network.ssh.enable = true;
+    network.ssh.authorizedKeys = config.users.users.bao.openssh.authorizedKeys.keys;
   };
   environment.systemPackages = with pkgs; [ dhcp dhcpcd ];
 
