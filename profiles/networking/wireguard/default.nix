@@ -245,7 +245,7 @@ in {
 
     networking.firewall.checkReversePath = "loose";
     networking.firewall.allowedUDPPorts =
-      lib.mkIf (cfg.currentPeer ? "port") [ cfg.currentPeer.port ];
+      lib.mkIf (cfg.currentPeer ? port) [ cfg.currentPeer.port ];
 
     networking.wireguard = {
       enable = true;
