@@ -24,7 +24,7 @@
         publicKeyFile = "${usr.secrets.keyDir}/deltassh/ssh_host_ed25519_key.pub";
       };
       "zeta" = {
-        hostNames = [ hosts.wireguard.zeta ];
+        hostNames = [ hosts.wireguard.ipv4.zeta ];
         publicKeyFile = "${usr.secrets.keyDir}/zetassh/ssh_host_ed25519_key.pub";
       };
     };

@@ -1,4 +1,4 @@
-{ config, lib, usr, hosts, ... }:
+{ config, pkgs, lib, usr, hosts, ... }:
 
 let
   pubkeys = usr.secrets.wireguard.pubkeys;
@@ -7,30 +7,30 @@ let
   network6 = 112;
   peers = {
     zeta = {
-      ip = hosts.wireguard.zeta;
-      ip6 = hosts.wireguard6.zeta;
-      wideArea = [ hosts.ipv4.zeta ]; # Note: Wireguard won't retry DNS resolution if it fails
+      ip = hosts.wireguard.ipv4.zeta;
+      ip6 = hosts.wireguard.ipv6.zeta;
+      wideArea = [ hosts.ipv4.zeta.address ]; # Note: Wireguard won't retry DNS resolution if it fails
       publicKey = pubkeys.zeta;
     };
 
     theta = {
-      ip = hosts.wireguard.theta;
-      ip6 = hosts.wireguard6.theta;
-      routes.zeta = [ hosts.cidr.ipv4 hosts.cidr.ipv6 ];
+      ip = hosts.wireguard.ipv4.theta;
+      ip6 = hosts.wireguard.ipv6.theta;
+      routes.zeta = [ ];
       publicKey = pubkeys.theta;
     };
 
     delta = {
-      ip = hosts.wireguard.delta;
-      ip6 = hosts.wireguard6.delta;
-      wideArea = [ hosts.ipv4.home ];
+      ip = hosts.wireguard.ipv4.delta;
+      ip6 = hosts.wireguard.ipv6.delta;
+      wideArea = [ hosts.ipv4.home.address ];
       localArea = [ hosts.lan.delta-wired hosts.lan.delta-wireless ];
       publicKey = pubkeys.delta;
     };
 
     phi = {
-      ip = hosts.wireguard.phi;
-      ip6 = hosts.wireguard6.phi;
+      ip = hosts.wireguard.ipv4.phi;
+      ip6 = hosts.wireguard.ipv6.phi;
       localArea = [ hosts.lan.phi ];
       publicKey = pubkeys.phi;
     };
@@ -45,12 +45,12 @@ let
     (peers.${to} ? publicKey)
   ];
 in {
+  environment.systemPackages = [ pkgs.wgvanity ];
   environment.etc."wireguard/private.key".source = config.secrets.files.wireguard.file;
 
+  networking.firewall.checkReversePath = "loose";
   networking.firewall.allowedUDPPorts =
     lib.mkIf (currentPeer ? "port") [ currentPeer.port ];
-
-  networking.wg-quick = { };
 
   networking.wireguard = {
     enable = true;
@@ -76,7 +76,7 @@ in {
     };
   };
 
-  systemd.services.wireguard-wg0.serviceConfig.Before = [ "sshd.service" ];
+  systemd.services.wireguard-wg0.unitConfig.Before = [ "sshd.service" ];
 
   secrets.files = {
     wireguard = {

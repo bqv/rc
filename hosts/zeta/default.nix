@@ -126,8 +126,6 @@
     extra-substituters = ipfs://
   '';
 
-  #powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-
   services.disnix.enable = true;
   dysnomia.enableLegacyModules = false;
 
@@ -143,12 +141,13 @@
   services.postgresql.authentication = lib.mkForce
     (let
       mastodon = config.services.mastodon.database;
+      inherit (config.services) matrix-synapse;
      in ''
       local all all              ident
       host  all all 127.0.0.1/32 md5
       host  all all ::1/128      md5
-      host  ${mastodon.name} ${mastodon.user} 10.6.0.0/24 trust
-      host  matrix-synapse matrix-synapse 10.7.0.0/24 trust
+      host  ${mastodon.name} ${mastodon.user} ${config.containers.mastodon.localAddress}/24 trust
+      host  ${matrix-synapse.database_name} ${matrix-synapse.database_user} ${config.containers.matrix.localAddress}/24 trust
      '');
   services.openssh.enable = true;
   services.openssh.forwardX11 = true;
@@ -157,7 +156,7 @@
   services.openssh.permitRootLogin = "without-password";
   services.openssh.listenAddresses = [
     { addr = "127.0.0.1"; port = 22; }
-    { addr = hosts.wireguard.zeta; port = 22; }
+    { addr = hosts.wireguard.ipv4.zeta; port = 22; }
     { addr = "10.1.0.1"; port = 22; }
   ];
   services.openssh.passwordAuthentication = false;

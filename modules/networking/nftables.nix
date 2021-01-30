@@ -213,7 +213,7 @@ in {
           policy = "accept";
         };
         default = dag.entryAfter ["loopback" "established-locally" "basic-icmp6" "basic-icmp" "ping6" "ping"] {
-          policy = "drop";
+          policy = lib.mkDefault "drop";
         };
       };
 

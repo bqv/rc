@@ -1,7 +1,7 @@
-{ naersk, flake }:
+{ naersk, withSources }:
 
 naersk.buildPackage rec {
   pname = "wireguard-vanity";
-  src = flake.inputs.wgvanity;
+  src = withSources.wgvanity;
   version = src.shortRev;
 }
