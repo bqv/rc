@@ -48,7 +48,7 @@
     ipv6.addresses = [ hosts.ipv6.delta ];
   };
   networking.interfaces.wlp0s20f3 = {
- #  useDHCP = true;
+    useDHCP = true;
     ipv4.addresses = [{ address = hosts.lan.delta-wireless; prefixLength = 24; }];
     ipv6.addresses = [ hosts.ipv6.delta ];
   };
