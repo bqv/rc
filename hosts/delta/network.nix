@@ -162,7 +162,7 @@
   };
 
   services.udev.extraRules = ''
-    SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="b8:ae:ed:7b:d9:e3", NAME="net0"
+    SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="b8:ae:ed:7b:d9:e3", NAME="net0"
     SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="00:21:5c:b7:6c:72", NAME="wifi0"
   '';
 
