@@ -57,6 +57,8 @@ in rec {
 
   lispPackages = recurseIntoAttrs prev.lispPackages;
 
+  mactelnet = prev.callPackage ./applications/networking/mactelnet { };
+
   miraclecast = prev.callPackage ./os-specific/linux/gnome-network-displays/default.nix { };
 
   nodePackages = recurseIntoAttrs prev.nodePackages;
@@ -76,6 +78,8 @@ in rec {
   vervis = prev.callPackage ./applications/version-management/vervis { inherit fetchdarcs; };
 
   wgvanity = prev.callPackage ./tools/system/wgvanity { };
+
+  wold = prev.callPackage ./applications/networking/wold { };
 
   yacy = prev.callPackage ./servers/yacy { };
 }
