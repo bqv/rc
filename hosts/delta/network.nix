@@ -1,6 +1,20 @@
 { config, lib, pkgs, hosts, usr, ... }:
 
 {
+  boot.initrd = {
+    postDeviceCommands = ''
+      ${pkgs.iproute2}/bin/ip addr add ${hosts.ipv6.local.prefix}:254/64 dev enp4s0u1 || true
+    '';
+    availableKernelModules = [ "e1000e" ];
+    network.enable = true;
+    network.flushBeforeStage2 = false;
+    network.ssh.enable = true;
+    network.ssh.hostKeys = map (f: f.path) config.services.openssh.hostKeys;
+    network.ssh.authorizedKeys = [
+      "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBILyD517o16vk3wOh2O4NNDJ0zoUOjaP4BSeonprVyurnw0HCuQ5T9rVhaDerI4Yndr85pSzqGU46LdzjibSwKA= ssh@theta"
+    ];
+  };
+
   environment.systemPackages = with pkgs; [ dhcp dhcpcd ];
 
   networking.namespacing.enable = false;
@@ -15,39 +29,48 @@
     };
     networks = lib.mkIf (!useIwd) usr.secrets.wifi.networks;
 
-    interfaces = [ "wlp0s20f3" ];
+    interfaces = [ "wlan0" ];
     userControlled.enable = true;
   };
 
-  networking.useNetworkd = true;
-  users.users.resolved.uid = 57; # unused: was network-manager
-  systemd.services.systemd-resolved.environment = {
-    LD_LIBRARY_PATH = "${lib.getLib pkgs.libidn2}/lib";
-  };
+ #networking.useNetworkd = true;
+ #users.users.resolved.uid = 57; # unused: was network-manager
+ #systemd.services.systemd-resolved.environment = {
+ #  LD_LIBRARY_PATH = "${lib.getLib pkgs.libidn2}/lib";
+ #};
   networking.useDHCP = false;
+  networking.dhcpcd = {
+    enable = true;
+    persistent = true;
+  };
   networking.enableIPv6 = true;
-  networking.defaultGateway = hosts.lan.router;
+  networking.defaultGateway = { address = hosts.lan.router; interface = "lan0"; };
+  networking.defaultGateway6 = { address = "${hosts.ipv6.home.prefix}:1"; interface = "lan0"; };
   networking.nameservers = [ "2a00:1098:2c::1" ];
-  networking.interfaces.enp0s31f6 = {
-    useDHCP = true;
-    ipv4.addresses = [{ address = hosts.lan.delta-wired; prefixLength = 24; }];
-    ipv6.addresses = [ hosts.ipv6.delta ];
-  };
-  networking.interfaces.wlp0s20f3 = {
-    useDHCP = true;
-    ipv4.addresses = [{ address = hosts.lan.delta-wireless; prefixLength = 24; }];
-    ipv6.addresses = [ hosts.ipv6.delta ];
-  };
 
-  networking.interfaces.enp4s0u1 = {
-    useDHCP = true;
-    ipv4.addresses = [{ address = hosts.lan.delta-eth; prefixLength = 24; }];
-    ipv6.addresses = [ hosts.ipv6.delta ];
-  }; systemd.services.network-link-enp4s0u1.before = [];
-  networking.interfaces.enp0s20u3u1u2 = {
-    useDHCP = true;
-    ipv6.addresses = [ hosts.ipv6.delta ];
-  }; systemd.services.network-link-enp0s20u3u1u2.before = [];
+  networking.interfaces = rec {
+    lan0 = {
+      useDHCP = true;
+      ipv4.addresses = [{ address = hosts.lan.delta-wired; prefixLength = 24; }];
+      ipv6.addresses = [ hosts.ipv6.delta ];
+    }; enp0s31f6 = lan0; eno2 = lan0;
+    wlan0 = {
+      useDHCP = true;
+      ipv4.addresses = [{ address = hosts.lan.delta-wireless; prefixLength = 24; }];
+      ipv6.addresses = [ hosts.ipv6.delta ];
+    }; wlp3s0 = wlan0;
+
+    enp4s0u1 = {
+      useDHCP = false;
+      ipv4.addresses = [{ address = hosts.lan.delta-eth; prefixLength = 24; }];
+      ipv6.addresses = [ hosts.ipv6.delta ];
+    };
+    enp0s20u3u1u2 = {
+      useDHCP = true;
+    };
+  };
+  systemd.services.network-link-enp4s0u1.before = [];
+  systemd.services.network-link-enp0s20u3u1u2.before = [];
 
   networking.nftables = let
     inherit (usr) dag;
@@ -132,18 +155,14 @@
     };
   };
 
-  assertions = [
-    {
-      assertion = with config; networking.useDHCP == false;
-      message = ''
-        The global useDHCP flag is deprecated. Per-interface useDHCP will be mandatory in the future.
-      '';
-    }
-  ];
+  services.udev.extraRules = ''
+    SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="b8:ae:ed:7b:d9:e3", NAME="lan0"
+    SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="00:21:5c:b7:6c:72", NAME="wlan0"
+  '';
 
-  # Disable `systemd-networkd-wait-online` - it's just too buggy
-  systemd.services.systemd-networkd-wait-online.serviceConfig.ExecStart = lib.mkIf config.networking.useNetworkd [
-    ""
-    "${pkgs.coreutils}/bin/sleep 10"
-  ];
+ ## Disable `systemd-networkd-wait-online` - it's just too buggy
+ #systemd.services.systemd-networkd-wait-online.serviceConfig.ExecStart = lib.mkIf config.networking.useNetworkd [
+ #  ""
+ #  "${pkgs.coreutils}/bin/sleep 10"
+ #];
 }
