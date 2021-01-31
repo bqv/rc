@@ -49,21 +49,22 @@
     lan0 = {
       useDHCP = true;
       ipv4.addresses = [{ address = hosts.lan.delta-wired; prefixLength = 24; }];
-      ipv6.addresses = [ hosts.ipv6.delta ];
+      ipv6.addresses = [ hosts.ipv6.delta-wired ];
     }; enp0s31f6 = lan0; eno2 = lan0;
     wlan0 = {
       useDHCP = true;
       ipv4.addresses = [{ address = hosts.lan.delta-wireless; prefixLength = 24; }];
-      ipv6.addresses = [ hosts.ipv6.delta ];
+      ipv6.addresses = [ hosts.ipv6.delta-wireless ];
     }; wlp3s0 = wlan0;
 
     enp4s0u1 = {
       useDHCP = false;
       ipv4.addresses = [{ address = hosts.lan.delta-eth; prefixLength = 24; }];
-      ipv6.addresses = [ hosts.ipv6.delta ];
+      ipv6.addresses = [ hosts.ipv6.delta-eth ];
     };
     enp0s20u3u1u2 = {
       useDHCP = true;
+      ipv6.addresses = [ hosts.ipv6.usb-eth ];
     };
   };
   systemd.services.network-link-enp4s0u1.before = [];

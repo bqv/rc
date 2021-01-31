@@ -1,4 +1,4 @@
-{ config, lib, pkgs, usr, system, hosts, ... }:
+{ config, lib, pkgs, usr, flake, system, hosts, ... }:
 
 {
   imports = [
@@ -58,6 +58,9 @@
     "sd_mod" "sr_mod" "nvme" "amdgpu"
   ];
   boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.initrd.secrets = {
+    "/etc/nixos" = lib.cleanSource ./../..;
+  };
   boot.kernelModules = [ "kvm-intel" "amdgpu" "fuse" ];
   boot.kernelParams = [ "mce=3" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
