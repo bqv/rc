@@ -9,7 +9,6 @@
     ../../profiles/misc/odbc.nix
     ../../profiles/security/sudo.nix
     ../../profiles/security/apparmor
-   #../../profiles/security/selinux
     ../../profiles/services/syncthing
     ../../profiles/services/aria2
     ../../profiles/services/guix
@@ -20,7 +19,6 @@
     ../../profiles/networking/wireguard
     ../../profiles/networking/mdns.nix
     ../../profiles/sound/pipewire.nix
-   #../../profiles/sound/pulse.nix
     ../../profiles/virtualization/anbox
     ../../profiles/graphical
     ../../profiles/games
@@ -59,13 +57,13 @@
     "xhci_pci" "ehci_pci" "ahci" "usbcore"
     "sd_mod" "sr_mod" "nvme" "amdgpu"
   ];
-  boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.initrd.kernelModules = [ "amdgpu" "snd_hda_intel" ];
   boot.kernelModules = [ "kvm-intel" "amdgpu" "fuse" ];
   boot.kernelParams = [ "mce=3" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
   boot.binfmt.emulatedSystems = [ "armv7l-linux" "aarch64-linux" ];
   boot.postBootCommands = ''
-    echo 0000:04:00.0 > /sys/bus/pci/drivers/xhci_hcd/unbind
+   #echo 0000:04:00.0 > /sys/bus/pci/drivers/xhci_hcd/unbind
   ''; # usb4 is faulty
   boot.tmpOnTmpfs = false;
 
