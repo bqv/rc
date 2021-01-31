@@ -57,7 +57,7 @@
     "xhci_pci" "ehci_pci" "ahci" "usbcore"
     "sd_mod" "sr_mod" "nvme" "amdgpu"
   ];
-  boot.initrd.kernelModules = [ "amdgpu" "snd_hda_intel" ];
+  boot.initrd.kernelModules = [ "amdgpu" ];
   boot.kernelModules = [ "kvm-intel" "amdgpu" "fuse" ];
   boot.kernelParams = [ "mce=3" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
@@ -258,6 +258,8 @@
 
     giara lbry
     hnix
+
+    mactelnet wold
   ];
 
   environment.etc."nix/id_zeta.ed25519".source = "${usr.secrets.keyDir}/nix/id_zeta.ed25519";

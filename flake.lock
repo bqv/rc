@@ -951,6 +951,22 @@
         "type": "github"
       }
     },
+    "mactelnet": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1585607597,
+        "narHash": "sha256-oPu3TgRtERld3iT5/WiIvUDosz3h7Bat09SR2g4h04I=",
+        "owner": "haakonnessjoen",
+        "repo": "mac-telnet",
+        "rev": "4698ba0223cc6add38b3b33be8367f635614aaa5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "haakonnessjoen",
+        "repo": "mac-telnet",
+        "type": "github"
+      }
+    },
     "master": {
       "locked": {
         "lastModified": 1610850544,
@@ -1656,6 +1672,7 @@
         "ivy-exwm": "ivy-exwm",
         "large": "large",
         "lisp": "lisp",
+        "mactelnet": "mactelnet",
         "master": "master",
         "matrix-nio": "matrix-nio",
         "mfs-replace-root": "mfs-replace-root",
@@ -1696,6 +1713,7 @@
         "weechat-matrix": "weechat-matrix",
         "wgvanity": "wgvanity",
         "wld": "wld",
+        "wold": "wold",
         "xontribs": "xontribs",
         "zsh-pure": "zsh-pure"
       }
@@ -2071,6 +2089,22 @@
       "original": {
         "owner": "michaelforney",
         "repo": "wld",
+        "type": "github"
+      }
+    },
+    "wold": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1460098545,
+        "narHash": "sha256-qLzBLRmZ1cbq/j/qNO0q5fC8G3w4RGV5mwwZXtYMKzI=",
+        "owner": "pauliuszaleckas",
+        "repo": "wold",
+        "rev": "2ac0589a139ac868e01bee640fb0454c2ea9fc84",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pauliuszaleckas",
+        "repo": "wold",
         "type": "github"
       }
     },
