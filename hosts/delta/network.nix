@@ -2,9 +2,6 @@
 
 {
   boot.initrd = {
-    postDeviceCommands = ''
-      ${pkgs.iproute2}/bin/ip addr add ${hosts.ipv6.local.prefix}:254/64 dev enp4s0u1 || true
-    '';
     availableKernelModules = [ "xhci_hcd" ];
     network.enable = true;
     network.flushBeforeStage2 = false;
@@ -44,8 +41,8 @@
     persistent = true;
   };
   networking.enableIPv6 = true;
-  networking.defaultGateway = { address = hosts.lan.router; interface = "lan0"; };
-  networking.defaultGateway6 = { address = "${hosts.ipv6.home.prefix}:1"; interface = "lan0"; };
+  networking.defaultGateway = { address = hosts.lan.router; };
+  networking.defaultGateway6 = { address = "${hosts.ipv6.home.prefix}:1"; };
   networking.nameservers = [ "2a00:1098:2c::1" ];
 
   networking.interfaces = rec {
