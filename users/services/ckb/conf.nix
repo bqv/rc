@@ -102,7 +102,7 @@
                       UseRealNames = true;
                   };
               };
-              Brightness = 0;
+              Brightness = 1;
               KeyMap = "K95P GB";
               Keys = {
                 "0" = "#ffffff";
@@ -383,7 +383,7 @@
                     UseRealNames = true;
                 };
               };
-              Brightness = 0;
+              Brightness = 1;
               KeyMap = "K95P GB";
               Keys = {
                 "0" = "#ffffff";
@@ -694,7 +694,7 @@
                       UseRealNames = true;
                   };
               };
-              Brightness = 0;
+              Brightness = 1;
               KeyMap = "K95P GB";
               Keys = {
                 "0" = "#aa00ff";
@@ -961,7 +961,7 @@
               HwModified = "140ffc1";
               Lighting = {
                 Animations = { List = "@Invalid()"; };
-                Brightness = 0;
+                Brightness = 1;
                 KeyMap = "SCIMITAR GB";
                 Keys = {
                   back = "#000000";
@@ -1154,7 +1154,7 @@
                         UseRealNames = true;
                     };
                 };
-                Brightness = 0;
+                Brightness = 1;
                 KeyMap = "SCIMITAR GB";
                 Keys = {
                   "0" = "#ffffff";
@@ -1436,7 +1436,7 @@
                       UseRealNames = true;
                   };
                 };
-                Brightness = 0;
+                Brightness = 1;
                 KeyMap = "SCIMITAR GB";
                 Keys = {
                   "0" = "#ffffff";
@@ -1746,7 +1746,7 @@
                         UseRealNames = true;
                     };
                 };
-                Brightness = 0;
+                Brightness = 1;
                 KeyMap = "SCIMITAR GB";
                 Keys = {
                   "0" = "#aa00ff";
