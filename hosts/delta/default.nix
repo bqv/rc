@@ -1,4 +1,4 @@
-{ config, lib, pkgs, usr, system, hosts, ... }:
+{ config, lib, pkgs, usr, flake, system, hosts, ... }:
 
 {
   imports = [
@@ -59,7 +59,7 @@
   ];
   boot.initrd.kernelModules = [ "amdgpu" ];
   boot.initrd.secrets = {
-    "/etc/nixos" = lib.cleanSource usr.inputs.self;
+    "/etc/nixos" = lib.cleanSource flake.inputs.self;
   };
   boot.kernelModules = [ "kvm-intel" "amdgpu" "fuse" ];
   boot.kernelParams = [ "mce=3" ];
