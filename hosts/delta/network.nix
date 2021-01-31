@@ -3,6 +3,7 @@
 {
   boot.initrd = {
     postDeviceCommands = ''
+      ${pkgs.iproute2}/bin/ip addr add 2a02:8010:674f::254/64 dev lan0 || true
       ${pkgs.iproute2}/bin/ip addr add 2a02:8010:674f::254/64 dev eno2 || true
       ${pkgs.iproute2}/bin/ip addr add 2a02:8010:674f::254/64 dev enp0s31f6 || true
     '';
@@ -30,7 +31,7 @@
     };
     networks = lib.mkIf (!useIwd) usr.secrets.wifi.networks;
 
-    interfaces = [ "wlp0s20f3" ];
+    interfaces = [ "wlan0" ];
     userControlled.enable = true;
   };
 
@@ -48,7 +49,7 @@
   networking.defaultGateway = { address = hosts.lan.router; interface = "enp0s31f6"; };
   networking.defaultGateway6 = { address = "${hosts.ipv6.home.prefix}:1"; interface = "enp0s31f6"; };
   networking.nameservers = [ "2a00:1098:2c::1" ];
-  networking.interfaces.eno2 = {
+  networking.interfaces.lan0 = {
     useDHCP = true;
     ipv4.addresses = [{ address = hosts.lan.delta-wired; prefixLength = 24; }];
     ipv6.addresses = [ hosts.ipv6.delta ];
@@ -58,22 +59,12 @@
     ipv4.addresses = [{ address = hosts.lan.delta-wireless; prefixLength = 24; }];
     ipv6.addresses = [ hosts.ipv6.delta ];
   };
-  networking.interfaces.enp0s31f6 = {
-    useDHCP = true;
-    ipv4.addresses = [{ address = hosts.lan.delta-wired; prefixLength = 24; }];
-    ipv6.addresses = [ hosts.ipv6.delta ];
-  };
-  networking.interfaces.wlp0s20f3 = {
-    useDHCP = true;
-    ipv4.addresses = [{ address = hosts.lan.delta-wireless; prefixLength = 24; }];
-    ipv6.addresses = [ hosts.ipv6.delta ];
-  };
 
-  networking.interfaces.enp4s0u1 = {
-    useDHCP = true;
+  networking.interfaces.patch0 = {
+    useDHCP = false;
     ipv4.addresses = [{ address = hosts.lan.delta-eth; prefixLength = 24; }];
     ipv6.addresses = [ hosts.ipv6.delta ];
-  }; systemd.services.network-link-enp4s0u1.before = [];
+  }; systemd.services.network-link-patch0.before = [];
   networking.interfaces.enp0s20u3u1u2 = {
     useDHCP = true;
   }; systemd.services.network-link-enp0s20u3u1u2.before = [];
@@ -162,8 +153,9 @@
   };
 
   services.udev.extraRules = ''
-    SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="b8:ae:ed:7b:d9:e3", NAME="net0"
-    SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="00:21:5c:b7:6c:72", NAME="wifi0"
+    SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="b8:ae:ed:7b:d9:e3", NAME="lan0"
+    SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="00:21:5c:b7:6c:72", NAME="wlan0"
+    SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="00:e0:4c:67:00:ba", NAME="patch0"
   '';
 
   # Disable `systemd-networkd-wait-online` - it's just too buggy
