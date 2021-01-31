@@ -2,14 +2,20 @@
 
 {
   boot.initrd = {
+    postDeviceCommands = ''
+      ${pkgs.iproute2}/bin/ip addr add 2a02:8010:674f::254/64 dev eno2 || true
+      ${pkgs.iproute2}/bin/ip addr add 2a02:8010:674f::254/64 dev enp0s31f6 || true
+    '';
     availableKernelModules = [ "e1000e" ];
     network.enable = true;
+    network.flushBeforeStage2 = false;
     network.ssh.enable = true;
     network.ssh.hostKeys = map (f: f.path) config.services.openssh.hostKeys;
     network.ssh.authorizedKeys = [
       "ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBILyD517o16vk3wOh2O4NNDJ0zoUOjaP4BSeonprVyurnw0HCuQ5T9rVhaDerI4Yndr85pSzqGU46LdzjibSwKA= ssh@theta"
     ];
   };
+
   environment.systemPackages = with pkgs; [ dhcp dhcpcd ];
 
   networking.namespacing.enable = false;
@@ -42,6 +48,16 @@
   networking.defaultGateway = { address = hosts.lan.router; interface = "enp0s31f6"; };
   networking.defaultGateway6 = { address = "${hosts.ipv6.home.prefix}:1"; interface = "enp0s31f6"; };
   networking.nameservers = [ "2a00:1098:2c::1" ];
+  networking.interfaces.eno2 = {
+    useDHCP = true;
+    ipv4.addresses = [{ address = hosts.lan.delta-wired; prefixLength = 24; }];
+    ipv6.addresses = [ hosts.ipv6.delta ];
+  };
+  networking.interfaces.wlan0 = {
+    useDHCP = true;
+    ipv4.addresses = [{ address = hosts.lan.delta-wireless; prefixLength = 24; }];
+    ipv6.addresses = [ hosts.ipv6.delta ];
+  };
   networking.interfaces.enp0s31f6 = {
     useDHCP = true;
     ipv4.addresses = [{ address = hosts.lan.delta-wired; prefixLength = 24; }];
@@ -145,14 +161,10 @@
     };
   };
 
-  assertions = [
-    {
-      assertion = with config; networking.useDHCP == false;
-      message = ''
-        The global useDHCP flag is deprecated. Per-interface useDHCP will be mandatory in the future.
-      '';
-    }
-  ];
+  services.udev.extraRules = ''
+    SUBSYSTEM=="net", ACTION=="add", DRIVERS=="?*", ATTR{address}=="b8:ae:ed:7b:d9:e3", KERNEL=="eth*", NAME="net0"
+    SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="00:21:5c:b7:6c:72", NAME="wifi0"
+  '';
 
   # Disable `systemd-networkd-wait-online` - it's just too buggy
  #systemd.services.systemd-networkd-wait-online.serviceConfig.ExecStart = lib.mkIf config.networking.useNetworkd [
