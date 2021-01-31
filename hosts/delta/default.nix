@@ -59,7 +59,7 @@
   ];
   boot.initrd.kernelModules = [ "amdgpu" ];
   boot.initrd.secrets = {
-    "/etc/nixos" = lib.cleanSource flake;
+    "/etc/nixos" = lib.cleanSource ./../..;
   };
   boot.kernelModules = [ "kvm-intel" "amdgpu" "fuse" ];
   boot.kernelParams = [ "mce=3" ];
