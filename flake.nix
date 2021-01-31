@@ -126,6 +126,8 @@
     emacs-straight = { url = "github:raxod502/straight.el"; flake = false; };
     cloudflare-cli = { url = "github:danielpigott/cloudflare-cli"; flake = false; };
     wgvanity = { url = "github:warner/wireguard-vanity-address"; flake = false; };
+    wold = { url = "github:pauliuszaleckas/wold"; flake = false; };
+    mactelnet = { url = "github:haakonnessjoen/mac-telnet"; flake = false; };
   };
 
   outputs = inputs: with builtins; let
@@ -286,7 +288,7 @@
 
                   inherit (withWeechat) weechatScripts;
                   inherit (withRel2003) bcachefs-tools; # to match kernel ver
-                  inherit (withNaersk.withSelfFlake) wgvanity;
+                  inherit (withNaersk.withSelfFlake) wgvanity wold mactelnet;
                 };
               in overlaySets // overlayPkgs // {
                 inherit overlaySets overlayPkgs;

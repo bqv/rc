@@ -2,12 +2,7 @@
 
 {
   boot.initrd = {
-    postDeviceCommands = ''
-      ${pkgs.iproute2}/bin/ip addr add 2a02:8010:674f::254/64 dev lan0 || true
-      ${pkgs.iproute2}/bin/ip addr add 2a02:8010:674f::254/64 dev eno2 || true
-      ${pkgs.iproute2}/bin/ip addr add 2a02:8010:674f::254/64 dev enp0s31f6 || true
-    '';
-    availableKernelModules = [ "e1000e" ];
+    availableKernelModules = [ "xhci_hcd" ];
     network.enable = true;
     network.flushBeforeStage2 = false;
     network.ssh.enable = true;
@@ -46,28 +41,33 @@
     persistent = true;
   };
   networking.enableIPv6 = true;
-  networking.defaultGateway = { address = hosts.lan.router; interface = "enp0s31f6"; };
-  networking.defaultGateway6 = { address = "${hosts.ipv6.home.prefix}:1"; interface = "enp0s31f6"; };
+  networking.defaultGateway = { address = hosts.lan.router; };
+  networking.defaultGateway6 = { address = "${hosts.ipv6.home.prefix}:1"; };
   networking.nameservers = [ "2a00:1098:2c::1" ];
-  networking.interfaces.lan0 = {
-    useDHCP = true;
-    ipv4.addresses = [{ address = hosts.lan.delta-wired; prefixLength = 24; }];
-    ipv6.addresses = [ hosts.ipv6.delta ];
-  };
-  networking.interfaces.wlan0 = {
-    useDHCP = true;
-    ipv4.addresses = [{ address = hosts.lan.delta-wireless; prefixLength = 24; }];
-    ipv6.addresses = [ hosts.ipv6.delta ];
-  };
 
-  networking.interfaces.patch0 = {
-    useDHCP = false;
-    ipv4.addresses = [{ address = hosts.lan.delta-eth; prefixLength = 24; }];
-    ipv6.addresses = [ hosts.ipv6.delta ];
-  }; systemd.services.network-link-patch0.before = [];
-  networking.interfaces.enp0s20u3u1u2 = {
-    useDHCP = true;
-  }; systemd.services.network-link-enp0s20u3u1u2.before = [];
+  networking.interfaces = rec {
+    lan0 = {
+      useDHCP = true;
+      ipv4.addresses = [{ address = hosts.lan.delta-wired; prefixLength = 24; }];
+      ipv6.addresses = [ hosts.ipv6.delta ];
+    }; enp0s31f6 = lan0; eno2 = lan0;
+    wlan0 = {
+      useDHCP = true;
+      ipv4.addresses = [{ address = hosts.lan.delta-wireless; prefixLength = 24; }];
+      ipv6.addresses = [ hosts.ipv6.delta ];
+    }; wlp3s0 = wlan0;
+
+    enp4s0u1 = {
+      useDHCP = false;
+      ipv4.addresses = [{ address = hosts.lan.delta-eth; prefixLength = 24; }];
+      ipv6.addresses = [ hosts.ipv6.delta ];
+    };
+    enp0s20u3u1u2 = {
+      useDHCP = true;
+    };
+  };
+  systemd.services.network-link-enp4s0u1.before = [];
+  systemd.services.network-link-enp0s20u3u1u2.before = [];
 
   networking.nftables = let
     inherit (usr) dag;
@@ -155,10 +155,9 @@
   services.udev.extraRules = ''
     SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="b8:ae:ed:7b:d9:e3", NAME="lan0"
     SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="00:21:5c:b7:6c:72", NAME="wlan0"
-    SUBSYSTEM=="net", ACTION=="add", ATTR{address}=="00:e0:4c:67:00:ba", NAME="patch0"
   '';
 
-  # Disable `systemd-networkd-wait-online` - it's just too buggy
+ ## Disable `systemd-networkd-wait-online` - it's just too buggy
  #systemd.services.systemd-networkd-wait-online.serviceConfig.ExecStart = lib.mkIf config.networking.useNetworkd [
  #  ""
  #  "${pkgs.coreutils}/bin/sleep 10"
