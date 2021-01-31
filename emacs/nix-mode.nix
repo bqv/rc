@@ -16,14 +16,9 @@
           (interactive)
           (counsel-rg nil "/run/current-system/flake/input/${name}/" nil "[flake:${name}] rg: ")) '') inputs)}
 
-      (defun nix-repl-complete ()
-        (interactive)
-        (save-excursion
-          (term-send-raw-string
-           (concat (substring-no-properties (buffer-substring (point-at-bol) (point)))
-                   "\C-i\C-a\C-k"))))
-      (define-key nix-repl-mode-map (kbd "<tab>") #'nix-repl-complete)
-      (define-key nix-repl-mode-map (kbd "C-i") #'nix-repl-complete)
+      (add-to-list 'nix-repl-mode-hook 'company-mode)
+      (define-key nix-repl-mode-map (kbd "<tab>") #'company-complete)
+      (define-key nix-repl-mode-map (kbd "C-i") #'company-complete)
 
       (defun nixos-configuration-help ()
         (interactive)
