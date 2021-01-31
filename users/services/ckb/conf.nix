@@ -1999,6 +1999,7 @@
     };
     Popups = { BGWarning = true; };
     Program = {
+      GlobalBrightness = 1;
       CkbMigrationChecked = true;
       CkbNextIniMigrationChecked = true;
       DidLoginItem = true;
