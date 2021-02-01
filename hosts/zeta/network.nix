@@ -35,8 +35,8 @@ in {
         ${hosts.ipv6.zeta.prefix} = hosts.ipv6.zeta;
       } // hosts.ipv6.zeta.subnets;
     in
-      lib.mapAttrsToList (address: { length, ... }: {
-        inherit address;
+      lib.mapAttrsToList (prefix: { length, ... }: {
+        address = "${prefix}:1";
         prefixLength = length;
       }) addrs;
     ipv6.routes = [
