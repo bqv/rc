@@ -287,6 +287,9 @@
                   inherit (withWeechat) weechatScripts;
                   inherit (withRel2003) bcachefs-tools; # to match kernel ver
                   inherit (withNaersk.withSelfFlake) wgvanity wold mactelnet;
+
+                  inherit (inputs.small.legacyPackages.${system}) firefox firefox-unwrapped;
+                  inherit (inputs.large.legacyPackages.${system}) thunderbird obs-studio webkitgtk chromium qemu;
                   plasma5 = plasma5Packages;
                   inherit (libsForQt5) kdeFrameworks;
                 };
@@ -456,10 +459,6 @@
             '';
             src = builtins.toPath "${inputs.construct}/.";
           });
-        };
-        delay = final: prev: let inherit (prev) system; in {
-          inherit (inputs.small.legacyPackages.${system}) firefox firefox-unwrapped;
-          inherit (inputs.large.legacyPackages.${system}) thunderbird obs-studio webkitgtk chromium qemu;
         };
       }
      #(flakeOverlay { flake = "lg400"; name = "delta/system-400-link"; })
