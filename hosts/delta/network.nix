@@ -171,6 +171,7 @@
 
   systemd.services.mactelnet = {
     description = "MacTelnet Server";
+    environment.PATH = "/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin";
     serviceConfig.ExecStart = "${pkgs.mactelnet}/bin/mactelnetd -fn";
     wantedBy = [ "multi-user.target" ];
   };
