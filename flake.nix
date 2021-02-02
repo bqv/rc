@@ -288,8 +288,8 @@
                   inherit (withRel2003) bcachefs-tools; # to match kernel ver
                   inherit (withNaersk.withSelfFlake) wgvanity wold mactelnet;
 
-                  inherit (withSmall) firefox firefox-unwrapped;
-                  inherit (withSmall) thunderbird obs-studio webkitgtk chromium qemu;
+                 #inherit (withSmall) firefox firefox-unwrapped;
+                 #inherit (withSmall) thunderbird obs-studio webkitgtk chromium qemu;
                   plasma5 = plasma5Packages;
                   inherit (libsForQt5) kdeFrameworks;
                 };
