@@ -261,7 +261,7 @@
             in {
               permanent = false;
               regex = "^(https?)://rc.${domains.home}/(.*)";
-              replacement = "\${1}://dev.${domains.home}/nixrc/live/\${2}";
+              replacement = "\${1}://dev.${domains.home}/nixrc/\${2}";
             };
           };
          #Middleware00 = { addPrefix = { prefix = "foobar"; }; };
