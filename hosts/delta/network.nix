@@ -134,6 +134,11 @@
           # chromecast: 32768-61000
           policy = "accept";
         };
+        mactelnet = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "udp"; field = "dport";
+          value = 20561;
+          policy = "accept";
+        };
         ssdp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
           protocol = "udp"; field = "dport";
           value = 1900;
