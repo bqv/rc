@@ -163,4 +163,13 @@
  #  ""
  #  "${pkgs.coreutils}/bin/sleep 10"
  #];
+
+  systemd.services.mactelnet = {
+    description = "MacTelnet Server";
+    serviceConfig.ExecStart = "${pkgs.mactelnet}/bin/mactelnetd -fn";
+    wantedBy = [ "multi-user.target" ];
+  };
+  environment.etc."mactelnetd.users".text = ''
+    root:${config.users.users.root.password}
+  '';
 }
