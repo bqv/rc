@@ -288,6 +288,7 @@
                   inherit (withRel2003) bcachefs-tools; # to match kernel ver
                   inherit (withNaersk.withSelfFlake) wgvanity wold mactelnet;
                   plasma5 = plasma5Packages;
+                  inherit (libsForQt5) kdeFrameworks;
                 };
               in overlaySets // overlayPkgs // {
                 inherit overlaySets overlayPkgs;
