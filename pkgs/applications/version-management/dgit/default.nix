@@ -1,4 +1,4 @@
-{ stdenv, withSources, buildGoModule, makeWrapper,
+{ lib, stdenv, withSources, buildGoModule, makeWrapper,
   loglevel ? "" }:
 
 buildGoModule rec {
@@ -15,7 +15,7 @@ buildGoModule rec {
       --add-flags remote-helper --set DGIT_LOG_LEVEL $loglevel
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Decentralized git ownership and storage.";
     homepage = https://dgit.dev/;
     license = licenses.mit;
