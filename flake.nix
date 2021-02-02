@@ -26,7 +26,7 @@
     pr93659.url = "github:ju1m/nixpkgs/security.pass";                             #|/ Reqs
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
     pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
-    pr110381.url = "github:svanderburg/nixpkgs/update-skaware-packages";           #||
+    pr110381.url = "github:svanderburg/nixpkgs";                                   #||
 
     nix.url = "github:nixos/nix/progress-bar";                #|- Nix
     nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; #|  ^^^IPFS
