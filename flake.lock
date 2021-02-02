@@ -1386,10 +1386,10 @@
     },
     "priv": {
       "locked": {
-        "narHash": "sha256-FTSd+HHIWlzBMGBLdNHP33TPOHr0DcFW5Ux4dv2RnsU=",
+        "narHash": "sha256-BAez5PId3CorMwhafpWwaWSK4lHeXNmSB4OlDSQ3Ji0=",
         "ref": "default",
-        "rev": "bca9a86f895f0546e22315d3198c4640c26af87e",
-        "revCount": 13,
+        "rev": "1ef050868075d113189e0d50fb9c0e508be50569",
+        "revCount": 14,
         "type": "hg",
         "url": "ssh://bao@delta/../../srv/hg/nixpriv"
       },
