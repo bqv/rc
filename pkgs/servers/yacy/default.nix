@@ -1,4 +1,4 @@
-{ stdenv, fetchurl }:
+{ lib, stdenv, fetchurl }:
 
 stdenv.mkDerivation rec {
   pname         = "yacy";
@@ -15,7 +15,7 @@ stdenv.mkDerivation rec {
   installPhase = ''
     mkdir $out
     tar -f $src -C $out -xz
-    
+
     cd $out/yacy
     sed -i "/YACY_PARENT_DATA_PATH=..dirname/d" ./startYACY.sh
     sed -i "/cd .dirname/d" ./stopYACY.sh
@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
     cat << EOF > ./env.sh
       JAVA_ARGS="-server -Xss256k -XX:MaxPermSize=256m -XX:ReservedCodeCacheSize=1024m -XX:+UseConcMarkSweepGC -XX:-UseGCOverheadLimit -XX:+UseAdaptiveSizePolicy -Djava.net.preferIPv4Stack=true -Djava.awt.headless=true -Dfile.encoding=UTF-8"
       HUGEPAGESTOTAL="\$(cat /proc/meminfo | grep HugePages_Total | sed s/[^0-9]//g)"
-      if [ -n "\$HUGEPAGESTOTAL" ] && [ \$HUGEPAGESTOTAL -ne 0 ]; then 
+      if [ -n "\$HUGEPAGESTOTAL" ] && [ \$HUGEPAGESTOTAL -ne 0 ]; then
           JAVA_ARGS="\$JAVA_ARGS -XX:+UseLargePages"
       fi
       if [ -s DATA/SETTINGS/yacy.conf ]; then
@@ -55,8 +55,8 @@ stdenv.mkDerivation rec {
   meta = {
     description = "Yacy Search Server";
     homepage    = "https://yacy.net";
-    license     = stdenv.lib.licenses.gpl2;
-    platforms   = stdenv.lib.platforms.unix;
+    license     = lib.licenses.gpl2;
+    platforms   = lib.platforms.unix;
     maintainers = [ ];
   };
 }

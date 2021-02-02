@@ -969,11 +969,11 @@
     },
     "master": {
       "locked": {
-        "lastModified": 1610850544,
-        "narHash": "sha256-6GnsJuulJNdSrZNP98rRTRX/zJbxdC7m3qaH6WwsOuY=",
+        "lastModified": 1612282043,
+        "narHash": "sha256-MzoN8nI1eydYHuWBAXBcw9Na0XndZHa/VjoxZRWSX68=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "2fbc36f3d891c86ae34dc0414bc78e74e8911218",
+        "rev": "fab6fcdceb2560a4ab943830a2b1632458c7a6ff",
         "type": "github"
       },
       "original": {
@@ -1039,11 +1039,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1606830243,
-        "narHash": "sha256-XuHaoQNTZ+aUvM6GjsGr8bax51Vvif+kuq4il6d4ZSU=",
+        "lastModified": 1612192764,
+        "narHash": "sha256-7EnLtZQWP6511G1ZPA7FmJlqAr3hWsAYb24tvTvJ/ec=",
         "owner": "nmattia",
         "repo": "naersk",
-        "rev": "a76924cbbb17c387e5ae4998a4721d88a3ac95c0",
+        "rev": "6e149bfd726a8ebefa415f2d713ba6d942435abd",
         "type": "github"
       },
       "original": {
@@ -1288,22 +1288,6 @@
         "type": "github"
       }
     },
-    "pr110381": {
-      "locked": {
-        "lastModified": 1611334084,
-        "narHash": "sha256-cDWucW1fxRbeLRyGDZ/WSZwK2qw46kPIZcZUSiHtrB0=",
-        "owner": "svanderburg",
-        "repo": "nixpkgs",
-        "rev": "35cd2f7b70baedad3c91bde5688fc1fab3659a05",
-        "type": "github"
-      },
-      "original": {
-        "owner": "svanderburg",
-        "ref": "update-skaware-packages",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "pr75800": {
       "locked": {
         "lastModified": 1596390228,
@@ -1401,16 +1385,15 @@
     "processmgmt": {
       "flake": false,
       "locked": {
-        "lastModified": 1611182783,
-        "narHash": "sha256-+uhkYQaf5LiQStTRWpwioYY5ltPfH+ZBPPRRNhdZwXU=",
+        "lastModified": 1611964445,
+        "narHash": "sha256-OxekgDnR6J7axbcdUadeJNDnRTKb2IP9f2Wxq+y9iKI=",
         "owner": "svanderburg",
         "repo": "nix-processmgmt",
-        "rev": "80e74014efecf236595e8f9fff1deec6217e5320",
+        "rev": "68a77686a132b924bae4859c6c12a0df5526080a",
         "type": "github"
       },
       "original": {
         "owner": "svanderburg",
-        "ref": "s6-rc",
         "repo": "nix-processmgmt",
         "type": "github"
       }
@@ -1682,7 +1665,6 @@
         "nix": "nix_2",
         "nix-ipfs": "nix-ipfs",
         "nyxt": "nyxt",
-        "pr110381": "pr110381",
         "pr75800": "pr75800",
         "pr78810": "pr78810",
         "pr93659": "pr93659",
@@ -1784,11 +1766,11 @@
     },
     "small": {
       "locked": {
-        "lastModified": 1610839077,
-        "narHash": "sha256-iM6M2IBHJjCScOLCAfrPPQ4855J3sn8teXmShJuPjH0=",
+        "lastModified": 1612237803,
+        "narHash": "sha256-bJzj0w2quVdgTSRMwAETbDCZr1W04fp77Ax4k4ANcJ8=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "aa4a14b7ad268ad423e2a4bac065fa9acd02d652",
+        "rev": "eca54e37ae57f589baa45a9bf9260e3d8042b8e4",
         "type": "github"
       },
       "original": {
