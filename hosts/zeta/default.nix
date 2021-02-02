@@ -126,9 +126,6 @@
     extra-substituters = ipfs://
   '';
 
-  services.disnix.enable = true;
-  dysnomia.enableLegacyModules = false;
-
   # Until further migration.
   users.mutableUsers = lib.mkForce true;
 
