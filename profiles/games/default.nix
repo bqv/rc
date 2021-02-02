@@ -3,7 +3,7 @@
   environment.systemPackages = with pkgs; [ retroarchBare steam steam-run ];
 
   # fps games on laptop need this
-  services.xserver.libinput.disableWhileTyping = false;
+  services.xserver.libinput.touchpad.disableWhileTyping = false;
 
   # 32-bit support needed for steam
   hardware.opengl.driSupport32Bit = true;
