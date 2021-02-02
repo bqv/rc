@@ -159,11 +159,11 @@
        #}
       ];
       patches = [
-        (basePkgs.fetchurl {
-          name = "grub-use-xkb-config";
-          url = "https://github.com/NixOS/nixpkgs/compare/master...mdevlamynck:4a709715e3de83bfc34b880b8044af41a558316e.diff";
-          sha256 = "1bkbr2znnwi5yc210vhnj638i1ls1w35sdhh3hfh6fnxlbjlmfbn";
-        })
+       #(basePkgs.fetchurl {
+       #  name = "grub-use-xkb-config";
+       #  url = "https://github.com/NixOS/nixpkgs/compare/master...mdevlamynck:4a709715e3de83bfc34b880b8044af41a558316e.diff";
+       #  sha256 = "1bkbr2znnwi5yc210vhnj638i1ls1w35sdhh3hfh6fnxlbjlmfbn";
+       #})
       ] ++ map basePkgs.fetchpatch pullReqs;
       patchedTree = basePkgs.applyPatches {
         name = "nixpkgs-patched";
