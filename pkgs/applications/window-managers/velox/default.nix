@@ -39,7 +39,7 @@ in stdenv.mkDerivation rec {
   '';
   postFixup = with scope; ''
     wrapProgram $out/bin/velox \
-      --prefix PATH : "${stdenv.lib.makeBinPath [ dmenu-velox st-velox ]}"
+      --prefix PATH : "${lib.makeBinPath [ dmenu-velox st-velox ]}"
   '';
 
   enableParallelBuilding = false; # https://hydra.nixos.org/build/79799608
