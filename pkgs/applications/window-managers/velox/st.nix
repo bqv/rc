@@ -28,7 +28,7 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  meta = with lib; {
+  meta = with stdenv.lib; {
     homepage = https://st.suckless.org/;
     license = licenses.mit;
     maintainers = with maintainers; [ ];

@@ -1,4 +1,4 @@
-{ lib, stdenv, withSources, openssl, pkgconfig, rustPlatform }:
+{ stdenv, withSources, openssl, pkgconfig, rustPlatform }:
 
 stdenv.mkDerivation rec {
   name = "pure-${version}";
@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
     cp -r ./ $out/share/zsh/plugins/pure
   '';
 
-  meta = with lib; {
+  meta = with stdenv.lib; {
     description = "Pretty, minimal and fast ZSH prompt";
     homepage = "https://github.com/sindresorhus/pure";
     maintainers = [ maintainers.nrdxp ];

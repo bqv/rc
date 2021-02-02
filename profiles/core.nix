@@ -41,6 +41,7 @@
       coreutils
       curl
       darcs
+      disnixos
       (pkgs.lowPrio dosfstools)
       dnsutils
       fd

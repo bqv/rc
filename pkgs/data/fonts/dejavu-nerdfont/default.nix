@@ -1,4 +1,4 @@
-{ lib, stdenv, fetchzip }:
+{ stdenv, fetchzip }:
 
 stdenv.mkDerivation rec {
   name = "dejavu-nerdfont-${version}";
@@ -14,7 +14,7 @@ stdenv.mkDerivation rec {
     install --target $out/share/fonts/opentype -D $src/*Mono.ttf
   '';
 
-  meta = with lib; {
+  meta = with stdenv.lib; {
     description = "Nerdfont version of DejaVu";
     homepage = "https://github.com/ryanoasis/nerd-fonts";
     license = licenses.mit;

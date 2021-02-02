@@ -1,4 +1,4 @@
-{ lib, stdenv, withSources, linuxHeaders, fetchurl }:
+{ stdenv, withSources, linuxHeaders, fetchurl }:
 
 let
   headers =
@@ -32,7 +32,7 @@ stdenv.mkDerivation rec {
     cp ./fsnoop $out/bin/
   '';
 
-  meta = with lib; {
+  meta = with stdenv.lib; {
     description = "Dumps all filesystem events for a specific mount using the Linux fanotify interface";
     homepage = https://github.com/jeffwalter/fsnoop;
     license = licenses.mit;
