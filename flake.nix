@@ -287,6 +287,7 @@
                   inherit (withWeechat) weechatScripts;
                   inherit (withRel2003) bcachefs-tools; # to match kernel ver
                   inherit (withNaersk.withSelfFlake) wgvanity wold mactelnet;
+                  inherit (withSelfFlake) nix-bundle;
 
                  #inherit (withSmall) firefox firefox-unwrapped;
                  #inherit (withSmall) thunderbird obs-studio webkitgtk chromium qemu;
