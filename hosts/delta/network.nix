@@ -53,13 +53,13 @@
     }; enp0s31f6 = lan0; eno2 = lan0;
     wlan0 = {
       useDHCP = true;
-      ipv4.addresses = [{ address = hosts.lan.delta-wireless; prefixLength = 24; }];
+      ipv4.addresses = [{ address = hosts.lan.delta-wireless; prefixLength = 32; }];
       ipv6.addresses = [ hosts.ipv6.delta-wireless ];
     }; wlp3s0 = wlan0;
 
     enp4s0u1 = {
       useDHCP = false;
-      ipv4.addresses = [{ address = hosts.lan.delta-eth; prefixLength = 24; }];
+      ipv4.addresses = [{ address = hosts.lan.delta-eth; prefixLength = 32; }];
       ipv6.addresses = [ hosts.ipv6.delta-eth ];
     };
     enp0s20u3u1u2 = {
@@ -134,6 +134,11 @@
           # chromecast: 32768-61000
           policy = "accept";
         };
+        mactelnet = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "udp"; field = "dport";
+          value = 20561;
+          policy = "accept";
+        };
         ssdp = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
           protocol = "udp"; field = "dport";
           value = 1900;
@@ -163,4 +168,14 @@
  #  ""
  #  "${pkgs.coreutils}/bin/sleep 10"
  #];
+
+  systemd.services.mactelnet = {
+    description = "MacTelnet Server";
+    environment.PATH = "/run/wrappers/bin:/nix/var/nix/profiles/default/bin:/run/current-system/sw/bin";
+    serviceConfig.ExecStart = "${pkgs.mactelnet}/bin/mactelnetd -fn";
+    wantedBy = [ "multi-user.target" ];
+  };
+  environment.etc."mactelnetd.users".text = ''
+    root:${config.users.users.root.password}
+  '';
 }
