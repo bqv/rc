@@ -231,8 +231,6 @@
     wantedBy = [ "timers.target" ];
   };
 
-  dysnomia.enableLegacyModules = false;
-
  #security.pam.loginLimits = [
  #  { domain = "@wheel"; item = "nofile"; type = "hard"; value = "unlimited"; }
  #  { domain = "@wheel"; item = "nofile"; type = "soft"; value = "1048576"; }
