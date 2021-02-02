@@ -26,7 +26,6 @@
     pr93659.url = "github:ju1m/nixpkgs/security.pass";                             #|/ Reqs
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
     pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
-    pr110381.url = "github:svanderburg/nixpkgs";                                   #||
 
     nix.url = "github:nixos/nix/progress-bar";                #|- Nix
     nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; #|  ^^^IPFS
@@ -78,7 +77,7 @@
       pipeliner = { url = "github:anki-code/xontrib-pipeliner/daccb6c8a67bbda799dfa2d6d8d829b5e9151c92"; flake = false; };
     };
 
-    processmgmt = { url = "github:svanderburg/nix-processmgmt/s6-rc"; flake = false; }; # ProcessMgmt
+    processmgmt = { url = "github:svanderburg/nix-processmgmt"; flake = false; };  # ProcessMgmt
     hnix-overlay = { url = "github:haskell-nix/hnix"; flake = false; };            # Hnix
     impermanence = { url = "github:nix-community/impermanence"; flake = false; };  # Impermanence
     mozilla = { url = "github:mozilla/nixpkgs-mozilla"; flake = false; };          # Nixpkgs-mozilla
@@ -474,7 +473,6 @@
       (channelOverlay { flake = "rel1809"; branch = "nixos-18.09"; })
       (channelOverlay { flake = "rel1803"; branch = "nixos-18.03"; })
       (channelOverlay { flake = "pr78810"; branch = "feature/mastodon"; })
-      (channelOverlay { flake = "pr110381"; branch = "update-skaware-packages"; })
       (listToAttrs (map
         (name: {
           name = lib.removeSuffix ".nix" name;
