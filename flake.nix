@@ -287,6 +287,7 @@
                   inherit (withWeechat) weechatScripts;
                   inherit (withRel2003) bcachefs-tools; # to match kernel ver
                   inherit (withNaersk.withSelfFlake) wgvanity wold mactelnet;
+                  stdenv = builtins.removeAttrs stdenv [ "lib" ];
                 };
               in overlaySets // overlayPkgs // {
                 inherit overlaySets overlayPkgs;
