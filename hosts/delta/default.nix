@@ -8,7 +8,7 @@
     ../../profiles/misc/adblocking.nix
     ../../profiles/misc/odbc.nix
     ../../profiles/security/sudo.nix
-    ../../profiles/security/apparmor
+   #../../profiles/security/apparmor
     ../../profiles/services/syncthing
     ../../profiles/services/aria2
     ../../profiles/services/guix
