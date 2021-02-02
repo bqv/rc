@@ -189,7 +189,6 @@
   programs.xonsh.enable = true;
   programs.singularity.enable = true;
 
-  services.disnix.enable = true;
   services.printing.enable = true;
   services.nix-index.enable = true;
   services.locate.enable = true;
