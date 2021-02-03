@@ -12,7 +12,7 @@
     ];
   };
 
-  environment.systemPackages = with pkgs; [ dhcp dhcpcd ];
+  environment.systemPackages = with pkgs; [ dhcp dhcpcd mactelnet ];
 
   networking.namespacing.enable = false;
   networking.wireless = let
