@@ -15,9 +15,6 @@
       ContactInfo = "tor+${domains.srvc}@${domains.home}";
       Nickname = config.networking.hostName;
       ORPort = 143;
-      DNSPort = [{ addr = "127.0.0.1"; port = 9053; }];
-      SOCKSPort = [ 9090 ];
-      TRANSPort = 9040;
       ControlPort = [ 9051 ];
     };
   };

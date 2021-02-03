@@ -236,4 +236,9 @@
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOvcvk1nLYImKqjhL8HdAb1sM2vXcEGu+rMZJ8XIG4H7 bao@delta"
     "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIEEI6mOJHEH+bbho1V/8dBCdAwORp7zrWoMyue8hBllU root@nu"
   ];
+
+  system.activationScripts.nix-per-user = ''
+    install -d -m 755 /nix/var/nix/profiles/per-user/root
+    install -d -m 755 /nix/var/nix/gcroots/per-user/root
+  '';
 }
