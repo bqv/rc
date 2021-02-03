@@ -16,7 +16,7 @@ in {
 
     identity = lib.mkOption {
       type = lib.types.submodule {
-        config._module.freeformType = (pkgs.formats.json {}).type;
+        config._module.freeformType = jsonFormat.type;
 
         options.id = lib.mkOption { type = lib.types.str; description = "Id."; };
         options.private_key = lib.mkOption { type = lib.types.str; description = "Private key."; };
