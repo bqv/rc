@@ -48,18 +48,7 @@ in {
       nativeBuildInputs = [ cl-syslog' ];
     });
     nyxt' = (quicklispPackages // lispPackages).nyxt.overrideAttrs (drv: {
-      src = (prev.applyPatches {
-        name = "nyxt-src-patched";
-        src = inputs.nyxt;
-        patches = [(prev.fetchpatch {
-          name = "global-history-tree.diff";
-          url = "http://github.com/atlas-engineer/nyxt/pull/1007.diff";
-          sha256 = "0AAT/thk1zc2bnBcofJd0sShcuECSeyVtdqUkrHaYrc=";
-        })];
-      }).overrideAttrs (_: {
-        prePatch = # partially revert ead1c15
-          "sed 's/document body/document Body/' -i source/web-mode.lisp";
-      });
+      src = inputs.nyxt;
       name = lib.replaceStrings [
         drv.meta.version
       ] [

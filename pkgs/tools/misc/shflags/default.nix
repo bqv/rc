@@ -1,4 +1,4 @@
-{ stdenv, withSources, runtimeShell, getopt }:
+{ lib, stdenv, withSources, runtimeShell, getopt }:
 
 stdenv.mkDerivation rec {
   pname = "shflags";
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
     install -D -m 755 ./shflags $out
   '';
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "A port of the Google gflags library for Unix shell";
     homepage = https://github.com/kward/shflags;
     license = licenses.asl20;

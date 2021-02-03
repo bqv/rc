@@ -1,4 +1,4 @@
-{ config, lib, pkgs, usr, system, hosts, ... }:
+{ config, lib, pkgs, usr, flake, system, hosts, ... }:
 
 {
   imports = [
@@ -8,7 +8,7 @@
     ../../profiles/misc/adblocking.nix
     ../../profiles/misc/odbc.nix
     ../../profiles/security/sudo.nix
-    ../../profiles/security/apparmor
+   #../../profiles/security/apparmor
     ../../profiles/services/syncthing
     ../../profiles/services/aria2
     ../../profiles/services/guix
@@ -58,6 +58,9 @@
     "sd_mod" "sr_mod" "nvme" "amdgpu"
   ];
   boot.initrd.kernelModules = [ "amdgpu" ];
+  boot.initrd.secrets = {
+    "/etc/nixos" = lib.cleanSource ./../..;
+  };
   boot.kernelModules = [ "kvm-intel" "amdgpu" "fuse" ];
   boot.kernelParams = [ "mce=3" ];
   boot.extraModulePackages = with config.boot.kernelPackages; [ v4l2loopback ];
@@ -186,7 +189,6 @@
   programs.xonsh.enable = true;
   programs.singularity.enable = true;
 
-  services.disnix.enable = true;
   services.printing.enable = true;
   services.nix-index.enable = true;
   services.locate.enable = true;
@@ -227,8 +229,6 @@
     };
     wantedBy = [ "timers.target" ];
   };
-
-  dysnomia.enableLegacyModules = false;
 
  #security.pam.loginLimits = [
  #  { domain = "@wheel"; item = "nofile"; type = "hard"; value = "unlimited"; }

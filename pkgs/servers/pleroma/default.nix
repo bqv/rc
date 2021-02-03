@@ -16,7 +16,7 @@
   uploadsDir ? "/var/lib/pleroma/upload/",
   publicDir ? "/var/lib/pleroma/public/" }:
 
-with stdenv.lib;
+with lib;
 
 let
   gzseek = stdenv.mkDerivation {
@@ -589,38 +589,38 @@ let
   in stdenv.mkDerivation {
     name = "pleroma-be";
     inherit version;
-  
+
     src = fetchGit {
       url = "https://git.pleroma.social/pleroma/pleroma";
       ref = "stable";
       rev = "1629fa2412b877f69c5cf0df09782227827b272b";
     };
-  
+
     buildInputs = [ glibcLocales elixir rebar rebar3 fakeGit makeWrapper ];
-  
+
     configurePhase = ''
       runHook preConfigure
-  
+
       mkdir deps
       ${concatStringsSep "\n" (mapAttrsToList linkDependency closure)}
-  
+
       runHook postConfigure
     '';
-  
+
     HOME = ".";
-  
+
     MIX_ENV = "prod";
     MIX_REBAR = "${rebar}/bin/rebar";
     MIX_REBAR3 = "${rebar3}/bin/rebar3";
-  
+
     LANG = "${buildLocale}";
     LC_ALL = "${buildLocale}";
-  
+
     buildPhase = let genArgs = concatStringsSep " " configArgs; in ''
       runHook preBuild
-  
+
       touch config/prod.secret.exs
-  
+
       mix archive.install --force ${hex}
       mix deps.compile --force --include-children
       mix compile --no-deps-check
@@ -628,16 +628,16 @@ let
 
       sed -i '/static_dir:/s#".*"#"${publicDir}"#' config/prod.secret.exs
       sed -i '/uploads:/s#".*"#"${uploadsDir}"#' config/prod.secret.exs
-  
+
       runHook postBuild
     '';
-  
+
     installPhase = ''
       runHook preInstall
-  
+
       mkdir -p $out/bin
       mv * .mix $out
-      
+
       makeWrapper ${elixir}/bin/mix $out/bin/pleroma-mix \
         --run "cd $out" \
         --prefix PATH : ${lib.makeBinPath [ fakeGit ]} \
@@ -646,7 +646,7 @@ let
         --set-default MIX_ENV prod \
         --set MIX_REBAR ${rebar}/bin/rebar \
         --set MIX_REBAR3 ${rebar3}/bin/rebar3
-  
+
       runHook postInstall
     '';
   };
@@ -675,7 +675,7 @@ let
   in stdenv.mkDerivation {
     name = "pleroma-fe";
     inherit version;
-  
+
     src = fetchGit {
       url = "https://git.pleroma.social/pleroma/pleroma-fe";
       ref = "master";
@@ -683,7 +683,7 @@ let
     };
 
     buildInputs = [ nodejs curl fontelloSrc fakeGit ];
- 
+
     buildPhase = ''
       ln -s ${pleromaNodeDeps}/lib/node_modules
 
@@ -692,7 +692,7 @@ let
      #unzip .fontello.zip -d .fontello.src
      #mv .fontello.src/*
     '';
- 
+
     installPhase = ''
       cp -r . $out
       mkdir -p $out/bin
@@ -718,22 +718,22 @@ let
   in stdenv.mkDerivation {
     name = "masto-fe";
     inherit version;
-  
+
     src = fetchGit {
       url = "https://git.pleroma.social/pleroma/mastofe";
       ref = "rebase/glitch-soc";
       rev = "046df01415d52989c3e86b135c4deac972fe9134";
     };
- 
+
     patches = [ ./masto-fe/postcss.patch ];
 
     buildInputs = [ nodejs fakeGit ];
- 
+
     buildPhase = ''
       ln -s ${mastoNodeDeps}/lib/node_modules
       env HOME=. npm run build
     '';
- 
+
     installPhase = ''
       cp -r . $out
     '';
