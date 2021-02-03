@@ -1,12 +1,13 @@
 { config, pkgs, lib, ... }: with lib; let
-  settingType = types.attrsOf (types.either cfgType settingType);
+  settingType = lib.types.submodule {
+    config._module.freeformType = (pkgs.formats.json {}).type;
+  };
   flatConfig = attrs: let
     deep = mapAttrsRecursive (path: value: nameValuePair (concatStringsSep "." path) value) attrs;
     recurse = value:
       if isAttrs value && ! value ? value then concatMap recurse (builtins.attrValues value)
       else [ value ];
   in listToAttrs (recurse deep);
-  cfgType = types.either types.str (types.either types.bool types.int);
   cfg = config.programs.weechat;
   drvAttr = types.either types.str types.package;
   drvAttrsFor = packages: map (d:
