@@ -32,8 +32,8 @@
   pythonOverride = {
     python3Packages = cfg.pythonPackages;
   };
-  defaultHomeDirectory = "${config.home.homeDirectory}/.weechat";
-  weechatrc = "${config.home.homeDirectory}/${config.xdg.configFile."weechat/weechatrc".target}";
+  defaultHomeDirectory = "${config.users.users.weechat.home or "~weechat"}/.weechat";
+  weechatrc = "${config.users.users.weechat.home}/${config.environment.etc."weechat/weechatrc".target}";
 in {
   options.programs.weechat = {
     enable = mkEnableOption "weechat";
@@ -108,8 +108,8 @@ in {
       type = types.nullOr types.path;
       description = "Weechat home config directory";
       default = defaultHomeDirectory;
-      defaultText = "~/.weechat";
-      example = literalExample "\${config.xdg.dataHome}/weechat";
+      defaultText = "~weechat/.weechat";
+      example = literalExample "\${config.users.users.weechat.home}/weechat";
     };
 
     config = mkOption {
@@ -120,9 +120,9 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = [ cfg.package ];
+    users.users.weechat.packages = [ cfg.package ];
 
-    xdg.configFile."weechat/weechatrc" = mkIf (cfg.config != { }) {
+    environment.etc."weechat/weechatrc" = mkIf (cfg.config != { }) {
       text = concatStringsSep "\n" (mapAttrsToList
         (k: v: "/set ${k} ${configStr v}") (flatConfig cfg.config)
       );
@@ -135,7 +135,7 @@ in {
       '';
     };
     programs.weechat = {
-      environment = mkIf (cfg.homeDirectory != defaultHomeDirectory) {
+      environment = {
         WEECHAT_HOME = cfg.homeDirectory;
       };
       source = optional (cfg.config != { }) weechatrc;
