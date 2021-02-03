@@ -1,5 +1,6 @@
 [
   ./programs/nix-index.nix
+  ./programs/weechat.nix
   ./services/nix-index.nix
   ./services/gitfs.nix
   ./services/hydroxide/default.nix
