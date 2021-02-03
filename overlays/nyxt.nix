@@ -167,12 +167,13 @@ in {
       qlSetup = "${lispPackages.quicklisp}/lib/common-lisp/quicklisp/quicklisp/setup.lisp";
       propagatedBuildInputs = drv.propagatedBuildInputs ++ [
        #lispPackages.quicklisp
+        inputs.lisp.packages.${prev.system}.cl-custom-hash-table
         calispel
         slynk
        #slynk-quicklisp
        #slynk-asdf
        #slynk-named-readtables
-        slynk-macrostep
+       #slynk-macrostep
       ];
       extraSystems = [
         "cffi"
@@ -183,7 +184,7 @@ in {
        #"slynk-quicklisp"
        #"slynk-asdf"
        #"slynk-named-readtables"
-        "slynk-macrostep"
+       #"slynk-macrostep"
       ];
       postInstall = lib.replaceStrings [
         "sb-alien::*shared-objects*"
