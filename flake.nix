@@ -77,14 +77,6 @@
       pipeliner = { url = "github:anki-code/xontrib-pipeliner/daccb6c8a67bbda799dfa2d6d8d829b5e9151c92"; flake = false; };
     };
 
-    taiwins = {
-      type = "git";
-      url = "https://github.com/taiwins/taiwins";
-      ref = "xwayland";
-     #submodules = true;
-      flake = false;
-    };
-
     processmgmt = { url = "github:svanderburg/nix-processmgmt"; flake = false; };  # ProcessMgmt
     hnix-overlay = { url = "github:haskell-nix/hnix"; flake = false; };            # Hnix
     impermanence = { url = "github:nix-community/impermanence"; flake = false; };  # Impermanence
