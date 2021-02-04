@@ -79,7 +79,7 @@
 
     taiwins = {
       url = "https://github.com/taiwins/taiwins";
-      branch = "xwayland";
+      ref = "xwayland";
       type = "git";
       submodules = "true";
       flake = false;
