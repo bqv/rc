@@ -439,9 +439,9 @@
                 sha256 = "JfcswqOG0V5qlolxxYFOpqXJgENC4Adfk4J8r//tgfA=";
               })
               (final.fetchpatch {
-                name = "progress-bar.patch";
-                url = "https://github.com/NixOS/nix/pull/4296.diff";
-                sha256 = "vR7kGQMLHcf2qnaycyrv8h9M5iZjIC+GxD9kfqM3lzQ=";
+                name = "flake-args.patch";
+                url = "https://github.com/NixOS/nix/pull/4435.diff";
+                sha256 = "vR7kGQMLHcf2qnaycyrv8h9M5iZjICaGxD9kfqM3lzQ=";
               })
             ];
             passthru = {
