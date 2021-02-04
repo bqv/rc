@@ -441,7 +441,7 @@
               (final.fetchpatch {
                 name = "progress-bar.patch";
                 url = "https://github.com/NixOS/nix/pull/4296.diff";
-                sha256 = "JfcswqOG0V5qlolxxYFOpqXJgENC4Adfk4J8roatgfA=";
+                sha256 = "vR7kGQMLHcf2qnaycyrv8h9M5iZjIC+GxD9kfqM3lzQ=";
               })
             ];
             passthru = {
