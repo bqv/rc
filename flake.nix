@@ -438,6 +438,11 @@
                 url = "https://github.com/nixos/nix/pull/4153.diff";
                 sha256 = "JfcswqOG0V5qlolxxYFOpqXJgENC4Adfk4J8r//tgfA=";
               })
+              (final.fetchpatch {
+                name = "progress-bar.patch";
+                url = "https://github.com/NixOS/nix/pull/4296.diff";
+                sha256 = "JfcswqOG0V5qlolxxYFOpqXJgENC4Adfk4J8roatgfA=";
+              })
             ];
             passthru = {
               inherit (inputs.nix.packages.${system}.nix) perl-bindings;
