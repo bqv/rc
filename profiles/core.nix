@@ -56,6 +56,7 @@
       stdmanpages
       utillinux
     ];
+    homeBinInPath = true;
     enableDebugInfo = true;
   };
 
