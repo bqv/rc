@@ -81,7 +81,7 @@
       url = "https://github.com/taiwins/taiwins";
       branch = "xwayland";
       type = "git";
-      submodules = true;
+      submodules = "true";
       flake = false;
     };
 
