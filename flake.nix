@@ -441,7 +441,7 @@
               (final.fetchpatch {
                 name = "flake-args.patch";
                 url = "https://github.com/NixOS/nix/pull/4435.diff";
-                sha256 = "vR7kGQMLHcf2qnaycyrv8h9M5iZjICaGxD9kfqM3lzQ=";
+                sha256 = "sX6jbpymgoD2SXDJasZ9wYtiXlD7N/b/Cx8XzrupyLw=";
               })
             ];
             passthru = {
