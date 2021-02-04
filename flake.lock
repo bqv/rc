@@ -1688,6 +1688,7 @@
         "staged": "staged",
         "statichask": "statichask",
         "swc": "swc",
+        "taiwins": "taiwins",
         "twitterpub": "twitterpub",
         "utils": "utils",
         "velox": "velox",
@@ -1906,6 +1907,23 @@
         "owner": "bqv",
         "repo": "swc",
         "type": "github"
+      }
+    },
+    "taiwins": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1612097823,
+        "narHash": "sha256-Nfn52Bl4hCB9GivUvhDwcA6xo1kXd9Plw3jf0T+svjk=",
+        "ref": "xwayland",
+        "rev": "722503b9eed47a8cc2dd53dd0b5b03d2f0a50c3f",
+        "revCount": 1159,
+        "type": "git",
+        "url": "https://github.com/taiwins/taiwins"
+      },
+      "original": {
+        "ref": "xwayland",
+        "type": "git",
+        "url": "https://github.com/taiwins/taiwins"
       }
     },
     "tokenize-output": {
