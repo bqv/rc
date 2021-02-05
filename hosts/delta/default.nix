@@ -301,6 +301,7 @@
       ]}:$PATH
       useradd -rUM s6-log
       useradd -rUM mongodb influxdb tomcat
+      groupadd -r root
 
       s6-mkdir $SCANDIR
       s6-svscan $SCANDIR & # cheaper than s6-linux-init
