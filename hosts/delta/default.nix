@@ -292,5 +292,6 @@
     };
     init = pkgs.writeShellScript "s6-init" "cd ${svdir}; s6-rc-init && s6-rc change default";
   in {
+    inherit init;
   };
 }
