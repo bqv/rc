@@ -312,7 +312,7 @@
       s6-mkdir $SCANDIR
       s6-svscan $SCANDIR & # cheaper than s6-linux-init
       PID=$!
-      s6-rc-init -c ${compdir} $SCANDIR && s6-rc change default
+      nixproc-s6-rc-deploy $SCANDIR
       wait $PID
     '';
   in {
