@@ -299,7 +299,7 @@
     init = pkgs.writeShellScript "s6-init" ''
       SCANDIR=/run/s6
       export PATH=${with pkgs; lib.makeBinPath [
-        coreutils shadow tools.s6-rc
+        coreutils shadow tools.s6-rc tools.common
         s6 s6-rc s6-linux-utils s6-portable-utils execline
       ]}:$PATH
       useradd -rUM s6-log
