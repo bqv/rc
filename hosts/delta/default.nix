@@ -284,7 +284,7 @@
   environment.etc."ssh/ssh_user-ca.pub".source = "${usr.secrets.keyDir}/deltassh/ssh_user-ca.pub";
   environment.etc."ssh/ssh_host-ca.pub".source = "${usr.secrets.keyDir}/deltassh/ssh_host-ca.pub";
 
-  containers.test = let
+  lib.test = let
     inherit (pkgs.withSources) processmgmt;
     svdir = import "${processmgmt}/nixproc/create-managed-process/s6-rc/build-s6-rc-env.nix" {
       exprFile = "${processmgmt}/examples/services-agnostic/processes.nix";
