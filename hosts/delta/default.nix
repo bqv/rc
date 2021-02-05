@@ -290,6 +290,7 @@
       exprFile = "${processmgmt}/examples/services-agnostic/processes.nix";
       extraParams = {};
     };
+    tools = import "${processmgmt}/tools" { inherit pkgs; };
     init = pkgs.writeShellScript "s6-init" ''
       ln -s ${svdir}/etc/s6 /etc/s6
       ${pkgs.s6-rc}/bin/s6-rc-init /etc/s6/sv && ${pkgs.s6-rc}/bin/s6-rc change default
