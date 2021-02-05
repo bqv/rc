@@ -283,4 +283,38 @@
   environment.etc."ssh/ssh_revoked_keys".text = "";
   environment.etc."ssh/ssh_user-ca.pub".source = "${usr.secrets.keyDir}/deltassh/ssh_user-ca.pub";
   environment.etc."ssh/ssh_host-ca.pub".source = "${usr.secrets.keyDir}/deltassh/ssh_host-ca.pub";
+
+  lib.test = let
+    inherit (pkgs.withSources) processmgmt;
+    exprFile = "${processmgmt}/examples/services-agnostic/processes.nix";
+    svdir = import "${processmgmt}/nixproc/backends/s6-rc/build-s6-rc-env.nix" {
+      inherit exprFile;
+      extraParams = {};
+    };
+    tools = import "${processmgmt}/tools" { inherit pkgs; };
+    compdir = pkgs.runCommandLocal "s6-compiled" {} ''
+      ${pkgs.s6-rc}/bin/s6-rc-compile -v 3 $out ${svdir}/etc/s6/sv
+    '';
+    init = pkgs.writeShellScript "s6-init" ''
+      SCANDIR=/run/s6
+      export PATH=${with pkgs; lib.makeBinPath [
+        coreutils s6 s6-rc s6-linux-utils s6-portable-utils execline shadow
+      ]}:$PATH
+      useradd -rUM s6-log
+      useradd -rUM mongodb
+      useradd -rUM influxdb
+      useradd -rUM tomcat
+      useradd -rUM httpd
+      useradd -rUM mysql
+      groupadd -r root
+
+      s6-mkdir $SCANDIR
+      s6-svscan $SCANDIR & # cheaper than s6-linux-init
+      PID=$!
+      s6-rc-init -c ${compdir} $SCANDIR && s6-rc change default
+      wait $PID
+    '';
+  in {
+    inherit exprFile svdir tools compdir init;
+  };
 }
