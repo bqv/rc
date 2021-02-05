@@ -296,6 +296,6 @@
       ${pkgs.s6-rc}/bin/s6-rc-init /etc/s6/sv && ${pkgs.s6-rc}/bin/s6-rc change default
     '';
   in {
-    inherit init;
+    inherit svdir tools init;
   };
 }
