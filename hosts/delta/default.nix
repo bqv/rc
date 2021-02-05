@@ -320,5 +320,8 @@
     '';
   in {
     inherit exprFile svdir tools compdir init;
+    test = pkgs.writeShellScript "s6-test" ''
+      doas systemd-nspawn --volatile=overlay --bind=/nix --bind=/run/current-system/ ${init}
+    '';
   };
 }
