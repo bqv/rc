@@ -302,9 +302,9 @@
       useradd -rUM s6-log
       useradd -rUM mongodb
       useradd -rUM influxdb
+      useradd -rUM tomcat
       useradd -rUM httpd
       useradd -rUM mysql
-      useradd -rUM tomcat
       groupadd -r root
 
       s6-mkdir $SCANDIR
