@@ -314,7 +314,7 @@
       s6-mkdir -p $SCANDIR
       s6-svscan $SCANDIR & # cheaper than s6-linux-init
       PID=$!
-      nixproc-s6-rc-deploy ${svdir}
+      nixproc-s6-rc-deploy ${svdir} || (ls -la /var/run/s6-rc; exit 42)
       wait $PID
     '';
     test = pkgs.writeShellScript "go" ''
