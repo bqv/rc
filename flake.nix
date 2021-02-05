@@ -302,6 +302,7 @@
               name = "pins";
             }];
           };
+          stdenv = prev.stdenv // { inherit lib; };
         };
         name = "index";
       }];
