@@ -302,7 +302,7 @@
         s6 s6-rc s6-linux-utils s6-portable-utils execline
         dysnomia glibc.bin findutils
       ]}:$PATH
-     #useradd -rUM s6-log
+      useradd -rUM s6-log
      #useradd -rUM mongodb
      #useradd -rUM influxdb
      #useradd -rUM tomcat
