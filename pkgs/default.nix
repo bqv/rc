@@ -71,6 +71,8 @@ in rec {
 
   shflags = prev.callPackage ./tools/misc/shflags { };
 
+  taiwins = prev.callPackage ./applications/window-managers/taiwins { };
+
   twitterpub = prev.callPackage ./servers/twitterpub { };
 
   velox = prev.callPackage ./applications/window-managers/velox { };
