@@ -314,8 +314,7 @@
       s6-mkdir -p $SCANDIR
       s6-svscan $SCANDIR & # cheaper than s6-linux-init
       PID=$!
-      nixproc-s6-rc-deploy ${svdir} || (ls -la /var/run/s6-rc; exit 42)
-      wait $PID
+      nixproc-s6-rc-deploy ${svdir} && wait $PID || ls -la /var/run/s6-rc
     '';
     test = pkgs.writeShellScript "go" ''
       doas systemd-nspawn --volatile=overlay --bind=/nix --bind=/run/current-system/ ${init}
