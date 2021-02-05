@@ -276,7 +276,7 @@
                   inherit (withRel2003.withSelfFlake) vervis;
                   inherit (withPr78810) mastodon;
 
-                  inherit (withSelfFlake) cfcli dgit fsnoop pure shflags;
+                  inherit (withSelfFlake) cfcli dgit fsnoop pure shflags taiwins;
                   inherit (withIni2json) ini2json;
                   inherit (withSelfFlake.pleroma) pleroma_be pleroma_fe masto_fe;
                   inherit (withNix.withDwarffsFlake) dwarffs;
