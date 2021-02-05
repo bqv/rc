@@ -296,7 +296,7 @@
     '';
     init = pkgs.writeShellScript "s6-init" ''
       SCANDIR=/run/s6
-      mkdir $SCANDIR
+      ${pkgs.s6-portable-utils}/bin/s6-mkdir $SCANDIR
       ${pkgs.s6}/bin/s6-svscan $SCANDIR & # cheaper than s6-linux-init
       ${pkgs.s6-rc}/bin/s6-rc-init -c ${compdir} $SCANDIR && ${pkgs.s6-rc}/bin/s6-rc change default
       fg
