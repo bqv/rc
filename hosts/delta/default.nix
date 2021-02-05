@@ -299,6 +299,8 @@
       PATH=${with pkgs; lib.makeBinPath [
         coreutils s6 s6-rc s6-linux-utils s6-portable-utils shadow
       ]}:$PATH
+      useradd -rM s6-log
+
       s6-mkdir $SCANDIR
       s6-svscan $SCANDIR & # cheaper than s6-linux-init
       s6-rc-init -c ${compdir} $SCANDIR && s6-rc change default
