@@ -291,8 +291,8 @@
       extraParams = {};
     };
     init = pkgs.writeShellScript "s6-init" ''
-      cd ${svdir}
-      ${pkgs.s6-rc}/bin/s6-rc-init $PWD && ${pkgs.s6-rc}/bin/s6-rc change default
+      ln -s ${svdir}/etc/s6 /etc/s6
+      ${pkgs.s6-rc}/bin/s6-rc-init /etc/s6/sv && ${pkgs.s6-rc}/bin/s6-rc change default
     '';
   in {
     inherit init;
