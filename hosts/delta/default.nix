@@ -286,7 +286,8 @@
 
   lib.test = let
     inherit (pkgs.withSources) processmgmt;
-    exprFile = "${processmgmt}/examples/services-agnostic/processes.nix";
+   #exprFile = "${processmgmt}/examples/services-agnostic/processes.nix";
+    exprFile = ./processes.nix;
     s6Env = import "${processmgmt}/nixproc/backends/s6-rc/build-s6-rc-env.nix";
     svdir = s6Env {
       inherit exprFile;
