@@ -297,11 +297,11 @@
     init = pkgs.writeShellScript "s6-init" ''
       SCANDIR=/run/s6
       PATH=${with pkgs; lib.makeBinPath [
-        coreutils s6 s6-linux-utils s6-portable-utils
+        coreutils s6 s6-rc s6-linux-utils s6-portable-utils shadow
       ]}:$PATH
-      ${pkgs.s6-portable-utils}/bin/s6-mkdir $SCANDIR
-      ${pkgs.s6}/bin/s6-svscan $SCANDIR & # cheaper than s6-linux-init
-      ${pkgs.s6-rc}/bin/s6-rc-init -c ${compdir} $SCANDIR && ${pkgs.s6-rc}/bin/s6-rc change default
+      s6-mkdir $SCANDIR
+      s6-svscan $SCANDIR & # cheaper than s6-linux-init
+      s6-rc-init -c ${compdir} $SCANDIR && s6-rc change default
       fg
     '';
   in {
