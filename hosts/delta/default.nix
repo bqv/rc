@@ -295,8 +295,7 @@
       ${pkgs.s6-rc}/bin/s6-rc-compile -v 3 $out ${svdir}/etc/s6/sv
     '';
     init = pkgs.writeShellScript "s6-init" ''
-      ln -s ${svdir}/etc/s6 /etc/s6
-      ${pkgs.s6-rc}/bin/s6-rc-init /etc/s6/sv && ${pkgs.s6-rc}/bin/s6-rc change default
+      ${pkgs.s6-rc}/bin/s6-rc-init ${compdir} && ${pkgs.s6-rc}/bin/s6-rc change default
     '';
   in {
     inherit svdir tools compdir init;
