@@ -300,15 +300,15 @@
       export PATH=${with pkgs; lib.makeBinPath [
         coreutils shadow tools.s6-rc tools.common
         s6 s6-rc s6-linux-utils s6-portable-utils execline
-        dysnomia glibc.bin findutils
+        dysnomia glibc.bin findutils nixUnstable
       ]}:$PATH
       useradd -rUM s6-log
-     #useradd -rUM mongodb
-     #useradd -rUM influxdb
-     #useradd -rUM tomcat
-     #useradd -rUM httpd
-     #useradd -rUM mysql
-     #groupadd -r root
+      useradd -rUM mongodb
+      useradd -rUM influxdb
+      useradd -rUM tomcat
+      useradd -rUM httpd
+      useradd -rUM mysql
+      groupadd -r root
 
       nixproc-s6-svscan & PID=$!
       nixproc-s6-rc-deploy ${svdir} && wait $PID || ls -la /var/run/s6-rc
