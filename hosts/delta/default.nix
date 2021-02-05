@@ -300,6 +300,7 @@
         coreutils s6 s6-rc s6-linux-utils s6-portable-utils execline shadow
       ]}:$PATH
       useradd -rUM s6-log
+      useradd -rUM mongodb influxdb tomcat
 
       s6-mkdir $SCANDIR
       s6-svscan $SCANDIR & # cheaper than s6-linux-init
