@@ -20,7 +20,7 @@ in rec { inherit flake-compat flake; inherit self; inputs = self.passthru.inputs
 // maybe self.defaultPackage.${system}.config.nodes
 // maybe self.defaultPackage.${system}.config.nodes.${hostname}.configuration
 // maybe {
-  inherit lock;
+  lock = lock;
   inherit (self.defaultPackage.${system}.config.nodes.${hostname}.configuration._pkgs) pkgs lib;
   options = rec {
     deploy = self.defaultPackage.x86_64-linux.options;
