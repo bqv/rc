@@ -324,5 +324,4 @@
   in {
     inherit exprFile svdir tools compdir init;
   } // test;
-  };
 }
