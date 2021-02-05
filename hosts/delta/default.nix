@@ -323,7 +323,6 @@
     '';
   in {
     inherit exprFile svdir tools compdir init;
-  } // pkgs.mkShell {
-    buildInputs = [ test ];
+  } // test;
   };
 }
