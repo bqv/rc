@@ -291,7 +291,7 @@
       extraParams = {};
     };
     tools = import "${processmgmt}/tools" { inherit pkgs; };
-    compdir = pkgs.runCommandLocal "s6-compiled" ''
+    compdir = pkgs.runCommandLocal "s6-compiled" {} ''
       ${pkgs.s6-rc}/bin/s6-rc-compile -v 3 $out ${svdir}/etc/s6/sv
     '';
     init = pkgs.writeShellScript "s6-init" ''
@@ -299,6 +299,6 @@
       ${pkgs.s6-rc}/bin/s6-rc-init /etc/s6/sv && ${pkgs.s6-rc}/bin/s6-rc change default
     '';
   in {
-    inherit svdir tools init;
+    inherit svdir tools compdir init;
   };
 }
