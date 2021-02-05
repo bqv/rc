@@ -318,7 +318,7 @@
       ls /var/run
       wait $PID
     '';
-    test = pkgs.writeShellScript "s6-test" ''
+    test = pkgs.writeShellScript "go" ''
       doas systemd-nspawn --volatile=overlay --bind=/nix --bind=/run/current-system/ ${init}
     '';
   in {
