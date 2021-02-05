@@ -297,7 +297,7 @@
       ${pkgs.s6-rc}/bin/s6-rc-compile -v 3 $out ${svdir}/etc/s6/sv
     '';
     init = pkgs.writeShellScript "s6-init" ''
-      SCANDIR=/etc/s6
+      SCANDIR=/var/run/s6-rc
       export PATH=${with pkgs; lib.makeBinPath [
         coreutils shadow tools.s6-rc tools.common
         s6 s6-rc s6-linux-utils s6-portable-utils execline
@@ -311,11 +311,10 @@
       useradd -rUM mysql
       groupadd -r root
 
-      s6-mkdir -p $SCANDIR /var/run
+      s6-mkdir -p $SCANDIR
       s6-svscan $SCANDIR & # cheaper than s6-linux-init
       PID=$!
       nixproc-s6-rc-deploy ${svdir}
-      ls -la /etc/s6
       wait $PID
     '';
     test = pkgs.writeShellScript "go" ''
