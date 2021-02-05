@@ -290,7 +290,9 @@
       exprFile = "${processmgmt}/examples/services-agnostic/processes.nix";
       extraParams = {};
     };
-    init = pkgs.writeShellScript "s6-init" "cd ${svdir}; ${pkgs.s6-rc}/bin/s6-rc-init && ${pkgs.s6-rc}/bin/s6-rc change default";
+    init = pkgs.writeShellScript "s6-init" ''
+      cd ${svdir}; ${pkgs.s6-rc}/bin/s6-rc-init && ${pkgs.s6-rc}/bin/s6-rc change default
+    '';
   in {
     inherit init;
   };
