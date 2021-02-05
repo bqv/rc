@@ -301,7 +301,7 @@
       export PATH=${with pkgs; lib.makeBinPath [
         coreutils shadow tools.s6-rc tools.common
         s6 s6-rc s6-linux-utils s6-portable-utils execline
-        withRel2009.dysnomia glibc.bin findutils
+        dysnomia glibc.bin findutils
       ]}:$PATH
       useradd -rUM s6-log
       useradd -rUM mongodb
