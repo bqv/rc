@@ -318,9 +318,12 @@
       ls /var/run
       wait $PID
     '';
+    test = pkgs.writeShellScript "s6-test" ''
+      doas systemd-nspawn --volatile=overlay --bind=/nix --bind=/run/current-system/ ${init}
+    '';
   in {
     inherit exprFile svdir tools compdir init;
-  } // pkgs.writeShellScriptBin "s6-test" ''
-    doas systemd-nspawn --volatile=overlay --bind=/nix --bind=/run/current-system/ ${init}
-  '';
+  } // pkgs.mkShell {
+    buildInputs = [ test ];
+  };
 }
