@@ -315,6 +315,6 @@
       wait $PID
     '';
   in {
-    inherit svdir tools compdir init;
+    inherit exprFile svdir tools compdir init;
   };
 }
