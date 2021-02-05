@@ -297,23 +297,20 @@
       ${pkgs.s6-rc}/bin/s6-rc-compile -v 3 $out ${svdir}/etc/s6/sv
     '';
     init = pkgs.writeShellScript "s6-init" ''
-      SCANDIR=/var/run/s6-rc
       export PATH=${with pkgs; lib.makeBinPath [
         coreutils shadow tools.s6-rc tools.common
         s6 s6-rc s6-linux-utils s6-portable-utils execline
         dysnomia glibc.bin findutils
       ]}:$PATH
-      useradd -rUM s6-log
-      useradd -rUM mongodb
-      useradd -rUM influxdb
-      useradd -rUM tomcat
-      useradd -rUM httpd
-      useradd -rUM mysql
-      groupadd -r root
+     #useradd -rUM s6-log
+     #useradd -rUM mongodb
+     #useradd -rUM influxdb
+     #useradd -rUM tomcat
+     #useradd -rUM httpd
+     #useradd -rUM mysql
+     #groupadd -r root
 
-      s6-mkdir -p $SCANDIR
-      s6-svscan $SCANDIR & # cheaper than s6-linux-init
-      PID=$!
+      nixproc-s6-svscan & PID=$!
       nixproc-s6-rc-deploy ${svdir} && wait $PID || ls -la /var/run/s6-rc
     '';
     test = pkgs.writeShellScript "go" ''
