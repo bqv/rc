@@ -283,41 +283,4 @@
   environment.etc."ssh/ssh_revoked_keys".text = "";
   environment.etc."ssh/ssh_user-ca.pub".source = "${usr.secrets.keyDir}/deltassh/ssh_user-ca.pub";
   environment.etc."ssh/ssh_host-ca.pub".source = "${usr.secrets.keyDir}/deltassh/ssh_host-ca.pub";
-
-  lib.test = let
-    inherit (pkgs.withSources) processmgmt;
-   #exprFile = "${processmgmt}/examples/services-agnostic/processes.nix";
-    exprFile = ./processes.nix;
-    s6Env = import "${processmgmt}/nixproc/backends/s6-rc/build-s6-rc-env.nix";
-    svdir = s6Env {
-      inherit exprFile;
-      extraParams = {};
-    };
-    tools = import "${processmgmt}/tools" { inherit pkgs; };
-    compdir = pkgs.runCommandLocal "s6-compiled" {} ''
-      ${pkgs.s6-rc}/bin/s6-rc-compile -v 3 $out ${svdir}/etc/s6/sv
-    '';
-    init = pkgs.writeShellScript "s6-init" ''
-      export PATH=${with pkgs; lib.makeBinPath [
-        coreutils shadow tools.s6-rc tools.common
-        s6 s6-rc s6-linux-utils s6-portable-utils execline
-        dysnomia glibc.bin findutils nixUnstable
-      ]}:$PATH
-      useradd -rUM s6-log
-      useradd -rUM mongodb
-      useradd -rUM influxdb
-      useradd -rUM tomcat
-      useradd -rUM httpd
-      useradd -rUM mysql
-      groupadd -r root
-
-      nixproc-s6-svscan & PID=$!
-      nixproc-s6-rc-deploy ${svdir} && wait $PID || ls -la /var/run/s6-rc
-    '';
-    test = pkgs.writeShellScript "go" ''
-      doas systemd-nspawn --volatile=overlay --bind=/nix --bind=/run/current-system/ ${init}
-    '';
-  in {
-    inherit exprFile svdir tools compdir init;
-  } // test;
 }
