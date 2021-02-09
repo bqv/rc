@@ -8,7 +8,10 @@
       "M-*" = "webkit";
     };
     init = ''
-      (setenv "GIO_EXTRA_MODULES" "${pkgs.glib-networking}/lib/gio/modules")
+      (setenv "GIO_EXTRA_MODULES"
+              (let ((cur (getenv "GIO_EXTRA_MODULES"))
+                    (new "${pkgs.glib-networking}/lib/gio/modules"))
+                (if cur (concat new ":" cur) new)))
     '';
     config = ''
       (with-eval-after-load 'evil
