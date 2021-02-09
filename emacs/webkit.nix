@@ -28,11 +28,16 @@
                 (if cur (concat new ":" cur) new)))
     '') (lib.mapAttrsToList lib.nameValuePair env);
     config = ''
-      (with-eval-after-load 'evil
+      (require 'webkit-ace)
+      (require 'webkit-dark)
+      (with-eval-after-load 'evil-collection
         (require 'evil-collection-webkit)
         (evil-collection-xwidget-setup))
       (setq webkit-own-window nil)
       (setq webkit-search-prefix "https://qwant.com/?q=")
+      ;(setq browse-url-browser-function 'webkit-browse-url)
+      (setq webkit-browse-url-force-new t)
+      (setq webkit-dark-mode t)
     '';
   };
 }
