@@ -22,14 +22,12 @@
       "M-*" = "webkit";
     };
     init = ''
-      (setenv "GIO_EXTRA_MODULES"
-              (let ((cur (getenv "GIO_EXTRA_MODULES"))
-                    (new "${pkgs.glib-networking}/lib/gio/modules"))
-                (if cur (concat new ":" cur) new)))
-      (setenv "GST_PLUGIN_SYSTEM_PATH_1_0"
-              (let ((cur (getenv "GST_PLUGIN_SYSTEM_PATH_1_0"))
-                    (new "${pkgs.glib-networking}/lib/gio/modules"))
-                (if cur (concat new ":" cur) new)))
+      ${lib.concatMapStringsSep "" ({ name, value }: ''
+        (setenv "GIO_EXTRA_MODULES"
+                (let ((cur (getenv "GIO_EXTRA_MODULES"))
+                      (new "${pkgs.glib-networking}/lib/gio/modules"))
+                  (if cur (concat new ":" cur) new)))
+      '') (builtins.mapAttrs lib.nameValuePair env)}
     '';
     config = ''
       (with-eval-after-load 'evil
