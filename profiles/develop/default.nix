@@ -39,12 +39,6 @@
     pass
     pijul
     psmisc
-    s6
-    s6-dns
-    s6-linux-utils
-    s6-linux-init
-    s6-networking
-    s6-portable-utils
     strace
     socat
     subversion
