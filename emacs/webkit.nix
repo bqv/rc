@@ -1,7 +1,21 @@
 { config, lib, usr, pkgs, domains, ... }:
 
 {
-  emacs-loader.webkit = {
+  emacs-loader.webkit = let
+    env = {
+      GIO_EXTRA_MODULES = [
+        "${pkgs.glib-networking}/lib/gio/modules"
+      ];
+      GST_PLUGIN_SYSTEM_PATH_1_0 = [
+        "${pkgs.gst_all_1.gstreamer}/lib/gstreamer-1.0"
+        "${pkgs.gst_all_1.gst-libav}/lib/gstreamer-1.0"
+        "${pkgs.gst_all_1.gst-plugins-base}/lib/gstreamer-1.0"
+        "${pkgs.gst_all_1.gst-plugins-good}/lib/gstreamer-1.0"
+        "${pkgs.gst_all_1.gst-plugins-bad}/lib/gstreamer-1.0"
+        "${pkgs.gst_all_1.gst-plugins-ugly}/lib/gstreamer-1.0"
+      ];
+    };
+  in {
     demand = true;
     package = epkgs: epkgs.emacs-webkit;
     bind = {
@@ -10,6 +24,10 @@
     init = ''
       (setenv "GIO_EXTRA_MODULES"
               (let ((cur (getenv "GIO_EXTRA_MODULES"))
+                    (new "${pkgs.glib-networking}/lib/gio/modules"))
+                (if cur (concat new ":" cur) new)))
+      (setenv "GST_PLUGIN_SYSTEM_PATH_1_0"
+              (let ((cur (getenv "GST_PLUGIN_SYSTEM_PATH_1_0"))
                     (new "${pkgs.glib-networking}/lib/gio/modules"))
                 (if cur (concat new ":" cur) new)))
     '';
