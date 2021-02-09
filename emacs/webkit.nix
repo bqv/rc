@@ -47,8 +47,8 @@
                   (format "%s%.0f%%  " (all-the-icons-faicon "spinner") progress)))
           (force-mode-line-update)))
 
-      ;; save function saves to the download directory, the open function
-      ;; opens in a temp buffer and the default function interactively prompts.
+      ;; save function saves to the download directory, open function
+      ;; opens in a temp buffer and default function interactively prompts.
       (setq webkit-download-action-alist '(("\\.pdf\\'" . webkit-download-open)
                                            ("\\.png\\'" . webkit-download-save)
                                            (".*" . webkit-download-default))
