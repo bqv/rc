@@ -21,14 +21,12 @@
     bind = {
       "M-*" = "webkit";
     };
-    init = ''
-      ${lib.concatMapStringsSep "" ({ name, value }: ''
-        (setenv "${name}"
-                (let ((cur (getenv "${name}"))
-                      (new "${lib.concatStringsSep ":" value}"))
-                  (if cur (concat new ":" cur) new)))
-      '') (builtins.mapAttrs lib.nameValuePair env)}
-    '';
+    init = lib.concatMapStringsSep "" ({ name, value }: ''
+      (setenv "${name}"
+              (let ((cur (getenv "${name}"))
+                    (new "${lib.concatStringsSep ":" value}"))
+                (if cur (concat new ":" cur) new)))
+    '') (builtins.mapAttrs lib.nameValuePair env);
     config = ''
       (with-eval-after-load 'evil
         (require 'evil-collection-webkit)
