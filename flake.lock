@@ -442,11 +442,11 @@
     "emacsbridge": {
       "flake": false,
       "locked": {
-        "lastModified": 1603837081,
-        "narHash": "sha256-FJthuSHeS78NZ6d1ctw3oOXJk/1CDqiD+KUUN1KsqIE=",
+        "lastModified": 1609522126,
+        "narHash": "sha256-yPxQ2ZpXmcO7t1iuvuhUJRX/Il+V+lnW2XoTfFbFir8=",
         "owner": "aardsoft",
         "repo": "emacsbridge",
-        "rev": "ac5907c3fcec39fa68bec3b74d22289780a6f78d",
+        "rev": "b5145fc3c272d5a3e8220082e332ac4f1b05b5d3",
         "type": "github"
       },
       "original": {
