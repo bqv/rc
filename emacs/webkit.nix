@@ -18,7 +18,6 @@
   in {
     demand = true;
     package = epkgs: epkgs.emacs-webkit;
-    require = [ "webkit" "webkit-ace" "webkit-dark" ];
     bind = {
       "M-*" = "webkit";
     };
@@ -36,8 +35,45 @@
       (setq webkit-search-prefix "https://qwant.com/?q=")
       ;(setq browse-url-browser-function 'webkit-browse-url)
       (setq webkit-browse-url-force-new t)
-      (with-eval-after-load 'webkit-dark
-        (setq webkit-dark-mode t))
+      (setq webkit-dark-mode t)
+
+      (with-eval-after-load 'all-the-icons
+        (defun webkit--display-progress (progress)
+          (setq webkit--progress-formatted
+                (if (equal progress 100.0)
+                    ""
+                  (format "%s%.0f%%  " (all-the-icons-faicon "spinner") progress)))
+          (force-mode-line-update)))
+
+      ;; save function saves to the download directory, open function
+      ;; opens in a temp buffer and default function interactively prompts.
+      (setq webkit-download-action-alist '(("\\.pdf\\'" . webkit-download-open)
+                                           ("\\.png\\'" . webkit-download-save)
+                                           (".*" . webkit-download-default))
+    '';
+  };
+  emacs-loader.webkit-ace = {
+    demand = true;
+    package = epkgs: epkgs.emacs-webkit;
+    after = [ "webkit" ];
+    bind = {
+      "M-*" = "webkit";
+    };
+    init = lib.concatMapStringsSep "" ({ name, value }: ''
+      (setenv "${name}"
+              (let ((cur (getenv "${name}"))
+                    (new "${lib.concatStringsSep ":" value}"))
+                (if cur (concat new ":" cur) new)))
+    '') (lib.mapAttrsToList lib.nameValuePair env);
+    config = ''
+      (with-eval-after-load 'evil-collection
+        (require 'evil-collection-webkit)
+        (evil-collection-xwidget-setup))
+      (setq webkit-own-window nil)
+      (setq webkit-search-prefix "https://qwant.com/?q=")
+      ;(setq browse-url-browser-function 'webkit-browse-url)
+      (setq webkit-browse-url-force-new t)
+      (setq webkit-dark-mode t)
 
       (with-eval-after-load 'all-the-icons
         (defun webkit--display-progress (progress)
