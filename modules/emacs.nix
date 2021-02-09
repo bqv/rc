@@ -55,6 +55,10 @@ let
         default = epkgs: epkgs.${config.name};
         defaultText = "epkgs: epkgs.${config.name}";
       };
+      init = mkOption {
+        type = types.lines;
+        default = "";
+      };
       config = mkOption {
         type = types.lines;
         default = "";
@@ -62,8 +66,16 @@ let
       script = mkOption {
         type = types.anything;
         default = epkgs: let
+          initPkg = epkgs.trivialBuild rec {
+            pname = "${name}-init";
+            src = usr.elisp.writeFile {
+              name = pname;
+              description = "";
+              text = config.init;
+            };
+          };
           configPkg = epkgs.trivialBuild rec {
-            pname = "load-${name}";
+            pname = "${name}-config";
             src = usr.elisp.writeFile {
               name = pname;
               description = "";
@@ -71,6 +83,7 @@ let
             };
           };
 
+          initSrc = "${initPkg}/share/emacs/site-lisp/${initPkg.pname}";
           configSrc = "${configPkg}/share/emacs/site-lisp/${configPkg.pname}";
           notWhitespace = s: builtins.isNull (builtins.match "[ \\n]*" s);
 
@@ -112,6 +125,9 @@ let
                    else if builtins.length (builtins.attrNames config.mode) == 1
                    then ":mode ${builtins.head (attrsToCons config.mode)}"
                    else ":mode (${lib.concatStringsSep " " (attrsToCons config.mode)})";
+            init = if notWhitespace config.init
+                   then ":init (load-file \"${initSrc}.el\")"
+                   else "";
             config = if notWhitespace config.config
                      then ":config (load-file \"${configSrc}.el\")"
                      else "";
