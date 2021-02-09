@@ -6,7 +6,7 @@
   in {
     demand = true;
     config = ''
-      (setq nix-repl-executable-args '("-vv" "repl" "--impure"
+      (setq nix-repl-executable-args '("-vv" "repl" "--impure" "--builders" ""
                                        "--option" "allow-unsafe-native-code-during-evaluation" "true"
                                        "/run/current-system/flake/input/self/"))
       (setq nix-indent-function 'nix-indent-line)
