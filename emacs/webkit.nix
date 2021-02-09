@@ -23,9 +23,9 @@
     };
     init = ''
       ${lib.concatMapStringsSep "" ({ name, value }: ''
-        (setenv "GIO_EXTRA_MODULES"
-                (let ((cur (getenv "GIO_EXTRA_MODULES"))
-                      (new "${pkgs.glib-networking}/lib/gio/modules"))
+        (setenv "${name}"
+                (let ((cur (getenv "${name}"))
+                      (new "${lib.concatStringsSep ":" value}"))
                   (if cur (concat new ":" cur) new)))
       '') (builtins.mapAttrs lib.nameValuePair env)}
     '';
