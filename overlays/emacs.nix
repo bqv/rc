@@ -58,11 +58,11 @@ inputs@{...}: final: prev: let
 in with prev.lib; rec {
   emacsPackagesFor = emacs: (prev.emacsPackagesFor emacs).overrideScope' emacsOverride;
 
-  emacsGcc = prev.emacsGcc.overrideAttrs (drv: {
+  emacsGcc = prev.emacsGcc.overrideAttrs (drv: wrapGApps drv // {
     passthru = drv.passthru // { nativeComp = true; };
   });
 
-  emacsPgtkGcc = prev.emacsPgtkGcc.overrideAttrs (drv: {
+  emacsPgtkGcc = prev.emacsPgtkGcc.overrideAttrs (drv: wrapGApps drv // {
     passthru = drv.passthru // {
       nativeComp = true;
       pkgs = final.emacsPackagesFor final.emacsPgtkGcc;
