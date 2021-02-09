@@ -38,7 +38,8 @@ in {
     ]);
 
     programs.emacs = rec {
-      package = pkgs.emacsPgtkGcc;
+      package = pkgs.emacsPgtkGcc.overrideAttrs (drv: {
+      });
       extraPackages = epkgs: forEachPackage (p: p.package epkgs);
     };
 
