@@ -26,7 +26,7 @@ inputs@{...}: final: prev: let
     });
   };
 
-  wrapGApps = rec {
+  wrapGApps = drv: rec {
     nativeBuildInputs = (drv.nativeBuildInputs or []) ++ [
       final.wrapGAppsHook
     ];
@@ -54,7 +54,7 @@ inputs@{...}: final: prev: let
         "''${gappsWrapperArgs[@]}" \
         --argv0 emacsclient
     '';
-  });
+  };
 in with prev.lib; rec {
   emacsPackagesFor = emacs: (prev.emacsPackagesFor emacs).overrideScope' emacsOverride;
 
