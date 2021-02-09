@@ -49,7 +49,7 @@
       ;; opens in a temp buffer and default function interactively prompts.
       (setq webkit-download-action-alist '(("\\.pdf\\'" . webkit-download-open)
                                            ("\\.png\\'" . webkit-download-save)
-                                           (".*" . webkit-download-default))
+                                           (".*" . webkit-download-default)))
     '';
   };
   emacs-loader.webkit-ace = {
