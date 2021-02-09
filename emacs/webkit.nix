@@ -7,6 +7,9 @@
     bind = {
       "M-*" = "webkit";
     };
+    init = ''
+      (setenv "GIO_EXTRA_MODULES" "${pkgs.glib-networking}/lib/gio/modules")
+    '';
     config = ''
       (with-eval-after-load 'evil
         (require 'evil-collection-webkit)
