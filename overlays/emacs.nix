@@ -26,7 +26,7 @@ inputs@{...}: final: prev: let
     });
   };
 
-  wrapGApps = super: super.override (drv: rec {
+  wrapGApps = super: super // rec {
     nativeBuildInputs = (drv.nativeBuildInputs or []) ++ [
       final.wrapGAppsHook
     ];
