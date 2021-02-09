@@ -18,6 +18,7 @@
   in {
     demand = true;
     package = epkgs: epkgs.emacs-webkit;
+    require = [ "webkit" "webkit-ace" "webkit-dark" ];
     bind = {
       "M-*" = "webkit";
     };
@@ -28,8 +29,6 @@
                 (if cur (concat new ":" cur) new)))
     '') (lib.mapAttrsToList lib.nameValuePair env);
     config = ''
-      (require 'webkit-ace)
-      (require 'webkit-dark)
       (with-eval-after-load 'evil-collection
         (require 'evil-collection-webkit)
         (evil-collection-xwidget-setup))
