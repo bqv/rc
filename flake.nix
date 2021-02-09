@@ -288,6 +288,7 @@
                   inherit (withRel2003) bcachefs-tools; # to match kernel ver
                   inherit (withNaersk.withSelfFlake) wgvanity wold mactelnet;
                   inherit (withNix.withSelfFlake) nix-bundle;
+                  inherit (withRel2009) dysnomia; # as maintained
 
                  #inherit (withSmall) firefox firefox-unwrapped;
                  #inherit (withSmall) thunderbird obs-studio webkitgtk chromium qemu;
@@ -302,6 +303,7 @@
               name = "pins";
             }];
           };
+          stdenv = prev.stdenv // { inherit lib; };
         };
         name = "index";
       }];
