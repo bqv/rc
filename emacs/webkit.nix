@@ -54,12 +54,12 @@
   };
   emacs-loader.webkit-ace = {
     demand = true;
-    package = epkgs: epkgs.emacs-webkit;
+    package = lib.const config.emacs-loader.webkit.package;
     after = [ "webkit" ];
   };
   emacs-loader.webkit-dark = {
     demand = true;
-    package = epkgs: epkgs.emacs-webkit;
+    package = lib.const config.emacs-loader.webkit.package;
     after = [ "webkit" ];
     config = ''
       (setq webkit-dark-mode t)
