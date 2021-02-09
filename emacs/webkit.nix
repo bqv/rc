@@ -56,7 +56,6 @@
     demand = true;
     package = epkgs: epkgs.emacs-webkit;
     after = [ "webkit" ];
-    config = ''
   };
   emacs-loader.webkit-dark = {
     demand = true;
