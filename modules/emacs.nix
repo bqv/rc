@@ -63,7 +63,7 @@ let
         type = types.anything;
         default = epkgs: let
           initPkg = epkgs.trivialBuild rec {
-            pname = "load-${name}";
+            pname = "${name}-init";
             src = usr.elisp.writeFile {
               name = pname;
               description = "";
@@ -71,7 +71,7 @@ let
             };
           };
           configPkg = epkgs.trivialBuild rec {
-            pname = "load-${name}";
+            pname = "${name}-config";
             src = usr.elisp.writeFile {
               name = pname;
               description = "";
