@@ -55,6 +55,10 @@ let
         default = epkgs: epkgs.${config.name};
         defaultText = "epkgs: epkgs.${config.name}";
       };
+      init = mkOption {
+        type = types.lines;
+        default = "";
+      };
       config = mkOption {
         type = types.lines;
         default = "";
