@@ -39,6 +39,26 @@ in {
 
     programs.emacs = rec {
       package = pkgs.emacsPgtkGcc.overrideAttrs (drv: {
+        nativeBuildInputs = (drv.nativeBuildInputs or []) ++ [
+          pkgs.wrapGAppsHook
+        ];
+        gstBuildInputs = with pkgs; with gst_all_1; [
+          gstreamer gst-libav
+          gst-plugins-base
+          gst-plugins-good
+          gst-plugins-bad
+          gst-plugins-ugly
+        ];
+        buildInputs = with pkgs; [
+          webkitgtk
+          glib gdk-pixbuf cairo
+          mime-types pango gtk3
+          glib-networking gsettings-desktop-schemas
+          xclip notify-osd enchant
+        ] ++ gstBuildInputs ++ (drv.buildInputs or []);
+
+        GIO_EXTRA_MODULES = "${pkgs.glib-networking}/lib/gio/modules:${pkgs.dconf.lib}/lib/gio/modules";
+        GST_PLUGIN_SYSTEM_PATH_1_0 = pkgs.lib.concatMapStringsSep ":" (p: "${p}/lib/gstreamer-1.0") gstBuildInputs;
       });
       extraPackages = epkgs: forEachPackage (p: p.package epkgs);
     };
