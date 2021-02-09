@@ -286,8 +286,10 @@
 
   lib.test = let
     inherit (pkgs.withSources) processmgmt;
-    exprFile = "${processmgmt}/examples/services-agnostic/processes.nix";
-    svdir = import "${processmgmt}/nixproc/backends/s6-rc/build-s6-rc-env.nix" {
+   #exprFile = "${processmgmt}/examples/services-agnostic/processes.nix";
+    exprFile = ./processes.nix;
+    s6Env = import "${processmgmt}/nixproc/backends/s6-rc/build-s6-rc-env.nix";
+    svdir = s6Env {
       inherit exprFile;
       extraParams = {};
     };
@@ -296,9 +298,10 @@
       ${pkgs.s6-rc}/bin/s6-rc-compile -v 3 $out ${svdir}/etc/s6/sv
     '';
     init = pkgs.writeShellScript "s6-init" ''
-      SCANDIR=/run/s6
       export PATH=${with pkgs; lib.makeBinPath [
-        coreutils s6 s6-rc s6-linux-utils s6-portable-utils execline shadow
+        coreutils shadow tools.s6-rc tools.common
+        s6 s6-rc s6-linux-utils s6-portable-utils execline
+        dysnomia glibc.bin findutils nixUnstable
       ]}:$PATH
       useradd -rUM s6-log
       useradd -rUM mongodb
@@ -308,13 +311,13 @@
       useradd -rUM mysql
       groupadd -r root
 
-      s6-mkdir $SCANDIR
-      s6-svscan $SCANDIR & # cheaper than s6-linux-init
-      PID=$!
-      s6-rc-init -c ${compdir} $SCANDIR && s6-rc change default
-      wait $PID
+      nixproc-s6-svscan & PID=$!
+      nixproc-s6-rc-deploy ${svdir} && wait $PID || ls -la /var/run/s6-rc
+    '';
+    test = pkgs.writeShellScript "go" ''
+      doas systemd-nspawn --volatile=overlay --bind=/nix --bind=/run/current-system/ ${init}
     '';
   in {
     inherit exprFile svdir tools compdir init;
-  };
+  } // test;
 }
