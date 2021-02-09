@@ -21,7 +21,7 @@
     bind = {
       "M-*" = "webkit";
     };
-    init = lib.concatMapStringsSep "\n" ({ name, value }: ''
+    init = lib.concatMapStringsSep "" ({ name, value }: ''
       (setenv "${name}"
               (let ((cur (getenv "${name}"))
                     (new "${lib.concatStringsSep ":" value}"))
