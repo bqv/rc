@@ -39,14 +39,15 @@
       (setq webkit-browse-url-force-new t)
       (setq webkit-dark-mode t)
 
-      ;; Override the "loading:" mode line indicator with an icon from `all-the-icons.el'
-      ;; You could also use a unicode icon like ↺
-      (defun webkit--display-progress (progress)
-        (setq webkit--progress-formatted
-              (if (equal progress 100.0)
-                  ""
-                (format "%s%.0f%%  " (all-the-icons-faicon "spinner") progress)))
-        (force-mode-line-update))
+      (with-eval-after-load 'all-the-icons
+        ;; Override the "loading:" mode line indicator with an icon from `all-the-icons.el'
+        ;; You could also use a unicode icon like ↺
+        (defun webkit--display-progress (progress)
+          (setq webkit--progress-formatted
+                (if (equal progress 100.0)
+                    ""
+                  (format "%s%.0f%%  " (all-the-icons-faicon "spinner") progress)))
+          (force-mode-line-update)))
 
       ;; Set action to be taken on a download request. Predefined actions are
       ;; `webkit-download-default', `webkit-download-save', and `webkit-download-open'
