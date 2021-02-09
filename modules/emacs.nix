@@ -63,14 +63,6 @@ let
         type = types.lines;
         default = "";
       };
-      initPkg = mkOption {
-        type = types.lines;
-        default = "";
-      };
-      configPkg = mkOption {
-        type = types.lines;
-        default = "";
-      };
       script = mkOption {
         type = types.anything;
         default = epkgs: let
@@ -151,6 +143,7 @@ let
             ${attrs.hook}
             ${attrs.bind}
             ${attrs.mode}
+            ${attrs.init}
             ${attrs.config})
         '';
       };
