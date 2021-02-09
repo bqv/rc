@@ -6,7 +6,7 @@
       GIO_EXTRA_MODULES = with pkgs; [
         "${glib-networking}/lib/gio/modules"
       ];
-      GST_PLUGIN_SYSTEM_PATH_1_0 = pkgs.gst_all_1; [
+      GST_PLUGIN_SYSTEM_PATH_1_0 = with pkgs.gst_all_1; [
         "${gstreamer}/lib/gstreamer-1.0"
         "${gst-libav}/lib/gstreamer-1.0"
         "${gst-plugins-base}/lib/gstreamer-1.0"
