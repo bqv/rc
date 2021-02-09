@@ -47,17 +47,6 @@ inputs@{...}: final: prev: let
 
     GIO_EXTRA_MODULES = "${final.glib-networking}/lib/gio/modules:${final.dconf.lib}/lib/gio/modules";
     GST_PLUGIN_SYSTEM_PATH_1_0 = final.lib.concatMapStringsSep ":" (p: "${p}/lib/gstreamer-1.0") gstBuildInputs;
-    dontWrapGApps = true;
-    installPhase = (drv.installPhase or "") + ''
-      wrapProgram $out/bin/emacs \
-        --prefix LD_LIBRARY_PATH : "${final.lib.makeLibraryPath buildInputs}" \
-        "''${gappsWrapperArgs[@]}" \
-        --argv0 emacs
-      wrapProgram $out/bin/emacsclient \
-        --prefix LD_LIBRARY_PATH : "${final.lib.makeLibraryPath buildInputs}" \
-        "''${gappsWrapperArgs[@]}" \
-        --argv0 emacsclient
-    '';
   };
 in with prev.lib; rec {
   emacsPackagesFor = emacs: (prev.emacsPackagesFor emacs).overrideScope' emacsOverride;
