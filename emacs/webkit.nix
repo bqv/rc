@@ -26,7 +26,7 @@
               (let ((cur (getenv "${name}"))
                     (new "${lib.concatStringsSep ":" value}"))
                 (if cur (concat new ":" cur) new)))
-    '') (builtins.mapAttrsToList lib.nameValuePair env);
+    '') (lib.mapAttrsToList lib.nameValuePair env);
     config = ''
       (with-eval-after-load 'evil
         (require 'evil-collection-webkit)
