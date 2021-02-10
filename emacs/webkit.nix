@@ -35,7 +35,7 @@
       (setq webkit-search-prefix "https://qwant.com/?q=")
       ;(setq browse-url-browser-function 'webkit-browse-url)
       (setq webkit-browse-url-force-new t)
-      (setq webkit-dark-mode t)
+      ;(setq webkit-dark-mode t)
 
       (with-eval-after-load 'all-the-icons
         (defun webkit--display-progress (progress)
