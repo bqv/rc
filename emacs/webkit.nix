@@ -14,6 +14,7 @@
         "${gst-plugins-bad}/lib/gstreamer-1.0"
         "${gst-plugins-ugly}/lib/gstreamer-1.0"
         "${pkgs.pipewire.lib}/lib/gstreamer-1.0"
+        "${pkgs.pulseeffects}/lib/gstreamer-1.0"
       ];
     };
   in {
