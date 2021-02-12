@@ -52,6 +52,7 @@ let
 in {
 
   disabledModules = [
+    "services/web-apps/mastodon.nix"
   ];
 
   options = {
