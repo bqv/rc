@@ -273,6 +273,7 @@
                   inherit (withConstructFlake.withConstruct) matrix-construct;
                   inherit (withSelfFlake) yacy;
                   inherit (withRel2003.withSelfFlake) vervis;
+                  inherit (withMaster) mastodon;
 
                   inherit (withSelfFlake) cfcli dgit fsnoop pure shflags taiwins;
                   inherit (withIni2json) ini2json;
