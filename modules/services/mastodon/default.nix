@@ -51,6 +51,9 @@ let
 
 in {
 
+  disabledModules = [
+  ];
+
   options = {
     services.mastodon = {
       enable = lib.mkEnableOption "Mastodon, a federated social network server";
@@ -59,7 +62,7 @@ in {
         description = ''
           Configure nginx as a reverse proxy for mastodon.
           Note that this makes some assumptions on your setup, and sets settings that will
-          affect other virtualHosts running on your nginx instance, if any. 
+          affect other virtualHosts running on your nginx instance, if any.
           Alternatively you can configure a reverse-proxy of your choice to serve these paths:
 
           <code>/ -> $(nix-instantiate --eval '&lt;nixpkgs&gt;' -A mastodon.outPath)/public</code>
