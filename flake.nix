@@ -22,7 +22,6 @@
     rel1809 = { url = "github:nixos/nixpkgs/nixos-18.09"; flake = false; };
     rel1803 = { url = "github:nixos/nixpkgs/18.03"; flake = false; };
     pr75800.url = "github:nixos/nixpkgs/517b290754f6a7cc487ce11932a8b750f868324d"; #|\ Pull
-    pr78810.url = "github:happy-river/nixpkgs/fe73376fcfe2eb1f72ab4ea52ad3bb0a12adc8d3"; #|\ Pull
     pr93659.url = "github:ju1m/nixpkgs/security.pass";                             #|/ Reqs
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
     pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
@@ -69,6 +68,7 @@
     haskell.url = "github:input-output-hk/haskell.nix"; # Haskell.nix
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
+    mastodon.url = "github:erictapen/mastodon-nixoe";   # Mastodon-nixos
 
     xontribs.url = "github:bqv/xontribs"; #|- Xontribs
     xontribs.inputs = {
