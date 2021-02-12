@@ -67,7 +67,6 @@
     haskell.url = "github:input-output-hk/haskell.nix"; # Haskell.nix
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
-    mastodon.url = "github:erictapen/mastodon-nixos";   # Mastodon-nixos
 
     xontribs.url = "github:bqv/xontribs"; #|- Xontribs
     xontribs.inputs = {
@@ -273,7 +272,6 @@
                   inherit (withConstructFlake.withConstruct) matrix-construct;
                   inherit (withSelfFlake) yacy;
                   inherit (withRel2003.withSelfFlake) vervis;
-                  inherit (withMastodonFlake) mastodon;
 
                   inherit (withSelfFlake) cfcli dgit fsnoop pure shflags taiwins;
                   inherit (withIni2json) ini2json;
