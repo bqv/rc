@@ -68,7 +68,7 @@
     haskell.url = "github:input-output-hk/haskell.nix"; # Haskell.nix
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
-    mastodon.url = "github:erictapen/mastodon-nixoe";   # Mastodon-nixos
+    mastodon.url = "github:erictapen/mastodon-nixos";   # Mastodon-nixos
 
     xontribs.url = "github:bqv/xontribs"; #|- Xontribs
     xontribs.inputs = {
