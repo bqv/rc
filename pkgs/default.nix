@@ -63,8 +63,6 @@ in rec {
 
   nodePackages = recurseIntoAttrs prev.nodePackages;
 
-  pleroma = prev.callPackage ./servers/pleroma { };
-
   pure = prev.callPackage ./shells/zsh/pure { };
 
   rPackages = recurseIntoAttrs prev.rPackages;
