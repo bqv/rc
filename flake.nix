@@ -289,8 +289,8 @@
 
                  #inherit (withSmall) firefox firefox-unwrapped;
                  #inherit (withSmall) thunderbird obs-studio webkitgtk chromium qemu;
-                  plasma5 = plasma5Packages;
-                  inherit (libsForQt5) kdeFrameworks;
+                 #plasma5 = plasma5Packages;
+                 #inherit (libsForQt5) kdeFrameworks;
                 };
               in overlaySets // overlayPkgs // {
                 inherit overlaySets overlayPkgs;
