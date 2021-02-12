@@ -13,6 +13,8 @@
         "${gst-plugins-good}/lib/gstreamer-1.0"
         "${gst-plugins-bad}/lib/gstreamer-1.0"
         "${gst-plugins-ugly}/lib/gstreamer-1.0"
+        "${pkgs.pipewire.lib}/lib/gstreamer-1.0"
+        "${pkgs.pulseeffects}/lib/gstreamer-1.0"
       ];
     };
   in {
@@ -28,8 +30,6 @@
                 (if cur (concat new ":" cur) new)))
     '') (lib.mapAttrsToList lib.nameValuePair env);
     config = ''
-      (require 'webkit-ace)
-      (require 'webkit-dark)
       (with-eval-after-load 'evil-collection
         (require 'evil-collection-webkit)
         (evil-collection-xwidget-setup))
@@ -37,7 +37,7 @@
       (setq webkit-search-prefix "https://qwant.com/?q=")
       ;(setq browse-url-browser-function 'webkit-browse-url)
       (setq webkit-browse-url-force-new t)
-      (setq webkit-dark-mode t)
+      (setq webkit-dark-mode nil)
 
       (with-eval-after-load 'all-the-icons
         (defun webkit--display-progress (progress)
@@ -51,7 +51,20 @@
       ;; opens in a temp buffer and default function interactively prompts.
       (setq webkit-download-action-alist '(("\\.pdf\\'" . webkit-download-open)
                                            ("\\.png\\'" . webkit-download-save)
-                                           (".*" . webkit-download-default))
+                                           (".*" . webkit-download-default)))
+    '';
+  };
+  emacs-loader.webkit-ace = {
+    demand = true;
+    inherit (config.emacs-loader.webkit) package;
+    after = [ "webkit" ];
+  };
+  emacs-loader.webkit-dark = {
+    demand = true;
+    inherit (config.emacs-loader.webkit) package;
+    after = [ "webkit" ];
+    config = ''
+      (setq webkit-dark-mode t)
     '';
   };
 }
