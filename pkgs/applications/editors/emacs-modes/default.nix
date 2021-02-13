@@ -45,6 +45,7 @@ in lib.recurseIntoAttrs rec {
     src = inputs.envrc;
     buildInputs = with emacsPackages; [
       seq
+      inheritenv
     ];
   };
 
