@@ -347,11 +347,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1611240086,
-        "narHash": "sha256-z8NmKUm7rfcAIkwtO4JZZo2KKDNQmHyExgNFRRzi1kM=",
+        "lastModified": 1597153508,
+        "narHash": "sha256-VHg3MYVgQ12LeRSU2PSoDeKlSPD8PYYEFxxwkVVDRd0=",
         "owner": "edolstra",
         "repo": "dwarffs",
-        "rev": "f691e2c991e75edb22836f1dbe632c40324215c5",
+        "rev": "d181d714fd36eb06f4992a1997cd5601e26db8f5",
         "type": "github"
       },
       "original": {
