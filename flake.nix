@@ -789,7 +789,6 @@
               from = { inherit id; type = "indirect"; };
             }) (inputs // { nixpkgs = inputs.master; });
             nix.nixPath = lib.mapAttrsToList (k: v: "${k}=${toString v}") {
-
               nixpkgs = "${channels.pkgs}/";
               nixos = "${inputs.self}/";
               self = "/run/current-system/flake/input/self/";
