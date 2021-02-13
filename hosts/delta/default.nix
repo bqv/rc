@@ -196,7 +196,7 @@
   services.flatpak.enable = true;
   xdg.portal.enable = true;
   services.searx.enable = true;
-  services.hydra.enable = true;
+  services.hydra.enable = false; # disabled because holy wtf
   services.gitfs = {
     enable = true;
     mounts = {
