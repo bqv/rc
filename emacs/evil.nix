@@ -33,7 +33,7 @@
       (define-key evil-normal-state-map (kbd "C-w") 'kill-region)
       (define-key evil-visual-state-map (kbd "C-w") 'kill-region)
 
-      (setq evil-want-keybinding nil)
+      (setq evil-want-keybinding nil) ; https://github.com/emacs-evil/evil-collection/issues/60
 
       ;; Override :q to kill buffer only
       (evil-define-command evil-quit (&optional force)
