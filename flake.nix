@@ -110,6 +110,7 @@
     flycheck-purescript = { url = "github:bsermons/flycheck-purescript"; flake = false; };
     eterm-256color = { url = "github:dieggsy/eterm-256color"; flake = false; };
     envrc = { url = "github:purcell/envrc"; flake = false; };
+    inheritenv = { url = "github:purcell/inheritenv"; flake = false; };
     emacsbridge = { url = "github:aardsoft/emacsbridge"; flake = false; };
     font-lock-ext = { url = "github:sensorflo/font-lock-ext"; flake = false; };
     sln-mode = { url = "github:sensorflo/sln-mode"; flake = false; };
@@ -264,7 +265,7 @@
                   in (emacsPackagesFor emacs).overrideScope' (_: _: {
                     inherit (epkgs) bitwarden ivy-exwm emacs-webkit;
                     inherit (epkgs) flycheck-purescript eterm-256color;
-                    inherit (epkgs) envrc emacsbridge font-lock-ext sln-mode;
+                    inherit (epkgs) envrc emacsbridge font-lock-ext inheritenv sln-mode;
                     inherit (epkgs) emacs-ffi explain-pause-mode weechat-patched;
                   });
                   inherit (withSelfFlake) git-pr-mirror git-remote-ipfs git-get ipfscat;
