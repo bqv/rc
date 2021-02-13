@@ -4,7 +4,7 @@ let
   inherit (emacsPackages) trivialBuild emacs;
   inputs = {
     inherit (withSources) emacs-bitwarden ivy-exwm flycheck-purescript;
-    inherit (withSources) eterm-256color envrc emacsbridge emacs-webkit;
+    inherit (withSources) eterm-256color emacsbridge emacs-webkit;
     inherit (withSources) font-lock-ext sln-mode emacs-ffi explain-pause-mode;
   };
 in lib.recurseIntoAttrs rec {
@@ -36,24 +36,6 @@ in lib.recurseIntoAttrs rec {
     src = inputs.eterm-256color;
     buildInputs = with emacsPackages; [
       xterm-color f
-    ];
-  };
-
-  envrc = trivialBuild rec {
-    pname = "envrc";
-    version = src.shortRev;
-    src = inputs.envrc;
-    buildInputs = with emacsPackages; [
-      seq
-      inheritenv
-    ];
-  };
-
-  inheritenv = trivialBuild rec {
-    pname = "inheritenv";
-    version = src.shortRev;
-    src = inputs.inheritenv;
-    buildInputs = with emacsPackages; [
     ];
   };
 
