@@ -48,6 +48,14 @@ in lib.recurseIntoAttrs rec {
     ];
   };
 
+  inheritenv = trivialBuild rec {
+    pname = "inheritenv";
+    version = src.shortRev;
+    src = inputs.inheritenv;
+    buildInputs = with emacsPackages; [
+    ];
+  };
+
   emacsbridge = trivialBuild rec {
     pname = "emacsbridge";
     version = src.shortRev;
