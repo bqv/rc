@@ -1,7 +1,7 @@
 { super, config, lib, pkgs, usr, ... }:
 
 let
-  packageNames = lib.mapAttrsToList (_: e: e.name) config.emacs-loader;
+  packageNames = lib.mapAttrsToList (_: e: e.name) config.emacs.loader;
   packageSpec = { config, name, ... }:
   {
     options = with lib; {
@@ -155,9 +155,11 @@ let
   };
 in {
   options = with lib; {
-    emacs-loader = lib.mkOption {
-      type = types.attrsOf (types.submodule packageSpec);
-      default = {};
+    emacs = {
+      loader = lib.mkOption {
+        type = types.attrsOf (types.submodule packageSpec);
+        default = {};
+      };
     };
   };
 }
