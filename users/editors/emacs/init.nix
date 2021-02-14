@@ -39,9 +39,9 @@ let
       :require t
       :init
       ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
-      (leaf hydra :require t)
-      ;(leaf el-get :require t)
-      ;(leaf blackout :require t)
+      (leaf hydra :ensure t)
+     ;(leaf el-get :ensure t)
+     ;(leaf blackout :ensure t)
 
       :setq
       (leaf-defaults . '(:require t))
