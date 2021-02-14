@@ -105,10 +105,10 @@ let
                     else if builtins.length config.after == 1
                     then ":after ${builtins.head config.after}"
                     else ":after (${lib.concatStringsSep " " config.after})";
-            diminish = if builtins.length config.diminish <= 0 then ""
-                       else if builtins.length config.diminish == 1
-                       then ":diminish ${builtins.head config.diminish}"
-                       else ":diminish (${lib.concatStringsSep " " config.diminish})";
+            diminish =#if builtins.length config.diminish <= 0 then ""
+                  "" ;#else if builtins.length config.diminish == 1
+                      #then ":diminish ${builtins.head config.diminish}"
+                      #else ":diminish (${lib.concatStringsSep " " config.diminish})";
             commands = if builtins.length config.commands <= 0 then ""
                        else if builtins.length config.commands == 1
                        then ":commands ${builtins.head config.commands}"
