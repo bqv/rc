@@ -34,7 +34,6 @@ let
 
   # Setup base packaging - leaf
   package-init = ''
-    (eval-and-compile
     (require 'leaf)
     (leaf leaf-keywords
       :ensure t
@@ -48,7 +47,7 @@ let
       (leaf-defaults . '(:require t))
       :config
       ;; initialize leaf-keywords.el
-      (leaf-keywords-init)))
+      (leaf-keywords-init))
     (leaf auto-compile
       :leaf-defer nil
       :config
