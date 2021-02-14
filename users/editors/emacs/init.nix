@@ -5,6 +5,7 @@ let
 
   # Basic init - no packaging available
   startup-pre = ''
+    (setq text-quoting-style 'grave)
     (defvar before-user-init-time (current-time)
       "Value of `current-time' when Emacs begins loading `current-file'.")
 
