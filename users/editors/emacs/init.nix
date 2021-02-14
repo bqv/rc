@@ -36,7 +36,7 @@ let
   package-init = ''
     (require 'leaf)
     (leaf leaf-keywords
-      :require t
+      :ensure t
       :init
       ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
       (leaf hydra :ensure t)
