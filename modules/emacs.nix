@@ -160,6 +160,9 @@ in {
         type = types.attrsOf (types.submodule packageSpec);
         default = {};
       };
+      package = lib.mkOption {
+        type = types.package;
+      };
     };
   };
 }
