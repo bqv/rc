@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.buffer-move = {
+  emacs.loader.buffer-move = {
     demand = true;
     after = [ "exwm-input" ];
     config = ''

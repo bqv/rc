@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.yasnippet = {
+  emacs.loader.yasnippet = {
     demand = true;
   };
 }

@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.steam = {
+  emacs.loader.steam = {
     demand = true;
     config = let
       creds = usr.secrets.steam.credentials;

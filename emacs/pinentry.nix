@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.pinentry = {
+  emacs.loader.pinentry = {
     demand = true;
     after = [ "exwm" ];
     config = ''

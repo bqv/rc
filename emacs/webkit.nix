@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, domains, ... }:
 
 {
-  emacs-loader.webkit = let
+  emacs.loader.webkit = let
     env = {
       GIO_EXTRA_MODULES = with pkgs; [
         "${glib-networking}/lib/gio/modules"
@@ -54,14 +54,14 @@
                                            (".*" . webkit-download-default)))
     '';
   };
-  emacs-loader.webkit-ace = {
+  emacs.loader.webkit-ace = {
     demand = true;
-    inherit (config.emacs-loader.webkit) package;
+    inherit (config.emacs.loader.webkit) package;
     after = [ "webkit" ];
   };
-  emacs-loader.webkit-dark = {
+  emacs.loader.webkit-dark = {
     demand = true;
-    inherit (config.emacs-loader.webkit) package;
+    inherit (config.emacs.loader.webkit) package;
     after = [ "webkit" ];
     config = ''
       (setq webkit-dark-mode t)

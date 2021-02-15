@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.projectile = {
+  emacs.loader.projectile = {
     demand = true;
     diminish = [ "projectile-mode" ];
     config = ''

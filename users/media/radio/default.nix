@@ -10,7 +10,7 @@ in {
     };
   }) streams;
 
-  emacs-loader.emms = {
+  emacs.loader.emms = {
     after = [ "ivy" ];
     config = ''
       (defconst bqv/radio-stations

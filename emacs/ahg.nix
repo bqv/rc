@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.ahg = {
+  emacs.loader.ahg = {
     demand = true;
   };
 }

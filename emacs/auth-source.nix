@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.auth-source = {
+  emacs.loader.auth-source = {
     demand = true;
     name = "pass";
     config = ''

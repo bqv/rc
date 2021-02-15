@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.material-theme = {
+  emacs.loader.material-theme = {
     demand = true;
   };
 }

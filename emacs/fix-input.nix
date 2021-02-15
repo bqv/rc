@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.fix-input = {
+  emacs.loader.fix-input = {
     demand = true;
     config = ''
       ;; ensure wayland xkb

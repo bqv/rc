@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.tramp = {
+  emacs.loader.tramp = {
     demand = true;
     package = lib.const null;
     config = ''

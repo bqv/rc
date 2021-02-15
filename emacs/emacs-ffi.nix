@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.emacs-ffi = {
+  emacs.loader.emacs-ffi = {
     demand = true;
   };
 }

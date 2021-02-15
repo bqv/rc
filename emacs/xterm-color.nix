@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.xterm-color = {
+  emacs.loader.xterm-color = {
     demand = true;
     config = ''
       (when nil
