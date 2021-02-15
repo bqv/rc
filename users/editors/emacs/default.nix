@@ -6,7 +6,7 @@ with lib; let
   forEachPackage = f: lib.flatten (lib.mapAttrsToList (k: v:
     let ret = if v.enable then f v else [];
     in if builtins.isNull ret then [] else ret
-  ) config.emacs-loader);
+  ) config.emacs.loader);
 
   packageDeps = forEachPackage (p: p.package cfg.package.pkgs);
   systemDeps = forEachPackage (p: p.systemDeps);
