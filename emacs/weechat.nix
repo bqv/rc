@@ -5,6 +5,212 @@
     demand = true;
     package = epkgs: epkgs.weechat-patched;
     after = [ "tracking" ];
+    init = ''
+      (defun bindat--unpack-group (spec)
+        (with-suppressed-warnings ((lexical struct last))
+          (defvar struct) (defvar last))
+        (let (struct last)
+          (while spec
+            (let* ((item (car spec))
+                   (field (car item))
+                   (type (nth 1 item))
+                   (len (nth 2 item))
+                   (vectype (and (eq type 'vec) (nth 3 item)))
+                   (tail 3)
+                   data)
+              (setq spec (cdr spec))
+              (if (and (consp field) (eq (car field) 'eval))
+                  (setq field (eval (car (cdr field)) t)))
+              (if (and type (consp type) (eq (car type) 'eval))
+                  (setq type (eval (car (cdr type)) t)))
+              (if (and len (consp len) (eq (car len) 'eval))
+                  (setq len (eval (car (cdr len)) t)))
+              (if (memq field '(eval fill align struct union))
+                  (setq tail 2
+                        len type
+                        type field
+                        field nil))
+              (if (and (consp len) (not (eq type 'eval)))
+                  (setq len (apply #'bindat-get-field struct len)))
+              (if (not len)
+                  (setq len 1))
+              (cond
+               ((eq type 'eval)
+                (if field
+                    (setq data (eval len t))
+                  (eval len t)))
+               ((eq type 'fill)
+                (setq bindat-idx (+ bindat-idx len)))
+               ((eq type 'align)
+                (while (/= (% bindat-idx len) 0)
+                  (setq bindat-idx (1+ bindat-idx))))
+               ((eq type 'struct)
+                (setq data (bindat--unpack-group (eval len t))))
+               ((eq type 'repeat)
+                (let ((index 0) (count len))
+                  (while (< index count)
+                    (push (bindat--unpack-group (nthcdr tail item)) data)
+                    (setq index (1+ index)))
+                  (setq data (nreverse data))))
+               ((eq type 'union)
+                (with-suppressed-warnings ((lexical tag))
+                  (defvar tag))
+                (let ((tag len) (cases (nthcdr tail item)) case cc)
+                  (while cases
+                    (setq case (car cases)
+                          cases (cdr cases)
+                          cc (car case))
+                    (if (or (equal cc tag) (equal cc t)
+                            (and (consp cc) (eval cc t)))
+                        (setq data (bindat--unpack-group (cdr case))
+                              cases nil)))))
+               (t
+                (setq data (bindat--unpack-item type len vectype)
+                      last data)))
+              (if data
+                  (setq struct (if field
+                                   (cons (cons field data) struct)
+                                 (append data struct))))))
+          struct))
+
+      (defun bindat--length-group (struct spec)
+        (with-suppressed-warnings ((lexical struct last))
+          (defvar struct) (defvar last))
+        (let ((struct struct) last)
+          (while spec
+            (let* ((item (car spec))
+                   (field (car item))
+                   (type (nth 1 item))
+                   (len (nth 2 item))
+                   (vectype (and (eq type 'vec) (nth 3 item)))
+                   (tail 3))
+              (setq spec (cdr spec))
+              (if (and (consp field) (eq (car field) 'eval))
+                  (setq field (eval (car (cdr field)) t)))
+              (if (and type (consp type) (eq (car type) 'eval))
+                  (setq type (eval (car (cdr type)) t)))
+              (if (and len (consp len) (eq (car len) 'eval))
+                  (setq len (eval (car (cdr len)) t)))
+              (if (memq field '(eval fill align struct union))
+                  (setq tail 2
+                        len type
+                        type field
+                        field nil))
+              (if (and (consp len) (not (eq type 'eval)))
+                  (setq len (apply #'bindat-get-field struct len)))
+              (if (not len)
+                  (setq len 1))
+              (while (eq type 'vec)
+                (if (consp vectype)
+                    (setq len (* len (nth 1 vectype))
+                          type (nth 2 vectype))
+                  (setq type (or vectype 'u8)
+                        vectype nil)))
+              (cond
+               ((eq type 'eval)
+                (if field
+                    (setq struct (cons (cons field (eval len t)) struct))
+                  (eval len t)))
+               ((eq type 'fill)
+                (setq bindat-idx (+ bindat-idx len)))
+               ((eq type 'align)
+                (while (/= (% bindat-idx len) 0)
+                  (setq bindat-idx (1+ bindat-idx))))
+               ((eq type 'struct)
+                (bindat--length-group
+                 (if field (bindat-get-field struct field) struct) (eval len t)))
+               ((eq type 'repeat)
+                (let ((index 0) (count len))
+                  (while (< index count)
+                    (bindat--length-group
+                     (nth index (bindat-get-field struct field))
+                     (nthcdr tail item))
+                    (setq index (1+ index)))))
+               ((eq type 'union)
+                (with-suppressed-warnings ((lexical tag))
+                  (defvar tag))
+                (let ((tag len) (cases (nthcdr tail item)) case cc)
+                  (while cases
+                    (setq case (car cases)
+                          cases (cdr cases)
+                          cc (car case))
+                    (if (or (equal cc tag) (equal cc t)
+                            (and (consp cc) (eval cc t)))
+                        (progn
+                          (bindat--length-group struct (cdr case))
+                          (setq cases nil))))))
+               (t
+                (if (setq type (assq type bindat--fixed-length-alist))
+                    (setq len (* len (cdr type))))
+                (if field
+                    (setq last (bindat-get-field struct field)))
+                (setq bindat-idx (+ bindat-idx len))))))))
+
+      (defun bindat--pack-group (struct spec)
+        (with-suppressed-warnings ((lexical struct last))
+          (defvar struct) (defvar last))
+        (let ((struct struct) last)
+          (while spec
+            (let* ((item (car spec))
+                   (field (car item))
+                   (type (nth 1 item))
+                   (len (nth 2 item))
+                   (vectype (and (eq type 'vec) (nth 3 item)))
+                   (tail 3))
+              (setq spec (cdr spec))
+              (if (and (consp field) (eq (car field) 'eval))
+                  (setq field (eval (car (cdr field)) t)))
+              (if (and type (consp type) (eq (car type) 'eval))
+                  (setq type (eval (car (cdr type)) t)))
+              (if (and len (consp len) (eq (car len) 'eval))
+                  (setq len (eval (car (cdr len)) t)))
+              (if (memq field '(eval fill align struct union))
+                  (setq tail 2
+                        len type
+                        type field
+                        field nil))
+              (if (and (consp len) (not (eq type 'eval)))
+                  (setq len (apply #'bindat-get-field struct len)))
+              (if (not len)
+                  (setq len 1))
+              (cond
+               ((eq type 'eval)
+                (if field
+                    (setq struct (cons (cons field (eval len t)) struct))
+                  (eval len t)))
+               ((eq type 'fill)
+                (setq bindat-idx (+ bindat-idx len)))
+               ((eq type 'align)
+                (while (/= (% bindat-idx len) 0)
+                  (setq bindat-idx (1+ bindat-idx))))
+               ((eq type 'struct)
+                (bindat--pack-group
+                 (if field (bindat-get-field struct field) struct) (eval len t)))
+               ((eq type 'repeat)
+                (let ((index 0) (count len))
+                  (while (< index count)
+                    (bindat--pack-group
+                     (nth index (bindat-get-field struct field))
+                     (nthcdr tail item))
+                    (setq index (1+ index)))))
+               ((eq type 'union)
+                (with-suppressed-warnings ((lexical tag))
+                  (defvar tag))
+                (let ((tag len) (cases (nthcdr tail item)) case cc)
+                  (while cases
+                    (setq case (car cases)
+                          cases (cdr cases)
+                          cc (car case))
+                    (if (or (equal cc tag) (equal cc t)
+                            (and (consp cc) (eval cc t)))
+                        (progn
+                          (bindat--pack-group struct (cdr case))
+                          (setq cases nil))))))
+               (t
+                (setq last (bindat-get-field struct field))
+                (bindat--pack-item last type len vectype)
+                ))))))
+    '';
     config = let
       creds = usr.secrets.weechat.credentials;
     in ''
