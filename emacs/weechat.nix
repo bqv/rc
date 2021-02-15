@@ -215,7 +215,7 @@
     config = let
       creds = usr.secrets.weechat.credentials;
     in ''
-      ;(setq weechat-auto-monitor-buffers '(weechat relay.list))
+      ;(setq weechat-auto-monitor-buffers '(weechat relay.list fset.fset))
       (setq weechat-auto-monitor-buffers t
             weechat-completing-read-function 'weechat--try-ivy
             weechat-complete-nick-postfix ": "
