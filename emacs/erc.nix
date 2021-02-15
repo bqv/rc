@@ -89,4 +89,12 @@ Will not connect if we already have a connection to NETWORK.")
       (erc-weechat-make-connect "freenode" 'freenode)
     '';
   };
+  emacs.loader.erc-image = {
+    demand = true;
+    after = [ "erc" ];
+  };
+  emacs.loader.erc-twitch = {
+    demand = true;
+    after = [ "erc" ];
+  };
 }
