@@ -41,7 +41,10 @@ in {
 
     programs.emacs = rec {
       package = pkgs.emacsPgtkGcc;
-      extraPackages = epkgs: forEachPackage (p: p.package epkgs);
+      extraPackages = epkgs:
+        forEachPackage (p: p.package epkgs) ++
+        forEachPackage (p: p.initPkg epkgs) ++
+        forEachPackage (p: p.configPkg epkgs);
     };
 
     systemd.user.services.emacs = {
