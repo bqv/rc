@@ -8,6 +8,7 @@
       (require 'erc-networks)
 
       ;(setq erc-hide-list '("JOIN" "PART" "QUIT"))
+      (setq erc-rename-buffers t)
 
       (defmacro unpack-color (color red green blue &rest body)
         `(let ((,red   (car ,color))
