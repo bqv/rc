@@ -36,12 +36,12 @@ let
   package-init = ''
     (require 'leaf)
     (leaf leaf-keywords
-      :require t
+      :ensure t
       :init
       ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
-      (leaf hydra :require t)
-      ;(leaf el-get :require t)
-      ;(leaf blackout :require t)
+      (leaf hydra :ensure t)
+      (leaf el-get :ensure t)
+      (leaf blackout :ensure t)
 
       :setq
       (leaf-defaults . '(:require t))
@@ -78,18 +78,18 @@ let
     (require 'ffi)
     (require 's)
     (define-ffi-library lib/systemd "${pkgs.systemd}/lib/libsystemd.so")
-    (define-ffi-function lib/systemd/sd_notify "sd_notify" :int (:int :pointer) lib/systemd)
-    (defun sd_notify (&rest assocs)
-      (let* ((assignments (mapcar (lambda (p) (format "%s=%s" (car p) (cdr p))) assocs))
-             (lstr (s-join "\n" assignments)))
-        (with-ffi-string (cstr lstr)
-          (lib/systemd/sd_notify 0 cstr))))
+    ;; (define-ffi-function lib/systemd/sd_notify "sd_notify" :int [:int :pointer] lib/systemd)
+    ;; (defun sd_notify (&rest assocs)
+    ;;   (let* ((assignments (mapcar (lambda (p) (format "%s=%s" (car p) (cdr p))) assocs))
+    ;;          (lstr (s-join "\n" assignments)))
+    ;;     (with-ffi-string (cstr lstr)
+    ;;       (lib/systemd/sd_notify 0 cstr))))
 
-    (defun watchdog-systemd-notify ()
-      (with-timeout (10)
-        (sd_notify '("READY" . 1)
-                   );;(`("WATCHDOG_USEC" . ,(* 120 1000000)))
-        (log--trace "Notified at %s" (format-time-string "%D %T"))))
+    ;; (defun watchdog-systemd-notify ()
+    ;;   (with-timeout (10)
+    ;;     (sd_notify '("READY" . 1)
+    ;;                );;(`("WATCHDOG_USEC" . ,(* 120 1000000)))
+    ;;     (log--trace "Notified at %s" (format-time-string "%D %T"))))
     (defun config-end ()
       (message
         "Configuring...done (%.3fs) [after-init]"
@@ -276,7 +276,7 @@ let
           ${script emacs.pkgs})
       '') (lib.mapAttrsToList (sym: cfg@{ script, ... }: {
         inherit sym script;
-      }) config.emacs-loader)}
+      }) config.emacs.loader)}
       (config-end))
 
     (log--info "Loading...done (%.3fs)"

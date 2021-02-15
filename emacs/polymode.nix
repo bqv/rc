@@ -23,7 +23,7 @@ let
       :innermodes '(${innermode}))
   '';
 in {
-  emacs-loader.polymode = { config, ... }: {
+  emacs.loader.polymode = { config, ... }: {
     options.polymodes = lib.mkOption {
       type = with lib.types; attrsOf (lines);
       default = [];

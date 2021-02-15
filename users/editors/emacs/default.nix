@@ -6,7 +6,7 @@ with lib; let
   forEachPackage = f: lib.flatten (lib.mapAttrsToList (k: v:
     let ret = if v.enable then f v else [];
     in if builtins.isNull ret then [] else ret
-  ) config.emacs-loader);
+  ) config.emacs.loader);
 
   packageDeps = forEachPackage (p: p.package cfg.package.pkgs);
   systemDeps = forEachPackage (p: p.systemDeps);
@@ -25,9 +25,21 @@ in {
   ];
 
   config = mkIf cfg.enable rec {
-    home.file = {
-      ".emacs.d/early-init.el".source = (import ./early-init.nix args).out;
-      ".emacs.d/init.el".source = (import ./init.nix args).out;
+    home.file = let
+      built-init = cfg.package.pkgs.trivialBuild {
+        pname = "init.el";
+        src = import ./init.nix args;
+        buildInputs = cfg.extraPackages cfg.package.pkgs;
+      };
+      init = {
+        el = "${built-init.out}/share/emacs/site-lisp/init.el";
+        elc = "${built-init.out}/share/emacs/site-lisp/init.elc";
+      };
+      early-init.el = (import ./early-init.nix args).out;
+    in {
+      ".emacs.d/early-init.el".source = early-init.el;
+      ".emacs.d/init.el".source = init.el;
+      ".emacs.d/init.elc".source = init.elc;
     };
 
     home.packages = with pkgs; systemDeps ++ [
@@ -37,9 +49,14 @@ in {
       leaf auto-compile gcmh diminish epkg log4e bug-hunter use-package
     ]);
 
+    emacs.package = cfg.package;
+
     programs.emacs = rec {
       package = pkgs.emacsPgtkGcc;
-      extraPackages = epkgs: forEachPackage (p: p.package epkgs);
+      extraPackages = epkgs:
+        forEachPackage (p: p.package epkgs) ++
+        forEachPackage (p: p.initPkg epkgs) ++
+        forEachPackage (p: p.configPkg epkgs);
     };
 
     systemd.user.services.emacs = {

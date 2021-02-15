@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.ivy = {
+  emacs.loader.ivy = {
     demand = true;
     diminish = [ "ivy-mode" ];
     config = ''

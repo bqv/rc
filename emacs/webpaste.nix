@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.webpaste = {
+  emacs.loader.webpaste = {
     demand = true;
   };
 }

@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.eshell-z = {
+  emacs.loader.eshell-z = {
     demand = true;
   };
 }

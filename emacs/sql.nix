@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, flake, ... }:
 
 {
-  emacs-loader.sql = let
+  emacs.loader.sql = let
     src = flake.inputs.sqlcmdline;
     python = pkgs.python3.withPackages (py: [
       py.pyodbc

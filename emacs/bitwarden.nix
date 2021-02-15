@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, domains, ... }:
 
 {
-  emacs-loader.bitwarden = {
+  emacs.loader.bitwarden = {
     config = ''
       (setenv "BW_SESSION"
               (let ((secret (plist-get

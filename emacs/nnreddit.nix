@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.nnreddit = {
+  emacs.loader.nnreddit = {
     demand = true;
   };
 }

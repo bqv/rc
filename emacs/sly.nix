@@ -1,31 +1,31 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.sly = {
+  emacs.loader.sly = {
     demand = true;
     config = ''
       nil
     '';
   };
-  emacs-loader.sly-quicklisp = {
+  emacs.loader.sly-quicklisp = {
     demand = true;
     config = ''
       nil
     '';
   };
-  emacs-loader.sly-asdf = {
+  emacs.loader.sly-asdf = {
     demand = true;
     config = ''
       nil
     '';
   };
-  emacs-loader.sly-named-readtables = {
+  emacs.loader.sly-named-readtables = {
     demand = true;
     config = ''
       nil
     '';
   };
-  emacs-loader.sly-macrostep = {
+  emacs.loader.sly-macrostep = {
     demand = true;
     config = ''
       nil

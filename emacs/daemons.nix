@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.daemons = {
+  emacs.loader.daemons = {
     demand = true;
     config = ''
       (setq daemons-always-sudo t)

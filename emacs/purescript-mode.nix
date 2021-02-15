@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.purescript-mode = {
+  emacs.loader.purescript-mode = {
     demand = true;
     after = [ "lsp-mode" ];
     hook = [

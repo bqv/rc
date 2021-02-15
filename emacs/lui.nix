@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.lui = {
+  emacs.loader.lui = {
     demand = true;
     package = epkgs: [ epkgs.circe ];
   };

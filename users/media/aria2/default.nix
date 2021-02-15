@@ -14,7 +14,7 @@ in {
       pkgs.python3Packages.aria2p
     ];
 
-    emacs-loader.aria2 = {
+    emacs.loader.aria2 = {
       enable = lib.mkDefault false;
       config = ''
         (setq aria2-rcp-secret "${nixosConfig.services.aria2.rpcSecret}")

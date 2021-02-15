@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, hosts, ... }:
 
 {
-  emacs-loader.vterm = {
+  emacs.loader.vterm = {
     demand = true;
     config = ''
       ;; banish ansi-term :)
