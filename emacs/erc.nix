@@ -9,7 +9,7 @@
 
       ;(setq erc-hide-list '("JOIN" "PART" "QUIT"))
       (setq erc-rename-buffers t)
-      (setq erc-prompt (lambda () (concat "[" (buffer-name) "]")))
+      (setq erc-prompt (lambda () (concat "[" (erc-network) "/" (buffer-name) "]")))
       (setq erc-track-exclude-types
             '("JOIN" "KICK" "NICK" "PART" "QUIT" "MODE" "333" "353"
               "324" "329" "332" "447"))
