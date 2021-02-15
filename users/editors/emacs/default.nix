@@ -31,10 +31,15 @@ in {
         src = import ./init.nix args;
         buildInputs = cfg.extraPackages cfg.package.pkgs;
       };
+      init = {
+        el = "${built-init.out}/share/emacs/site-lisp/init.el";
+        elc = "${built-init.out}/share/emacs/site-lisp/init.elc";
+      };
+      early-init.el = (import ./early-init.nix args).out;
     in {
-      ".emacs.d/early-init.el".source = (import ./early-init.nix args).out;
-      ".emacs.d/init.el".source = (import ./init.nix args).out;
-      ".emacs.d/init.elc".source = "${built-init}/share/emacs/site-lisp/init.elc";
+      ".emacs.d/early-init.el".source = early-init.el;
+      ".emacs.d/init.el".source = init.el;
+      ".emacs.d/init.elc".source = init.elc;
     };
 
     home.packages = with pkgs; systemDeps ++ [
