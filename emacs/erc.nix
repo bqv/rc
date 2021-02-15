@@ -3,6 +3,7 @@
 {
   emacs.loader.erc = {
     demand = true;
+    package = lib.const null;
     config = ''
       (defmacro unpack-color (color red green blue &rest body)
         `(let ((,red   (car ,color))
