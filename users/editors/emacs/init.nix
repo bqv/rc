@@ -94,7 +94,8 @@ let
         (float-time (time-subtract (current-time)
                                    before-user-init-time)))
       (fmakunbound 'config-end)
-      (run-at-time t 10 #'watchdog-systemd-notify))
+    ;;(run-at-time t 10 #'watchdog-systemd-notify)
+      )
 
     (defvar config-registry '()
       "Profiling and initialization status data")
