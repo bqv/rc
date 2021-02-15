@@ -5,6 +5,10 @@
     demand = true;
     package = lib.const null;
     config = ''
+      (require 'erc-networks)
+
+      ;(setq erc-hide-list '("JOIN" "PART" "QUIT"))
+
       (defmacro unpack-color (color red green blue &rest body)
         `(let ((,red   (car ,color))
                (,green (car (cdr ,color)))
@@ -46,6 +50,8 @@
                  (cons 'foreground-color (erc-get-color-for-nick nick 't))))))))
 
       (add-hook 'erc-insert-modify-hook 'erc-highlight-nicknames)
+
+      ;; adapt https://www.emacswiki.org/emacs/rcirc-random-names.el ?
     '';
   };
 }
