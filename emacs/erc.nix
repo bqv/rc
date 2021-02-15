@@ -14,6 +14,9 @@
             '("JOIN" "KICK" "NICK" "PART" "QUIT" "MODE" "333" "353"
               "324" "329" "332" "447"))
 
+      (add-hook 'erc-mode-hook #'outline-minor-mode)
+      (setq outline-regexp "^<.*>\\|^\\[.*\\] ")
+
       (defmacro unpack-color (color red green blue &rest body)
         `(let ((,red   (car ,color))
                (,green (car (cdr ,color)))
