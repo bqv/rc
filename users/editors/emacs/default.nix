@@ -39,7 +39,8 @@ in {
     in {
       ".emacs.d/early-init.el".source = early-init.el;
       ".emacs.d/init.el".source = init.el;
-      ".emacs.d/init.elc".source = init.elc;
+     #".emacs.d/init.elc".source = init.elc; # hmm.
+      ".emacs.d/init.d".source = "${cfg.finalPackage.deps}/share/emacs";
     };
 
     home.packages = with pkgs; systemDeps ++ [
