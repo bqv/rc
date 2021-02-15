@@ -34,7 +34,7 @@ in {
     in {
       ".emacs.d/early-init.el".source = (import ./early-init.nix args).out;
       ".emacs.d/init.el".source = (import ./init.nix args).out;
-      ".emacs.d/init.elc".source = built-init;
+      ".emacs.d/init.elc".source = "${built-init}/share/emacs/site-lisp/init.elc";
     };
 
     home.packages = with pkgs; systemDeps ++ [
