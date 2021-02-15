@@ -16,10 +16,8 @@ let
     (setq current-path (file-name-directory current-file))
 
     (message "Initializing...")
-    (eval-when-compile
-      (require 'cl-lib))
-    (eval-when-compile
-      (require 's))
+    (require 'cl-lib)
+    (require 's)
     (defun update-load-paths ()
       (cl-flet ((add-paths-for (dir) (let ((default-directory dir))
                                        (when (file-directory-p default-directory)
@@ -36,21 +34,20 @@ let
 
   # Setup base packaging - leaf
   package-init = ''
-    (eval-when-compile
-      (require 'leaf)
-      (leaf leaf-keywords
-        :ensure t
-        :init
-        ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
-        (leaf hydra :ensure t)
-        (leaf el-get :ensure t)
-        (leaf blackout :ensure t)
+    (require 'leaf)
+    (leaf leaf-keywords
+      :ensure t
+      :init
+      ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
+      (leaf hydra :ensure t)
+      (leaf el-get :ensure t)
+      (leaf blackout :ensure t)
 
-        :setq
-        (leaf-defaults . '(:require t))
-        :config
-        ;; initialize leaf-keywords.el
-        (leaf-keywords-init)))
+      :setq
+      (leaf-defaults . '(:require t))
+      :config
+      ;; initialize leaf-keywords.el
+      (leaf-keywords-init))
     (leaf auto-compile
       :leaf-defer nil
       :config
@@ -67,16 +64,15 @@ let
     (leaf diminish
       :leaf-defer nil)
     (leaf epkg)
-    (eval-when-compile
-      (require 'log4e)
-      (log4e:deflogger "log" "%t [%l] %m" "%H:%M:%S" '((fatal . "fatal")
-                                                       (error . "error")
-                                                       (warn  . "warn")
-                                                       (info  . "info")
-                                                       (debug . "debug")
-                                                       (trace . "trace")))
-      (log--log-enable-logging)
-      (log--log-enable-messaging))
+    (require 'log4e)
+    (log4e:deflogger "log" "%t [%l] %m" "%H:%M:%S" '((fatal . "fatal")
+                                                     (error . "error")
+                                                     (warn  . "warn")
+                                                     (info  . "info")
+                                                     (debug . "debug")
+                                                     (trace . "trace")))
+    (log--log-enable-logging)
+    (log--log-enable-messaging)
 
     (require 'ffi)
     (define-ffi-library lib/systemd "${pkgs.systemd}/lib/libsystemd.so")
