@@ -15,7 +15,9 @@
               "324" "329" "332" "447"))
 
       (add-hook 'erc-mode-hook #'outline-minor-mode)
-      (setq outline-regexp "^<.*>\\|^\\[.*\\] ")
+      (add-hook 'erc-mode-hook
+                (lambda (_) (setq outline-regexp "^<.*>\\|^\\[.*\\] "))
+                )
 
       (defmacro unpack-color (color red green blue &rest body)
         `(let ((,red   (car ,color))
