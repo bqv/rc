@@ -6,7 +6,6 @@
     package = epkgs: epkgs.weechat-patched;
     after = [ "tracking" ];
     init = ''
-      diff --git a/lisp/emacs-lisp/bindat.el b/lisp/emacs-lisp/bindat.el
  (defun bindat--unpack-group (spec)
    (with-suppressed-warnings ((lexical struct last))
      (defvar struct) (defvar last))
