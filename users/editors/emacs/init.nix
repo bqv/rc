@@ -17,7 +17,8 @@ let
 
     (message "Initializing...")
     (eval-when-compile
-      (require 'cl-lib)
+      (require 'cl-lib))
+    (eval-when-compile
       (require 's))
     (defun update-load-paths ()
       (cl-flet ((add-paths-for (dir) (let ((default-directory dir))
