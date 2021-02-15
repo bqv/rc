@@ -78,7 +78,7 @@ let
     (require 'ffi)
     (require 's)
     (define-ffi-library lib/systemd "${pkgs.systemd}/lib/libsystemd.so")
-    ;; (define-ffi-function lib/systemd/sd_notify "sd_notify" :int (:int :pointer) lib/systemd)
+    ;; (define-ffi-function lib/systemd/sd_notify "sd_notify" :int [:int :pointer] lib/systemd)
     ;; (defun sd_notify (&rest assocs)
     ;;   (let* ((assignments (mapcar (lambda (p) (format "%s=%s" (car p) (cdr p))) assocs))
     ;;          (lstr (s-join "\n" assignments)))
