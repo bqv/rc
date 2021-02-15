@@ -53,6 +53,28 @@
       (add-hook 'erc-insert-modify-hook 'erc-highlight-nicknames)
 
       ;; adapt https://www.emacswiki.org/emacs/rcirc-random-names.el ?
+
+      (defun erc-weechat-connect (server network)
+        "Connect to SERVER as a weechat ssl irc proxy.
+Gets password from `auth-sources' stored under host ssl.irc.weechat;
+and my-weechat-server.example.com:9001 hardcoded here.
+Will not connect if we already have a connection to NETWORK."
+        (if-let ((existing (erc-buffer-list (lambda () (eq (erc-network) network)))))
+            (message "Already connected to %s (%S), see buffer %S" network server (car existing))
+          (let ((password (auth-source-pick-first-password :host '("ssl.irc.weechat")
+                                                           :type 'netrc
+                                                           :max 1)))
+            (erc-tls :server "my-weechat-server.example.com"
+                     :port 9001
+                     :password (concat server ":" password)))))
+
+      (defmacro erc-weechat-make-connect (server network)
+        "Partially apply `erc-weechat-connect' on a certain SERVER and NETWORK."
+        `(defun ,(intern (concat "erc-weechat-connect-" server)) ()
+           ,(concat "Connect to " server " on weechat, through ERC.
+Will not connect if we already have a connection to NETWORK.")
+           (interactive)
+           (erc-weechat-connect ,server ,network)))
     '';
   };
 }
