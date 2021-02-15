@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.xonsh-mode = {
+  emacs.loader.xonsh-mode = {
     demand = true;
   };
 }

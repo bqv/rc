@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.lsp-mode = {
+  emacs.loader.lsp-mode = {
     demand = true;
     package = epkgs: epkgs.lsp-mode.overrideAttrs (_: {
       postInstall = ''

@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.which-key = {
+  emacs.loader.which-key = {
     demand = true;
     diminish = [ "which-key-mode" ];
     config = ''

@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.meson-mode = {
+  emacs.loader.meson-mode = {
     demand = true;
   };
 }

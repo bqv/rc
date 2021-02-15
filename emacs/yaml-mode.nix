@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.yaml-mode = {
+  emacs.loader.yaml-mode = {
     demand = true;
   };
 }

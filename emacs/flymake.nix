@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.flymake = {
+  emacs.loader.flymake = {
     demand = true;
   };
 }

@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.weechat = {
+  emacs.loader.weechat = {
     demand = true;
     package = epkgs: epkgs.weechat-patched;
     after = [ "tracking" ];

@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.evil-collection = {
+  emacs.loader.evil-collection = {
     demand = true;
   };
 }

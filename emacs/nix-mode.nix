@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, flake, ... }:
 
 {
-  emacs-loader.nix-mode = let
+  emacs.loader.nix-mode = let
     inputs = { self = flake; } // flake.inputs;
   in {
     demand = true;

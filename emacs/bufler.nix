@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.bufler = {
+  emacs.loader.bufler = {
     demand = true;
     config = ''
       (if (boundp 'bufler-vc-remote)

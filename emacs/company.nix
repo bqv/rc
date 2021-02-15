@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.company = {
+  emacs.loader.company = {
     demand = true;
     diminish = [ "company-mode" ];
     hook = [

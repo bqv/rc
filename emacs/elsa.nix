@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.elsa = {
+  emacs.loader.elsa = {
     demand = true;
   };
 }

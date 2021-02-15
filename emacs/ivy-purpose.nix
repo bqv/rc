@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.ivy-purpose = {
+  emacs.loader.ivy-purpose = {
     demand = true;
     after = [ "ivy" "window-purpose" "bufler" ];
     config = ''

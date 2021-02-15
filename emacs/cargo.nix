@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.cargo = {
+  emacs.loader.cargo = {
     demand = true;
     after = [ "rust-mode" ];
     hook = [

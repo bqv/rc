@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.calfw = {
+  emacs.loader.calfw = {
     demand = true;
   };
 }

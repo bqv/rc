@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.restclient = {
+  emacs.loader.restclient = {
     demand = true;
   };
 }

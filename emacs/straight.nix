@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.straight = {
+  emacs.loader.straight = {
     demand = true;
     commands = [ "straight-use-package" ];
     package = epkgs: epkgs.trivialBuild rec {
