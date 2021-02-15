@@ -16,7 +16,7 @@
 
       (add-hook 'erc-mode-hook #'outline-minor-mode)
       (add-hook 'erc-mode-hook
-                (lambda (_) (setq outline-regexp "^<.*>\\|^\\[.*\\] "))
+                (lambda (_) (setq-local outline-regexp "^<.*>\\|^\\[.*\\] "))
                 )
 
       (defmacro unpack-color (color red green blue &rest body)
