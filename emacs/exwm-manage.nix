@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.exwm-manage = {
+  emacs.loader.exwm-manage = {
     demand = true;
     after = [ "exwm" ];
     package = epkgs: epkgs.exwm;

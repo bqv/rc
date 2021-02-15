@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.avy = {
+  emacs.loader.avy = {
     demand = true;
     bind = {
       "C-=" = "avy-goto-char";

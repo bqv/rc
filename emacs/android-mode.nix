@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.android-mode = {
+  emacs.loader.android-mode = {
     demand = true;
     config = ''
       (setq-default adb-host "192.168.0.3")

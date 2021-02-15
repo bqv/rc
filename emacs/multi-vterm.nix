@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.multi-vterm = {
+  emacs.loader.multi-vterm = {
     demand = true;
     after = [ "vterm" ];
     config = ''

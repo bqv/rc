@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.exwm-workspace = {
+  emacs.loader.exwm-workspace = {
     after = [ "exwm" ];
     package = epkgs: epkgs.exwm;
     config = ''

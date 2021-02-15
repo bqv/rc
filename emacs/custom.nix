@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.custom = {
+  emacs.loader.custom = {
     package = lib.const null;
     after = [ "doom-themes" "doom-modeline" ];
     config = ''

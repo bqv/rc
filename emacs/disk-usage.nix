@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.disk-usage = {
+  emacs.loader.disk-usage = {
     demand = true;
   };
 }

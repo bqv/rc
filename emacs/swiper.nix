@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.swiper = {
+  emacs.loader.swiper = {
     demand = true;
     after = [ "ivy" ];
     bind = {

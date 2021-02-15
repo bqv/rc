@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.ivy-rich = {
+  emacs.loader.ivy-rich = {
     demand = true;
     after = [ "ivy" "counsel" ];
     config = ''

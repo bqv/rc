@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.auctex = {
+  emacs.loader.auctex = {
     demand = true;
     after = [ "tex" "latex" ];
     config = ''

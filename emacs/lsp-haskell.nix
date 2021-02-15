@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.lsp-haskell = {
+  emacs.loader.lsp-haskell = {
     demand = true;
     after = [ "lsp-mode" "haskell-mode" ];
     hook = [

@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.ace-window = {
+  emacs.loader.ace-window = {
     enable = false;
     demand = true;
     bind = {

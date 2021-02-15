@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.eterm-256color = {
+  emacs.loader.eterm-256color = {
     demand = true;
     config = ''
       (add-hook 'term-mode-hook #'eterm-256color-mode)

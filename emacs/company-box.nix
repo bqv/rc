@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.company-box = {
+  emacs.loader.company-box = {
     demand = true;
     after = [ "company" ];
     hook = [

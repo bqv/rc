@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.dante = {
+  emacs.loader.dante = {
     demand = true;
     after = [ "haskell-mode" ];
     hook = [

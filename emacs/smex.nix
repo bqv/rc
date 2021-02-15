@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.smex = {
+  emacs.loader.smex = {
     demand = true;
     config = ''
       (smex-initialize)

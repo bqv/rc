@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.org = {
+  emacs.loader.org = {
     demand = true;
     config = ''
       (global-set-key "\C-cl" 'org-store-link)
