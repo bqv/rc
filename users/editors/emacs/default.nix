@@ -26,7 +26,7 @@ in {
 
   config = mkIf cfg.enable rec {
     home.file = let
-      init = cfg.package.pkgs.trivialBuild {
+      init.elc = cfg.package.pkgs.trivialBuild {
         pname = "init.el";
         src = import ./init.nix args;
         buildInputs = cfg.extraPackages cfg.package.pkgs;
@@ -34,7 +34,7 @@ in {
     in {
       ".emacs.d/early-init.el".source = (import ./early-init.nix args).out;
       ".emacs.d/init.el".source = (import ./init.nix args).out;
-      ".emacs.d/init.elc".source = (import ./init.nix args).out;
+      ".emacs.d/init.elc".source = init.elc;
     };
 
     home.packages = with pkgs; systemDeps ++ [
