@@ -90,7 +90,7 @@ let
     ;;     (sd_notify '("READY" . 1)
     ;;                );;(`("WATCHDOG_USEC" . ,(* 120 1000000)))
     ;;     (log--trace "Notified at %s" (format-time-string "%D %T"))))
-    ;; (defun config-end ()
+    (defun config-end ()
       (message
         "Configuring...done (%.3fs) [after-init]"
         (float-time (time-subtract (current-time)
