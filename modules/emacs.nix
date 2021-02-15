@@ -63,20 +63,26 @@ let
         type = types.lines;
         default = "";
       };
-      initPkg = epkgs: epkgs.trivialBuild rec {
-        pname = "${name}-init";
-        src = usr.elisp.writeFile {
-          name = pname;
-          description = "";
-          text = config.init;
+      initPkg = mkOption {
+        type = types.anything;
+        default = epkgs: epkgs.trivialBuild rec {
+          pname = "${name}-init";
+          src = usr.elisp.writeFile {
+            name = pname;
+            description = "";
+            text = config.init;
+          };
         };
       };
-      configPkg = epkgs: epkgs.trivialBuild rec {
-        pname = "${name}-config";
-        src = usr.elisp.writeFile {
-          name = pname;
-          description = "";
-          text = config.config;
+      configPkg = mkOption {
+        type = types.anything;
+        default = epkgs: epkgs.trivialBuild rec {
+          pname = "${name}-config";
+          src = usr.elisp.writeFile {
+            name = pname;
+            description = "";
+            text = config.config;
+          };
         };
       };
       script = mkOption {
