@@ -13,6 +13,7 @@
       (setq erc-track-exclude-types
             '("JOIN" "KICK" "NICK" "PART" "QUIT" "MODE" "333" "353"
               "324" "329" "332" "447"))
+      (setq erc-pcomplete-nick-postfix ": ")
 
       (add-hook 'erc-mode-hook #'outline-minor-mode)
       (add-hook 'erc-mode-hook
