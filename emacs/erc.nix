@@ -64,8 +64,8 @@ Will not connect if we already have a connection to NETWORK."
           (let ((password (auth-source-pick-first-password :user '("weechat")
                                                            :type 'netrc
                                                            :max 1)))
-            (erc-tls :server "my-weechat-server.example.com"
-                     :port 9001
+            (erc-tls :server "localhost"
+                     :port 6699
                      :password (concat server ":" password)))))
 
       (defmacro erc-weechat-make-connect (server network)
