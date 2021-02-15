@@ -8,6 +8,7 @@
       (let ((bootstrap-file
              (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
             (bootstrap-version 5))
+        (delete-directory (expand-file-name "straight/build" user-emacs-directory) t)
         (unless (file-exists-p bootstrap-file)
           (with-current-buffer
               (url-retrieve-synchronously
