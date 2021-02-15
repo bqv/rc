@@ -64,7 +64,7 @@ let
         default = "";
       };
       initPkg = mkOption {
-        type = types.package;
+        type = types.anything;
         default = epkgs: epkgs.trivialBuild rec {
           pname = "${name}-init";
           src = usr.elisp.writeFile {
@@ -75,7 +75,7 @@ let
         };
       };
       configPkg = mkOption {
-        type = types.package;
+        type = types.anything;
         default = epkgs: epkgs.trivialBuild rec {
           pname = "${name}-config";
           src = usr.elisp.writeFile {
