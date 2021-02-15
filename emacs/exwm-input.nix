@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.exwm-input = {
+  emacs.loader.exwm-input = {
     after = [ "exwm" "map" "cl" ];
     package = epkgs: epkgs.exwm;
     config = ''

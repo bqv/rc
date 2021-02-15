@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.zenburn-theme = {
+  emacs.loader.zenburn-theme = {
     demand = true;
   };
 }

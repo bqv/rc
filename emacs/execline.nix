@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.execline = {
+  emacs.loader.execline = {
     demand = true;
   };
 }

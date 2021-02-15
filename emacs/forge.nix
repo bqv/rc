@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.forge = {
+  emacs.loader.forge = {
     demand = true;
     after = [ "magit" ];
   };

@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.general = {
+  emacs.loader.general = {
     demand = true;
   };
 }

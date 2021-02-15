@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.exwm = {
+  emacs.loader.exwm = {
     demand = true;
     config = ''
       (progn

@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.whitespace = {
+  emacs.loader.whitespace = {
     demand = true;
     package = lib.const null;
     config = ''

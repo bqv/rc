@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.map = {
+  emacs.loader.map = {
     package = lib.const null;
   };
 }

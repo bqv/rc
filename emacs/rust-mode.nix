@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.rust-mode = {
+  emacs.loader.rust-mode = {
     demand = true;
     after = [ "lsp-mode" ];
     hook = [

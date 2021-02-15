@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.eglot = {
+  emacs.loader.eglot = {
     demand = true;
     commands = [ "eglot" "eglot-ensure" ];
     config = ''
