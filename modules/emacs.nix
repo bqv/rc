@@ -63,25 +63,27 @@ let
         type = types.lines;
         default = "";
       };
+      initPkg = epkgs: epkgs.trivialBuild rec {
+        pname = "${name}-init";
+        src = usr.elisp.writeFile {
+          name = pname;
+          description = "";
+          text = config.init;
+        };
+      };
+      configPkg = epkgs: epkgs.trivialBuild rec {
+        pname = "${name}-config";
+        src = usr.elisp.writeFile {
+          name = pname;
+          description = "";
+          text = config.config;
+        };
+      };
       script = mkOption {
         type = types.anything;
         default = epkgs: let
-          initPkg = epkgs.trivialBuild rec {
-            pname = "${name}-init";
-            src = usr.elisp.writeFile {
-              name = pname;
-              description = "";
-              text = config.init;
-            };
-          };
-          configPkg = epkgs.trivialBuild rec {
-            pname = "${name}-config";
-            src = usr.elisp.writeFile {
-              name = pname;
-              description = "";
-              text = config.config;
-            };
-          };
+          initPkg = config.initPkg epkgs;
+          configPkg = config.configPkg epkgs;
 
           initSrc = "${initPkg}/share/emacs/site-lisp/${initPkg.pname}";
           configSrc = "${configPkg}/share/emacs/site-lisp/${configPkg.pname}";
