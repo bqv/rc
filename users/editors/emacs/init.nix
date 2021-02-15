@@ -35,20 +35,21 @@ let
 
   # Setup base packaging - leaf
   package-init = ''
-    (require 'leaf)
-    (leaf leaf-keywords
-      :ensure t
-      :init
-      ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
-      (leaf hydra :ensure t)
-      (leaf el-get :ensure t)
-      (leaf blackout :ensure t)
+    (eval-when-compile
+      (require 'leaf)
+      (leaf leaf-keywords
+        :ensure t
+        :init
+        ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
+        (leaf hydra :ensure t)
+        (leaf el-get :ensure t)
+        (leaf blackout :ensure t)
 
-      :setq
-      (leaf-defaults . '(:require t))
-      :config
-      ;; initialize leaf-keywords.el
-      (leaf-keywords-init))
+        :setq
+        (leaf-defaults . '(:require t))
+        :config
+        ;; initialize leaf-keywords.el
+        (leaf-keywords-init)))
     (leaf auto-compile
       :leaf-defer nil
       :config
