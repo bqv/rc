@@ -37,7 +37,7 @@ in {
       leaf auto-compile gcmh diminish epkg log4e bug-hunter use-package
     ]);
 
-    emacs.package = config.programs.emacs.package;
+    emacs.package = cfg.package;
 
     programs.emacs = rec {
       package = pkgs.emacsPgtkGcc;
