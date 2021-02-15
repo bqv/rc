@@ -65,8 +65,8 @@ let
     (leaf diminish
       :leaf-defer nil)
     (leaf epkg)
-    (leaf log4e
-      :config
+    (eval-when-compile
+      (require 'log4e)
       (log4e:deflogger "log" "%t [%l] %m" "%H:%M:%S" '((fatal . "fatal")
                                                        (error . "error")
                                                        (warn  . "warn")
