@@ -217,6 +217,10 @@ let
     (global-set-key (kbd "C-x k") 'kill-this-buffer)
     (setq confirm-kill-emacs 'y-or-n-p)
 
+    ;; long lines hack
+    (setq-default bidi-display-reordering nil)
+    (setq bidi-inherit-bpa t)
+
     (setq default-input-method "programmer-dvorak")
     (defun activate-default-input-method ()
       (activate-input-method default-input-method))
