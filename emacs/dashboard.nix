@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.dashboard = {
+  emacs.loader.dashboard = {
     demand = true;
     config = ''
       (dashboard-setup-startup-hook)

@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.flycheck-posframe = {
+  emacs.loader.flycheck-posframe = {
     demand = true;
     after = [ "flycheck" "lsp-mode" ];
     hook = [

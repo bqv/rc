@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.desktop-environment = {
+  emacs.loader.desktop-environment = {
     demand = true;
     after = [ "exwm-input" ];
     config = ''

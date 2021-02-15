@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.evil = {
+  emacs.loader.evil = {
     demand = true;
     diminish = [ "undo-tree-mode" ];
     config = ''

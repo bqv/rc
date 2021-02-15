@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.scraps = {
+  emacs.loader.scraps = {
     package = lib.const null;
     script = epkgs: ''
       ${builtins.readFile ./scraps+bufmgmt.el}

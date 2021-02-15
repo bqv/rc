@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.treemacs = {
+  emacs.loader.treemacs = {
     demand = true;
     bind = {
       "<f9>" = "treemacs";

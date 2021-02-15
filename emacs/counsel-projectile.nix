@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.counsel-projectile = {
+  emacs.loader.counsel-projectile = {
     demand = true;
     after = [ "projectile" "counsel" ];
     config = ''

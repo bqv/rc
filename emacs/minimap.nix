@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.minimap = {
+  emacs.loader.minimap = {
     demand = true;
   };
 }

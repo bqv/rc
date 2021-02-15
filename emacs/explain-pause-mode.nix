@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.explain-pause-mode = {
+  emacs.loader.explain-pause-mode = {
     demand = true;
     package = epkgs: epkgs.explain-pause-mode.overrideAttrs (_: {
       postInstall = ''

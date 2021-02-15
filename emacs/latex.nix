@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.latex = {
+  emacs.loader.latex = {
     package = lib.const null;
     mode = {
       "\"\\\\.tex\\\\'\"" = "latex-mode";

@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.el-get = {
+  emacs.loader.el-get = {
     demand = true;
     config = ''
       (defvar bootstrap-version)

@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.window-purpose = {
+  emacs.loader.window-purpose = {
     demand = true;
     config = ''
       (add-to-list 'purpose-user-mode-purposes '(weechat-mode . chat))
