@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.tracking = {
+  emacs.loader.tracking = {
     demand = true;
   };
 }

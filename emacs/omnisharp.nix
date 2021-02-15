@@ -3,7 +3,7 @@
 let
   inherit (pkgs) omnisharp-roslyn;
 in {
-  emacs-loader.omnisharp = {
+  emacs.loader.omnisharp = {
     demand = true;
     hook = [
       { csharp-mode-hook = "omnisharp-mode"; }

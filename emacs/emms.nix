@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.emms = {
+  emacs.loader.emms = {
     demand = true;
     require = [ "emms" "emms-player-mpd" ];
     config = ''

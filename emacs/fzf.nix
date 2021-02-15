@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.fzf = {
+  emacs.loader.fzf = {
     demand = true;
   };
 }

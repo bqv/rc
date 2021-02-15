@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.fsharp-mode = {
+  emacs.loader.fsharp-mode = {
     enable = false;
     demand = true;
     hook = [

@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.counsel = {
+  emacs.loader.counsel = {
     demand = true;
     after = [ "ivy" ];
     bind = {

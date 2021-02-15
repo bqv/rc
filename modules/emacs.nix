@@ -1,7 +1,7 @@
 { super, config, lib, pkgs, usr, ... }:
 
 let
-  packageNames = lib.mapAttrsToList (_: e: e.name) config.emacs-loader;
+  packageNames = lib.mapAttrsToList (_: e: e.name) config.emacs.loader;
   packageSpec = { config, name, ... }:
   {
     options = with lib; {
@@ -63,25 +63,33 @@ let
         type = types.lines;
         default = "";
       };
+      initPkg = mkOption {
+        type = types.anything;
+        default = epkgs: epkgs.trivialBuild rec {
+          pname = "${name}-init";
+          src = usr.elisp.writeFile {
+            name = pname;
+            description = "";
+            text = config.init;
+          };
+        };
+      };
+      configPkg = mkOption {
+        type = types.anything;
+        default = epkgs: epkgs.trivialBuild rec {
+          pname = "${name}-config";
+          src = usr.elisp.writeFile {
+            name = pname;
+            description = "";
+            text = config.config;
+          };
+        };
+      };
       script = mkOption {
         type = types.anything;
         default = epkgs: let
-          initPkg = epkgs.trivialBuild rec {
-            pname = "${name}-init";
-            src = usr.elisp.writeFile {
-              name = pname;
-              description = "";
-              text = config.init;
-            };
-          };
-          configPkg = epkgs.trivialBuild rec {
-            pname = "${name}-config";
-            src = usr.elisp.writeFile {
-              name = pname;
-              description = "";
-              text = config.config;
-            };
-          };
+          initPkg = config.initPkg epkgs;
+          configPkg = config.configPkg epkgs;
 
           initSrc = "${initPkg}/share/emacs/site-lisp/${initPkg.pname}";
           configSrc = "${configPkg}/share/emacs/site-lisp/${configPkg.pname}";
@@ -105,10 +113,10 @@ let
                     else if builtins.length config.after == 1
                     then ":after ${builtins.head config.after}"
                     else ":after (${lib.concatStringsSep " " config.after})";
-            diminish = if builtins.length config.diminish <= 0 then ""
-                       else if builtins.length config.diminish == 1
-                       then ":diminish ${builtins.head config.diminish}"
-                       else ":diminish (${lib.concatStringsSep " " config.diminish})";
+            diminish =#if builtins.length config.diminish <= 0 then ""
+                  "" ;#else if builtins.length config.diminish == 1
+                      #then ":diminish ${builtins.head config.diminish}"
+                      #else ":diminish (${lib.concatStringsSep " " config.diminish})";
             commands = if builtins.length config.commands <= 0 then ""
                        else if builtins.length config.commands == 1
                        then ":commands ${builtins.head config.commands}"
@@ -155,9 +163,14 @@ let
   };
 in {
   options = with lib; {
-    emacs-loader = lib.mkOption {
-      type = types.attrsOf (types.submodule packageSpec);
-      default = {};
+    emacs = {
+      loader = lib.mkOption {
+        type = types.attrsOf (types.submodule packageSpec);
+        default = {};
+      };
+      package = lib.mkOption {
+        type = types.package;
+      };
     };
   };
 }

@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.dotnet = {
+  emacs.loader.dotnet = {
     demand = true;
     after = [ "csharp-mode" ];
     hook = [

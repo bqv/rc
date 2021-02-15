@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.direnv = {
+  emacs.loader.direnv = {
     enable = false;
     demand = true;
     config = ''

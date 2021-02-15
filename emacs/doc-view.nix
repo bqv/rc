@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.doc-view = {
+  emacs.loader.doc-view = {
     package = lib.const null;
     config = ''
       (add-hook 'doc-view-mode-hook

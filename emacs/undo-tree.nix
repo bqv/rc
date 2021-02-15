@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.undo-tree = {
+  emacs.loader.undo-tree = {
     demand = true;
     after = [ "evil" ];
     config = ''

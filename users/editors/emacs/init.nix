@@ -16,8 +16,9 @@ let
     (setq current-path (file-name-directory current-file))
 
     (message "Initializing...")
-    (require 'cl-lib)
-    (require 's)
+    (eval-when-compile
+      (require 'cl-lib)
+      (require 's))
     (defun update-load-paths ()
       (cl-flet ((add-paths-for (dir) (let ((default-directory dir))
                                        (when (file-directory-p default-directory)
@@ -34,20 +35,21 @@ let
 
   # Setup base packaging - leaf
   package-init = ''
-    (require 'leaf)
-    (leaf leaf-keywords
-      :require t
-      :init
-      ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
-      (leaf hydra :require t)
-      ;(leaf el-get :require t)
-      ;(leaf blackout :require t)
+    (eval-when-compile
+      (require 'leaf)
+      (leaf leaf-keywords
+        :ensure t
+        :init
+        ;; optional packages if you want to use :hydra, :el-get, :blackout,,,
+        (leaf hydra :ensure t)
+        (leaf el-get :ensure t)
+        (leaf blackout :ensure t)
 
-      :setq
-      (leaf-defaults . '(:require t))
-      :config
-      ;; initialize leaf-keywords.el
-      (leaf-keywords-init))
+        :setq
+        (leaf-defaults . '(:require t))
+        :config
+        ;; initialize leaf-keywords.el
+        (leaf-keywords-init)))
     (leaf auto-compile
       :leaf-defer nil
       :config
@@ -64,8 +66,8 @@ let
     (leaf diminish
       :leaf-defer nil)
     (leaf epkg)
-    (leaf log4e
-      :config
+    (eval-when-compile
+      (require 'log4e)
       (log4e:deflogger "log" "%t [%l] %m" "%H:%M:%S" '((fatal . "fatal")
                                                        (error . "error")
                                                        (warn  . "warn")
@@ -76,20 +78,19 @@ let
       (log--log-enable-messaging))
 
     (require 'ffi)
-    (require 's)
     (define-ffi-library lib/systemd "${pkgs.systemd}/lib/libsystemd.so")
-    (define-ffi-function lib/systemd/sd_notify "sd_notify" :int (:int :pointer) lib/systemd)
-    (defun sd_notify (&rest assocs)
-      (let* ((assignments (mapcar (lambda (p) (format "%s=%s" (car p) (cdr p))) assocs))
-             (lstr (s-join "\n" assignments)))
-        (with-ffi-string (cstr lstr)
-          (lib/systemd/sd_notify 0 cstr))))
+    ;; (define-ffi-function lib/systemd/sd_notify "sd_notify" :int [:int :pointer] lib/systemd)
+    ;; (defun sd_notify (&rest assocs)
+    ;;   (let* ((assignments (mapcar (lambda (p) (format "%s=%s" (car p) (cdr p))) assocs))
+    ;;          (lstr (s-join "\n" assignments)))
+    ;;     (with-ffi-string (cstr lstr)
+    ;;       (lib/systemd/sd_notify 0 cstr))))
 
-    (defun watchdog-systemd-notify ()
-      (with-timeout (10)
-        (sd_notify '("READY" . 1)
-                   );;(`("WATCHDOG_USEC" . ,(* 120 1000000)))
-        (log--trace "Notified at %s" (format-time-string "%D %T"))))
+    ;; (defun watchdog-systemd-notify ()
+    ;;   (with-timeout (10)
+    ;;     (sd_notify '("READY" . 1)
+    ;;                );;(`("WATCHDOG_USEC" . ,(* 120 1000000)))
+    ;;     (log--trace "Notified at %s" (format-time-string "%D %T"))))
     (defun config-end ()
       (message
         "Configuring...done (%.3fs) [after-init]"
@@ -276,7 +277,7 @@ let
           ${script emacs.pkgs})
       '') (lib.mapAttrsToList (sym: cfg@{ script, ... }: {
         inherit sym script;
-      }) config.emacs-loader)}
+      }) config.emacs.loader)}
       (config-end))
 
     (log--info "Loading...done (%.3fs)"

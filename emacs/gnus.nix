@@ -1,8 +1,9 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs.loader.helm = {
+  emacs.loader.gnus = {
     demand = true;
+    package = lib.const null;
     config = ''
       nil
     '';

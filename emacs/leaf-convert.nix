@@ -1,7 +1,7 @@
 { config, lib, usr, pkgs, ... }:
 
 {
-  emacs-loader.leaf-convert = {
+  emacs.loader.leaf-convert = {
     demand = true;
   };
 }
