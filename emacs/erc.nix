@@ -61,7 +61,7 @@ and my-weechat-server.example.com:9001 hardcoded here.
 Will not connect if we already have a connection to NETWORK."
         (if-let ((existing (erc-buffer-list (lambda () (eq (erc-network) network)))))
             (message "Already connected to %s (%S), see buffer %S" network server (car existing))
-          (let ((password (auth-source-pick-first-password :host '("ssl.irc.weechat")
+          (let ((password (auth-source-pick-first-password :user '("weechat")
                                                            :type 'netrc
                                                            :max 1)))
             (erc-tls :server "my-weechat-server.example.com"
