@@ -5,6 +5,36 @@
     demand = true;
     package = epkgs: epkgs.weechat-patched;
     after = [ "tracking" ];
+    init = ''
+      diff --git a/lisp/emacs-lisp/bindat.el b/lisp/emacs-lisp/bindat.el
+ (defvar bindat-raw)
+ (defvar bindat-idx)
+
+ (defun bindat--unpack-group (spec)
+   (with-suppressed-warnings ((lexical struct last))
+     (defvar struct) (defvar last))
+   (let (struct last)
+     (while spec
+       (let* ((item (car spec))
+@@ -378,9 +379,9 @@ bindat--fixed-length-alist
+
+ (defun bindat--length-group (struct spec)
+   (with-suppressed-warnings ((lexical struct last))
+     (defvar struct) (defvar last))
+   (let ((struct struct) last)
+     (while spec
+       (let* ((item (car spec))
+             (field (car item))
+@@ -544,9 +545,9 @@ bindat--pack-item
+
+ (defun bindat--pack-group (struct spec)
+   (with-suppressed-warnings ((lexical struct last))
+     (defvar struct) (defvar last))
+   (let ((struct struct) last)
+     (while spec
+       (let* ((item (car spec))
+             (field (car item))
+    '';
     config = let
       creds = usr.secrets.weechat.credentials;
     in ''
