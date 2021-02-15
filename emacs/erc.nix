@@ -9,6 +9,7 @@
 
       ;(setq erc-hide-list '("JOIN" "PART" "QUIT"))
       (setq erc-rename-buffers t)
+      (setq erc-prompt (lambda () (concat "[" (buffer-name) "]")))
 
       (defmacro unpack-color (color red green blue &rest body)
         `(let ((,red   (car ,color))
