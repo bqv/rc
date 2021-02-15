@@ -16,8 +16,9 @@ let
     (setq current-path (file-name-directory current-file))
 
     (message "Initializing...")
-    (require 'cl-lib)
-    (require 's)
+    (eval-when-compile
+      (require 'cl-lib)
+      (require 's))
     (defun update-load-paths ()
       (cl-flet ((add-paths-for (dir) (let ((default-directory dir))
                                        (when (file-directory-p default-directory)
@@ -76,7 +77,6 @@ let
       (log--log-enable-messaging))
 
     (require 'ffi)
-    (require 's)
     (define-ffi-library lib/systemd "${pkgs.systemd}/lib/libsystemd.so")
     ;; (define-ffi-function lib/systemd/sd_notify "sd_notify" :int [:int :pointer] lib/systemd)
     ;; (defun sd_notify (&rest assocs)
