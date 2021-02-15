@@ -237,7 +237,10 @@
       (defun bqv/weechat-local (&rest args)
         "Connect to WeeChat [localhost]."
         (interactive)
-        (weechat-connect "localhost" 6697 "${creds.password}" 'ssl))
+        (let ((password (auth-source-pick-first-password :user '("weechat")
+                                                         :type 'netrc
+                                                         :max 1)))
+          (weechat-connect "localhost" 6697 password 'ssl)))
       (setcar (cddddr (alist-get 'weechat-button-url-regexp weechat-button-list)) #'browse-url-generic)
       (setq weechat-color-options-list
             (let ((amap (mapcar*
