@@ -53,8 +53,9 @@
                                            (".*" . webkit-download-default)))
 
       (defun webkit-process-kill-buffer-advice ()
-        (not (eq major-mode 'webkit-mode)))
-      (advice-add #'process-kill-buffer-query-function :before-while #'webkit-process-kill-buffer-advice)
+        (let ((generated-name (funcall orig-fun server port target)))
+          (not (eq major-mode 'webkit-mode))))
+      (advice-add #'process-kill-buffer-query-function :around #'webkit-process-kill-buffer-advice)
     '';
   };
   emacs.loader.webkit-ace = {
