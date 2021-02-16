@@ -51,6 +51,11 @@
       (setq webkit-download-action-alist '(("\\.pdf\\'" . webkit-download-open)
                                            ("\\.png\\'" . webkit-download-save)
                                            (".*" . webkit-download-default)))
+
+      ;; no "running process" prompt for webkit buffers
+      (defun webkit-process-kill-buffer-advice (orig-fun)
+        (or (eq major-mode 'webkit-mode) (funcall orig-fun)))
+      (advice-add #'process-kill-buffer-query-function :around #'webkit-process-kill-buffer-advice)
     '';
   };
   emacs.loader.webkit-ace = {
