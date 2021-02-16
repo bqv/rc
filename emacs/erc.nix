@@ -89,11 +89,13 @@ Will not connect if we already have a connection to NETWORK.")
 
       (defcustom erc-weechat-networks nil
         "Networks as fetched from weechat.el"
-        :type '(list string))
+        :type '(list string)
+        :group 'erc-weechat)
 
       (defcustom erc-weechat-fetch-hook nil
         "Run after fetching network list from weechat.el"
-        :type '(hook))
+        :type '(hook)
+        :group 'erc-weechat)
 
       (with-eval-after-load 'weechat
         (defun erc-weechat-fetch-networks (&rest _)
