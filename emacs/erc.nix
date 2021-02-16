@@ -103,8 +103,7 @@ Will not connect if we already have a connection to NETWORK.")
                                          "\\."))
                                       (car infolist))))))
                (eval `(erc-weechat-make-connect ,name ,(intern name)))
-               (erc-weechat-connect name (intern name))
-               ))))
+               (erc-weechat-connect name (intern name))))))
         (add-hook 'weechat-connect-hook #'erc-weechat-fetch-networks))
     '';
   };
