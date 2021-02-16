@@ -86,7 +86,6 @@ Will not connect if we already have a connection to NETWORK.")
            (interactive)
            (erc-weechat-connect ,server ,network)))
 
-      (erc-weechat-make-connect "freenode" 'freenode)
       (with-eval-after-load 'weechat
         (defun erc-weechat-fetch-networks (&rest _)
           (weechat-relay-send-command
