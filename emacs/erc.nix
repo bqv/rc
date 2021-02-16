@@ -87,23 +87,22 @@ Will not connect if we already have a connection to NETWORK.")
            (erc-weechat-connect ,server ,network)))
 
       (erc-weechat-make-connect "freenode" 'freenode)
-      (weechat-relay-send-command
-       "infolist buffer"
-       (lambda (infolist)
-         (dolist (name (seq-uniq
-                         (mapcar #'cadr
-                                 (seq-filter
-                                  (lambda (segment)
-                                    (equal "irc" (car segment)))
-                                  (mapcar
-                                   (lambda (buffer)
-                                     (split-string
-                                      (assoc-default "full_name" buffer)
-                                      "\\."))
-                                   (car infolist))))))
-           ;(message name)
-           (eval `(erc-weechat-make-connect ,name ,(intern name)))
-          )))
+      (eval-after-load 'weechat-relay
+        (weechat-relay-send-command
+         "infolist buffer"
+         (lambda (infolist)
+           (dolist (name (seq-uniq
+                          (mapcar #'cadr
+                                  (seq-filter
+                                   (lambda (segment)
+                                     (equal "irc" (car segment)))
+                                   (mapcar
+                                    (lambda (buffer)
+                                      (split-string
+                                       (assoc-default "full_name" buffer)
+                                       "\\."))
+                                    (car infolist))))))
+             (eval `(erc-weechat-make-connect ,name ,(intern name)))))))
     '';
   };
   emacs.loader.erc-image = {
