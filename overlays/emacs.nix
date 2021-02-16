@@ -22,6 +22,11 @@ inputs@{...}: final: prev: let
           url = "https://github.com/bqv/weechat.el/commit/2c572326c26d1f62bce2926b3cb00c7c2e971406.patch";
           sha256 = "1xncc6212981fp7fm3381l95h397m8f4li0ksv236a8bmpl62vd3";
         })
+        (final.fetchpatch {
+          name = "add_faces_for_irc_line_types.patch";
+          url = "https://github.com/bqv/weechat.el/commit/0dbb8720318d5041d13d68fb174aba2b3ab9b8b8.patch";
+          sha256 = "0000000000000000000000000000000000000000000000000000";
+        })
       ];
     });
   };
