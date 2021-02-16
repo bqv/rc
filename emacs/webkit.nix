@@ -52,10 +52,9 @@
                                            ("\\.png\\'" . webkit-download-save)
                                            (".*" . webkit-download-default)))
 
-      (defun process-kill-buffer-query-function-advice (orig-fun server port target)
-        (let ((generated-name (funcall orig-fun server port target)))
-          (concat (cl-subseq server 0 2) "-" generated-name)))
-      (advice-add 'erc-generate-new-buffer-name :around #'erc-add-server-to-chan-name)
+      (defun webkit-kill-buffer-query-function ()
+        (not (eq major-mode 'webkit-mode)))
+      (advice-add #'process-kill-buffer-query-function :before-while #'webkit-kill-buffer-query-function)
     '';
   };
   emacs.loader.webkit-ace = {
