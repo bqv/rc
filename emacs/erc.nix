@@ -15,6 +15,7 @@
               "324" "329" "332" "447"))
       (setq erc-pcomplete-nick-postfix ": ")
       (setq erc-track-enable-keybindings t)
+      (setq erc-join-buffer 'bury)
 
       (add-hook 'erc-mode-hook #'outline-minor-mode)
       (add-hook 'erc-mode-hook
