@@ -115,7 +115,7 @@ Will not connect if we already have a connection to NETWORK.")
                (eval `(erc-weechat-make-connect ,name ',(intern name)))
                (setq erc-weechat-networks networks)
                (run-hooks erc-weechat-fetch-hook)
-               )))))
+               t)))))
         (add-hook 'weechat-connect-hook #'erc-weechat-fetch-networks))
 
       ;(defun erc-add-server-to-chan-name (orig-fun server port target)
