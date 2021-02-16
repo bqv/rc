@@ -51,6 +51,11 @@
       (setq webkit-download-action-alist '(("\\.pdf\\'" . webkit-download-open)
                                            ("\\.png\\'" . webkit-download-save)
                                            (".*" . webkit-download-default)))
+
+      (defun process-kill-buffer-query-function-advice (orig-fun server port target)
+        (let ((generated-name (funcall orig-fun server port target)))
+          (concat (cl-subseq server 0 2) "-" generated-name)))
+      (advice-add 'erc-generate-new-buffer-name :around #'erc-add-server-to-chan-name)
     '';
   };
   emacs.loader.webkit-ace = {
