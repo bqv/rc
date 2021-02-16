@@ -25,7 +25,7 @@ inputs@{...}: final: prev: let
         (final.fetchpatch {
           name = "add_faces_for_irc_line_types.patch";
           url = "https://github.com/bqv/weechat.el/commit/0dbb8720318d5041d13d68fb174aba2b3ab9b8b8.patch";
-          sha256 = "sha256-6zwMI+53M0RIykuG7SzvZ2XRSxsw65oAZSPIpki3JXA=";
+          sha256 = "6zwMI+53M0RIykuG7SzvZ2XRSxsw65oAZSPIpki3JXA=";
         })
       ];
     });
