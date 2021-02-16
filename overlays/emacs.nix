@@ -3,7 +3,7 @@ inputs@{...}: final: prev: let
     weechat-patched = super.weechat.overrideAttrs (o: {
       patches = (o.patches or []) ++ map ({ name, rev, hash }: final.fetchpatch {
         name = "${name}.patch";
-        url = "https://github.com/emacsomancer/weechat.el/commit/${rev}.patch";
+        url = "https://github.com/bqv/weechat.el/commit/${rev}.patch";
         sha256 = hash;
       }) [
         {
