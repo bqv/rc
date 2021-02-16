@@ -222,6 +222,7 @@
             weechat-max-nick-length 12
             ;weechat-modules '(weechat-button weechat-complete weechat-spelling weechat-tracking weechat-notifications weechat-image weechat-read-marker weechat-color))
             weechat-modules '(weechat-button weechat-complete weechat-spelling weechat-tracking weechat-image weechat-read-marker weechat-color))
+      (setq weechat-auto-monitor-buffers '("weechat" "relay.list" "fset.fset" "exec.exec.0" "exec.exec.1"))
       (setq weechat-color-list '(unspecified "aquamarine4" "PaleGreen3" "LemonChiffon4" "burlywood" "LightGoldenrod2" "tan2" "LightSalmon2" "coral2" "IndianRed3" "IndianRed" "MediumPurple3" "PaleVioletRed2" "HotPink3" "CadetBlue" "SteelBlue3" "DarkSeaGreen"))
       (dolist (module weechat-modules nil)
         (require module))
@@ -236,7 +237,10 @@
       (defun bqv/weechat-local (&rest args)
         "Connect to WeeChat [localhost]."
         (interactive)
-        (weechat-connect "localhost" 6697 "${creds.password}" 'ssl))
+        (let ((password (auth-source-pick-first-password :user '("weechat")
+                                                         :type 'netrc
+                                                         :max 1)))
+          (weechat-connect "localhost" 6697 password 'ssl)))
       (setcar (cddddr (alist-get 'weechat-button-url-regexp weechat-button-list)) #'browse-url-generic)
       (setq weechat-color-options-list
             (let ((amap (mapcar*
