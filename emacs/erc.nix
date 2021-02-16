@@ -87,25 +87,35 @@ Will not connect if we already have a connection to NETWORK.")
            (interactive)
            (erc-weechat-connect ,server ,network)))
 
+      (defcustom erc-weechat-networks nil
+        "Networks as fetched from weechat.el"
+        :type '(list string))
+
+      (defcustom erc-weechat-fetch-hook nil
+        "Run after fetching network list from weechat.el"
+        :type '(hook))
+
       (with-eval-after-load 'weechat
         (defun erc-weechat-fetch-networks (&rest _)
           (weechat-relay-send-command
            "infolist buffer"
            (lambda (infolist)
-             (dolist (name (seq-uniq
-                            (mapcar #'cadr
-                                    (seq-filter
-                                     (lambda (segment)
-                                       (equal "irc" (car segment)))
-                                     (mapcar
-                                      (lambda (buffer)
-                                        (split-string
-                                         (assoc-default "full_name" buffer)
-                                         "\\."))
-                                      (car infolist))))))
+             (let ((networks (seq-uniq
+                              (mapcar #'cadr
+                                      (seq-filter
+                                       (lambda (segment)
+                                         (equal "irc" (car segment)))
+                                       (mapcar
+                                        (lambda (buffer)
+                                          (split-string
+                                           (assoc-default "full_name" buffer)
+                                           "\\."))
+                                        (car infolist)))))))
+             (dolist (name networks)
                (eval `(erc-weechat-make-connect ,name ',(intern name)))
-               (erc-weechat-connect name (intern name))
-               ))))
+               (setq erc-weechat-networks networks)
+               (run-hooks erc-weechat-fetch-hook)
+               )))))
         (add-hook 'weechat-connect-hook #'erc-weechat-fetch-networks))
 
       ;(defun erc-add-server-to-chan-name (orig-fun server port target)
