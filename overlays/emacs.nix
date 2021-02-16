@@ -8,28 +8,28 @@ inputs@{...}: final: prev: let
       }) [
         {
           name = "rx-form_to_rx--translate-form";
-          url = "77f3e93fabcf300ba6c2d268e2e89baabed6cbf3";
+          rev = "77f3e93fabcf300ba6c2d268e2e89baabed6cbf3";
           hash = "bgF3WhIl9/NHeTS3wPFtLOily1y8W952DVOPWes2Lkg=";
         }
         {
           name = "reversed_rx_character_range";
-          url = "446868de424170be0584980d4dcc0859f7077d54";
+          rev = "446868de424170be0584980d4dcc0859f7077d54";
           hash = "HZtkpiTh+jD9pudYP+aAixPJx07R/BRXQ4Eg3OZ4gOA=";
         }
         {
           name = "ellipsize_nicks";
-          url = "6f655866206eac179f74637c77e6c4b259f9891c";
+          rev = "6f655866206eac179f74637c77e6c4b259f9891c";
           hash = "wC/W09BL8219p/wPXRoIK4IlDfqC2aYq9/5ddnCf6K0=";
         }
         {
           name = "reverse_speedbar_order";
-          url = "2c572326c26d1f62bce2926b3cb00c7c2e971406";
+          rev = "2c572326c26d1f62bce2926b3cb00c7c2e971406";
           hash = "o21h6K0LKTPE1hNEShyqJw1YEg1ojOrOdQElEYRhzPY=";
         }
         {
           name = "add_faces_for_irc_line_types";
-          url = "0dbb8720318d5041d13d68fb174aba2b3ab9b8b8";
-          sha256 = "6zwMI+53M0RIykuG7SzvZ2XRSxsw65oAZSPIpki3JXA=";
+          rev = "0dbb8720318d5041d13d68fb174aba2b3ab9b8b8";
+          hash = "6zwMI+53M0RIykuG7SzvZ2XRSxsw65oAZSPIpki3JXA=";
         }
       ];
     });
