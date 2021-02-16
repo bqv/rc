@@ -102,7 +102,7 @@ Will not connect if we already have a connection to NETWORK.")
                                       "\\."))
                                    (car infolist))))))
            ;(message name)
-           (erc-weechat-make-connect name (intern name))
+           (erc-weechat-make-connect ,name ,(intern name))
           )))
     '';
   };
