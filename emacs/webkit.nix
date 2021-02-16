@@ -52,9 +52,9 @@
                                            ("\\.png\\'" . webkit-download-save)
                                            (".*" . webkit-download-default)))
 
-      (defun webkit-kill-buffer-query-function ()
+      (defun webkit-process-kill-buffer-advice ()
         (not (eq major-mode 'webkit-mode)))
-      (advice-add #'process-kill-buffer-query-function :before-while #'webkit-kill-buffer-query-function)
+      (advice-add #'process-kill-buffer-query-function :before-while #'webkit-process-kill-buffer-advice)
     '';
   };
   emacs.loader.webkit-ace = {
