@@ -92,7 +92,7 @@ Will not connect if we already have a connection to NETWORK.")
        (lambda (infolist)
          (mapcar
           (lambda (name)
-            (print `(erc-weechat-make-connect name (intern name)))
+            (print `(erc-weechat-make-connect ,name (intern ,name)))
             (erc-weechat-make-connect name (intern name)))
           (seq-uniq
            (mapcar #'cadr
