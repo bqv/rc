@@ -101,8 +101,8 @@ Will not connect if we already have a connection to NETWORK.")
                                       (assoc-default "full_name" buffer)
                                       "\\."))
                                    (car infolist))))))
-           (message name)
-           ;(erc-weechat-make-connect name (intern name))
+           ;(message name)
+           (erc-weechat-make-connect name (intern name))
           )))
     '';
   };
