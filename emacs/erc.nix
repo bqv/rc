@@ -117,7 +117,7 @@ Will not connect if we already have a connection to NETWORK.")
              (dolist (name networks)
                (eval `(erc-weechat-make-connect ,name ',(intern name)))
                (setq erc-weechat-networks networks)
-               (run-hooks erc-weechat-fetch-hook)
+               (run-hooks 'erc-weechat-fetch-hook)
                t)))))
         (add-hook 'weechat-connect-hook #'erc-weechat-fetch-networks))
 
