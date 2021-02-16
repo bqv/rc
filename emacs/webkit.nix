@@ -35,7 +35,7 @@
         (evil-collection-xwidget-setup))
       (setq webkit-own-window nil)
       (setq webkit-search-prefix "https://qwant.com/?q=")
-      ;(setq browse-url-browser-function 'webkit-browse-url)
+      (setq browse-url-browser-function #'webkit-browse-url)
       (setq webkit-browse-url-force-new t)
 
       (with-eval-after-load 'all-the-icons
