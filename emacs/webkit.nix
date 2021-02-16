@@ -52,9 +52,10 @@
                                            ("\\.png\\'" . webkit-download-save)
                                            (".*" . webkit-download-default)))
 
-      (defun webkit-process-kill-buffer-advice ()
-        (let ((generated-name (funcall orig-fun server port target)))
-          (not (eq major-mode 'webkit-mode))))
+      (defun webkit-process-kill-buffer-advice (orig-fun)
+        (if (eq major-mode 'webkit-mode)
+            t
+          (funcall orig-fun)))
       (advice-add #'process-kill-buffer-query-function :around #'webkit-process-kill-buffer-advice)
     '';
   };
