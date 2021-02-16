@@ -105,6 +105,12 @@ Will not connect if we already have a connection to NETWORK.")
                                       (car infolist))))))
                (eval `(erc-weechat-make-connect ,name ',(intern name)))))))
         (add-hook 'weechat-connect-hook #'erc-weechat-fetch-networks))
+
+      (defun erc-add-server-to-chan-name (orig-fun server port target)
+        (let ((generated-name (funcall orig-fun server port target)))
+          (concat (cl-subseq server 0 2) "-" generated-name)))
+
+      (advice-add 'erc-generate-new-buffer-name :around #'erc-add-server-to-chan-name)
     '';
   };
   emacs.loader.erc-image = {
