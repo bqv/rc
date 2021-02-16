@@ -14,6 +14,7 @@
             '("JOIN" "KICK" "NICK" "PART" "QUIT" "MODE" "333" "353"
               "324" "329" "332" "447"))
       (setq erc-pcomplete-nick-postfix ": ")
+      (setq erc-track-enable-keybindings t)
 
       (add-hook 'erc-mode-hook #'outline-minor-mode)
       (add-hook 'erc-mode-hook
@@ -86,7 +87,29 @@ Will not connect if we already have a connection to NETWORK.")
            (interactive)
            (erc-weechat-connect ,server ,network)))
 
-      (erc-weechat-make-connect "freenode" 'freenode)
+      (with-eval-after-load 'weechat
+        (defun erc-weechat-fetch-networks (&rest _)
+          (weechat-relay-send-command
+           "infolist buffer"
+           (lambda (infolist)
+             (dolist (name (seq-uniq
+                            (mapcar #'cadr
+                                    (seq-filter
+                                     (lambda (segment)
+                                       (equal "irc" (car segment)))
+                                     (mapcar
+                                      (lambda (buffer)
+                                        (split-string
+                                         (assoc-default "full_name" buffer)
+                                         "\\."))
+                                      (car infolist))))))
+               (eval `(erc-weechat-make-connect ,name ',(intern name)))))))
+        (add-hook 'weechat-connect-hook #'erc-weechat-fetch-networks))
+
+      ;(defun erc-add-server-to-chan-name (orig-fun server port target)
+      ;  (let ((generated-name (funcall orig-fun server port target)))
+      ;    (concat (cl-subseq server 0 2) "-" generated-name)))
+      ;(advice-add 'erc-generate-new-buffer-name :around #'erc-add-server-to-chan-name)
     '';
   };
   emacs.loader.erc-image = {
