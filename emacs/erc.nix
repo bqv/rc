@@ -90,20 +90,20 @@ Will not connect if we already have a connection to NETWORK.")
       (weechat-relay-send-command
        "infolist buffer"
        (lambda (infolist)
-         (mapcar
-          (lambda (name)
-            (message name)
-            ;(erc-weechat-make-connect name (intern name))
-            )
-          (seq-uniq
-           (mapcar #'cadr
-                   (seq-filter
-                    (lambda (segment)
-                      (equal "irc" (car segment)))
-                    (mapcar
-                     (lambda (buffer)
-                       (split-string (assoc-default "full_name" buffer) "\\."))
-                     (car infolist))))))))
+         (dolist (name (seq-uniq
+                         (mapcar #'cadr
+                                 (seq-filter
+                                  (lambda (segment)
+                                    (equal "irc" (car segment)))
+                                  (mapcar
+                                   (lambda (buffer)
+                                     (split-string
+                                      (assoc-default "full_name" buffer)
+                                      "\\."))
+                                   (car infolist))))))
+           (message name)
+           ;(erc-weechat-make-connect name (intern name))
+          )))
     '';
   };
   emacs.loader.erc-image = {
