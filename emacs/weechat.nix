@@ -222,7 +222,7 @@
             weechat-max-nick-length 12
             ;weechat-modules '(weechat-button weechat-complete weechat-spelling weechat-tracking weechat-notifications weechat-image weechat-read-marker weechat-color))
             weechat-modules '(weechat-button weechat-complete weechat-spelling weechat-tracking weechat-image weechat-read-marker weechat-color))
-      (setq weechat-auto-monitor-buffers '("weechat" "relay.list" "fset.fset" "exec.exec.0" "exec.exec.1"))
+      (setq weechat-auto-monitor-buffers '("weechat" "relay.list" "fset" "exec.0"))
       (setq weechat-color-list '(unspecified "aquamarine4" "PaleGreen3" "LemonChiffon4" "burlywood" "LightGoldenrod2" "tan2" "LightSalmon2" "coral2" "IndianRed3" "IndianRed" "MediumPurple3" "PaleVioletRed2" "HotPink3" "CadetBlue" "SteelBlue3" "DarkSeaGreen"))
       (dolist (module weechat-modules nil)
         (require module))
