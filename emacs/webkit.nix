@@ -57,6 +57,16 @@
       (defun webkit-process-kill-buffer-advice (orig-fun)
         (or (eq major-mode 'webkit-mode) (funcall orig-fun)))
       (advice-add #'process-kill-buffer-query-function :around #'webkit-process-kill-buffer-advice)
+
+      ;; fix evil not exiting consistently on unfocus
+      (defun webkit-handle-buffer-switch ()
+        "Handle a possible switch to another buffer."
+        (let ((new-buffer (window-buffer))
+              (old-buffer (current-buffer)))
+          (when (and (eq major-mode 'webkit-mode)
+                     (featurep 'evil-collection-webkit))
+            (evil-collection-webkit-unfocus-to-normal-mode))))
+      (add-to-list 'buffer-list-update-hook #'webkit-handle-buffer-switch)
     '';
   };
   emacs.loader.webkit-ace = {
