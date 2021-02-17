@@ -63,9 +63,9 @@
         "Handle a possible switch to another buffer."
         (let ((new-buffer (window-buffer))
               (old-buffer (current-buffer)))
-          (unless (minibufferp)
-            (when (eq (major-mode) 'webkit-mode)
-              (evil-collection-webkit-unfocus-to-normal-mode)))))
+          (when (and (eq (major-mode) 'webkit-mode)
+                     (featurep 'evil-collection-webkit))
+            (evil-collection-webkit-unfocus-to-normal-mode))))
 
     '';
   };
