@@ -421,14 +421,7 @@
         t)
 
       (add-hook 'weechat-mode-hook #'outline-minor-mode)
-      (add-hook 'weechat-mode-hook
-                (lambda (&rest r) (progn
-                  (outline-minor-mode 0)
-                  (setq-local outline-regexp "^[^ ]* [a-zA-Z]\\|^[^ ]*  \\*\\|^\\[")
-                  (allout-mode 1)
-                  (setq-local allout-primary-bullet "^<.*>\\|^\\[.*\\] ")
-                  (setq-local comment-start "^<.*>\\|^\\[.*\\] ")
-                t)))
+      (add-hook 'weechat-mode-hook #'weechat-allout-setup))
     '';
   };
 }
