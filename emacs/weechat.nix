@@ -419,7 +419,7 @@
                   (setq-local outline-regexp "^[^ ]* [a-zA-Z]\\|^[^ ]*  \\*\\|^\\[")
                   (allout-mode 1)
                   (setq-local allout-primary-bullet "^<.*>\\|^\\[.*\\] ")
-                  (setq-local allout-primary-bullet "^<.*>\\|^\\[.*\\] ")
+                  (setq-local comment-start "^<.*>\\|^\\[.*\\] ")
                 t)))
     '';
   };
