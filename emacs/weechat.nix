@@ -413,8 +413,9 @@
       (add-hook 'after-init-hook #'bqv/weechat-local)
 
       (defun weechat-enable-allout (&rest _)
-        ;(setq-local outline-regexp "^[^ ]* [a-zA-Z]\\|^[^ ]*  \\*\\|^\\[")
-        ;(outline-minor-mode 0)
+        (unless t
+          (setq-local outline-regexp "^[^ ]* [a-zA-Z]\\|^[^ ]*  \\*\\|^\\[")
+          (outline-minor-mode 0))
         (setq-local allout-primary-bullet "^[^ ]* [a-zA-Z]\\|^[^ ]*  \\*\\|^\\[")
         (setq-local comment-start "^[^ ]* <--\\|^[^ ]* -->")
         (allout-mode 1)
