@@ -424,7 +424,8 @@
       (dolist (buffer (buffer-list))
         (with-current-buffer buffer
           (when (eq major-mode 'weechat-mode)
-            (weechat-enable-allout))))
+            (weechat-enable-allout)))
+        nil)
 
       (add-hook 'weechat-mode-hook #'weechat-enable-allout)
     '';
