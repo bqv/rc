@@ -414,7 +414,9 @@
 
       (add-hook 'weechat-mode-hook #'outline-minor-mode)
       (add-hook 'weechat-mode-hook
-                (lambda (&rest r) (setq-local outline-regexp "^<.*>\\|^\\[.*\\] ")))
+                (lambda (&rest r)
+                  (setq-local outline-regexp "^<.*>\\|^\\[.*\\] "))
+                t)
     '';
   };
 }
