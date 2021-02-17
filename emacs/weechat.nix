@@ -414,9 +414,11 @@
 
       (add-hook 'weechat-mode-hook #'outline-minor-mode)
       (add-hook 'weechat-mode-hook
-                (lambda (&rest r)
+                (lambda (&rest r) (progn
+                  (outline-minor-mode 0)
+                  (allout-mode 1)
                   (setq-local outline-regexp "^<.*>\\|^\\[.*\\] ")
-                t))
+                t)))
     '';
   };
 }
