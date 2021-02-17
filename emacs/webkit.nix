@@ -65,7 +65,7 @@
               (old-buffer (current-buffer)))
           (unless (minibufferp)
             (when (eq (major-mode) 'webkit-mode)
-              (print t)))))
+              (evil-collection-webkit-unfocus-to-normal-mode)))))
 
     '';
   };
