@@ -424,6 +424,7 @@
       (dolist (buffer (buffer-list))
         (with-current-buffer buffer
           (when (eq major-mode 'weechat-mode)
+            (flyspell-mode-on)
             (weechat-enable-allout)))
         nil)
 
