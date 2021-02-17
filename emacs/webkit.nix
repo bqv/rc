@@ -58,7 +58,7 @@
         (or (eq major-mode 'webkit-mode) (funcall orig-fun)))
       (advice-add #'process-kill-buffer-query-function :around #'webkit-process-kill-buffer-advice)
 
-      ;;
+      ;; fix evil not exiting consistently on unfocus
       (defun webkit-handle-buffer-switch ()
         "Handle a possible switch to another buffer."
         (let ((new-buffer (window-buffer))
