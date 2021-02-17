@@ -64,15 +64,8 @@
         (let ((new-buffer (window-buffer))
               (old-buffer (current-buffer)))
           (unless (minibufferp)
-            (setq flycheck--last-buffer (current-buffer))
-            (when (and flycheck-mode
-                       (memq 'idle-buffer-switch flycheck-check-syntax-automatically))
-              (flycheck--clear-idle-trigger-timer)
-              (cl-pushnew 'idle-buffer-switch flycheck--idle-trigger-conditions)
-              (setq flycheck--idle-trigger-timer
-                    (run-at-time flycheck-idle-buffer-switch-delay nil
-                                 #'flycheck--handle-idle-trigger
-                                 (current-buffer)))))))
+            (when (eq (major-mode) 'webkit-mode)
+              (print t)))))
 
     '';
   };
