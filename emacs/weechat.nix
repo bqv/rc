@@ -419,6 +419,11 @@
         (setq-local allout-primary-bullet "^<.*>\\|^\\[.*\\] ")
         (setq-local comment-start "^<.*>\\|^\\[.*\\] ")
         t)
+      (dolist (buffer (buffer-list))
+        (with-current-buffer buffer
+          (when (eq major-mode 'weechat-mode)
+            (weechat-enable-allout))))
+
       (add-hook 'weechat-mode-hook #'weechat-enable-allout)
     '';
   };
