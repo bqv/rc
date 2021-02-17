@@ -63,7 +63,7 @@
         "Handle a possible switch to another buffer."
         (let ((new-buffer (window-buffer))
               (old-buffer (current-buffer)))
-          (when (and (eq (major-mode) 'webkit-mode)
+          (when (and (eq major-mode 'webkit-mode)
                      (featurep 'evil-collection-webkit))
             (evil-collection-webkit-unfocus-to-normal-mode))))
       (add-to-list 'buffer-list-update-hook #'webkit-handle-buffer-switch)
