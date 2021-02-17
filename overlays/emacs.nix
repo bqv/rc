@@ -26,11 +26,11 @@ inputs@{...}: final: prev: let
           rev = "2c572326c26d1f62bce2926b3cb00c7c2e971406";
           hash = "o21h6K0LKTPE1hNEShyqJw1YEg1ojOrOdQElEYRhzPY=";
         }
-        {
-          name = "add_faces_for_irc_line_types";
-          rev = "0dbb8720318d5041d13d68fb174aba2b3ab9b8b8";
-          hash = "6zwMI+53M0RIykuG7SzvZ2XRSxsw65oAZSPIpki3JXA=";
-        }
+       #{
+       #  name = "add_faces_for_irc_line_types";
+       #  rev = "0dbb8720318d5041d13d68fb174aba2b3ab9b8b8";
+       #  hash = "6zwMI+53M0RIykuG7SzvZ2XRSxsw65oAZSPIpki3JXA=";
+       #}
       ];
     });
   };
