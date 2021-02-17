@@ -412,7 +412,7 @@
 
       (add-hook 'after-init-hook #'bqv/weechat-local)
 
-      (defun weechat-allout-setup (&rest _)
+      (defun weechat-enable-allout (&rest _)
         (outline-minor-mode 0)
         (setq-local outline-regexp "^[^ ]* [a-zA-Z]\\|^[^ ]*  \\*\\|^\\[")
         (allout-mode 1)
@@ -420,7 +420,7 @@
         (setq-local comment-start "^<.*>\\|^\\[.*\\] ")
         t)
 
-      (add-hook 'weechat-mode-hook #'weechat-allout-setup)
+      (add-hook 'weechat-mode-hook #'weechat-enable-allout)
     '';
   };
 }
