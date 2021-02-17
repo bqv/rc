@@ -61,12 +61,9 @@
       ;;
       (defun webkit-handle-buffer-switch ()
         "Handle a possible switch to another buffer."
-        (with-current-buffer (window-buffer) ; new buffer
-          (unless (or (equal flycheck--last-buffer (current-buffer)) ; current buffer
-                      ;; Don't bother keeping track of changes to and from
-                      ;; the minibuffer, as they will never require us to
-                      ;; run a syntax check.
-                      (minibufferp))
+        (let ((new-buffer (window-buffer))
+              (old-buffer (current-buffer)))
+          (unless (minibufferp)
             (setq flycheck--last-buffer (current-buffer))
             (when (and flycheck-mode
                        (memq 'idle-buffer-switch flycheck-check-syntax-automatically))
