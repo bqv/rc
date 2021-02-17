@@ -59,37 +59,23 @@
       (advice-add #'process-kill-buffer-query-function :around #'webkit-process-kill-buffer-advice)
 
       ;;
-      (defun flycheck-handle-buffer-switch ()
-  "Handle a possible switch to another buffer.
-
-If a buffer switch actually happened, schedule a syntax check."
-  ;; Switching buffers here is weird, but unfortunately necessary.  It
-  ;; turns out that `with-temp-buffer' triggers
-  ;; `buffer-list-update-hook' twice, and the value of
-  ;; `current-buffer' is bogus in one of those triggers (the one just
-  ;; after the temp buffer is killed).  If we rely on the bogus value,
-  ;; Flycheck will think that the user is switching back and forth
-  ;; between different buffers during the `with-temp-buffer' call
-  ;; (note: two different normal buffers, not the current buffer and
-  ;; the temp buffer!), and that would trigger spurious syntax checks.
-  ;; It seems that reading (window-buffer) gets us the correct current
-  ;; buffer in all important real-life situations (although it doesn't
-  ;; necessarily catch uses of `set-buffer').
-  (with-current-buffer (window-buffer)
-    (unless (or (equal flycheck--last-buffer (current-buffer))
-                ;; Don't bother keeping track of changes to and from
-                ;; the minibuffer, as they will never require us to
-                ;; run a syntax check.
-                (minibufferp))
-      (setq flycheck--last-buffer (current-buffer))
-      (when (and flycheck-mode
-                 (memq 'idle-buffer-switch flycheck-check-syntax-automatically))
-        (flycheck--clear-idle-trigger-timer)
-        (cl-pushnew 'idle-buffer-switch flycheck--idle-trigger-conditions)
-        (setq flycheck--idle-trigger-timer
-              (run-at-time flycheck-idle-buffer-switch-delay nil
-                           #'flycheck--handle-idle-trigger
-                           (current-buffer)))))))
+      (defun webkit-handle-buffer-switch ()
+        "Handle a possible switch to another buffer."
+        (with-current-buffer (window-buffer) ; new buffer
+          (unless (or (equal flycheck--last-buffer (current-buffer)) ; current buffer
+                      ;; Don't bother keeping track of changes to and from
+                      ;; the minibuffer, as they will never require us to
+                      ;; run a syntax check.
+                      (minibufferp))
+            (setq flycheck--last-buffer (current-buffer))
+            (when (and flycheck-mode
+                       (memq 'idle-buffer-switch flycheck-check-syntax-automatically))
+              (flycheck--clear-idle-trigger-timer)
+              (cl-pushnew 'idle-buffer-switch flycheck--idle-trigger-conditions)
+              (setq flycheck--idle-trigger-timer
+                    (run-at-time flycheck-idle-buffer-switch-delay nil
+                                 #'flycheck--handle-idle-trigger
+                                 (current-buffer)))))))
 
     '';
   };
