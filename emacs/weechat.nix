@@ -416,8 +416,10 @@
       (add-hook 'weechat-mode-hook
                 (lambda (&rest r) (progn
                   (outline-minor-mode 0)
+                  (setq-local outline-regexp "^[^ ]* [a-zA-Z]\\|^[^ ]*  \\*\\|^\\[")
                   (allout-mode 1)
-                  (setq-local outline-regexp "^<.*>\\|^\\[.*\\] ")
+                  (setq-local allout-primary-bullet "^<.*>\\|^\\[.*\\] ")
+                  (setq-local allout-primary-bullet "^<.*>\\|^\\[.*\\] ")
                 t)))
     '';
   };
