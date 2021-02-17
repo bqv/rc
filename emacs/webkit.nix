@@ -66,7 +66,7 @@
           (when (and (eq (major-mode) 'webkit-mode)
                      (featurep 'evil-collection-webkit))
             (evil-collection-webkit-unfocus-to-normal-mode))))
-
+      (add-to-list 'buffer-list-update-hook #'webkit-handle-buffer-switch)
     '';
   };
   emacs.loader.webkit-ace = {
