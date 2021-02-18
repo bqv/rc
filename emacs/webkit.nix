@@ -35,7 +35,8 @@
         (evil-collection-xwidget-setup))
       (setq webkit-own-window nil)
       (setq webkit-search-prefix "https://qwant.com/?q=")
-      ;(setq browse-url-browser-function 'webkit-browse-url)
+      (setq browse-url-browser-function #'webkit-browse-url)
+      (setq browse-url-secondary-browser-function #'browse-url-generic)
       (setq webkit-browse-url-force-new t)
 
       (with-eval-after-load 'all-the-icons
@@ -51,6 +52,21 @@
       (setq webkit-download-action-alist '(("\\.pdf\\'" . webkit-download-open)
                                            ("\\.png\\'" . webkit-download-save)
                                            (".*" . webkit-download-default)))
+
+      ;; no "running process" prompt for webkit buffers
+      (defun webkit-process-kill-buffer-advice (orig-fun)
+        (or (eq major-mode 'webkit-mode) (funcall orig-fun)))
+      (advice-add #'process-kill-buffer-query-function :around #'webkit-process-kill-buffer-advice)
+
+      ;; fix evil not exiting consistently on unfocus
+      (defun webkit-handle-buffer-switch ()
+        "Handle a possible switch to another buffer."
+        (let ((new-buffer (window-buffer))
+              (old-buffer (current-buffer)))
+          (when (and (eq major-mode 'webkit-mode)
+                     (featurep 'evil-collection-webkit))
+            (evil-collection-webkit-unfocus-to-normal-mode old-buffer))))
+      (add-to-list 'buffer-list-update-hook #'webkit-handle-buffer-switch)
     '';
   };
   emacs.loader.webkit-ace = {
