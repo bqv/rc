@@ -290,6 +290,7 @@
                  #inherit (withSmall) thunderbird obs-studio webkitgtk chromium qemu;
                   plasma5 = plasma5Packages;
                   inherit (libsForQt5) kdeFrameworks;
+                  pulseeffects = pulseeffects-pw;
                 };
               in overlaySets // overlayPkgs // {
                 inherit overlaySets overlayPkgs;
