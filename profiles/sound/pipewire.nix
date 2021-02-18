@@ -28,7 +28,7 @@
     # ------------------
     ncpamixer
     pavucontrol
-    pulseeffects
+    pulseeffects-pw
     lxqt.pavucontrol-qt
     pasystray
   ];
