@@ -67,6 +67,7 @@
 (evil-define-key 'normal 'global (kbd "`") #'ivy-shell-async)
 
 (defun ivy-term (&key initial-input)
+  (interactive)
   (ivy-read (format "[%s] term: " "vterm")
             shell-command-history
             :caller 'ivy-term
