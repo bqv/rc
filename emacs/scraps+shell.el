@@ -13,7 +13,7 @@
   (async-shell-command (buffer-substring-no-properties start end)))
 (global-set-key (kbd "C-x &") #'async-shell-region)
 
-(defvar ivy-shell-keymap
+(defun ivy-shell-keymap (&optional async &key initial-input)
   (let ((keymap (make-keymap)))
     (define-key keymap (kbd "<RET>") `(lambda ()
                                         (interactive)
@@ -39,7 +39,7 @@
   (ivy-read (format "[%s] shell: " (if async "async" "synch"))
             shell-command-history
             :caller 'ivy-shell
-            :keymap ivy-shell-keymap
+            :keymap (ivy-shell-keymap async :initial-input initial-input)
             :action (if async #'async-shell-command #'shell-command)
             :initial-input (or initial-input "")
             :history 'shell-command-history))
@@ -66,11 +66,12 @@
 (global-set-key (kbd "`") #'ivy-shell-async)
 (evil-define-key 'normal 'global (kbd "`") #'ivy-shell-async)
 
-(defun ivy-term (&key initial-input)
+(defun ivy-term (&optional &key initial-input)
+  (interactive)
   (ivy-read (format "[%s] term: " "vterm")
             shell-command-history
             :caller 'ivy-term
-            :keymap ivy-shell-keymap
+            :keymap (ivy-shell-keymap :initial-input initial-input)
             :action #'vterm-shell-command
             :initial-input (or initial-input "")
             :history 'shell-command-history))
