@@ -69,7 +69,6 @@
 (defun ivy-term (&key initial-input)
   (ivy-read (format "[%s] term: " "vterm")
             shell-command-history
-            :caller 'ivy-term
             :keymap (ivy-shell-keymap)
             :action #'vterm-shell-command
             :initial-input (or initial-input "")
