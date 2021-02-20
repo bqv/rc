@@ -411,25 +411,6 @@
       (evil-set-initial-state 'weechat-mode 'emacs)
 
       (add-hook 'after-init-hook #'bqv/weechat-local)
-
-      (defun weechat-enable-allout (&rest _)
-        (unless t
-          (setq-local outline-regexp "^[^ ]* [a-zA-Z]\\|^[^ ]*  \\*\\|^\\[")
-          (outline-minor-mode 0))
-       ;(setq-local allout-primary-bullet "^[^ ]* [a-zA-Z]\\|^[^ ]*  \\*\\|^\\[")
-        (setq-local allout-primary-bullet "*")
-        (setq-local comment-start "^[^ ]* <--\\|^[^ ]* -->\\|^[^ ]* --")
-        (allout-mode 1)
-        t)
-
-      (dolist (buffer (buffer-list))
-        (with-current-buffer buffer
-          (when (eq major-mode 'weechat-mode)
-            (flyspell-mode-on)
-            (weechat-enable-allout)))
-        nil)
-
-      (add-hook 'weechat-mode-hook #'weechat-enable-allout)
     '';
   };
 }
