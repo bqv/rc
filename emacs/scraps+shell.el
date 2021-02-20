@@ -74,6 +74,9 @@
             :action #'vterm-shell-command
             :initial-input (or initial-input "")
             :history 'shell-command-history))
+(add-hook 'after-init-hook
+          (lambda (&rest _)
+            (global-set-key (kbd "C-x M-&") #'ivy-term)))
 
 (provide 'scraps+shell)
 ;;; scraps+shell.el ends here
