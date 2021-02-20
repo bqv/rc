@@ -39,7 +39,7 @@
   (ivy-read (format "[%s] shell: " (if async "async" "synch"))
             shell-command-history
             :caller 'ivy-shell
-            :keymap (ivy-shell-keymap async)
+            :keymap (ivy-shell-keymap async :initial-input initial-input)
             :action (if async #'async-shell-command #'shell-command)
             :initial-input (or initial-input "")
             :history 'shell-command-history))
@@ -69,7 +69,7 @@
 (defun ivy-term (&key initial-input)
   (ivy-read (format "[%s] term: " "vterm")
             shell-command-history
-            :keymap (ivy-shell-keymap)
+            :keymap (ivy-shell-keymap :initial-input initial-input)
             :action #'vterm-shell-command
             :initial-input (or initial-input "")
             :history 'shell-command-history))
