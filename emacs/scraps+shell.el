@@ -13,7 +13,7 @@
   (async-shell-command (buffer-substring-no-properties start end)))
 (global-set-key (kbd "C-x &") #'async-shell-region)
 
-(defun ivy-shell-keymap (&optional async)
+(defun ivy-shell-keymap (&optional async &key initial-input)
   (let ((keymap (make-keymap)))
     (define-key keymap (kbd "<RET>") `(lambda ()
                                         (interactive)
