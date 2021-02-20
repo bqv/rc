@@ -154,7 +154,7 @@ in {
     # ------------------
     ncpamixer
     pavucontrol
-    pulseeffects
+    pulseeffects-legacy
     lxqt.pavucontrol-qt
     pulseaudio-ctl
     pasystray

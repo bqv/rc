@@ -125,6 +125,7 @@
     wgvanity = { url = "github:warner/wireguard-vanity-address"; flake = false; };
     wold = { url = "github:pauliuszaleckas/wold"; flake = false; };
     mactelnet = { url = "github:haakonnessjoen/mac-telnet"; flake = false; };
+    gh-notify = { url = "github:anticomputer/gh-notify"; flake = false; };
   };
 
   outputs = inputs: with builtins; let
@@ -262,7 +263,7 @@
                     epkgs = withEmacsFlake.withSelfFlake.withEmacs.emacsPackagesFor emacs;
                   in (emacsPackagesFor emacs).overrideScope' (_: _: {
                     inherit (epkgs) bitwarden ivy-exwm emacs-webkit;
-                    inherit (epkgs) flycheck-purescript eterm-256color;
+                    inherit (epkgs) flycheck-purescript eterm-256color gh-notify;
                     inherit (epkgs) emacsbridge font-lock-ext sln-mode;
                     inherit (epkgs) emacs-ffi explain-pause-mode weechat-patched;
                   });
@@ -279,7 +280,7 @@
                   inherit (withNix.withDwarffsFlake) dwarffs;
                   inherit (withNaersk) naersk;
                   inherit (withXonsh.withXontribsFlake) xonsh;
-                  inherit (withNyxt) nyxt;
+                  inherit (withLarge.withNyxt) nyxt;
 
                   inherit (withWeechat) weechatScripts;
                   inherit (withRel2003) bcachefs-tools; # to match kernel ver
@@ -290,6 +291,7 @@
                  #inherit (withSmall) thunderbird obs-studio webkitgtk chromium qemu;
                   plasma5 = plasma5Packages;
                   inherit (libsForQt5) kdeFrameworks;
+                  pulseeffects = pulseeffects-pw;
                 };
               in overlaySets // overlayPkgs // {
                 inherit overlaySets overlayPkgs;
