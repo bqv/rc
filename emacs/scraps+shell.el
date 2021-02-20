@@ -76,7 +76,7 @@
             :history 'shell-command-history))
 (add-hook 'after-init-hook
           (lambda (&rest _)
-            (global-set-key (kbd "C--M-&") #'ivy-term)))
+            (global-set-key (kbd "C-x M-&") #'ivy-term)))
 
 (provide 'scraps+shell)
 ;;; scraps+shell.el ends here
