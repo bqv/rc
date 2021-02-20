@@ -570,11 +570,11 @@
     "gh-notify": {
       "flake": false,
       "locked": {
-        "lastModified": 1613801696,
-        "narHash": "sha256-KgV0/l7gzFSH2Fq+lnG9t3G1fLchlyHL3NxYrmHoe7Q=",
+        "lastModified": 1613836721,
+        "narHash": "sha256-wQHXrVabrJTSQoyjDuQosCmtKY2cOWErU/8LqIWFybE=",
         "owner": "anticomputer",
         "repo": "gh-notify",
-        "rev": "569888ee99483ede2535b5a0689dc4912555005c",
+        "rev": "ffb49ef77298dd68e086347cd8bd35c92e95ef33",
         "type": "github"
       },
       "original": {
