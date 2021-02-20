@@ -69,13 +69,14 @@
 (defun ivy-term (&key initial-input)
   (ivy-read (format "[%s] term: " "vterm")
             shell-command-history
+            :caller 'ivy-term
             :keymap (ivy-shell-keymap :initial-input initial-input)
             :action #'vterm-shell-command
             :initial-input (or initial-input "")
             :history 'shell-command-history))
 (add-hook 'after-init-hook
           (lambda (&rest _)
-            (global-set-key (kbd "C-x M-&") #'ivy-term)))
+            (global-set-key (kbd "C--M-&") #'ivy-term)))
 
 (provide 'scraps+shell)
 ;;; scraps+shell.el ends here
