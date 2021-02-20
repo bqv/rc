@@ -35,9 +35,12 @@
         (evil-collection-xwidget-setup))
       (setq webkit-own-window nil)
       (setq webkit-search-prefix "https://qwant.com/?q=")
-      (setq browse-url-browser-function #'webkit-browse-url)
-      (setq browse-url-secondary-browser-function #'browse-url-generic)
       (setq webkit-browse-url-force-new t)
+
+      (add-hook 'after-init-hook
+                (lambda (&rest _)
+                  (setq browse-url-secondary-browser-function browse-url-browser-function)
+                  (setq browse-url-browser-function #'webkit-browse-url)))
 
       (with-eval-after-load 'all-the-icons
         (defun webkit--display-progress (progress)
