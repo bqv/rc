@@ -104,7 +104,6 @@ in lib.recurseIntoAttrs rec {
     buildInputs = with emacsPackages; [
       magit forge
     ];
-    buildPhase = "true";
   };
 
 }
