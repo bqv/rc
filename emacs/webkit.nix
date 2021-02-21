@@ -72,7 +72,7 @@
       (add-to-list 'buffer-list-update-hook #'webkit-handle-buffer-switch)
 
       (with-eval-after-load 'emms
-        (defun webkit-mpv-here ()
+        (defun webkit-play-url ()
           (interactive)
           (let ((uri (webkit--get-uri (or webkit-id webkit--id))))
             (message "Playing %s" uri)
