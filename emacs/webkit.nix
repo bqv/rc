@@ -75,8 +75,7 @@
         (interactive)
         (let ((uri (webkit--get-uri (or webkit-id webkit--id))))
           (message "Playing %s" uri)
-          (emms-play-url uri))
-        t)
+          (emms-play-url uri)))
     '';
   };
   emacs.loader.webkit-ace = {
