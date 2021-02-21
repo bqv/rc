@@ -75,8 +75,7 @@
         (interactive)
         (let ((uri (webkit--get-uri (or webkit-id webkit--id))))
           (message "Playing %s" uri)
-          (emms-play-url uri)
-          nil)
+          (emms-play-url uri))
         t)
     '';
   };
