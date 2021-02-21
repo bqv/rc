@@ -71,7 +71,7 @@
             (evil-collection-webkit-unfocus-to-normal-mode old-buffer))))
       (add-to-list 'buffer-list-update-hook #'webkit-handle-buffer-switch)
 
-      (with-eval-after-load emms
+      (with-eval-after-load 'emms
         (defun webkit-mpv-here ()
           (interactive)
           (let ((uri (webkit--get-uri (or webkit-id webkit--id))))
