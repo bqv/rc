@@ -73,6 +73,9 @@
 
       (defun webkit-mpv-here ()
         (interactive)
+        (let ((uri (webkit--get-uri (or webkit-id webkit--id))))
+          (message "Copied %s" uri)
+          nil)
         t)
     '';
   };
