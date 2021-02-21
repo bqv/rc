@@ -76,7 +76,11 @@
           (interactive)
           (let ((uri (webkit--get-uri (or webkit-id webkit--id))))
             (message "Playing %s" uri)
-            (emms-play-url uri))))
+            (emms-play-url uri)))
+        (define-key)
+        (with-eval-after-load 'evil-collection
+          (evil-collection-define-key 'normal 'webkit-mode-map
+            "U" 'webkit-play-url)))
     '';
   };
   emacs.loader.webkit-ace = {
