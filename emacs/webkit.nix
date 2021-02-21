@@ -77,7 +77,7 @@
           (let ((uri (webkit--get-uri (or webkit-id webkit--id))))
             (message "Playing %s" uri)
             (emms-play-url uri)))
-        (define-key)
+        (define-key webkit-mode-map (kbd "C-y") 'webkit-play-url)
         (with-eval-after-load 'evil-collection
           (evil-collection-define-key 'normal 'webkit-mode-map
             "U" 'webkit-play-url)))
