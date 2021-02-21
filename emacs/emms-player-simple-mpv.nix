@@ -5,7 +5,7 @@
     demand = true;
     after = [ "emms" ];
     config = ''
-      (push 'emms-player-mpd emms-player-list)
+      nil
     '';
   };
 }
