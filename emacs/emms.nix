@@ -9,6 +9,7 @@
       (emms-minimalistic) ;(emms-all)
       (emms-default-players)
       (emms-player-mpd-connect)
+      (push 'emms-player-mpd emms-player-list)
     '';
   };
 }

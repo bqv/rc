@@ -70,6 +70,17 @@
                      (featurep 'evil-collection-webkit))
             (evil-collection-webkit-unfocus-to-normal-mode old-buffer))))
       (add-to-list 'buffer-list-update-hook #'webkit-handle-buffer-switch)
+
+      (with-eval-after-load 'emms
+        (defun webkit-play-url ()
+          (interactive)
+          (let ((uri (webkit--get-uri (or webkit-id webkit--id))))
+            (message "Playing %s" uri)
+            (emms-play-url uri)))
+        (define-key webkit-mode-map (kbd "C-c u") 'webkit-play-url)
+        (with-eval-after-load 'evil-collection
+          (evil-collection-define-key 'normal 'webkit-mode-map
+            "U" 'webkit-play-url)))
     '';
   };
   emacs.loader.webkit-ace = {
