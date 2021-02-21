@@ -70,6 +70,10 @@
                      (featurep 'evil-collection-webkit))
             (evil-collection-webkit-unfocus-to-normal-mode old-buffer))))
       (add-to-list 'buffer-list-update-hook #'webkit-handle-buffer-switch)
+
+      (defun webkit-mpv-here ()
+        (interactive)
+        t)
     '';
   };
   emacs.loader.webkit-ace = {
