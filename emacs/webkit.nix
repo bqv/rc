@@ -74,7 +74,8 @@
       (defun webkit-mpv-here ()
         (interactive)
         (let ((uri (webkit--get-uri (or webkit-id webkit--id))))
-          (message "mpv %s" uri)
+          (message "Playing %s" uri)
+          (emms-play-url uri)
           nil)
         t)
     '';
