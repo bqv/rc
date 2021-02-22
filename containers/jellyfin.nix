@@ -61,7 +61,9 @@ in {
               radarr.extraGroups = [ "transmission" ];
               lidarr.extraGroups = [ "transmission" ];
               bazarr.extraGroups = [ "transmission" ];
-              transmission.uid = [ "transmission" ];
+              transmission = {
+                inherit (hostConfig.users.users.bao) uid gid;
+              };
             };
           };
         };
