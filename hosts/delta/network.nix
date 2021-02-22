@@ -134,6 +134,11 @@
           # mosh: 60000-65535
           policy = "accept";
         };
+        udp-multicast = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "pkttype";
+          value = [ "broadcast" "multicast" ];
+          policy = "accept";
+        };
         mactelnet = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "udp"; field = "dport";
           value = 20561;
