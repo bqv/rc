@@ -43,18 +43,21 @@ in {
       type = types.package;
       defaultText = "pkgs.weechat";
       default = cfg.packageWrapper cfg.packageUnwrapped { inherit configure; };
+      description = "Weechat package to use";
     };
 
     packageUnwrapped = mkOption {
       type = types.package;
       defaultText = "pkgs.weechat-unwrapped";
       default = pkgs.weechat-unwrapped.override pythonOverride;
+      description = "Weechat-unwrapped package to use";
     };
 
     packageWrapper = mkOption {
       type = types.unspecified;
       defaultText = "pkgs.wrapWeechat";
       default = pkgs.wrapWeechat.override pythonOverride;
+      description = "Weechat wrapper package to use";
     };
 
     pythonPackages = mkOption {
@@ -62,12 +65,12 @@ in {
       defaultText = "pkgs.python3Packages";
       example = literalExample "pkgs.pythonPackages";
       default = pkgs.python3Packages;
+      description = "PythonPackages set to use";
     };
 
     plugins = {
       python = {
-        enable = mkOption {
-          type = types.bool;
+        enable = mkEnableOption "the python plugin" // {
           default = true;
         };
 
