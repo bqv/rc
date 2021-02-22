@@ -129,7 +129,7 @@
         };
         udpports = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "udp"; field = "dport";
-          value = map (x: x+32768) (lib.genList (x: x+1) (65535-32768));
+          value = lib.range 32768 65535;
           # mosh: 60000-65535
           # chromecast: 32768-61000
           policy = "accept";
