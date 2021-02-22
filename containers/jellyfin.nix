@@ -57,11 +57,11 @@ in {
               root.extraGroups = [ "transmission" ];
 
               jellyfin.extraGroups = [ "transmission" ];
-              jackett.extraGroups = [ "transmission" ];
               sonarr.extraGroups = [ "transmission" ];
               radarr.extraGroups = [ "transmission" ];
               lidarr.extraGroups = [ "transmission" ];
               bazarr.extraGroups = [ "transmission" ];
+              jackett.extraGroups = [ "transmission" ];
 
               transmission = {
                 inherit (hostConfig.users.users.bao) uid gid;
