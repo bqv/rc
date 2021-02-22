@@ -135,7 +135,7 @@
           policy = "accept";
         };
         udp-multicast = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
-          field = "pkttype";
+          protocol = "meta"; field = "pkttype";
           value = [ "broadcast" "multicast" ];
           policy = "accept";
         };
