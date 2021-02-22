@@ -63,7 +63,7 @@ let
         field = lib.mkOption {
           default = null;
           type = with lib.types; nullOr (enum [
-            "dport" "sport" "daddr" "saddr" "type" "state" "iifname"
+            "dport" "sport" "daddr" "saddr" "type" "state" "iifname" "pkttype"
           ]);
           description = "Value to match.";
         };
