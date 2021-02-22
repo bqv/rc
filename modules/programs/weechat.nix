@@ -31,7 +31,7 @@
     inherit (cfg) init;
   };
   pythonOverride = {
-    python3Packages = cfg.pythonPackages;
+    python3Packages = cfg.python.pkgs;
   };
   defaultHomeDirectory = "${config.users.users.weechat.home or "~weechat"}/.weechat";
   weechatrc = "${config.users.users.weechat.home}/${config.environment.etc."weechat/weechatrc".target}";
