@@ -35,7 +35,7 @@ in {
             services.transmission = {
               enable = true;
               settings.dht-enabled = true;
-              settings.download-dir = "/srv/ftp";
+              settings.download-dir = "/srv/ftp/torrents";
               settings.rpc-authentication-required = false;
               settings.rpc-bind-address = "0.0.0.0";
               settings.rpc-host-whitelist-enabled = false;
@@ -48,6 +48,7 @@ in {
                 rev = "d5ff91d4078b41bd3738542a20d802cd3ff6cc1e";
                 sha256 = "gZ4YOKMsnYEWDLnh8OZNwEg1ZJioZsWrOcAjHLIyFYg=";
               };
+              serviceConfig.ExecStartPost = "${pkgs.coreutils}/bin/chmod g+rwx /srv/ftp";
             };
           };
         };
@@ -61,6 +62,7 @@ in {
 
   system.activationScripts.srv-ftp = ''
     mkdir -p /srv/ftp
+    chmod g+rwx /srv/ftp
   '';
 
   systemd.tmpfiles.rules = [
