@@ -43,7 +43,7 @@
   networking.enableIPv6 = true;
   networking.defaultGateway = { address = hosts.lan.router; };
   networking.defaultGateway6 = { address = "${hosts.ipv6.home.prefix}:1"; };
-  networking.nameservers = [ "2a00:1098:2c::1" ];
+  networking.nameservers = [ "9.9.9.9" "2a00:1098:2c::1" ];
 
   networking.interfaces = rec {
     lan0 = {
