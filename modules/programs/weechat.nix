@@ -31,7 +31,7 @@
     inherit (cfg) init;
   };
   pythonOverride = {
-    python3Packages = cfg.pythonPackages;
+    python3Packages = cfg.python.pkgs;
   };
   defaultHomeDirectory = "${config.users.users.weechat.home or "~weechat"}/.weechat";
   weechatrc = "${config.users.users.weechat.home}/${config.environment.etc."weechat/weechatrc".target}";
@@ -43,38 +43,41 @@ in {
       type = types.package;
       defaultText = "pkgs.weechat";
       default = cfg.packageWrapper cfg.packageUnwrapped { inherit configure; };
+      description = "Weechat package to use";
     };
 
     packageUnwrapped = mkOption {
       type = types.package;
       defaultText = "pkgs.weechat-unwrapped";
       default = pkgs.weechat-unwrapped.override pythonOverride;
+      description = "Weechat-unwrapped package to use";
     };
 
     packageWrapper = mkOption {
       type = types.unspecified;
       defaultText = "pkgs.wrapWeechat";
       default = pkgs.wrapWeechat.override pythonOverride;
+      description = "Weechat wrapper package to use";
     };
 
-    pythonPackages = mkOption {
+    python = mkOption {
       type = types.unspecified;
-      defaultText = "pkgs.python3Packages";
-      example = literalExample "pkgs.pythonPackages";
-      default = pkgs.python3Packages;
+      defaultText = "pkgs.python3";
+      example = literalExample "pkgs.python";
+      default = pkgs.python3;
+      description = "Python package to use";
     };
 
     plugins = {
       python = {
-        enable = mkOption {
-          type = types.bool;
+        enable = mkEnableOption "the python plugin" // {
           default = true;
         };
 
         packages = mkOption {
           type = types.listOf drvAttr;
           default = [ ];
-          description = "Attributes or derivations from pythonPackages that scripts might depend on";
+          description = "Attributes or derivations from python packages that scripts might depend on";
           example = [ "weechat-matrix" ];
         };
       };
