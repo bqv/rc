@@ -30,9 +30,9 @@
                 (if cur (concat new ":" cur) new)))
     '') (lib.mapAttrsToList lib.nameValuePair env);
     config = ''
-      (with-eval-after-load 'evil-collection
-        (require 'evil-collection-webkit)
-        (evil-collection-xwidget-setup))
+      ;(with-eval-after-load 'evil-collection
+      ;  (require 'evil-collection-webkit)
+      ;  (evil-collection-xwidget-setup))
       (setq webkit-own-window nil)
       (setq webkit-search-prefix "https://qwant.com/?q=")
       (setq webkit-browse-url-force-new t)
@@ -78,7 +78,7 @@
             (message "Playing %s" uri)
             (emms-play-url uri)))
         (define-key webkit-mode-map (kbd "C-c u") 'webkit-play-url)
-        (with-eval-after-load 'evil-collection
+        (with-eval-after-load 'evil-collection-webkit
           (evil-collection-define-key 'normal 'webkit-mode-map
             "U" 'webkit-play-url)))
     '';
