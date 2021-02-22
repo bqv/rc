@@ -3,6 +3,8 @@
 let
   hostAddress = "10.11.0.1";
   localAddress = "10.11.0.2";
+
+  hostConfig = config;
 in {
   containers.jellyfin =
     {
@@ -50,6 +52,17 @@ in {
               };
               serviceConfig.ExecStartPost = "${pkgs.coreutils}/bin/chmod g+rwx /srv/ftp";
             };
+
+            users.users = {
+              root.extraGroups = [ "transmission" ];
+              jellyfin.extraGroups = [ "transmission" ];
+              jackett.extraGroups = [ "transmission" ];
+              sonarr.extraGroups = [ "transmission" ];
+              radarr.extraGroups = [ "transmission" ];
+              lidarr.extraGroups = [ "transmission" ];
+              bazarr.extraGroups = [ "transmission" ];
+              transmission.uid = [ "transmission" ];
+            };
           };
         };
       bindMounts = {
@@ -67,5 +80,5 @@ in {
 
   systemd.tmpfiles.rules = [
     "d /srv/ftp 2777 root root"
-  ]; #doas chmod a+rx /srv/ftp
+  ];
 }
