@@ -134,7 +134,7 @@
           # mosh: 60000-65535
           policy = "accept";
         };
-        udp-multicast = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+        multicast = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "meta"; field = "pkttype";
           value = [ "broadcast" "multicast" ];
           policy = "accept";
