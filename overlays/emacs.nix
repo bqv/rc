@@ -45,7 +45,7 @@ in with prev.lib; rec {
     inherit (final) gsettings-desktop-schemas;
     withXwidgets = true;
     inherit (final) webkitgtk wrapGAppsHook glib-networking;
-  }).overrideAttrs (drv: {
+  }).overrideAttrs (drv: rec {
     gstBuildInputs = with final; with gst_all_1; [
       gstreamer gst-libav
       gst-plugins-base
