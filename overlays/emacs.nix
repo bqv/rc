@@ -37,7 +37,11 @@ inputs@{...}: final: prev: let
 in with prev.lib; rec {
   emacsPackagesFor = emacs: (prev.emacsPackagesFor emacs).overrideScope' emacsOverride;
 
-  emacsGcc = prev.emacsGcc.overrideAttrs (drv: {
+  emacsGcc = (prev.emacsGcc.override {
+    inherit (final) gsettings-desktop-schemas;
+    withXwidgets = true;
+    inherit (final) webkitgtk wrapGAppsHook glib-networking;
+  }).overrideAttrs (drv: {
     passthru = drv.passthru // { nativeComp = true; };
   });
 
