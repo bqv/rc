@@ -63,10 +63,11 @@ in {
                 lidarr.extraGroups = [ "transmission" ];
                 bazarr.extraGroups = [ "transmission" ];
                 jackett.extraGroups = [ "transmission" ];
-                transmission.extraGroups = [ "transmission" ];
 
                 transmission = lib.mapAttrs (_: lib.mkForce) {
                   inherit (hostConfig.users.users.bao) uid group;
+                } // {
+                  extraGroups = [ "transmission" ];
                 };
               };
             };
