@@ -30,9 +30,9 @@
                 (if cur (concat new ":" cur) new)))
     '') (lib.mapAttrsToList lib.nameValuePair env);
     config = ''
-      (with-eval-after-load 'evil-collection
-        (require 'evil-collection-webkit)
-        (evil-collection-xwidget-setup))
+      ;(with-eval-after-load 'evil-collection
+      ;  (require 'evil-collection-webkit)
+      ;  (evil-collection-xwidget-setup))
       (setq webkit-own-window nil)
       (setq webkit-search-prefix "https://qwant.com/?q=")
       (setq webkit-browse-url-force-new t)
