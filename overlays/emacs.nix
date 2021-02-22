@@ -42,6 +42,9 @@ in with prev.lib; rec {
   });
 
   emacsPgtkGcc = (prev.emacsPgtkGcc.override {
+    withXwidgets = true;
+    inherit (final) webkitgtk wrapGAppsHook glib-networking;
+    inherit (final) gsettings-desktop-schemas;
   }).overrideAttrs (drv: {
     passthru = drv.passthru // {
       nativeComp = true;
