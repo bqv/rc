@@ -42,10 +42,23 @@ in with prev.lib; rec {
   });
 
   emacsPgtkGcc = (prev.emacsPgtkGcc.override {
+    inherit (final) gsettings-desktop-schemas;
     withXwidgets = true;
     inherit (final) webkitgtk wrapGAppsHook glib-networking;
-    inherit (final) gsettings-desktop-schemas;
   }).overrideAttrs (drv: {
+    gstBuildInputs = with final; with gst_all_1; [
+      gstreamer gst-libav
+      gst-plugins-base
+      gst-plugins-good
+      gst-plugins-bad
+      gst-plugins-ugly
+    ];
+    buildInputs = drv.buildInputs ++ [
+    ] ++ gstBuildInputs;
+
+    GIO_EXTRA_MODULES = "${final.glib-networking}/lib/gio/modules:${final.dconf.lib}/lib/gio/modules";
+    GST_PLUGIN_SYSTEM_PATH_1_0 = final.lib.concatMapStringsSep ":" (p: "${p}/lib/gstreamer-1.0") gstBuildInputs;
+
     passthru = drv.passthru // {
       nativeComp = true;
       pkgs = final.emacsPackagesFor final.emacsPgtkGcc;
