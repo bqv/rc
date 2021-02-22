@@ -5,7 +5,8 @@
     demand = true;
     after = [ "magit" "forge" ];
     config = ''
-      (add-to-list 'evil-emacs-state-modes 'gh-notify-mode)
+      (with-eval-after-load 'evil
+        (add-to-list 'evil-emacs-state-modes 'gh-notify-mode))
     '';
   };
 }
