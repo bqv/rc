@@ -78,7 +78,7 @@
             (message "Playing %s" uri)
             (emms-play-url uri)))
         (define-key webkit-mode-map (kbd "C-c u") 'webkit-play-url)
-        (with-eval-after-load 'evil-collection
+        (with-eval-after-load 'evil-collection-webkit
           (evil-collection-define-key 'normal 'webkit-mode-map
             "U" 'webkit-play-url)))
     '';
