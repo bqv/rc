@@ -60,12 +60,12 @@ in {
       description = "Weechat wrapper package to use";
     };
 
-    pythonPackages = mkOption {
+    python = mkOption {
       type = types.unspecified;
-      defaultText = "pkgs.python3Packages";
-      example = literalExample "pkgs.pythonPackages";
-      default = pkgs.python3Packages;
-      description = "PythonPackages set to use";
+      defaultText = "pkgs.python3";
+      example = literalExample "pkgs.python";
+      default = pkgs.python3;
+      description = "Python package to use";
     };
 
     plugins = {
@@ -77,7 +77,7 @@ in {
         packages = mkOption {
           type = types.listOf drvAttr;
           default = [ ];
-          description = "Attributes or derivations from pythonPackages that scripts might depend on";
+          description = "Attributes or derivations from python packages that scripts might depend on";
           example = [ "weechat-matrix" ];
         };
       };
