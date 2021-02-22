@@ -48,6 +48,7 @@ in {
                 rev = "d5ff91d4078b41bd3738542a20d802cd3ff6cc1e";
                 sha256 = "gZ4YOKMsnYEWDLnh8OZNwEg1ZJioZsWrOcAjHLIyFYg=";
               };
+              serviceConfig.ExecStartPost = "${pkgs.coreutils}/bin/chmod g+rwx /srv/ftp";
             };
           };
         };
