@@ -62,7 +62,7 @@ in {
 
   system.activationScripts.srv-ftp = ''
     mkdir -p /srv/ftp
-    chmod a+rwx /srv/ftp
+    chmod g+rwx /srv/ftp
   '';
 
   systemd.tmpfiles.rules = [
