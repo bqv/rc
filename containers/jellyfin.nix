@@ -53,18 +53,21 @@ in {
               serviceConfig.ExecStartPost = "${pkgs.coreutils}/bin/chmod g+rwx /srv/ftp";
             };
 
-            users.users = {
-              root.extraGroups = [ "transmission" ];
+            users = rec {
+              users = {
+                root.extraGroups = [ "transmission" ];
 
-              jellyfin.extraGroups = [ "transmission" ];
-              sonarr.extraGroups = [ "transmission" ];
-              radarr.extraGroups = [ "transmission" ];
-              lidarr.extraGroups = [ "transmission" ];
-              bazarr.extraGroups = [ "transmission" ];
-              jackett.extraGroups = [ "transmission" ];
+                jellyfin.extraGroups = [ "transmission" ];
+                sonarr.extraGroups = [ "transmission" ];
+                radarr.extraGroups = [ "transmission" ];
+                lidarr.extraGroups = [ "transmission" ];
+                bazarr.extraGroups = [ "transmission" ];
+                jackett.extraGroups = [ "transmission" ];
+                transmission.extraGroups = [ "transmission" ];
 
-              transmission = {
-                inherit (hostConfig.users.users.bao) uid gid;
+                transmission = {
+                  inherit (hostConfig.users.users.bao) uid group;
+                };
               };
             };
           };
