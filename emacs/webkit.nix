@@ -142,7 +142,8 @@
                (value (plist-get candidate 'last-time)))
           (if value
               (format-time-string "%Y-%m-%d %H:%M:%S" (plist-get candidate 'last-time))
-            "?")))
+              (format-time-string "%Y-%m-%d %H:%M:%S" (plist-get candidate 'last-time))
+            )))
 
       (ivy-rich-modify-columns ; ivy-rich-display-transformers-list
        'webkit-history-completing-read
