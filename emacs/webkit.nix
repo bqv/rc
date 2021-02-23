@@ -109,10 +109,10 @@
                (text (concat title " (" uri ")")))
           (put-text-property (+ 2 (length title)) (1- (length text)) 'face 'link text)
           (propertize text
-                      'title title
-                      'uri uri
-                      'visit-count visit-count
-                      'last-time last-time)))
+                      'webkit-title title
+                      'webkit-uri uri
+                      'webkit-visit-count visit-count
+                      'webkit-last-time last-time)))
 
       (defun webkit-history-completing-read (prompt)
         "Prompt for a URI using COMPLETING-READ from webkit history."
