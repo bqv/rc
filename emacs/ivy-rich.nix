@@ -7,7 +7,7 @@
     config = ''
       (setq ivy-rich-project-root-cache-mode t)
       (add-hook 'ivy-mode-hook 'ivy-rich-mode)
-      (ivy-rich-path-style 'abbrev)
+      (setq ivy-rich-path-style 'abbrev)
       (ivy-rich-mode 1)
     '';
   };
