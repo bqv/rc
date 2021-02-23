@@ -133,8 +133,7 @@
         '(webkit-history-completing-read
           (:columns
            ((ivy-rich-candidate (:width 0.8))
-            (ivy-rich-webkit-last-visited-time (:face font-lock-comment-face))))
-          ))
+            (ivy-rich-webkit-last-visited-time (:face font-lock-comment-face))))))
     '';
   };
 }
