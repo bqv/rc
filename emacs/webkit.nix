@@ -122,6 +122,19 @@
           (let* ((completion (completing-read prompt completions))
                  (uri (cdr (assoc completion completions))))
             (if uri uri completion))))
+
+      (defun ivy-rich-file-last-modified-time (candidate)
+        (let ((candidate (expand-file-name candidate ivy--directory)))
+          (if (file-remote-p candidate)
+              "?"
+            (format-time-string "%Y-%m-%d %H:%M:%S" (nth 5 (file-attributes candidate))))))
+
+      (add-to-list 'ivy-rich-display-transformers-list
+        '(counsel-recentf
+          (:columns
+           ((ivy-rich-candidate (:width 0.8))
+            (ivy-rich-file-last-modified-time (:face font-lock-comment-face))))
+          ))
     '';
   };
 }
