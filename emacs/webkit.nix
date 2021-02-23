@@ -171,7 +171,7 @@
        '((ivy-rich-webkit-history-title (:width 0.4))
          (ivy-rich-webkit-history-uri (:width 0.4))
          (ivy-rich-webkit-history-visit-count)
-         (ivy-rich-webkit-last-visited-time (:face font-lock-comment-face))))
+         (ivy-rich-webkit-history-last-visited-time (:face font-lock-comment-face))))
     '';
   };
 }
