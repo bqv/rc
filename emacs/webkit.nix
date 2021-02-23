@@ -111,7 +111,7 @@
           (propertize text
                       'title title
                       'uri uri
-                      'visitcount visit-count
+                      'visit-count visit-count
                       'last-time last-time)))
 
       (defun webkit-history-completing-read (prompt)
