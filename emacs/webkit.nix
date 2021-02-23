@@ -140,22 +140,17 @@
       (defun ivy-rich-webkit-history-title (candidate)
         (let* ((data (text-properties-at 0 candidate))
                (value (plist-get data 'webkit-title)))
-          (if value
-              (plist-get candidate 'title)
-            "?")))
+          (if value value "?")))
 
       (defun ivy-rich-webkit-history-uri (candidate)
         (let* ((data (text-properties-at 0 candidate))
                (value (plist-get data 'webkit-uri)))
-          (if value
-              (plist-get candidate 'uri)
-            "?")))
+          (if value value "?")))
 
       (defun ivy-rich-webkit-history-visit-count (candidate)
         (let* ((data (text-properties-at 0 candidate))
                (value (plist-get data 'webkit-last-time)))
-          (if value
-              (plist-get candidate 'visit-count)
+          (if value value
             "?")))
 
       (defun ivy-rich-webkit-history-last-time (candidate)
