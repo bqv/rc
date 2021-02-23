@@ -241,7 +241,7 @@
                                                          :type 'netrc
                                                          :max 1)))
           (weechat-connect "localhost" 6697 password 'ssl)))
-      (setcar (cddddr (alist-get 'weechat-button-url-regexp weechat-button-list)) #'browse-url-generic)
+      ;(setcar (cddddr (alist-get 'weechat-button-url-regexp weechat-button-list)) #'browse-url-generic)
       (setq weechat-color-options-list
             (let ((amap (mapcar*
                          #'(lambda (kv c) (cons (car kv) c))
