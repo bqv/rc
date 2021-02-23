@@ -166,12 +166,14 @@
                                   (plist-get candidate 'last-time))
             "?")))
 
+      (cadr (plist-get ivy-rich-display-transformers-list
+                       'webkit-history-completing-read))
       (ivy-rich-modify-columns ; ivy-rich-display-transformers-list
        'webkit-history-completing-read
        '((ivy-rich-webkit-history-title (:width 0.4))
          (ivy-rich-webkit-history-uri (:width 0.4))
-         (ivy-rich-webkit-history-visit-count ())
-         (ivy-rich-webkit-history-last-time (:face font-lock-comment-face))))
+         (ivy-rich-webkit-history-last-time (:face font-lock-comment-face))
+         (ivy-rich-webkit-history-visit-count (:align right))))
     '';
   };
 }
