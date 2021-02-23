@@ -101,6 +101,13 @@
     inherit (config.emacs.loader.webkit) package;
     after = [ "webkit" ];
     config = ''
+      (defun webkit-history-completion-text (item)
+        (let* ((title (webkit-history-item-title item))
+               (uri (webkit-history-item-uri item))
+               (text (concat title " (" uri ")")))
+          (put-text-property (+ 2 (length title)) (1- (length text)) 'face 'link text)
+          text))
+
       (defun webkit-history-completing-read (prompt)
         "Prompt for a URI using COMPLETING-READ from webkit history."
         (let ((completions ())
