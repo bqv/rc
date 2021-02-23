@@ -123,17 +123,17 @@
                  (uri (cdr (assoc completion completions))))
             (if uri uri completion))))
 
-      (defun ivy-rich-file-last-modified-time (candidate)
+      (defun ivy-rich-webkit-last-visited-time (candidate)
         (let ((candidate (expand-file-name candidate ivy--directory)))
           (if (file-remote-p candidate)
               "?"
             (format-time-string "%Y-%m-%d %H:%M:%S" (nth 5 (file-attributes candidate))))))
 
       (add-to-list 'ivy-rich-display-transformers-list
-        '(counsel-recentf
+        '(webkit-history-completing-read
           (:columns
            ((ivy-rich-candidate (:width 0.8))
-            (ivy-rich-file-last-modified-time (:face font-lock-comment-face))))
+            (ivy-rich-webkit-last-visited-time (:face font-lock-comment-face))))
           ))
     '';
   };
