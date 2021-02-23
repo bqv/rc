@@ -158,7 +158,7 @@
               (plist-get candidate 'visit-count)
             "?")))
 
-      (defun ivy-rich-webkit-history-last-visited-time (candidate)
+      (defun ivy-rich-webkit-history-last-time (candidate)
         (let* ((data (text-properties-at 0 candidate))
                (value (plist-get data 'last-time)))
           (if value
@@ -171,7 +171,7 @@
        '((ivy-rich-webkit-history-title (:width 0.4))
          (ivy-rich-webkit-history-uri (:width 0.4))
          (ivy-rich-webkit-history-visit-count ())
-         (ivy-rich-webkit-history-last-visited-time (:face font-lock-comment-face))))
+         (ivy-rich-webkit-history-last-time (:face font-lock-comment-face))))
     '';
   };
 }
