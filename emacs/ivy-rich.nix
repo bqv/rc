@@ -24,11 +24,11 @@
   };
   emacs.loader.all-the-icons-ivy = {
     demand = true;
-    after = [ "ivy" "counsel" "all-the-icons" ];
+    after = [ "ivy" "all-the-icons" ];
   };
   emacs.loader.all-the-icons-ivy-rich = {
     demand = true;
-    after = [ "ivy" "counsel" "all-the-icons" "ivy-rich" ];
+    after = [ "ivy-rich" "all-the-icons" ];
     config = ''
       (add-hook 'ivy-mode-hook 'all-the-icons-ivy-rich-mode)
       (add-hook 'all-the-icons-ivy-rich-mode-hook 'maybe-restart-counsel-projectile)
