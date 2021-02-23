@@ -119,7 +119,8 @@
                                                   (if (= c1 c2)
                                                       (> t1 t2)
                                                     (> c1 c2))))))
-          (let* ((completion (completing-read prompt completions))
+          (let* ((completion (ivy-read prompt completions
+                                       :caller 'webkit-history-completing-read))
                  (uri (cdr (assoc completion completions))))
             (if uri uri completion))))
 
