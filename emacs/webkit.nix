@@ -131,7 +131,8 @@
 
       (progn
         (add-to-list 'ivy-rich-display-transformers-list
-                     'webkit-history-completing-read)
+                     'webkit-history-completing-read
+                     t #'ignore)
         (add-to-list 'ivy-rich-display-transformers-list
                      '(:columns
                        ((ivy-rich-candidate (:width 0.8))
