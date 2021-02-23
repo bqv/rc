@@ -163,8 +163,7 @@
           (add-to-list ivy-rich-display-transformers-list
                        'webkit-history-completing-read
                        t #'ignore)
-          (add-to-list ivy-rich-display-transformers-list nil)
-          t)
+          (add-to-list ivy-rich-display-transformers-list nil))
         (setcar (cdr (plist-get ivy-rich-display-transformers-list
                                 'webkit-history-completing-read))
                 '((ivy-rich-webkit-history-title (:width 0.4))
