@@ -155,9 +155,7 @@
       (defun ivy-rich-webkit-history-last-time (candidate)
         (let* ((data (text-properties-at 0 candidate))
                (value (plist-get data 'webkit-last-time)))
-          (if value
-              (format-time-string "%Y-%m-%d %H:%M:%S" value)
-            "?")))
+          (if value (format-time-string "%Y-%m-%d %H:%M:%S" value) "?")))
 
       (setcar (cdr (plist-get ivy-rich-display-transformers-list
                        'webkit-history-completing-read))
