@@ -5,9 +5,9 @@
     demand = true;
     after = [ "ivy" "counsel" ];
     config = ''
-      (unless (fboundp 'ivy-rich-switch-buffer-transformer)
-        (defun ivy-rich-switch-buffer-transformer (arg)
-          arg))
+      (setq ivy-rich-project-root-cache-mode t)
+      (add-hook 'ivy-mode-hook 'ivy-rich-mode)
+      (ivy-rich-path-style 'abbrev)
       (ivy-rich-mode 1)
     '';
   };
