@@ -187,10 +187,10 @@
       py.spotipy
       (py.buildPythonPackage rec {
         pname = "tuyaha";
-        version = "0.0.8";
+        version = "0.0.10";
         src = py.fetchPypi {
           inherit pname version;
-          sha256 = "YspQADM6o50XjKxQ7/pwgIjNAgy0B11g94yEqfpwad8=";
+          sha256 = "aspQADM6o50XjKxQ7/pwgIjNAgy0B11g94yEqfpwad8=";
         };
         nativeBuildInputs = with py; [ setuptools ];
         checkInputs = with py; [ requests ];
