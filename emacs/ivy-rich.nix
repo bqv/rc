@@ -12,6 +12,10 @@
       (setq ivy-rich-path-style 'abbrev)
     '';
   };
+  emacs.loader.all-the-icons-ivy = {
+    demand = true;
+    after = [ "ivy" "counsel" ];
+  };
   emacs.loader.all-the-icons-ivy-rich = {
     demand = true;
     after = [ "ivy" "counsel" ];
