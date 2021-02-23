@@ -83,7 +83,7 @@
     "/" = {
       device = "none";
       fsType = "tmpfs";
-      options = [ "defaults" "size=2G" "mode=755" "nr_inodes=8M" ];
+      options = [ "defaults" "size=8G" "mode=755" "nr_inodes=8M" ];
     };
 
     "/var" = hdd // { options = [ "subvol=var" ]; };
@@ -139,6 +139,7 @@
       min-free = ${toString (gigabytes 48)}
     '';
 
+    systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
     buildMachines =
      #(lib.optional true {
      #  hostName = "localhost";
