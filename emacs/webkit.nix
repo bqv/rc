@@ -158,8 +158,8 @@
           (if value (format-time-string "%Y-%m-%d %H:%M:%S" value) "?")))
 
       (progn
-        (when (memq 'webkit-history-completing-read
-                    ivy-rich-display-transformers-list)
+        (unless (memq 'webkit-history-completing-read
+                      ivy-rich-display-transformers-list)
           (add-to-list ivy-rich-display-transformers-list
                        'webkit-history-completing-read
                        t #'ignore)
