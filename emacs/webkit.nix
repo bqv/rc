@@ -157,14 +157,6 @@
                (value (plist-get data 'webkit-last-time)))
           (if value (format-time-string "%Y-%m-%d %H:%M:%S" value) "?")))
 
-      ;(setcar (cdr (plist-get ivy-rich-display-transformers-list
-      ;                 'webkit-history-completing-read))
-      ;        '(
-      ;          (ivy-rich-webkit-history-title (:width 0.4))
-      ;          (ivy-rich-webkit-history-uri (:width 0.4))
-      ;          (ivy-rich-webkit-history-last-time (:face font-lock-comment-face))
-      ;          (ivy-rich-webkit-history-visit-count (:align right))
-      ;         ))
       (add-to-list ivy-rich-display-transformers-list
                    'webkit-history-completing-read
                    t #'ignore)
