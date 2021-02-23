@@ -185,16 +185,7 @@
       py.androidtv
       py.adb-shell
       py.spotipy
-     #(py.buildPythonPackage rec {
-     #  pname = "tuyaha";
-     #  version = "0.0.10";
-     #  src = py.fetchPypi {
-     #    inherit pname version;
-     #    sha256 = "xoCemHUQPhhf3tBuJdfXNXa0znSXcn8Lwp8k/wKIKuQ=";
-     #  };
-     #  nativeBuildInputs = with py; [ setuptools ];
-     #  checkInputs = with py; [ requests ];
-     #})
+      py.tuyaha
     ];
   };
   # read /etc/hass/configuration.yaml
