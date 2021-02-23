@@ -150,7 +150,7 @@
       (defun ivy-rich-webkit-history-visit-count (candidate)
         (let* ((data (text-properties-at 0 candidate))
                (value (plist-get data 'webkit-visit-count)))
-          (if value (format "% 5d times" value) "?")))
+          (if value (format "% 5dx" value) "?")))
 
       (defun ivy-rich-webkit-history-last-time (candidate)
         (let* ((data (text-properties-at 0 candidate))
@@ -163,7 +163,7 @@
                  (ivy-rich-webkit-history-title (:width 0.4))
                  (ivy-rich-webkit-history-uri (:width 0.4 :face font-lock-string-face))
                  (ivy-rich-webkit-history-last-time (:width 0.1 :face font-lock-comment-face))
-                 (ivy-rich-webkit-history-visit-count (:align right :face font-lock-constant-face))
+                 (ivy-rich-webkit-history-visit-count (:width 0.1 :align right :face font-lock-constant-face))
                 ))
       (add-to-list ivy-rich-display-transformers-list
                    'webkit-history-completing-read
@@ -172,7 +172,7 @@
                    '((ivy-rich-webkit-history-title (:width 0.4))
                      (ivy-rich-webkit-history-uri (:width 0.4 :face font-lock-string-face))
                      (ivy-rich-webkit-history-last-time (:width 0.1 :face font-lock-comment-face))
-                     (ivy-rich-webkit-history-visit-count (:align right :face font-lock-constant-face)))
+                     (ivy-rich-webkit-history-visit-count (:width 0.1 :align right :face font-lock-constant-face)))
                    t #'ignore)
       (memq
        'webkit-history-completing-read
