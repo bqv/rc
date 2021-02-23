@@ -126,7 +126,7 @@
       (defun ivy-rich-webkit-last-visited-time (candidate)
         (let ((candidate (expand-file-name candidate ivy--directory)))
           (if (or (file-remote-p candidate) (not (file-exists-p candidate)))
-              "?"
+              (progn (print candidate) "?")
             (format-time-string "%Y-%m-%d %H:%M:%S" (nth 5 (file-attributes candidate))))))
 
       (add-to-list 'ivy-rich-display-transformers-list
