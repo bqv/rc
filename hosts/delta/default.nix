@@ -139,6 +139,8 @@
       min-free = ${toString (gigabytes 48)}
     '';
 
+    systemFeatures = [ "nixos-test" "benchmark" "big-parallel" "kvm" ];
+
     buildMachines =
      #(lib.optional true {
      #  hostName = "localhost";
