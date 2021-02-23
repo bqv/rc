@@ -105,7 +105,9 @@
         "Prompt for a URI using COMPLETING-READ from webkit history."
         (let ((completions ())
               (key-to-count (lambda (k) (webkit-history-item-visit-count
-                                         (gethash (cdr k) webkit-history-table)))))
+                                         (gethash (cdr k) webkit-history-table))))
+              (key-to-time (lambda (k) (webkit-history-item-last-time
+                                        (gethash (cdr k) webkit-history-table)))))
           (maphash (lambda (k v)
                      (push (cons (webkit-history-completion-text v) k) completions))
                    webkit-history-table)
