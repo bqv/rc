@@ -137,13 +137,34 @@
                  (uri (cdr (assoc completion completions))))
             (if uri uri completion))))
 
-      (defun ivy-rich-webkit-last-visited-time (candidate)
+      (defun ivy-rich-webkit-history-title (candidate)
         (let* ((data (text-properties-at 0 candidate))
-               (value (plist-get candidate 'last-time)))
+               (value (plist-get data 'title)))
           (if value
-              (format-time-string "%Y-%m-%d %H:%M:%S" (plist-get candidate 'last-time))
-              (format-time-string "%Y-%m-%d %H:%M:%S" (plist-get candidate 'last-time))
-            )))
+              (plist-get candidate 'title)
+            "?")))
+
+      (defun ivy-rich-webkit-history-uri (candidate)
+        (let* ((data (text-properties-at 0 candidate))
+               (value (plist-get data 'last-time)))
+          (if value
+              (plist-get candidate 'uri)
+            "?")))
+
+      (defun ivy-rich-webkit-history-visit-count (candidate)
+        (let* ((data (text-properties-at 0 candidate))
+               (value (plist-get data 'last-time)))
+          (if value
+              (plist-get candidate 'visit-count)
+            "?")))
+
+      (defun ivy-rich-webkit-history-last-visited-time (candidate)
+        (let* ((data (text-properties-at 0 candidate))
+               (value (plist-get data 'last-time)))
+          (if value
+              (format-time-string "%Y-%m-%d %H:%M:%S"
+                                  (plist-get candidate 'last-time))
+            "?")))
 
       (ivy-rich-modify-columns ; ivy-rich-display-transformers-list
        'webkit-history-completing-read
