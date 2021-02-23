@@ -168,7 +168,9 @@
 
       (ivy-rich-modify-columns ; ivy-rich-display-transformers-list
        'webkit-history-completing-read
-       '((ivy-rich-candidate (:width 0.8))
+       '((ivy-rich-webkit-history-title (:width 0.4))
+         (ivy-rich-webkit-history-uri (:width 0.4))
+         (ivy-rich-webkit-history-visit-count)
          (ivy-rich-webkit-last-visited-time (:face font-lock-comment-face))))
     '';
   };
