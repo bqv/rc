@@ -129,15 +129,11 @@
               (progn (message "WebkitCandidate: %S" candidate) "?")
             (format-time-string "%Y-%m-%d %H:%M:%S" (nth 5 (file-attributes candidate))))))
 
-      (progn
-        (add-to-list 'ivy-rich-display-transformers-list
-                     'webkit-history-completing-read
-                     t #'ignore)
-        (add-to-list 'ivy-rich-display-transformers-list
-                     '(:columns
-                       ((ivy-rich-candidate (:width 0.8))
-                        (ivy-rich-webkit-last-visited-time (:face font-lock-comment-face))))
-                     t #'ignore))
+      (ivy-rich-modify-columns
+       'webkit-history-completing-read
+       '(:columns
+         ((ivy-rich-candidate (:width 0.8))
+          (ivy-rich-webkit-last-visited-time (:face font-lock-comment-face)))))
     '';
   };
 }
