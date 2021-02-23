@@ -190,7 +190,7 @@
         version = "0.0.10";
         src = py.fetchPypi {
           inherit pname version;
-          sha256 = "aspQADM6o50XjKxQ7/pwgIjNAgy0B11g94yEqfpwad8=";
+          sha256 = "xoCemHUQPhhf3tBuJdfXNXa0znSXcn8Lwp8k/wKIKuQ=";
         };
         nativeBuildInputs = with py; [ setuptools ];
         checkInputs = with py; [ requests ];
