@@ -150,15 +150,13 @@
       (defun ivy-rich-webkit-history-visit-count (candidate)
         (let* ((data (text-properties-at 0 candidate))
                (value (plist-get data 'webkit-last-time)))
-          (if value value
-            "?")))
+          (if value value "?")))
 
       (defun ivy-rich-webkit-history-last-time (candidate)
         (let* ((data (text-properties-at 0 candidate))
                (value (plist-get data 'webkit-last-time)))
           (if value
-              (format-time-string "%Y-%m-%d %H:%M:%S"
-                                  (plist-get candidate 'last-time))
+              (format-time-string "%Y-%m-%d %H:%M:%S" value)
             "?")))
 
       (setcar (cdr (plist-get ivy-rich-display-transformers-list
