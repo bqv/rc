@@ -108,4 +108,22 @@
       (setq webkit-dark-mode nil)
     '';
   };
+  emacs.loader.webkit-history = {
+    demand = true;
+    inherit (config.emacs.loader.webkit) package;
+    after = [ "webkit" ];
+    config = ''
+      (defun webkit-history-add ()
+        (let ((save-silently t)
+              (new-item (make-webkit-history-item
+                         :title (webkit--get-title webkit--id)
+                         :uri (webkit--get-uri webkit--id)
+                         :last-time (time-convert (current-time) 'integer))))
+          (unless (string= (webkit-history-item-uri new-item) "about:blank")
+            (webkit-history-add-item new-item)
+            (when webkit-history-file
+              (append-to-file (format "%S\n" (webkit-history-item-serialize new-item))
+                              nil webkit-history-file)))))
+    '';
+  };
 }
