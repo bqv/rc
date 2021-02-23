@@ -130,6 +130,7 @@
               (progn (message "WebkitCandidate: %S" candidate) "?")
             (format-time-string "%Y-%m-%d %H:%M:%S" (nth 5 (file-attributes candidate))))))
 
+      ; ivy-rich-display-transformers-alist
       (ivy-rich-modify-columns
        'webkit-history-completing-read
        '((ivy-rich-candidate (:width 0.8))
