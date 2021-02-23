@@ -83,7 +83,7 @@
     "/" = {
       device = "none";
       fsType = "tmpfs";
-      options = [ "defaults" "size=2G" "mode=755" "nr_inodes=8M" ];
+      options = [ "defaults" "size=4G" "mode=755" "nr_inodes=8M" ];
     };
 
     "/var" = hdd // { options = [ "subvol=var" ]; };
