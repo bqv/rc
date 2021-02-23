@@ -138,7 +138,8 @@
             (if uri uri completion))))
 
       (defun ivy-rich-webkit-last-visited-time (candidate)
-        (let ((candidate (text-properties-at 0 candidate)))
+        (let* ((data (text-properties-at 0 candidate))
+               (value (plist-get candidate 'last-time)))
           (if (or (file-remote-p candidate) (not (file-exists-p candidate)))
               (progn (setq WebkitCandidate candidate) "?")
             (format-time-string "%Y-%m-%d %H:%M:%S" (plist-get candidate 'last-time)))))
