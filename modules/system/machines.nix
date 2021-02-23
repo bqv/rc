@@ -14,50 +14,62 @@ in {
       type = types.nullOr unaryStringFunctionType;
       example = literalExample ''{ id, ... }: "10.''${id}.0.1"'';
       default = null;
+      description = "Function to make a host IPv4 from a unique scope index";
     };
     makeHostAddress6 = mkOption {
       type = types.nullOr unaryStringFunctionType;
       example = literalExample ''{ id, ... }: "fc00:''${id}::1"'';
       default = null;
+      description = "Function to make a host IPv6 from a unique scope index";
     };
     makeLocalAddress = mkOption {
       type = types.nullOr unaryStringFunctionType;
       example = literalExample ''{ id, ... }: "10.''${id}.0.2"'';
       default = null;
+      description = "Function to make a local IPv4 from a unique scope index";
     };
     makeLocalAddress6 = mkOption {
       type = types.nullOr unaryStringFunctionType;
       example = literalExample ''{ id, ... }: "fc00:''${id}::0"'';
       default = null;
+      description = "Function to make a local IPv6 from a unique scope index";
     };
     scopes = mkOption {
       type = types.attrsOf (types.submodule ({ config, name, ... }: {
         options = {
           id = mkOption {
             type = types.ints.u8;
+            description = "Scope identifier";
           };
           name = mkOption {
             type = types.addCheck types.str (name: lib.stringLength name < 12);
             default = name;
+            description = "Scope name";
           };
           hostAddress = mkOption {
             type = types.str;
+            description = "Scope IPv4 host address";
           };
           hostAddress6 = mkOption {
             type = types.str;
+            description = "Scope IPv6 host address";
           };
           localAddress = mkOption {
             type = types.str;
+            description = "Scope IPv4 local address";
           };
           localAddress6 = mkOption {
             type = types.str;
+            description = "Scope IPv6 local address";
           };
           baseModules = mkOption {
             type = types.listOf types.anything;
             default = import (pkgs.path + "/nixos/modules/module-list.nix");
+            description = "Scope base system modules";
           };
           extraModules = mkOption {
             type = types.listOf types.anything;
+            description = "Extra scope modules";
           };
           nixos = mkOption {
             type = types.nullOr (types.submoduleWith {
@@ -101,6 +113,7 @@ in {
     common.nixos = mkOption {
       type = with types; coercedTo anything singleton (listOf anything);
       default = {};
+      description = "Common configuration between machines";
     };
     machines = mkOption {
       type = types.listOf types.anything;
