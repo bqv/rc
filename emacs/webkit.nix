@@ -150,7 +150,7 @@
       (defun ivy-rich-webkit-history-visit-count (candidate)
         (let* ((data (text-properties-at 0 candidate))
                (value (plist-get data 'webkit-visit-count)))
-          (if value (format "% 4d times" value) "?")))
+          (if value (format "% 5d times" value) "?")))
 
       (defun ivy-rich-webkit-history-last-time (candidate)
         (let* ((data (text-properties-at 0 candidate))
