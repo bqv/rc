@@ -104,9 +104,15 @@
       (defun webkit-history-completion-text (item)
         (let* ((title (webkit-history-item-title item))
                (uri (webkit-history-item-uri item))
+               (visit-count (webkit-history-item-visit-count item))
+               (last-time (webkit-history-item-last-time item))
                (text (concat title " (" uri ")")))
           (put-text-property (+ 2 (length title)) (1- (length text)) 'face 'link text)
-          text))
+          (propertize text
+                      'title title
+                      'uri uri
+                      'visitcount visit-count
+                      'last-time last-time)))
 
       (defun webkit-history-completing-read (prompt)
         "Prompt for a URI using COMPLETING-READ from webkit history."
@@ -132,7 +138,7 @@
             (if uri uri completion))))
 
       (defun ivy-rich-webkit-last-visited-time (candidate)
-        (let ()
+        (let ((candidate (text-properties-at 0 candidate)))
           (if (or (file-remote-p candidate) (not (file-exists-p candidate)))
               (progn (setq WebkitCandidate candidate) "?")
             (format-time-string "%Y-%m-%d %H:%M:%S" (nth 5 (file-attributes candidate))))))
