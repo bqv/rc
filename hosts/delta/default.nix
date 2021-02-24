@@ -243,7 +243,7 @@
 
   environment.systemPackages = with pkgs; [
     clipmenu bitwarden bitwarden-cli pass protonmail-bridge
-    nix-output-monitor
+    nix-bundle nix-output-monitor
 
     ckb-next element-desktop nheko discord ripcord
     brave vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine
