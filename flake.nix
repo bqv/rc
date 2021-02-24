@@ -292,7 +292,6 @@
                   plasma5 = plasma5Packages;
                   inherit (libsForQt5) kdeFrameworks;
                   pulseeffects = pulseeffects-pw;
-                  openssl = withMaster.libressl.override { fetchurl = withMaster.stdenv.fetchurlBoot; };
                 };
               in overlaySets // overlayPkgs // {
                 inherit overlaySets overlayPkgs;
