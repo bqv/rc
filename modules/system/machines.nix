@@ -109,6 +109,7 @@ in {
         };
       }));
       default = {};
+      description = "Scopes";
     };
     common.nixos = mkOption {
       type = with types; coercedTo anything singleton (listOf anything);
