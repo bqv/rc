@@ -259,7 +259,7 @@
 
     giara lbry hnix
 
-    mactelnet wold
+    fritzconnection mactelnet wold
   ];
 
   environment.etc."nix/id_zeta.ed25519".source = "${usr.secrets.keyDir}/nix/id_zeta.ed25519";
