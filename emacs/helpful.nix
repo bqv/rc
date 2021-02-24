@@ -4,7 +4,6 @@
   emacs.loader.helpful = {
     demand = true;
     config = ''
-      nil
       ;; Note that the built-in `describe-function' includes both functions
       ;; and macros. `helpful-function' is functions only, so we provide
       ;; `helpful-callable' as a drop-in replacement.

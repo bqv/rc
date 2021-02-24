@@ -793,6 +793,7 @@
             nix.nixPath = lib.mapAttrsToList (k: v: "${k}=${toString v}") {
               nixpkgs = "${channels.pkgs}/";
               nixos = "${inputs.self}/";
+              home-manager = "${inputs.home}/";
               self = "/run/current-system/flake/input/self/";
               flake = "/srv/git/github.com/bqv/nixrc";
             };
