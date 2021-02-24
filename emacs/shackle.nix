@@ -3,5 +3,8 @@
 {
   emacs.loader.shackle = {
     demand = true;
+    config = ''
+      (shackle-mode t)
+    '';
   };
 }
