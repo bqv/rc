@@ -109,7 +109,7 @@ in {
         };
       }));
       default = {};
-      description = "Scopes";
+      description = "Defined machine-like systems";
     };
     common.nixos = mkOption {
       type = with types; coercedTo anything singleton (listOf anything);
