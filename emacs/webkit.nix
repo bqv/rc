@@ -96,4 +96,84 @@
       (setq webkit-dark-mode nil)
     '';
   };
+  emacs.loader.webkit-history = {
+    demand = true;
+    inherit (config.emacs.loader.webkit) package;
+    after = [ "webkit" ];
+    config = ''
+      (defun webkit-history-completion-text (item)
+        (let* ((title (webkit-history-item-title item))
+               (uri (webkit-history-item-uri item))
+               (visit-count (webkit-history-item-visit-count item))
+               (last-time (webkit-history-item-last-time item))
+               (text (concat title " (" uri ")")))
+          (put-text-property (+ 2 (length title)) (1- (length text)) 'face 'link text)
+          (propertize text
+                      'webkit-title title
+                      'webkit-uri uri
+                      'webkit-visit-count visit-count
+                      'webkit-last-time last-time)))
+
+      (defun webkit-history-completing-read (prompt)
+        "Prompt for a URI using COMPLETING-READ from webkit history."
+        (let ((completions ())
+              (key-to-count (lambda (k) (webkit-history-item-visit-count
+                                         (gethash (cdr k) webkit-history-table))))
+              (key-to-time (lambda (k) (webkit-history-item-last-time
+                                        (gethash (cdr k) webkit-history-table)))))
+          (maphash (lambda (k v)
+                     (push (cons (webkit-history-completion-text v) k) completions))
+                   webkit-history-table)
+          (setq completions (sort completions (lambda (k1 k2)
+                                                (let ((c1 (funcall key-to-count k1))
+                                                      (c2 (funcall key-to-count k2))
+                                                      (t1 (funcall key-to-time k1))
+                                                      (t2 (funcall key-to-time k2)))
+                                                  (if (= c1 c2)
+                                                      (> t1 t2)
+                                                    (> c1 c2))))))
+          (let* ((completion (ivy-read prompt completions
+                                       :caller 'webkit-history-completing-read))
+                 (uri (cdr (assoc completion completions))))
+            (if uri uri completion))))
+
+      (defun ivy-rich-webkit-history-title (candidate)
+        (let* ((data (text-properties-at 0 candidate))
+               (value (plist-get data 'webkit-title)))
+          (if value value "?")))
+
+      (defun ivy-rich-webkit-history-uri (candidate)
+        (let* ((data (text-properties-at 0 candidate))
+               (value (plist-get data 'webkit-uri)))
+          (if value value "?")))
+
+      (defun ivy-rich-webkit-history-visit-count (candidate)
+        (let* ((data (text-properties-at 0 candidate))
+               (value (plist-get data 'webkit-visit-count)))
+          (if value (format "% 5d times" value) "?")))
+
+      (defun ivy-rich-webkit-history-last-time (candidate)
+        (let* ((data (text-properties-at 0 candidate))
+               (value (plist-get data 'webkit-last-time)))
+          (if value (format-time-string "%Y-%m-%d %H:%M:%S" value) "?")))
+
+      (progn
+        (unless (memq 'webkit-history-completing-read
+                      ivy-rich-display-transformers-list)
+          (add-to-list ivy-rich-display-transformers-list
+                       'webkit-history-completing-read
+                       t #'ignore)
+          (add-to-list ivy-rich-display-transformers-list nil t #'ignore))
+        (setcar (cdr (plist-get ivy-rich-display-transformers-list
+                                'webkit-history-completing-read))
+                '((ivy-rich-webkit-history-title (:width 0.4))
+                  (ivy-rich-webkit-history-uri (:width 0.4
+                                                :face font-lock-string-face))
+                  (ivy-rich-webkit-history-last-time (:width 0.1
+                                                      :face font-lock-comment-face))
+                  (ivy-rich-webkit-history-visit-count (:align right
+                                                        :face font-lock-constant-face))))
+        nil)
+    '';
+  };
 }
