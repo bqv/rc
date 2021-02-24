@@ -2,6 +2,7 @@
 
 {
   emacs.loader.vterm-toggle = {
+    enable = false;
     demand = true;
   };
 }
