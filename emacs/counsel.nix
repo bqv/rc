@@ -10,6 +10,7 @@
      #"C-y" = "counsel-yank-pop";
     };
     config = ''
+      (counsel-mode 1)
       (setq ivy-initial-inputs-alist nil)
       (recentf-mode 1)
       (setq recentf-max-menu-items 64)
