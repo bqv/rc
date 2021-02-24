@@ -2,7 +2,7 @@
 
 {
   emacs.loader.w3m = {
-    enabled = false;
+    enable = false;
     demand = true;
     config = ''
       (setq w3m-display-inline-images t)
