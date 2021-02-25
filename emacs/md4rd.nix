@@ -4,7 +4,7 @@
   emacs.loader.md4rd = {
     demand = true;
     config = ''
-      nil
+      (defalias #'reddit-mode #'md4rd)
     '';
   };
 }
