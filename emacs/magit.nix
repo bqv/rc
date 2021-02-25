@@ -14,7 +14,6 @@
       (setq ediff-window-setup-function 'ediff-setup-windows-plain)
       (setq magit-section-initial-visibility-alist nil)
       (setq magit-wip-merge-branch t)
-      (setf (alist-get 'unpushed magit-section-initial-visibility-alist) 'show)
       (magit-wip-mode)
 
       ; temp fix

@@ -78,7 +78,7 @@ in {
       Unit.Documentation = service.Unit.Documentation;
       Socket.ListenStream = "%t/emacs/server";
       Socket.Symlinks = "%h/.emacs.d/server/server";
-      Socket.DirectoryMode="500";
+      Socket.DirectoryMode="700";
       Install.WantedBy = [ "sockets.target" ];
     };
   };
