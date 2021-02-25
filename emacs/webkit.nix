@@ -38,10 +38,9 @@
       (setq webkit-browse-url-force-new t)
       (defun webkit-eww-advice (orig-fun &rest args)
         (if (display-graphic-p)
-            (eww (car args))
-          (cl-flet ((webkit-browse-url (url &rest _) (eww url)))
-            (apply orig-fun args))))
-      (advice-add #'webkit :around #'webkit-eww-advice)
+            (apply orig-fun args)
+          (eww (car args))))
+      (advice-add #'webkit-browse-url :around #'webkit-eww-advice)
       (defun webkit (url &optional arg)
           "Fetch URL and render the page.
 If the input doesn't look like an URL or a domain name, the
