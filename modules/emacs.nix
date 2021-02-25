@@ -151,9 +151,9 @@ let
             ${attrs.hook}
             ${attrs.bind}
             ${attrs.mode}
-            ; (load-file "~/.emacs.d/site-lisp/${initPkg.pname}.el")
+            ; [[./site-lisp/${initPkg.pname}.el]]
             ${attrs.init}
-            ; (load-file "~/.emacs.d/site-lisp/${configPkg.pname}.el")
+            ; [[./site-lisp/${configPkg.pname}.el]]
             ${attrs.config})
         '';
       };
