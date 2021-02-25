@@ -243,6 +243,7 @@
 
   environment.systemPackages = with pkgs; [
     clipmenu bitwarden bitwarden-cli pass protonmail-bridge
+    nix-bundle nix-output-monitor
 
     ckb-next element-desktop nheko discord ripcord
     brave vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine
@@ -251,16 +252,14 @@
     dunst catt termite rxvt_unicode
     steam obs-studio epsxe
 
-    virt-manager
-    anbox #pmbootstrap
+    virt-manager anbox #pmbootstrap
 
     (with hunspellDicts; hunspellWithDicts [ en_GB-large ])
     wineWowPackages.staging
 
-    giara lbry
-    hnix
+    giara lbry hnix
 
-    mactelnet wold
+    python3.pkgs.fritzconnection mactelnet wold
   ];
 
   environment.etc."nix/id_zeta.ed25519".source = "${usr.secrets.keyDir}/nix/id_zeta.ed25519";
