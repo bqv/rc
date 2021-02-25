@@ -37,12 +37,6 @@
       (setq webkit-search-prefix "https://qwant.com/?q=")
       (setq webkit-browse-url-force-new t)
 
-      (defun webkit-eww-advice (orig-fun &rest args)
-        (if (display-graphic-p)
-            (apply orig-fun args)
-          (eww (car args))))
-      (advice-add #'webkit-browse-url :around #'webkit-eww-advice)
-
       (add-hook 'after-init-hook
                 (lambda (&rest _)
                   (setq browse-url-secondary-browser-function browse-url-browser-function)
