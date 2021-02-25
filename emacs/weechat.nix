@@ -26,6 +26,8 @@
             weechat-sync-buffer-read-status t)
       ;(setq weechat-auto-monitor-buffers '("weechat" "relay.list" "fset" "exec.0"))
       (setq weechat-color-list '(unspecified "aquamarine4" "PaleGreen3" "LemonChiffon4" "burlywood" "LightGoldenrod2" "tan2" "LightSalmon2" "coral2" "IndianRed3" "IndianRed" "MediumPurple3" "PaleVioletRed2" "HotPink3" "CadetBlue" "SteelBlue3" "DarkSeaGreen"))
+      (set-face-foreground 'weechat-time-face "dark gray")
+      (set-face-attribute 'weechat-prompt-face :weight extra-bold)
       (dolist (module weechat-modules nil)
         (require module))
       (dolist (buffer (buffer-list) nil)
