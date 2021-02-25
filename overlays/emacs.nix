@@ -55,6 +55,7 @@ in with prev.lib; rec {
         "(defcustom comp-debug 0" \
         "(defcustom comp-debug 1"
     '';
+
     gstBuildInputs = with final; with gst_all_1; [
       gstreamer gst-libav
       gst-plugins-base
