@@ -37,6 +37,7 @@
     nload
     page
     pass
+    pciutils
     pijul
     psmisc
     strace
