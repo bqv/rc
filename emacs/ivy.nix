@@ -9,7 +9,7 @@
         ; Compatibility hack
         arg)
       (setq-default ivy-initial-inputs-alist nil)
-     '
+
 (setq ivy-re-builders-alist '((t . orderless-ivy-re-builder)))
       (ivy-mode t)
       (add-hook 'after-init-hook
