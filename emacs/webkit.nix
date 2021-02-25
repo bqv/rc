@@ -36,25 +36,12 @@
       (setq webkit-own-window nil)
       (setq webkit-search-prefix "https://qwant.com/?q=")
       (setq webkit-browse-url-force-new t)
+
       (defun webkit-eww-advice (orig-fun &rest args)
         (if (display-graphic-p)
             (apply orig-fun args)
           (eww (car args))))
       (advice-add #'webkit-browse-url :around #'webkit-eww-advice)
-      (defun webkit (url &optional arg)
-          "Fetch URL and render the page.
-If the input doesn't look like an URL or a domain name, the
-word(s) will be searched for via If called with a prefix ARG, create a new webkit buffer instead of reusing
-      the default webkit buffer."
-          (interactive
-           (let ((prompt "URL or keywords: "))
-             (list
-              (if (require 'webkit-history nil t)
-                  (webkit-history-completing-read prompt)
-                (read-string prompt))
-              (prefix-numeric-value current-prefix-arg))))
-          (let ((eww-search-prefix webkit-search-prefix))
-                (webkit-browse-url (eww--dwim-expand-url url) (eq arg 4))))
 
       (add-hook 'after-init-hook
                 (lambda (&rest _)
