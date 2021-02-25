@@ -240,6 +240,7 @@
 
                   # this is one light breeze away from infrec
                   inherit (withGuixFlake) guix;
+                  inherit (withFunkwhaleFlake) funkwhale;
                   inherit (withEmacsFlake.withSelfFlake.withEmacs) emacsPgtkGcc emacsPgtkGccClient emacsPgtkGccPackages;
                   inherit (withGiara) giara;
                   inherit (withLbry) lbry;
@@ -772,6 +773,7 @@
           inherit (inputs.home.nixosModules) home-manager;
           inherit (inputs.dwarffs.nixosModules) dwarffs;
           inherit (inputs.guix.nixosModules) guix;
+          inherit (inputs.funkwhale.nixosModules) funkwhale;
           inherit (inputs.construct.nixosModules) matrix-construct;
           inherit (inputs.agenix.nixosModules) age;
           hydra = "${inputs.hydra}/hydra-module.nix";
@@ -921,7 +923,7 @@
           modules = flakeModules ++ extraModules ++ [
             home nixpkgs iwd gnupg
             home-manager dwarffs matrix-construct hydra
-            impermanence age guix apparmor-nix
+            impermanence age guix funkwhale apparmor-nix
           ];
         in {
           inherit system specialArgs;
