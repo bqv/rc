@@ -151,9 +151,9 @@ let
             ${attrs.hook}
             ${attrs.bind}
             ${attrs.mode}
-            ; [[./site-lisp/${initPkg.pname}.el]]
+            ; [[./init.d/site-lisp/${initPkg.pname}.el]]
             ${attrs.init}
-            ; [[./site-lisp/${configPkg.pname}.el]]
+            ; [[./init.d/site-lisp/${configPkg.pname}.el]]
             ${attrs.config})
         '';
       };
