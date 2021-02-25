@@ -31,9 +31,6 @@
 
       (setq counsel-describe-function-function #'helpful-callable)
       (setq counsel-describe-variable-function #'helpful-variable)
-
-      (with-eval-after-load 'evil
-        (add-to-list 'evil-emacs-state-modes 'helpful-mode))
     '';
   };
 }
