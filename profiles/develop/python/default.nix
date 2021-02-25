@@ -11,6 +11,7 @@
         numpy
         pandas
         ptpython
+        pygments
         requests
         scipy
         virtualenv
