@@ -1,5 +1,7 @@
 (setq explicit-shell-file-name (executable-find "bash"))
 (setq shell-file-name (executable-find "bash"))
+(setq async-shell-command-buffer 'confirm-rename-buffer)
+(setq async-shell-command-display-buffer nil)
 (do-buffers (setenv "PAGER" "cat"))
 
 (defun shell-region (start end)
