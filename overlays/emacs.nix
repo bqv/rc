@@ -50,6 +50,9 @@ in with prev.lib; rec {
     withXwidgets = true;
     inherit (final) webkitgtk wrapGAppsHook glib-networking;
   }).overrideAttrs (drv: rec {
+    postPatch = drv.postPatch + ''
+      "(defcustom·comp-debug·0"
+    '';
     gstBuildInputs = with final; with gst_all_1; [
       gstreamer gst-libav
       gst-plugins-base
