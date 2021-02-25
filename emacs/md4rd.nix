@@ -3,5 +3,8 @@
 {
   emacs.loader.md4rd = {
     demand = true;
+    config = ''
+      nil
+    '';
   };
 }
