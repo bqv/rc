@@ -189,6 +189,7 @@ let
     (setq-default indent-tabs-mode nil)
     (setq view-read-only t)
     (setq compilation-scroll-output t)
+    (setq max-mini-window-height 0.5)
     (when (fboundp 'windmove-default-keybindings)
       (windmove-default-keybindings))
     (when (fboundp 'winner-mode)
