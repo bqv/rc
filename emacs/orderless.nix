@@ -3,6 +3,5 @@
 {
   emacs.loader.orderless = {
     demand = true;
-    after = [ "ivy" ];
   };
 }
