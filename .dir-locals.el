@@ -6,5 +6,5 @@
         ;             (locate-dominating-file buffer-file-name ".dir-locals.el")))
          (compile-command . "env TERM=dumb nix run -vv '.#delta' --show-trace")
          (eval . (setq projectile-project-compilation-cmd
-                       "env TERM=dumb nix build --show-trace && ./result && git push"))
+                       "env TERM=dumb nix build --show-trace -vv && ./result && git push"))
          )))
