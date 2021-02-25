@@ -36,6 +36,9 @@
       (setq webkit-own-window nil)
       (setq webkit-search-prefix "https://qwant.com/?q=")
       (setq webkit-browse-url-force-new t)
+      (defun webkit-eww-advice (func &rest args)
+        (apply orig-fun args)
+        nil)
       (defun webkit (url &optional arg)
           "Fetch URL and render the page.
 If the input doesn't look like an URL or a domain name, the
