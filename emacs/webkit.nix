@@ -41,6 +41,7 @@
             (apply orig-fun args)
           (cl-letf (((function webkit-browse-url) #'eww-browse))
             (apply orig-fun args))))
+      (advice-add #'webkit :around #'webkit-eww-advice)
       (defun webkit (url &optional arg)
           "Fetch URL and render the page.
 If the input doesn't look like an URL or a domain name, the
