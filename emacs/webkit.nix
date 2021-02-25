@@ -38,7 +38,7 @@
       (setq webkit-browse-url-force-new t)
       (defun webkit-eww-advice (orig-fun &rest args)
         (if (display-graphic-p)
-            (apply orig-fun args)
+            (eww (car args))
           (cl-flet ((webkit-browse-url (url &rest _) (eww url)))
             (apply orig-fun args))))
       (advice-add #'webkit :around #'webkit-eww-advice)
