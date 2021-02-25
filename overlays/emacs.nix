@@ -51,7 +51,9 @@ in with prev.lib; rec {
     inherit (final) webkitgtk wrapGAppsHook glib-networking;
   }).overrideAttrs (drv: rec {
     postPatch = drv.postPatch + ''
-      "(defcustom·comp-debug·0"
+      substituteInPlace lisp/emacs-lisp/comp.el --replace \
+        "(defcustom comp-debug 0" \
+        "(defcustom comp-debug 1"
     '';
     gstBuildInputs = with final; with gst_all_1; [
       gstreamer gst-libav
