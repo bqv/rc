@@ -42,6 +42,12 @@ in with prev.lib; rec {
     withXwidgets = true;
     inherit (final) webkitgtk wrapGAppsHook glib-networking;
   }).overrideAttrs (drv: {
+    postPatch = drv.postPatch + ''
+      substituteInPlace lisp/emacs-lisp/comp.el --replace \
+        "(defcustom comp-debug 0" \
+        "(defcustom comp-debug 1"
+    '';
+
     passthru = drv.passthru // { nativeComp = true; };
   });
 
