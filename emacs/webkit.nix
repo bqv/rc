@@ -37,7 +37,8 @@
       (setq webkit-search-prefix "https://qwant.com/?q=")
       (setq webkit-browse-url-force-new t)
       (defun webkit-eww-advice (func &rest args)
-        (apply orig-fun args)
+        (cl-letf (((function webkit-browse-url) #'eww-browse))
+          (apply orig-fun args))
         nil)
       (defun webkit (url &optional arg)
           "Fetch URL and render the page.
