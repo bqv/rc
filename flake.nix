@@ -53,6 +53,8 @@
 
     lisp.url = "github:nix-lisp/lisp-overlay"; # Lisp-overlay
 
+    funkwhale.url = "github:mmai/funkwhale-flake"; # Funkwhale
+
     devshell.url = "github:numtide/devshell"; # Devshell
 
     nyxt.url = "github:atlas-engineer/nyxt"; #|- Nyxt
