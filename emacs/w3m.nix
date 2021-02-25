@@ -2,8 +2,8 @@
 
 {
   emacs.loader.w3m = {
-    enable = false;
     demand = true;
+    require = []; # more ethical disable
     config = ''
       (setq w3m-display-inline-images t)
     '';
