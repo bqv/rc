@@ -3,7 +3,7 @@
 {
   emacs.loader.w3m = {
     demand = true;
-    require = []; # more gentle disable
+    package = _: pkgs.emacs.pkgs.w3m;
     config = ''
       (setq w3m-display-inline-images t)
     '';
