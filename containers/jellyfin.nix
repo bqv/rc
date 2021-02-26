@@ -82,6 +82,10 @@ in {
           hostPath = "/srv/ftp/tv";
           isReadOnly = false;
         };
+        "/srv/ftp/TV Shows" = {
+          hostPath = "/srv/ftp/tv";
+          isReadOnly = false;
+        };
         "/srv/ftp/movies" = {
           hostPath = "/srv/ftp/movies";
           isReadOnly = false;
@@ -96,6 +100,14 @@ in {
         };
         "/srv/ftp/Books" = {
           hostPath = "/srv/ftp/books";
+          isReadOnly = false;
+        };
+        "/srv/ftp/torrents" = {
+          hostPath = "/srv/ftp";
+          isReadOnly = false;
+        };
+        "/srv/ftp/Torrents" = {
+          hostPath = "/srv/ftp";
           isReadOnly = false;
         };
       };
