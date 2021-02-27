@@ -11,6 +11,7 @@
         (let ((vterm-shell "emacs -nw"))
           (vterm "*nested-emacs*")))
       (defun vterm-run (with-sudo &rest r)
+        "Launch R in a vterm buffer, possibly WITH-SUDO."
         ;(interactive "P")
         (if with-sudo
           (apply #'call-interactively (cons #'vterm--run-sudo r))
