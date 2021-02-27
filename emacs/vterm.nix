@@ -11,7 +11,6 @@
         (let ((vterm-shell "emacs -nw"))
           (vterm "*nested-emacs*")))
       (defun vterm-shell-command (command)
-        ;(interactive "sVTerm shell command: ")
         (let ((vterm-shell command))
           (vterm "*Vterm Shell Command*")))
 
