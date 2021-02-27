@@ -17,7 +17,7 @@
           (apply #'call-interactively (cons #'vterm--run r))))
       (defun vterm--run (command)
         "Launch COMMAND in a vterm buffer."
-        (interactive (list (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
+        ;(interactive (list (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
         (let* ((executable (car (split-string command " ")))
                (buffer-name (concat "*" executable "*"))
                (canonical-name (assoc executable (executables-list)
