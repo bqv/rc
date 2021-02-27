@@ -773,10 +773,10 @@
           inherit (inputs.home.nixosModules) home-manager;
           inherit (inputs.dwarffs.nixosModules) dwarffs;
           inherit (inputs.guix.nixosModules) guix;
-          inherit (inputs.funkwhale.nixosModules) funkwhale;
           inherit (inputs.construct.nixosModules) matrix-construct;
           inherit (inputs.agenix.nixosModules) age;
           hydra = "${inputs.hydra}/hydra-module.nix";
+          funkwhale = inputs.funkwhale.nixosModule;
           apparmor-nix = inputs.apparmor.nixosModule;
 
           # Some common basic stuff
