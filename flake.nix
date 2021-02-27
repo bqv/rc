@@ -53,6 +53,8 @@
 
     lisp.url = "github:nix-lisp/lisp-overlay"; # Lisp-overlay
 
+    funkwhale.url = "github:mmai/funkwhale-flake"; # Funkwhale
+
     devshell.url = "github:numtide/devshell"; # Devshell
 
     nyxt.url = "github:atlas-engineer/nyxt"; #|- Nyxt
@@ -238,6 +240,7 @@
 
                   # this is one light breeze away from infrec
                   inherit (withGuixFlake) guix;
+                  inherit (withFunkwhaleFlake) funkwhale;
                   inherit (withEmacsFlake.withSelfFlake.withEmacs) emacsPgtkGcc emacsPgtkGccClient emacsPgtkGccPackages;
                   inherit (withGiara) giara;
                   inherit (withLbry) lbry;
@@ -773,6 +776,7 @@
           inherit (inputs.construct.nixosModules) matrix-construct;
           inherit (inputs.agenix.nixosModules) age;
           hydra = "${inputs.hydra}/hydra-module.nix";
+          funkwhale = inputs.funkwhale.nixosModule;
           apparmor-nix = inputs.apparmor.nixosModule;
 
           # Some common basic stuff
@@ -919,7 +923,7 @@
           modules = flakeModules ++ extraModules ++ [
             home nixpkgs iwd gnupg
             home-manager dwarffs matrix-construct hydra
-            impermanence age guix apparmor-nix
+            impermanence age guix funkwhale apparmor-nix
           ];
         in {
           inherit system specialArgs;
