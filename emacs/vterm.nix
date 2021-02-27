@@ -14,26 +14,6 @@
         (let ((vterm-shell command))
           (vterm "*Vterm Shell Command*")))
 
-      (defun vterm--run (command)
-        "Launch COMMAND in a vterm buffer."
-        ;(interactive (list (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
-        (let* ((executable (car (split-string command " ")))
-               (buffer-name (concat "*" executable "*"))
-               (canonical-name (assoc executable (executables-list)
-                                      '(lambda (exe) (= (file-name-base exe) )))))
-          (assert (not (null executable)))
-          (let ((vterm-shell command))
-            (vterm buffer-name))))
-      (defun vterm--run-sudo (command)
-        "Launch sudo COMMAND in a vterm buffer."
-        ;(interactive (list (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
-        (let* ((executable (car (split-string command " ")))
-               (buffer-name (concat "*" executable "*"))
-               (canonical-name (assoc executable (executables-list)
-                                      '(lambda (exe) (= (file-name-base exe) )))))
-          (assert (not (null executable)))
-          (let ((vterm-shell (concat "sudo " command)))
-            (vterm buffer-name))))
       (defun vterm-run (with-sudo &rest exe)
         "Launch EXE in a vterm buffer, possibly WITH-SUDO."
         ;(interactive (list (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
@@ -42,20 +22,16 @@
                (canonical-name (assoc executable (executables-list)
                                       '(lambda (exe) (= (file-name-base exe) )))))
           (assert (not (null executable)))
-          (let ((vterm-shell (concat "sudo " command)))
+          (let ((vterm-shell (if with-sudo
+                                 (concat "sudo " command)
+                                 command)))
             (vterm buffer-name))))
-        ;(interactive "P")
-        (if with-sudo
-          (apply #'call-interactively (cons #'vterm--run-sudo EXE))
-          (apply #'call-interactively (cons #'vterm--run EXE))))
       (defun htop (with-sudo)
         (interactive "P")
-        (if with-sudo
-          (vterm--run-sudo "htop")
-          (vterm--run "htop")))
-      (defun tuir ()
+        (vterm-run with-sudo "htop"))
+      (defun tuir (with-sudo)
         (interactive)
-        (vterm--run "tuir"))
+        (vterm-run with-sudo "tuir"))
     '';
     systemDeps = with pkgs; [ cmake libtool libvterm ];
   };
