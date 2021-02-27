@@ -74,8 +74,40 @@ in {
           };
         };
       bindMounts = {
-        "/srv/ftp" = {
-          hostPath = "/srv/ftp";
+        "/srv/ftp/tv" = {
+          hostPath = "/srv/ftp/tv/";
+          isReadOnly = false;
+        };
+        "/srv/ftp/TV" = {
+          hostPath = "/srv/ftp/tv/";
+          isReadOnly = false;
+        };
+        "/srv/ftp/TV Shows" = {
+          hostPath = "/srv/ftp/tv/";
+          isReadOnly = false;
+        };
+        "/srv/ftp/movies" = {
+          hostPath = "/srv/ftp/movies/";
+          isReadOnly = false;
+        };
+        "/srv/ftp/Movies" = {
+          hostPath = "/srv/ftp/movies/";
+          isReadOnly = false;
+        };
+        "/srv/ftp/books" = {
+          hostPath = "/srv/ftp/books/";
+          isReadOnly = false;
+        };
+        "/srv/ftp/Books" = {
+          hostPath = "/srv/ftp/books/";
+          isReadOnly = false;
+        };
+        "/srv/ftp/torrents" = {
+          hostPath = "/srv/ftp/";
+          isReadOnly = false;
+        };
+        "/srv/ftp/Torrents" = {
+          hostPath = "/srv/ftp/";
           isReadOnly = false;
         };
       };
