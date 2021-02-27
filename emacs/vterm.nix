@@ -30,12 +30,12 @@
           (assert (not (null executable)))
           (let ((vterm-shell (concat "sudo " command)))
             (vterm buffer-name))))
-      (defun vterm-run (with-sudo &rest r)
-        "Launch R in a vterm buffer, possibly WITH-SUDO."
+      (defun vterm-run (with-sudo &rest exe)
+        "Launch EXE in a vterm buffer, possibly WITH-SUDO."
         ;(interactive "P")
         (if with-sudo
-          (apply #'call-interactively (cons #'vterm--run-sudo r))
-          (apply #'call-interactively (cons #'vterm--run r))))
+          (apply #'call-interactively (cons #'vterm--run-sudo EXE))
+          (apply #'call-interactively (cons #'vterm--run EXE))))
       (defun vterm-shell-command (command)
         ;(interactive "sVTerm shell command: ")
         (let ((vterm-shell command))
