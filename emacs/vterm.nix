@@ -10,12 +10,6 @@
         (interactive)
         (let ((vterm-shell "emacs -nw"))
           (vterm "*nested-emacs*")))
-      (defun vterm-run (with-sudo &rest r)
-        "Launch R in a vterm buffer, possibly WITH-SUDO."
-        ;(interactive "P")
-        (if with-sudo
-          (apply #'call-interactively (cons #'vterm--run-sudo r))
-          (apply #'call-interactively (cons #'vterm--run r))))
       (defun vterm--run (command)
         "Launch COMMAND in a vterm buffer."
         ;(interactive (list (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
@@ -26,14 +20,9 @@
           (assert (not (null executable)))
           (let ((vterm-shell command))
             (vterm buffer-name))))
-      (defun vterm-shell-command (command)
-        ;(interactive "sVTerm shell command: ")
-        (let ((vterm-shell command))
-          (vterm "*vterm-shell-command*")))
-      (global-set-key (kbd "C-x M-&") #'vterm-shell-command)
       (defun vterm--run-sudo (command)
         "Launch sudo COMMAND in a vterm buffer."
-        (interactive (list (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
+        ;(interactive (list (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
         (let* ((executable (car (split-string command " ")))
                (buffer-name (concat "*" executable "*"))
                (canonical-name (assoc executable (executables-list)
@@ -41,6 +30,16 @@
           (assert (not (null executable)))
           (let ((vterm-shell (concat "sudo " command)))
             (vterm buffer-name))))
+      (defun vterm-run (with-sudo &rest r)
+        "Launch R in a vterm buffer, possibly WITH-SUDO."
+        ;(interactive "P")
+        (if with-sudo
+          (apply #'call-interactively (cons #'vterm--run-sudo r))
+          (apply #'call-interactively (cons #'vterm--run r))))
+      (defun vterm-shell-command (command)
+        ;(interactive "sVTerm shell command: ")
+        (let ((vterm-shell command))
+          (vterm "*vterm-shell-command*")))
       (defun vterm-ssh-run (with-sudo &rest r)
         (interactive "P")
         (if with-sudo
