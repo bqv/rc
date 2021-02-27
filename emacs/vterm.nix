@@ -26,7 +26,7 @@
           (let ((vterm-shell command))
             (vterm buffer-name))))
       (defun vterm-shell-command (command)
-        (interactive "sVTerm shell command: ")
+       ;(interactive "sVTerm shell command: ")
         (let ((vterm-shell command))
           (vterm "*vterm-shell-command*")))
       (global-set-key (kbd "C-x M-&") #'vterm-shell-command)
