@@ -23,8 +23,8 @@
                                       '(lambda (exe) (= (file-name-base exe) )))))
           (assert (not (null executable)))
           (let ((vterm-shell (if with-sudo
-                                 (concat "sudo " command)
-                                 command)))
+                                 (concat "sudo " exe)
+                                 exe)))
             (vterm buffer-name))))
       (defun htop (with-sudo)
         (interactive "P")
