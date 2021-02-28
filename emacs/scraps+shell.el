@@ -77,6 +77,7 @@
             :action #'vterm-shell-command
             :initial-input (or initial-input "")
             :history 'shell-command-history))
+(defalias #'ivy-vterm #'ivy-term)
 (global-set-key (kbd "C-x M-&") #'ivy-term)
 
 (provide 'scraps+shell)
