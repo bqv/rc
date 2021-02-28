@@ -28,7 +28,7 @@
         (interactive "P")
         (vterm-run with-sudo "htop"))
       (defun tuir (with-sudo)
-        (interactive)
+        (interactive "P")
         (vterm-run with-sudo "tuir"))
     '';
     systemDeps = with pkgs; [ cmake libtool libvterm ];
