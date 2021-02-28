@@ -14,8 +14,7 @@
       (define-key desktop-environment-mode-map (kbd "S-<269025041>") #'desktop-environment-volume-decrement-slowly)
       (define-key desktop-environment-mode-map (kbd "<269025073>") #'emms-pause) ; headset btn
 
-      (progn
-        (desktop-environment-mode))
+      (desktop-environment-mode)
     '';
   };
 }
