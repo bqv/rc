@@ -13,7 +13,7 @@
         (interactive)
         (vterm-shell-command "*nested-emacs*"))
 
-      (defun vterm--run (with-sudo executable)
+      (defun vterm-run (with-sudo executable)
         "Launch EXE in a vterm buffer, possibly WITH-SUDO."
         ;(interactive (list (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
         (let* ((buffer-name (concat "*" executable "*"))
@@ -24,12 +24,12 @@
                                  (concat "sudo " executable)
                                  executable)))
             (vterm buffer-name))))
-      (defun htop (with-sudo)
+      (defun htop (&optional with-sudo)
         (interactive "P")
-        (vterm--run with-sudo "htop"))
-      (defun tuir (with-sudo)
+        (vterm-run with-sudo "htop"))
+      (defun tuir (&optional with-sudo)
         (interactive "P")
-        (vterm--run with-sudo "tuir"))
+        (vterm-run with-sudo "tuir"))
     '';
     systemDeps = with pkgs; [ cmake libtool libvterm ];
   };
