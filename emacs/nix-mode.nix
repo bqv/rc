@@ -110,6 +110,11 @@
         (interactive)
         (nixos "sudo nix-index"))
 
+      (define-transient-command nixos-garbage-collect-dispatch ()
+        ["Garbage collection"
+         (nixos:--delete-older-than)
+         ("g" "collect garbage" nixos-garbage-collect)])
+
       (define-transient-command nixos-dispatch ()
         ["Arguments"
          ("-t" "show trace" "--show-trace")
@@ -129,10 +134,7 @@
          ("s k" "delete" nix-store-delete)
          ("s o" "optimize" nix-store-optimize)])
 
-      (define-transient-command nixos-garbage-collect-dispatch ()
-        ["Garbage collection"
-         (nixos:--delete-older-than)
-         ("g" "collect garbage" nixos-garbage-collect)])
+      (define-key global-map (kbd "C-c n") #'nixos-dispatch)
     '';
   };
 }
