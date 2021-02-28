@@ -57,13 +57,13 @@
         (nixos (unwords (cons cmd (transient-args 'nixos-dispatch)))))
 
       (defcmd nixos-garbage-collect
-        (nixos-with-args "sudo nix-collect-garbage"))
+        (nixos-with-args "doas nix-collect-garbage"))
 
       (defcmd nixos-rebuild
-        (nixos-with-args "sudo nix-channel --update nixpkgs; sudo nixos-rebuild switch"))
+        (nixos-with-args "doas nix run '<nixos>'"))
 
       (defcmd nixos-check-vulnerabilities
-        (nixos "sudo vulnix --system"))
+        (nixos "doas vulnix --system"))
 
       (define-infix-argument nixos:--delete-older-than ()
         :description "delete older than"
@@ -78,21 +78,21 @@
         :argument "--option tarball-ttl ")
 
       (defcmd nix-store-verify
-        (nixos "sudo nix-store --verify --check-contents"))
+        (nixos "doas nix-store --verify --check-contents"))
 
       (defcmd nix-store-repair
-        (nixos "sudo nix-store --verify --check-contents --repair"))
+        (nixos "doas nix-store --verify --check-contents --repair"))
 
       (defcmd nix-store-optimize
-        (nixos "sudo nix-store --optimise -vv"))
+        (nixos "doas nix-store --optimise -vv"))
 
       (defun nix-store-query-dependents (path)
         (interactive "sPath: ")
-        (nixos (s-lex-format "sudo nix-store --query --roots ''${path}")))
+        (nixos (s-lex-format "doas nix-store --query --roots ''${path}")))
 
       (defun nix-store-delete (path)
         (interactive "sPath: ")
-        (nixos (s-lex-format "sudo nix-store --delete ''${path}")))
+        (nixos (s-lex-format "doas nix-store --delete ''${path}")))
 
       (defun nixos-search-options (option)
         (interactive "sOption: ")
@@ -108,7 +108,12 @@
 
       (defun nixos-index ()
         (interactive)
-        (nixos "sudo nix-index"))
+        (nixos "doas nix-index"))
+
+      (define-transient-command nixos-garbage-collect-dispatch ()
+        ["Garbage collection"
+         (nixos:--delete-older-than)
+         ("g" "collect garbage" nixos-garbage-collect)])
 
       (define-transient-command nixos-dispatch ()
         ["Arguments"
@@ -129,10 +134,7 @@
          ("s k" "delete" nix-store-delete)
          ("s o" "optimize" nix-store-optimize)])
 
-      (define-transient-command nixos-garbage-collect-dispatch ()
-        ["Garbage collection"
-         (nixos:--delete-older-than)
-         ("g" "collect garbage" nixos-garbage-collect)])
+      (define-key global-map (kbd "C-c n") #'nixos-dispatch)
     '';
   };
 }
