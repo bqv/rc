@@ -14,11 +14,10 @@
         (let ((vterm-shell command))
           (vterm "*Vterm Shell Command*")))
 
-      (defun vterm-run (with-sudo &rest exe)
+      (defun vterm-run (with-sudo executable)
         "Launch EXE in a vterm buffer, possibly WITH-SUDO."
         ;(interactive (list (completing-read "Command" (mapcar #'file-name-base (executables-list)))))
-        (let* ((executable (car exe))
-               (buffer-name (concat "*" executable "*"))
+        (let* ((buffer-name (concat "*" executable "*"))
                (canonical-name (assoc executable (executables-list)
                                       '(lambda (exe) (= (file-name-base exe) )))))
           (assert (not (null executable)))
