@@ -6,13 +6,12 @@
     config = ''
       (setq vterm-shell "${pkgs.xonsh.pname}")
       (setq vterm-kill-buffer-on-exit t)
-      (defun bqv/nested-emacs ()
-        (interactive)
-        (let ((vterm-shell "emacs -nw"))
-          (vterm "*nested-emacs*")))
       (defun vterm-shell-command (command)
         (let ((vterm-shell command))
           (vterm "*Vterm Shell Command*")))
+      (defun bqv/nested-emacs ()
+        (interactive)
+        (vterm-shell-command "*nested-emacs*"))
 
       (defun vterm-run (with-sudo executable)
         "Launch EXE in a vterm buffer, possibly WITH-SUDO."
