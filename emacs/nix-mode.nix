@@ -60,7 +60,7 @@
         (nixos-with-args "doas nix-collect-garbage"))
 
       (defcmd nixos-rebuild
-        (nixos-with-args "doas nix run /srv/git/github.com/bqv/nixrc/"))
+        (nixos-with-args "doas nix run '<nixos>'"))
 
       (defcmd nixos-check-vulnerabilities
         (nixos "doas vulnix --system"))
@@ -102,6 +102,10 @@
         (interactive "sPackage: ")
         (browse-url (s-lex-format "https://nixos.org/nixos/packages.html?query=''${query}")))
 
+      (defun nixos-howoldis ()
+        (interactive)
+        (browse-url "https://howoldis.herokuapp.com/"))
+
       (defun nixos-index ()
         (interactive)
         (nixos "doas nix-index"))
@@ -119,6 +123,7 @@
          ("r" "rebuild" nixos-rebuild)
          ("o" "search options" nixos-search-options)
          ("p" "search packages" nixos-search-packages)
+         ("h" "check channels" nixos-howoldis)
          ("i" "index" nixos-index)]
         ["Garbage collection"
          ("g" "collect garbage" nixos-garbage-collect-dispatch)]
