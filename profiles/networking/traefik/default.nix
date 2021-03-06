@@ -689,39 +689,21 @@
         };
       };
 
-     #udp = {
-     #  routers = {
-     #    UDPRouter0 = {
-     #      entryPoints = [ "foobar" "foobar" ];
-     #      service = "foobar";
-     #    };
-     #    UDPRouter1 = {
-     #      entryPoints = [ "foobar" "foobar" ];
-     #      service = "foobar";
-     #    };
-     #  };
-     #  services = {
-     #    UDPService01 = {
-     #      loadBalancer = {
-     #        servers = [ { address = "foobar"; } { address = "foobar"; } ];
-     #      };
-     #    };
-     #    UDPService02 = {
-     #      weighted = {
-     #        services = [
-     #          {
-     #            name = "foobar";
-     #            weight = 42;
-     #          }
-     #          {
-     #            name = "foobar";
-     #            weight = 42;
-     #          }
-     #        ];
-     #      };
-     #    };
-     #  };
-     #};
+      udp = {
+        routers = {
+          transmission-dht = {
+            entryPoints = [ "transmission-dht-udp" ];
+            service = "transmission-dht";
+          };
+        };
+        services = {
+          transmission-dht = {
+            loadBalancer = {
+              servers = [{ address = "10.11.0.2:51413"; }];
+            };
+          };
+        };
+      };
 
       tls = with config.security.acme; {
         certificates = lib.mapAttrsToList (_: { directory, ... }: {
