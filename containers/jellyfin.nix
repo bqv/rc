@@ -37,7 +37,8 @@ in {
             services.transmission = {
               enable = true;
               settings.dht-enabled = true;
-              settings.download-dir = "/srv/ftp/torrents";
+              settings.peer-port = 51413;
+              settings.download-dir = "/srv/ftp/";
               settings.download-queue-enabled = false;
               settings.rpc-authentication-required = false;
               settings.rpc-bind-address = "0.0.0.0";
