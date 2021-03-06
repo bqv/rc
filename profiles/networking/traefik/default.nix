@@ -638,6 +638,11 @@
             rule = "HostSNI(`*`)";
             service = "klaus";
           };
+          transmission-dht-tcp = {
+            entryPoints = [ "transmission-dht-tcp" ];
+            rule = "HostSNI(`*`)";
+            service = "transmission-dht";
+          };
          #irc = {
          #  entryPoints = [ "ircs" ];
          #  rule = "HostSNI(`*`)";
