@@ -128,6 +128,7 @@
     wold = { url = "github:pauliuszaleckas/wold"; flake = false; };
     mactelnet = { url = "github:haakonnessjoen/mac-telnet"; flake = false; };
     gh-notify = { url = "github:anticomputer/gh-notify"; flake = false; };
+    dendrite = { url = "github:matrix-org/dendrite"; flake = false; };
   };
 
   outputs = inputs: with builtins; let

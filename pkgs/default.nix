@@ -23,19 +23,21 @@ final: prev: let
 in rec {
   bottom = prev.callPackage ./tools/system/bottom { };
 
-  emacsPackagesFor = emacs: recurseIntoAttrs ((prev.emacsPackagesFor emacs).overrideScope' emacsOverride);
+  cfcli = prev.callPackage ./applications/misc/cfcli { };
 
   dgit = prev.callPackage ./applications/version-management/dgit { };
 
   dejavu_nerdfont = prev.callPackage ./data/fonts/dejavu-nerdfont { };
 
+  dendrite = prev.callPackage ./servers/dendrite { };
+
   dotnetPackages = recurseIntoAttrs (prev.dotnetPackages.override { overrides = dotnetOverride; });
 
   electronmail = prev.callPackage ./applications/networking/mailreaders/electronmail { };
 
-  fetchdarcs = prev.callPackage ./build-support/fetchdarcs { };
+  emacsPackagesFor = emacs: recurseIntoAttrs ((prev.emacsPackagesFor emacs).overrideScope' emacsOverride);
 
-  cfcli = prev.callPackage ./applications/misc/cfcli { };
+  fetchdarcs = prev.callPackage ./build-support/fetchdarcs { };
 
   fsnoop = prev.callPackage ./tools/misc/fsnoop { };
 
