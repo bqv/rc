@@ -23,7 +23,7 @@ in {
             networking.firewall.enable = false;
 
             environment.systemPackages = with pkgs; [
-              yq yj jq git
+              yq yj jq git vim tree
             ];
 
             services.jellyfin.enable = true;
