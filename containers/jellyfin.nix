@@ -23,7 +23,7 @@ in {
             networking.firewall.enable = false;
 
             environment.systemPackages = with pkgs; [
-              yq yj jq git
+              yq yj jq git vim tree
             ];
 
             services.jellyfin.enable = true;
@@ -37,8 +37,9 @@ in {
             services.transmission = {
               enable = true;
               settings.dht-enabled = true;
-              settings.download-dir = "/srv/ftp/torrents";
+              settings.download-dir = "/srv/ftp/";
               settings.download-queue-enabled = false;
+              settings.peer-port = 51413;
               settings.rpc-authentication-required = false;
               settings.rpc-bind-address = "0.0.0.0";
               settings.rpc-host-whitelist-enabled = false;
@@ -82,7 +83,7 @@ in {
           hostPath = "/srv/ftp/tv/";
           isReadOnly = false;
         };
-        "/srv/ftp/TV Shows" = {
+        "'/srv/ftp/TV Shows'" = {
           hostPath = "/srv/ftp/tv/";
           isReadOnly = false;
         };
@@ -92,6 +93,14 @@ in {
         };
         "/srv/ftp/Movies" = {
           hostPath = "/srv/ftp/movies/";
+          isReadOnly = false;
+        };
+        "/srv/ftp/music" = {
+          hostPath = "/srv/ftp/music/";
+          isReadOnly = false;
+        };
+        "/srv/ftp/Music" = {
+          hostPath = "/srv/ftp/music/";
           isReadOnly = false;
         };
         "/srv/ftp/books" = {
