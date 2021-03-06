@@ -37,9 +37,9 @@ in {
             services.transmission = {
               enable = true;
               settings.dht-enabled = true;
-              settings.peer-port = 51413;
               settings.download-dir = "/srv/ftp/";
               settings.download-queue-enabled = false;
+              settings.peer-port = 51413;
               settings.rpc-authentication-required = false;
               settings.rpc-bind-address = "0.0.0.0";
               settings.rpc-host-whitelist-enabled = false;
@@ -93,6 +93,14 @@ in {
         };
         "/srv/ftp/Movies" = {
           hostPath = "/srv/ftp/movies/";
+          isReadOnly = false;
+        };
+        "/srv/ftp/music" = {
+          hostPath = "/srv/ftp/music/";
+          isReadOnly = false;
+        };
+        "/srv/ftp/Music" = {
+          hostPath = "/srv/ftp/music/";
           isReadOnly = false;
         };
         "/srv/ftp/books" = {
