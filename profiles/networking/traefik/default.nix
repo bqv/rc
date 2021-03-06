@@ -865,6 +865,12 @@
         anki = {
           address = ":27701/tcp";
         };
+        transmission-dht-tcp = {
+          address = ":51413/tcp";
+        };
+        transmission-dht-udp = {
+          address = ":51413/udp";
+        };
       };
 
       providers = {
