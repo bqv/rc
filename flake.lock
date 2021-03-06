@@ -256,6 +256,22 @@
         "type": "github"
       }
     },
+    "dendrite": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1613643494,
+        "narHash": "sha256-CXkPJqiHcFVWUPAHU4S+8/qVDqI8awrNH8J+dfAX2UM=",
+        "owner": "matrix-org",
+        "repo": "dendrite",
+        "rev": "3069079e37510dbda59b2b272ce133ef81832d7b",
+        "type": "github"
+      },
+      "original": {
+        "owner": "matrix-org",
+        "repo": "dendrite",
+        "type": "github"
+      }
+    },
     "devshell": {
       "locked": {
         "lastModified": 1613133744,
@@ -1640,6 +1656,7 @@
         "cloudflare-cli": "cloudflare-cli",
         "conix": "conix",
         "construct": "construct",
+        "dendrite": "dendrite",
         "devshell": "devshell",
         "dgit": "dgit",
         "dmenu": "dmenu",
