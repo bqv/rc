@@ -6,12 +6,7 @@ buildGoModule rec {
 
   src = withSources.dendrite;
 
-  subPackages = [
-    "cmd/dendrite-monolith-server"
-    "cmd/generate-keys"
-    "cmd/generate-config"
-    "cmd/create-account"
-    "cmd/create-room-events"
-  ];
   vendorSha256 = "NnSxqjY5HcSnxWbn9OAperNhysMZbpaOVlR5EHfzPNA=";
+
+  passthru.config = "${src}/dendrite-config.yaml";
 }
