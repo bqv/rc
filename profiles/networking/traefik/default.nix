@@ -697,10 +697,10 @@
           };
         };
         services = {
-          transmission-dht = {
-            loadBalancer = {
-              servers = [{ address = "10.11.0.2:51413"; }];
-            };
+          transmission-dht.loadBalancer = {
+            servers = [
+              { address = "10.11.0.2:51413"; }
+            ];
           };
         };
       };
