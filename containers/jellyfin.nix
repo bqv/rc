@@ -83,7 +83,7 @@ in {
           hostPath = "/srv/ftp/tv/";
           isReadOnly = false;
         };
-        "/srv/ftp/TV\ Shows" = {
+        "/srv/ftp/TV\\ Shows" = {
           hostPath = "/srv/ftp/tv/";
           isReadOnly = false;
         };
