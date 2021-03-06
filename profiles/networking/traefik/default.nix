@@ -678,6 +678,12 @@
             ];
             terminationDelay = 100;
           };
+          transmission-dht.loadBalancer = {
+            servers = [
+              { address = "10.11.0.2:51413"; }
+            ];
+            terminationDelay = 100;
+          };
          #weighted-sample.weighted = {
          #  services = [
          #    {
