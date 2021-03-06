@@ -638,6 +638,11 @@
             rule = "HostSNI(`*`)";
             service = "klaus";
           };
+          transmission-dht-tcp = {
+            entryPoints = [ "transmission-dht-tcp" ];
+            rule = "HostSNI(`*`)";
+            service = "transmission-dht";
+          };
          #irc = {
          #  entryPoints = [ "ircs" ];
          #  rule = "HostSNI(`*`)";
@@ -678,6 +683,12 @@
             ];
             terminationDelay = 100;
           };
+          transmission-dht.loadBalancer = {
+            servers = [
+              { address = "10.11.0.2:51413"; }
+            ];
+            terminationDelay = 100;
+          };
          #weighted-sample.weighted = {
          #  services = [
          #    {
@@ -689,39 +700,21 @@
         };
       };
 
-     #udp = {
-     #  routers = {
-     #    UDPRouter0 = {
-     #      entryPoints = [ "foobar" "foobar" ];
-     #      service = "foobar";
-     #    };
-     #    UDPRouter1 = {
-     #      entryPoints = [ "foobar" "foobar" ];
-     #      service = "foobar";
-     #    };
-     #  };
-     #  services = {
-     #    UDPService01 = {
-     #      loadBalancer = {
-     #        servers = [ { address = "foobar"; } { address = "foobar"; } ];
-     #      };
-     #    };
-     #    UDPService02 = {
-     #      weighted = {
-     #        services = [
-     #          {
-     #            name = "foobar";
-     #            weight = 42;
-     #          }
-     #          {
-     #            name = "foobar";
-     #            weight = 42;
-     #          }
-     #        ];
-     #      };
-     #    };
-     #  };
-     #};
+      udp = {
+        routers = {
+          transmission-dht = {
+            entryPoints = [ "transmission-dht-udp" ];
+            service = "transmission-dht";
+          };
+        };
+        services = {
+          transmission-dht.loadBalancer = {
+            servers = [
+              { address = "10.11.0.2:51413"; }
+            ];
+          };
+        };
+      };
 
       tls = with config.security.acme; {
         certificates = lib.mapAttrsToList (_: { directory, ... }: {
@@ -864,6 +857,12 @@
         };
         anki = {
           address = ":27701/tcp";
+        };
+        transmission-dht-tcp = {
+          address = ":51413/tcp";
+        };
+        transmission-dht-udp = {
+          address = ":51413/udp";
         };
       };
 
