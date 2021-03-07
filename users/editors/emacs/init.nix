@@ -144,8 +144,10 @@ let
       (let ((name (cond ((symbolp package) package)
                         ((stringp package) (make-symbol package))
                         (t nil))))
-        `(config-segment ',name
-                         (leaf ,name ,@args))))
+        (if noninteractive
+            `(require ',name)
+          `(config-segment ',name
+                           (leaf ,name ,@args)))))
 
     (defun config-errors ()
       (let ((error-registry (seq-remove (lambda (c) (eq (type-of (cdr c)) 'config-ok)) config-registry)))
