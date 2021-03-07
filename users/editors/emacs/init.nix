@@ -34,6 +34,23 @@ let
 
   # Setup base packaging - leaf
   package-init = ''
+    (defvar pdmp/state nil
+      "operational state with regards to dump file.")
+
+    (defmacro pdmp/if-dumping (then &rest else)
+      "Evaluate THEN if batch creating a dump file, else evaluate ELSE."
+      (declare (indent 1))
+      `(if (and noninteractive (eq pdmp/state 'dumping))
+           ,then
+         ,@else))
+
+    (defmacro pdmp/if-dumped (then &rest else)
+      "Evaluate THEN if running with a dump file, else evaluate ELSE."
+      (declare (indent 1))
+      `(if (eq pdmp/state 'dumped)
+           ,then
+         ,@else))
+
     (require 'leaf)
     (leaf leaf-keywords
       :ensure t
