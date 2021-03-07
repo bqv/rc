@@ -40,7 +40,7 @@ let
     (defmacro pdmp/if-dumping (then &rest else)
       "Evaluate IF if running with a dump file, else evaluate ELSE."
       (declare (indent 1))
-      `(if pdmp/dumping-p
+      `(if (and noninteractive pdmp/dumping-p)
            ,then
          ,@else))
 
