@@ -36,17 +36,18 @@ in {
         elc = "${built-init.out}/share/emacs/site-lisp/init.elc";
       };
       early-init.el = (import ./early-init.nix args).out;
-      state.pdmp = (pkgs.runCommand ".pdmp" {
+      state.pdmp = (pkgs.runCommand "emacs-state.pdmp" {
         buildInputs = [ cfg.finalPackage ];
-        HOME = "/tmp";
       } ''
-        emacs --batch \
+        mkdir -p $out
+        ln -s $out .emacs.d
+        HOME=$out emacs --batch \
           -l ${early-init.el} \
           --eval '(setq pdmp/state (quote dumping))' \
           -l ${init.el} \
           --eval '(setq pdmp/state (quote dumped))' \
           --eval '(setq pdmp/load-path load-path)' \
-          --eval '(dump-emacs-portable "'$out'")'
+          --eval '(dump-emacs-portable "'$out/state.pdmp'")'
       '').out;
     in {
       ".emacs.d/early-init.el".source = early-init.el;
