@@ -34,25 +34,24 @@ let
 
   # Setup base packaging - leaf
   package-init = ''
-    (defvar pdmp/dumping nil
-      "non-nil when a dump file is loaded.
-    (Because dump.el sets this variable).")
+    (defvar pdmp/dumping-p nil
+      "non-nil when creating a dump file.")
 
     (defmacro pdmp/if-dumping (then &rest else)
       "Evaluate IF if running with a dump file, else evaluate ELSE."
       (declare (indent 1))
-      `(if pdmp/p
+      `(if pdmp/dumping-p
            ,then
          ,@else))
 
-    (defvar pdmp/p nil
+    (defvar pdmp/dumped-p nil
       "non-nil when a dump file is loaded.
     (Because dump.el sets this variable).")
 
     (defmacro pdmp/if-dumped (then &rest else)
       "Evaluate IF if running with a dump file, else evaluate ELSE."
       (declare (indent 1))
-      `(if pdmp/p
+      `(if pdmp/dumped-p
            ,then
          ,@else))
 
