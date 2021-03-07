@@ -74,28 +74,29 @@ let
     (log--log-enable-logging)
     (log--log-enable-messaging)
 
-    (require 'ffi)
-    (define-ffi-library lib/systemd "${pkgs.systemd}/lib/libsystemd.so")
-    ;; (define-ffi-function lib/systemd/sd_notify "sd_notify" :int [:int :pointer] lib/systemd)
-    ;; (defun sd_notify (&rest assocs)
-    ;;   (let* ((assignments (mapcar (lambda (p) (format "%s=%s" (car p) (cdr p))) assocs))
-    ;;          (lstr (s-join "\n" assignments)))
-    ;;     (with-ffi-string (cstr lstr)
-    ;;       (lib/systemd/sd_notify 0 cstr))))
+    (defun load-ffi-systemd ()
+      (require 'ffi)
+      (define-ffi-library lib/systemd "${pkgs.systemd}/lib/libsystemd.so")
+      (define-ffi-function lib/systemd/sd_notify "sd_notify" :int [:int :pointer] lib/systemd)
+      (defun sd_notify (&rest assocs)
+        (let* ((assignments (mapcar (lambda (p) (format "%s=%s" (car p) (cdr p))) assocs))
+               (lstr (s-join "\n" assignments)))
+          (with-ffi-string (cstr lstr)
+            (lib/systemd/sd_notify 0 cstr))))
 
-    ;; (defun watchdog-systemd-notify ()
-    ;;   (with-timeout (10)
-    ;;     (sd_notify '("READY" . 1)
-    ;;                );;(`("WATCHDOG_USEC" . ,(* 120 1000000)))
-    ;;     (log--trace "Notified at %s" (format-time-string "%D %T"))))
+      (defun watchdog-systemd-notify ()
+        (with-timeout (10)
+          (sd_notify '("READY" . 1)
+                     );;(`("WATCHDOG_USEC" . ,(* 120 1000000)))
+          (log--trace "Notified at %s" (format-time-string "%D %T"))))
+      ;(run-at-time t 10 #'watchdog-systemd-notify)
+      t)
     (defun config-end ()
       (message
         "Configuring...done (%.3fs) [after-init]"
         (float-time (time-subtract (current-time)
                                    before-user-init-time)))
-      (fmakunbound 'config-end)
-    ;;(run-at-time t 10 #'watchdog-systemd-notify)
-      )
+      (fmakunbound 'config-end))
 
     (defvar config-registry '()
       "Profiling and initialization status data")
@@ -143,8 +144,10 @@ let
       (let ((name (cond ((symbolp package) package)
                         ((stringp package) (make-symbol package))
                         (t nil))))
-        `(config-segment ',name
-                         (leaf ,name ,@args))))
+        (if noninteractive
+            `(require ',name)
+          `(config-segment ',name
+                           (leaf ,name ,@args)))))
 
     (defun config-errors ()
       (let ((error-registry (seq-remove (lambda (c) (eq (type-of (cdr c)) 'config-ok)) config-registry)))
@@ -192,7 +195,8 @@ let
     (setq max-mini-window-height 0.5)
     (when (fboundp 'windmove-default-keybindings)
       (windmove-default-keybindings))
-    (when (fboundp 'winner-mode)
+    (when (and (not noninteractive) ; breaks in batch mode
+               (fboundp 'winner-mode))
       (winner-mode 1))
     (fset 'yes-or-no-p 'y-or-n-p)
     (progn
