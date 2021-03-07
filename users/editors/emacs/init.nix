@@ -45,8 +45,7 @@ let
          ,@else))
 
     (defvar pdmp/dumped-p nil
-      "non-nil when a dump file is loaded.
-    (Because dump.el sets this variable).")
+      "non-nil when a dump file is loaded.")
 
     (defmacro pdmp/if-dumped (then &rest else)
       "Evaluate IF if running with a dump file, else evaluate ELSE."
