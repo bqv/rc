@@ -36,7 +36,10 @@ in {
         elc = "${built-init.out}/share/emacs/site-lisp/init.elc";
       };
       early-init.el = (import ./early-init.nix args).out;
-      state.pdmp = cfg.finalPackage;
+      state.pdmp = pkgs.runCommand ".pdmp" {
+        buildInputs = [ cfg.finalPackage ];
+      } ''
+      '';
     in {
       ".emacs.d/early-init.el".source = early-init.el;
       ".emacs.d/init.el".source = init.el;
