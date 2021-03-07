@@ -34,8 +34,8 @@ let
 
   # Setup base packaging - leaf
   package-init = ''
-    (defvar pdmp/dumping-p nil
-      "non-nil when creating a dump file.")
+    (defvar pdmp/state nil
+      "operational state with regards to dump file.")
 
     (defmacro pdmp/if-dumping (then &rest else)
       "Evaluate THEN if batch creating a dump file, else evaluate ELSE."
@@ -43,9 +43,6 @@ let
       `(if (and noninteractive (eq pdmp/state 'dumping))
            ,then
          ,@else))
-
-    (defvar pdmp/dumped-p nil
-      "non-nil when a dump file is loaded.")
 
     (defmacro pdmp/if-dumped (then &rest else)
       "Evaluate THEN if running with a dump file, else evaluate ELSE."
