@@ -19,6 +19,7 @@
       (add-to-list 'nix-repl-mode-hook 'company-mode)
       (define-key nix-repl-mode-map (kbd "<tab>") #'company-complete)
       (define-key nix-repl-mode-map (kbd "C-i") #'company-complete)
+      (define-key nix-repl-mode-map (kbd "C-c C-t") #'comint-truncate-buffer)
 
       (defun nixos-configuration-help ()
         (interactive)
