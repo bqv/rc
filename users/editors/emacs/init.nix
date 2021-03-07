@@ -38,7 +38,7 @@ let
       "non-nil when creating a dump file.")
 
     (defmacro pdmp/if-dumping (then &rest else)
-      "Evaluate IF if running with a dump file, else evaluate ELSE."
+      "Evaluate THEN if creating a dump file, else evaluate ELSE."
       (declare (indent 1))
       `(if (and noninteractive pdmp/dumping-p)
            ,then
@@ -48,7 +48,7 @@ let
       "non-nil when a dump file is loaded.")
 
     (defmacro pdmp/if-dumped (then &rest else)
-      "Evaluate IF if running with a dump file, else evaluate ELSE."
+      "Evaluate THEN if running with a dump file, else evaluate ELSE."
       (declare (indent 1))
       `(if pdmp/dumped-p
            ,then
