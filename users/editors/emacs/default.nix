@@ -36,11 +36,20 @@ in {
         elc = "${built-init.out}/share/emacs/site-lisp/init.elc";
       };
       early-init.el = (import ./early-init.nix args).out;
+      state.pdmp = (pkgs.runCommand ".pdmp" {
+        buildInputs = [ cfg.finalPackage ];
+      } ''
+        emacs --batch \
+          -l ${early-init.el} \
+          -l ${init.el} \
+          --eval '(dump-emacs-portable "'$out'")'
+      '').out;
     in {
       ".emacs.d/early-init.el".source = early-init.el;
       ".emacs.d/init.el".source = init.el;
      #".emacs.d/init.elc".source = init.elc; # hmm.
       ".emacs.d/init.d".source = "${cfg.finalPackage.deps}/share/emacs";
+      ".emacs.d/state.pdmp".source = state.pdmp;
     };
 
     home.packages = with pkgs; systemDeps ++ [
