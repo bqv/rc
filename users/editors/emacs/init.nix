@@ -90,7 +90,7 @@ let
                      );;(`("WATCHDOG_USEC" . ,(* 120 1000000)))
           (log--trace "Notified at %s" (format-time-string "%D %T"))))
       ;(run-at-time t 10 #'watchdog-systemd-notify)
-      nil)
+      t)
     (defun config-end ()
       (message
         "Configuring...done (%.3fs) [after-init]"
