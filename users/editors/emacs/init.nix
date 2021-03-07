@@ -195,7 +195,8 @@ let
     (setq max-mini-window-height 0.5)
     (when (fboundp 'windmove-default-keybindings)
       (windmove-default-keybindings))
-    (when (fboundp 'winner-mode)
+    (when (and (not noninteractive) ; breaks in batch mode
+               (fboundp 'winner-mode))
       (winner-mode 1))
     (fset 'yes-or-no-p 'y-or-n-p)
     (progn
