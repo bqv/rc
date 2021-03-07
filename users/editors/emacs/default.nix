@@ -44,6 +44,7 @@ in {
           -l ${early-init.el} \
           -l ${init.el} \
           --eval '(setq pdmp/p t)' \
+          --eval '(setq pdmp/load-path load-path)' \
           --eval '(dump-emacs-portable "'$out'")'
       '').out;
     in {
