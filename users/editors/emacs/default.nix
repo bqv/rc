@@ -39,6 +39,7 @@ in {
       state.pdmp = (pkgs.runCommand ".pdmp" {
         buildInputs = [ cfg.finalPackage ];
       } ''
+        mkdir -p $HOME
         emacs --batch \
           -l ${early-init.el} \
           -l ${init.el} \
