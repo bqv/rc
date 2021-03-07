@@ -40,7 +40,7 @@ let
     (defmacro pdmp/if-dumping (then &rest else)
       "Evaluate THEN if batch creating a dump file, else evaluate ELSE."
       (declare (indent 1))
-      `(if (and noninteractive pdmp/dumping-p)
+      `(if (and noninteractive (eq pdmp/state 'dumping))
            ,then
          ,@else))
 
@@ -50,7 +50,7 @@ let
     (defmacro pdmp/if-dumped (then &rest else)
       "Evaluate THEN if running with a dump file, else evaluate ELSE."
       (declare (indent 1))
-      `(if pdmp/dumped-p
+      `(if (eq pdmp/state 'dumped)
            ,then
          ,@else))
 
