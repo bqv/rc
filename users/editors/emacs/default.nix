@@ -42,8 +42,9 @@ in {
         mkdir -p $HOME
         emacs --batch \
           -l ${early-init.el} \
+          --eval '(setq pdmp/state (quote dumping))' \
           -l ${init.el} \
-          --eval '(setq pdmp/p t)' \
+          --eval '(setq pdmp/state (quote dumped))' \
           --eval '(setq pdmp/load-path load-path)' \
           --eval '(dump-emacs-portable "'$out'")'
       '').out;
