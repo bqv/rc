@@ -38,7 +38,7 @@ let
       "non-nil when creating a dump file.")
 
     (defmacro pdmp/if-dumping (then &rest else)
-      "Evaluate THEN if creating a dump file, else evaluate ELSE."
+      "Evaluate THEN if batch creating a dump file, else evaluate ELSE."
       (declare (indent 1))
       `(if (and noninteractive pdmp/dumping-p)
            ,then
