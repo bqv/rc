@@ -43,6 +43,7 @@ in {
         emacs --batch \
           -l ${early-init.el} \
           -l ${init.el} \
+          --eval '(setq pdmp/p t)' \
           --eval '(dump-emacs-portable "'$out'")'
       '').out;
     in {
