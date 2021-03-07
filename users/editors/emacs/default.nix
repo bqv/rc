@@ -36,7 +36,7 @@ in {
         elc = "${built-init.out}/share/emacs/site-lisp/init.elc";
       };
       early-init.el = (import ./early-init.nix args).out;
-      state.pdmp = (pkgs.runCommand ".pdmp" {
+      state.pdmp = (pkgs.runCommand "emacs-state.pdmp" {
         buildInputs = [ cfg.finalPackage ];
         HOME = "/tmp";
       } ''
