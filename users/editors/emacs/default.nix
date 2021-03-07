@@ -39,7 +39,7 @@ in {
       state.pdmp = (pkgs.runCommand ".pdmp" {
         buildInputs = [ cfg.finalPackage ];
       } ''
-        emacs --batch -l ${init.el} --eval '(progn (dump-emacs-portable "~/emacs.pdmp") (kill-emacs))'
+        emacs --batch -l ${init.el} --eval '(dump-emacs-portable "~/emacs.pdmp")'
       '').out;
     in {
       ".emacs.d/early-init.el".source = early-init.el;
