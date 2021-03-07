@@ -34,6 +34,16 @@ let
 
   # Setup base packaging - leaf
   package-init = ''
+    (defvar pdmp/p nil
+      "non-nil when a dump file is loaded.
+    (Because dump.el sets this variable).")
+
+    (defmacro pdmp/if-dump (then &rest else)
+      "Evaluate IF if running with a dump file, else evaluate ELSE."
+      (declare (indent 1))
+      `(if pdmp/p
+           ,then
+         ,@else))
     (require 'leaf)
     (leaf leaf-keywords
       :ensure t
