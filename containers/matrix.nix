@@ -30,9 +30,12 @@ in {
             generatePrivateKey = true;
             generateTls = false;
             httpPort = 8008;
-            settings = {
+            settings = let
+              mkDb = name: "postgresql://user:pass@hostname/${name}";
+            in {
               api_registration_disabled = false;
               server_name = "${usr.secrets.domains.srvc}:${httpPort}";
+              kafka.naffka_database.connection_string = "postgresql://user:pass@hostname/dendrite-naffka";
              #inherit (usr.secrets.matrix.synapse) registration_shared_secret;
              #public_baseurl = "https://matrix.${usr.secrets.domains.srvc}/";
              #database_type = "psycopg2";
