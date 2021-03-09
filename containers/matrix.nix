@@ -32,10 +32,9 @@ in {
             httpPort = 8008;
             settings = let
               mkDb = with {
-                user = "dendrite";
-                pass = "";
+                authority = "dendrite:pass";
                 hostname = "";
-              }; name: "postgresql://${user}:${pass}@${hostname}/dendrite-${name}";
+              }; name: "postgresql://${authority}@${hostname}/dendrite-${name}";
             in {
               api_registration_disabled = false;
               server_name = "${usr.secrets.domains.srvc}:${httpPort}";
