@@ -28,9 +28,6 @@ in {
           environment.memoryAllocator.provider = "jemalloc";
 
           environment.systemPackages = with pkgs; [ matrix-construct screen ];
-          systemd.services.matrix-synapse.environment = {
-            SYNAPSE_CACHE_FACTOR = "4.0";
-          };
           services.matrix-dendrite = rec {
             enable = true;
             server_name = "${usr.secrets.domains.srvc}";
