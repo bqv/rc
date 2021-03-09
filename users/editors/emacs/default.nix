@@ -38,16 +38,15 @@ in {
       early-init.el = (import ./early-init.nix args).out;
       state.pdmp = (pkgs.runCommand "emacs-state.pdmp" {
         buildInputs = [ cfg.finalPackage ];
+        HOME = "/tmp";
       } ''
-        mkdir -p $out
-        ln -s $out .emacs.d
-        HOME=$out emacs --batch \
+        emacs --batch \
           -l ${early-init.el} \
           --eval '(setq pdmp/state (quote dumping))' \
           -l ${init.el} \
           --eval '(setq pdmp/state (quote dumped))' \
           --eval '(setq pdmp/load-path load-path)' \
-          --eval '(dump-emacs-portable "'$out/state.pdmp'")'
+          --eval '(dump-emacs-portable "'$out'")'
       '').out;
     in {
       ".emacs.d/early-init.el".source = early-init.el;
