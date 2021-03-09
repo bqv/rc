@@ -31,9 +31,9 @@ in {
           systemd.services.matrix-synapse.environment = {
             SYNAPSE_CACHE_FACTOR = "4.0";
           };
-          services.matrix-synapse = rec {
+          services.matrix-dendrite = rec {
             enable = true;
-            server_name = "sn.${usr.secrets.domains.srvc}";
+            server_name = "${usr.secrets.domains.srvc}";
             enable_registration = true;
             inherit (usr.secrets.matrix.synapse) registration_shared_secret;
             public_baseurl = "https://matrix.${usr.secrets.domains.srvc}/";
@@ -68,41 +68,6 @@ in {
                 x_forwarded = true;
               }
             ];
-            servers = {
-              "matrix.org" = { "ed25519:a_RXGa" = "l8Hft5qXKn1vfHrg3p4+W8gELQVo8N13JkluMfmn2sQ"; };
-              "privacytools.io" = { "ed25519:a_UqmI" = "NlVbHUvTMqHQmpXCQwEsSwJwzPju1o+xgzeCr92mc04"; };
-              "mozilla.org" = { "ed25519:0" = "RsDggkM9GntoPcYySc8AsjvGoD0LVz5Ru/B/o5hV9h4"; };
-              "disroot.org" = { "ed25519:a_ngBm" = "GhYGEZEw3s2DjbXThOhqmgntsRmgRYUFrw1i0BYDHJk"; };
-              "tchncs.de" = { "ed25519:a_rOPL" = "HZxh/ZZktCgLcsJgKw2tHS9lPcOo1kNBoEdeVtmkpeg"; };
-            };
-            extraConfig = ''
-              enable_group_creation: true
-              max_upload_size: "100M"
-              use_presence: false
-            '';
-          };
-
-          services.matrix-construct = {
-            enable = true;
-            useScreen = false;
-            server = "cs.${usr.secrets.domains.srvc}";
-            package = pkgs.matrix-construct.overrideAttrs (_: {
-              doInstallCheck = true;
-            });
-          };
-
-          systemd.services.restart-construct = {
-            serviceConfig = {
-              Type = "oneshot";
-              ExecStart = "systemctl restart matrix-construct.service";
-            };
-          };
-          systemd.timers.restart-construct = {
-            timerConfig = {
-              OnStartupSec = "1d";
-              OnUnitActiveSec = "1d";
-            };
-            wantedBy = [ "timers.target" ];
           };
 
           networking.firewall.enable = false;
