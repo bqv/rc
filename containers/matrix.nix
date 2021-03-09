@@ -28,6 +28,7 @@ in {
             enable = true;
             #environmentFile = null;
             generatePrivateKey = true;
+            generateTls = false;
             server_name = "${usr.secrets.domains.srvc}";
             enable_registration = true;
             inherit (usr.secrets.matrix.synapse) registration_shared_secret;
