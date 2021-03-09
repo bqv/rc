@@ -157,7 +157,7 @@
         }
         {
           description = "matrix-dendrite: init at 0.3.9";
-          id = 109561; hash = "uVlMZ92myOvB64QIC2MZMmBnwpMrB+qxa48W86oVqZU=";
+          id = 109561; hash = "+lTYEXjiMGh6hsYAWU+y5Cn0nFfzeW0yD84AZKsyHT4=";
         }
       ];
       patches = [
