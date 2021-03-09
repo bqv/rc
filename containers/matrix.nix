@@ -25,7 +25,7 @@ in {
             flake.inputs.construct.nixosModules.matrix-construct
           ];
 
-          environment.memoryAllocator.provider = "jemalloc";
+         #environment.memoryAllocator.provider = "jemalloc";
 
           environment.systemPackages = with pkgs; [ matrix-construct screen ];
           services.matrix-dendrite = rec {
