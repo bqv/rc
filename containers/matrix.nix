@@ -30,20 +30,21 @@ in {
             generatePrivateKey = true;
             generateTls = false;
             httpPort = 8008;
-            server_name = "${usr.secrets.domains.srvc}";
-            enable_registration = true;
-            inherit (usr.secrets.matrix.synapse) registration_shared_secret;
-            public_baseurl = "https://matrix.${usr.secrets.domains.srvc}/";
-            tls_certificate_path = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
-            tls_private_key_path = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
-            database_type = "psycopg2";
-            database_args = {
-              user = "matrix-dendrite";
-              database = "matrix-dendrite";
-              host = hostAddress;
-            };
-            listeners = [
-              { # federation
+            settings = {
+              server_name = "${usr.secrets.domains.srvc}";
+              api_registration_disabled = false;
+              inherit (usr.secrets.matrix.synapse) registration_shared_secret;
+              public_baseurl = "https://matrix.${usr.secrets.domains.srvc}/";
+              tls_certificate_path = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
+              tls_private_key_path = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
+              database_type = "psycopg2";
+              database_args = {
+                user = "matrix-dendrite";
+                database = "matrix-dendrite";
+                host = hostAddress;
+              };
+              listeners = [
+                { # federation
                 bind_address = "";
                 port = 8448;
                 resources = [
@@ -53,8 +54,8 @@ in {
                 tls = true;
                 type = "http";
                 x_forwarded = false;
-              }
-              { # client
+                }
+                { # client
                 bind_address = "0.0.0.0";
                 port = 8008;
                 resources = [
@@ -63,8 +64,9 @@ in {
                 tls = false;
                 type = "http";
                 x_forwarded = true;
-              }
-            ];
+                }
+              ];
+            };
           };
 
           networking.firewall.enable = false;
