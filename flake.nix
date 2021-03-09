@@ -149,7 +149,7 @@
       }) [
         {
           description = "nixos/anbox: use mainline drivers when available";
-          id = 102341; hash = "68IzjRPbRuDQ9Lk8WHbYTbxvTr0pHH3wIuSh7ISaqiQ=";
+          id = 102341; hash = "NG8/8NfxzwKU30MW8nY11TAklFQ0SyGyG41MqwxdRO0=";
         }
         {
           description = "nixos/nat: substitute iptables for compat under nftables";
