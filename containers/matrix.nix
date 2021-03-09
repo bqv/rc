@@ -42,8 +42,8 @@ in {
              #  host = hostAddress;
              #};
             };
-            tls_certificate_path = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
-            tls_private_key_path = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
+            tlsCert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
+            tlsKey = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
           };
 
           networking.firewall.enable = false;
