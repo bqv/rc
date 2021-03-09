@@ -149,16 +149,16 @@
       }) [
         {
           description = "nixos/anbox: use mainline drivers when available";
-          id = 102341; hash = "68IzjRPbRuDQ9Lk8WHbYTbxvTr0pHH3wIuSh7ISaqiQ=";
+          id = 102341; hash = "NG8/8NfxzwKU30MW8nY11TAklFQ0SyGyG41MqwxdRO0=";
         }
         {
           description = "nixos/nat: substitute iptables for compat under nftables";
-          id = 85462; hash = "vU53uZUhhO6U2RGElAnZqAy3KForw/yyPiU5Rg1hL74=";
+          id = 085462; hash = "vU53uZUhhO6U2RGElAnZqAy3KForw/yyPiU5Rg1hL74=";
         }
-       #{
-       #  description = "emacs: disable trampoline generation when installing packages";
-       #  id = 109370; hash = "uVlMZ92myOvB64QIC2MZMmBZwpMrB+qxa48W86oVqZU=";
-       #}
+        {
+          description = "matrix-dendrite: init at 0.3.9";
+          id = 109561; hash = "+lTYEXjiMGh6hsYAWU+y5Cn0nFfzeW0yD84AZKsyHT4=";
+        }
       ];
       patches = [
        #(basePkgs.fetchurl {
