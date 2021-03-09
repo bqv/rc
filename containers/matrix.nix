@@ -21,13 +21,9 @@ in {
         { ... }:
 
         {
-          imports = [
-            flake.inputs.construct.nixosModules.matrix-construct
-          ];
+          #environment.memoryAllocator.provider = "jemalloc";
 
-         #environment.memoryAllocator.provider = "jemalloc";
-
-          environment.systemPackages = with pkgs; [ matrix-construct screen ];
+          environment.systemPackages = with pkgs; [ screen ];
           services.matrix-dendrite = rec {
             enable = true;
             server_name = "${usr.secrets.domains.srvc}";
