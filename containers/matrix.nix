@@ -34,8 +34,8 @@ in {
             tls_private_key_path = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
             database_type = "psycopg2";
             database_args = {
-              user = "matrix-synapse";
-              database = "matrix-synapse";
+              user = "matrix-dendrite";
+              database = "matrix-dendrite";
               host = hostAddress;
             };
             listeners = [
