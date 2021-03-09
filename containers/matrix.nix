@@ -26,6 +26,7 @@ in {
           environment.systemPackages = with pkgs; [ screen ];
           services.matrix-dendrite = rec {
             enable = true;
+            environmentFile = null;
             server_name = "${usr.secrets.domains.srvc}";
             enable_registration = true;
             inherit (usr.secrets.matrix.synapse) registration_shared_secret;
