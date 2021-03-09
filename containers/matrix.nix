@@ -31,7 +31,7 @@ in {
             generateTls = false;
             httpPort = 8008;
             settings = {
-              server_name = "${usr.secrets.domains.srvc}:${httpPost}";
+              server_name = "${usr.secrets.domains.srvc}:${httpPort}";
               api_registration_disabled = false;
               inherit (usr.secrets.matrix.synapse) registration_shared_secret;
               public_baseurl = "https://matrix.${usr.secrets.domains.srvc}/";
