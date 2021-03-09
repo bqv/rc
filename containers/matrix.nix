@@ -80,6 +80,10 @@ in {
          #];
         };
       bindMounts = {
+        "/var/lib/matrix-dendrite" = {
+          hostPath = "/var/lib/dendrite";
+          isReadOnly = false;
+        };
         "/var/lib/matrix-synapse" = {
           hostPath = "/var/lib/synapse";
           isReadOnly = false;
