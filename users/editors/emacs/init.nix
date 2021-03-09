@@ -129,7 +129,9 @@ let
                (config-scope (cons (symbol-name ,name) config-scope))
                (config-name (string-join (reverse config-scope) "::")))
           (condition-case the-problem
-            (progn ,@body)
+              (if noninteractive
+                  (require name)
+                (progn ,@body))
             (error (setq error-state the-problem))
             (warn (setq error-state the-problem)))
           (if error-state
@@ -161,10 +163,8 @@ let
       (let ((name (cond ((symbolp package) package)
                         ((stringp package) (make-symbol package))
                         (t nil))))
-        (if noninteractive
-            `(require ',name)
-          `(config-segment ',name
-                           (leaf ,name ,@args)))))
+        `(config-segment ',name
+                         (leaf ,name ,@args))))
 
     (defun config-errors ()
       (let ((error-registry (seq-remove (lambda (c) (eq (type-of (cdr c)) 'config-ok)) config-registry)))
