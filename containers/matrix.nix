@@ -6,9 +6,9 @@ let
 in {
   services.postgresql.enable = true;
   services.postgresql.ensureUsers = [
-    { name = "matrix-synapse"; ensurePermissions."DATABASE \"matrix-synapse\"" = "ALL PRIVILEGES"; }
+    { name = "matrix-dendrite"; ensurePermissions."DATABASE \"matrix-dendrite\"" = "ALL PRIVILEGES"; }
   ];
-  services.postgresql.ensureDatabases = [ "matrix-synapse" ];
+  services.postgresql.ensureDatabases = [ "matrix-dendrite" ];
 
   containers.matrix =
     {
