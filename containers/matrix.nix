@@ -39,6 +39,7 @@ in {
               api_registration_disabled = false;
               server_name = "${usr.secrets.domains.srvc}:${httpPort}";
               kafka.naffka_database.connection_string = mkDb "naffka";
+              app_service_api.database.connection_string = mkDb "app";
              #inherit (usr.secrets.matrix.synapse) registration_shared_secret;
              #public_baseurl = "https://matrix.${usr.secrets.domains.srvc}/";
              #database_type = "psycopg2";
