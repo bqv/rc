@@ -153,7 +153,7 @@
         }
         {
           description = "nixos/nat: substitute iptables for compat under nftables";
-          id = 85462; hash = "vU53uZUhhO6U2RGElAnZqAy3KForw/yyPiU5Rg1hL74=";
+          id = 085462; hash = "vU53uZUhhO6U2RGElAnZqAy3KForw/yyPiU5Rg1hL74=";
         }
         {
           description = "matrix-dendrite: init at 0.3.9";
