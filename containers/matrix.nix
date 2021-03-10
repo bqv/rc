@@ -86,7 +86,7 @@ in {
          #];
         };
       bindMounts = {
-        "/var/lib/matrix-dendrite" = {
+        "/var/lib/private/matrix-dendrite" = {
           hostPath = "/var/lib/dendrite";
           isReadOnly = false;
         };
