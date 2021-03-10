@@ -844,7 +844,7 @@
           address = ":6697/tcp";
         };
         synapse = {
-          address = ":8448/tcp";
+          address = ":8008/tcp";
         };
         yacy = {
           address = ":8090/tcp";
