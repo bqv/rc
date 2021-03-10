@@ -15,6 +15,15 @@
   environment.systemPackages = with pkgs; [ dhcp dhcpcd mactelnet ];
 
   networking.namespacing.enable = false;
+  networking.wlanInterfaces = lib.mapAttrs (_: x: {
+    device = "wlan0";
+  } // x) {
+    wlan0 = { };
+    adhoc0 = {
+      type = "ibss";
+    };
+    p2p0 = { };
+  };
   networking.wireless = let
     useIwd = true;
   in {
