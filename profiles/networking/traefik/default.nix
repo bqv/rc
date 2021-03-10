@@ -264,6 +264,7 @@
             };
           };
           matrix-api = { addPrefix = { prefix = "_matrix"; }; };
+          matrix-wellknown = { addPrefix = { prefix = "_matrix"; }; };
          #Middleware00 = { addPrefix = { prefix = "foobar"; }; };
          #Middleware01 = {
          #  basicAuth = {
