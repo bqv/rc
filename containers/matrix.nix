@@ -77,13 +77,19 @@ in {
 
           services.nginx.virtualHosts.well-known-matrix = {
             locations = {
-              "/.well-known/matrix/server".extraConfig = ''
+             #"/.well-known/matrix/server".extraConfig = ''
+             #  return 200 '{ "m.server": "${cfg.nginxVhost}:443" }';
+             #'';
+             #"/.well-known/matrix/client".extraConfig = ''
+             #  return 200 '{ "m.homeserver": { "base_url": "https://${cfg.nginxVhost}" } }';
+             #'';
+             #"/_matrix".proxyPass = "http://localhost:8008";
+              "/server".extraConfig = ''
                 return 200 '{ "m.server": "${cfg.nginxVhost}:443" }';
               '';
-              "/.well-known/matrix/client".extraConfig = ''
+              "/client".extraConfig = ''
                 return 200 '{ "m.homeserver": { "base_url": "https://${cfg.nginxVhost}" } }';
               '';
-              "/_matrix".proxyPass = "http://localhost:8008";
             };
           };
 
