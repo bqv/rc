@@ -20,10 +20,12 @@ in {
     ];
   in {
     enable = true;
-  services.postgresql.ensureUsers = [
-    { name = "dendrite"; ensurePermissions."DATABASE \"matrix-dendrite\"" = "ALL PRIVILEGES"; }
-  ];
-  services.postgresql.ensureDatabases = map (x: "dendrite-${x}") databases;
+    ensureUsers = map (x: {
+      name = "dendrite";
+      ensurePermissions."DATABASE \"dendrite-${x}\"" = "ALL PRIVILEGES";
+    }) databases;
+    ensureDatabases = map (x: "dendrite-${x}") databases;
+  };
 
   containers.matrix =
     {
