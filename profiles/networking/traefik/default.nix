@@ -846,6 +846,12 @@
         yacy = {
           address = ":8090/tcp";
         };
+        dendrite = {
+          address = ":8008/tcp";
+        };
+        dendrite-tls = {
+          address = ":8448/tcp";
+        };
         jellyfin = {
           address = ":8096/tcp";
         };
