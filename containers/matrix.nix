@@ -43,7 +43,6 @@ in {
           environment.systemPackages = with pkgs; [ screen ];
           services.matrix-dendrite = rec {
             enable = true;
-            #environmentFile = null;
             generatePrivateKey = true;
             generateTls = false;
             httpPort = 8008;
