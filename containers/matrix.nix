@@ -47,7 +47,7 @@ in {
             generatePrivateKey = true;
             generateTls = false;
             httpPort = 8008;
-            settings = let
+            settings.global = let
               mkDb = with {
                 authority = "dendrite";
                 hostname = hostAddress;
