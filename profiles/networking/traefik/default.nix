@@ -103,13 +103,13 @@
           };
           dendrite-http = {
             entryPoints = [ "dendrite" ];
-            rule = "Host(`*`)";
+            rule = "Host(`*`) && PathPrefix(`/_matrix`)";
             service = "dendrite";
             middlewares = [ "matrix-api" ];
           };
           dendrite-tls = dendrite-http // {
             entryPoints = [ "http" "https" ];
-            rule = "Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)";
+            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/_matrix`)";
             tls.domains = [
               { main = "matrix.${domains.srvc}"; }
               { main = "m.${domains.srvc}"; }
