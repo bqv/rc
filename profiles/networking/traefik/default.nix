@@ -686,11 +686,13 @@
             servers = [
               { address = "10.7.0.2:8008"; }
             ];
+            terminationDelay = 100;
           };
           dendrite-tls.loadBalancer = {
             servers = [
               { address = "10.7.0.2:8448"; }
             ];
+            terminationDelay = 100;
           };
           transmission-dht.loadBalancer = {
             servers = [
