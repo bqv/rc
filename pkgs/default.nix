@@ -29,8 +29,6 @@ in rec {
 
   dejavu_nerdfont = prev.callPackage ./data/fonts/dejavu-nerdfont { };
 
-  dendrite = prev.callPackage ./servers/dendrite { };
-
   dotnetPackages = recurseIntoAttrs (prev.dotnetPackages.override { overrides = dotnetOverride; });
 
   electronmail = prev.callPackage ./applications/networking/mailreaders/electronmail { };
