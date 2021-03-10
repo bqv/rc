@@ -47,15 +47,15 @@ in {
             generatePrivateKey = true;
             generateTls = false;
             httpPort = 8008;
-            settings.global = let
+            settings = let
               mkDb = with {
                 authority = "dendrite";
                 hostname = hostAddress;
               }; name: "postgresql://${authority}@${hostname}/dendrite-${name}?sslmode=disable";
             in {
-              api_registration_disabled = false;
-              server_name = "${usr.secrets.domains.srvc}:${toString httpPort}";
-              kafka.naffka_database.connection_string = mkDb "naffka";
+              global.api_registration_disabled = false;
+              global.server_name = "${usr.secrets.domains.srvc}:${toString httpPort}";
+              global.kafka.naffka_database.connection_string = mkDb "naffka";
               app_service_api.database.connection_string = mkDb "appservice";
               federation_sender.database.connection_string = mkDb "federationsender";
               key_server.database.connection_string = mkDb "keyserver";
