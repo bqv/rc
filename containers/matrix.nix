@@ -4,11 +4,28 @@ let
   hostAddress = "10.7.0.1";
   localAddress = "10.7.0.2";
 in {
-  services.postgresql.enable = true;
-  services.postgresql.ensureUsers = [
-    { name = "matrix-synapse"; ensurePermissions."DATABASE \"matrix-synapse\"" = "ALL PRIVILEGES"; }
-  ];
-  services.postgresql.ensureDatabases = [ "matrix-synapse" ];
+  services.postgresql = let
+    databases = [
+      "naffka"
+      "appservice"
+      "federationsender"
+      "keyserver"
+      "mediaapi"
+      "mscs"
+      "roomserver"
+      "signingkeyserver"
+      "syncapi"
+      "userapi-accounts"
+      "userapi-devices"
+    ];
+  in {
+    enable = true;
+    ensureUsers = map (x: {
+      name = "dendrite";
+      ensurePermissions."DATABASE \"dendrite-${x}\"" = "ALL PRIVILEGES";
+    }) databases;
+    ensureDatabases = map (x: "dendrite-${x}") databases;
+  };
 
   containers.matrix =
     {
@@ -21,100 +38,58 @@ in {
         { ... }:
 
         {
-          imports = [
-            flake.inputs.construct.nixosModules.matrix-construct
-          ];
+          #environment.memoryAllocator.provider = "jemalloc";
 
-          environment.memoryAllocator.provider = "jemalloc";
-
-          environment.systemPackages = with pkgs; [ matrix-construct screen ];
-          systemd.services.matrix-synapse.environment = {
-            SYNAPSE_CACHE_FACTOR = "4.0";
-          };
-          services.matrix-synapse = rec {
+          environment.systemPackages = with pkgs; [ screen ];
+          services.matrix-dendrite = rec {
             enable = true;
-            server_name = "sn.${usr.secrets.domains.srvc}";
-            enable_registration = true;
-            inherit (usr.secrets.matrix.synapse) registration_shared_secret;
-            public_baseurl = "https://matrix.${usr.secrets.domains.srvc}/";
-            tls_certificate_path = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
-            tls_private_key_path = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
-            database_type = "psycopg2";
-            database_args = {
-              user = "matrix-synapse";
-              database = "matrix-synapse";
-              host = hostAddress;
+            #environmentFile = null;
+            generatePrivateKey = true;
+            generateTls = false;
+            httpPort = 8008;
+            settings.global = let
+              mkDb = with {
+                authority = "dendrite";
+                hostname = hostAddress;
+              }; name: "postgresql://${authority}@${hostname}/dendrite-${name}";
+            in {
+              api_registration_disabled = false;
+              server_name = "${usr.secrets.domains.srvc}:${toString httpPort}";
+              kafka.naffka_database.connection_string = mkDb "naffka";
+              app_service_api.database.connection_string = mkDb "appservice";
+              federation_sender.database.connection_string = mkDb "federationsender";
+              key_server.database.connection_string = mkDb "keyserver";
+              media_api.database.connection_string = mkDb "mediaapi";
+              mscs.database.connection_string = mkDb "mscs";
+              room_server.database.connection_string = mkDb "roomserver";
+              signing_key_server.database.connection_string = mkDb "signingkeyserver";
+              sync_api.database.connection_string = mkDb "syncapi";
+              user_api.account_database.connection_string = mkDb "userapi-accounts";
+              user_api.device_database.connection_string = mkDb "userapi-devices";
+              client_api = {
+                inherit (usr.secrets.matrix.synapse) registration_shared_secret;
+              };
+              mscs.mscs = [ "msc2946" ];
+             #public_baseurl = "https://matrix.${usr.secrets.domains.srvc}/";
             };
-            listeners = [
-              { # federation
-                bind_address = "";
-                port = 8448;
-                resources = [
-                  { compress = true; names = [ "client" "webclient" ]; }
-                  { compress = false; names = [ "federation" ]; }
-                ];
-                tls = true;
-                type = "http";
-                x_forwarded = false;
-              }
-              { # client
-                bind_address = "0.0.0.0";
-                port = 8008;
-                resources = [
-                  { compress = true; names = [ "client" "webclient" ]; }
-                ];
-                tls = false;
-                type = "http";
-                x_forwarded = true;
-              }
-            ];
-            servers = {
-              "matrix.org" = { "ed25519:a_RXGa" = "l8Hft5qXKn1vfHrg3p4+W8gELQVo8N13JkluMfmn2sQ"; };
-              "privacytools.io" = { "ed25519:a_UqmI" = "NlVbHUvTMqHQmpXCQwEsSwJwzPju1o+xgzeCr92mc04"; };
-              "mozilla.org" = { "ed25519:0" = "RsDggkM9GntoPcYySc8AsjvGoD0LVz5Ru/B/o5hV9h4"; };
-              "disroot.org" = { "ed25519:a_ngBm" = "GhYGEZEw3s2DjbXThOhqmgntsRmgRYUFrw1i0BYDHJk"; };
-              "tchncs.de" = { "ed25519:a_rOPL" = "HZxh/ZZktCgLcsJgKw2tHS9lPcOo1kNBoEdeVtmkpeg"; };
-            };
-            extraConfig = ''
-              enable_group_creation: true
-              max_upload_size: "100M"
-              use_presence: false
-            '';
-          };
-
-          services.matrix-construct = {
-            enable = true;
-            useScreen = false;
-            server = "cs.${usr.secrets.domains.srvc}";
-            package = pkgs.matrix-construct.overrideAttrs (_: {
-              doInstallCheck = true;
-            });
-          };
-
-          systemd.services.restart-construct = {
-            serviceConfig = {
-              Type = "oneshot";
-              ExecStart = "systemctl restart matrix-construct.service";
-            };
-          };
-          systemd.timers.restart-construct = {
-            timerConfig = {
-              OnStartupSec = "1d";
-              OnUnitActiveSec = "1d";
-            };
-            wantedBy = [ "timers.target" ];
+            tlsCert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
+            tlsKey = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
           };
 
           networking.firewall.enable = false;
 
-          users.users.matrix-synapse.extraGroups = [
-            "keys"
-          ];
+         #users.users.matrix-synapse.extraGroups = [
+         #  "keys"
+         #];
          #users.users.construct.extraGroups = [
          #  "keys"
          #];
         };
       bindMounts = {
+        "/var/lib/private/matrix-dendrite" = {
+          hostPath = "/var/lib/dendrite";
+          isReadOnly = false;
+        };
         "/var/lib/matrix-synapse" = {
           hostPath = "/var/lib/synapse";
           isReadOnly = false;
