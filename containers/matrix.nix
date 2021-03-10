@@ -78,9 +78,6 @@ in {
 
           networking.firewall.enable = false;
 
-         #users.users.matrix-synapse.extraGroups = [
-         #  "keys"
-         #];
          #users.users.construct.extraGroups = [
          #  "keys"
          #];
