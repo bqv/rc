@@ -118,15 +118,15 @@
             entryPoints = [ "dendrite-tls" ];
             tls.domains = [{ main = "${domains.srvc}"; }];
           };
-          dendrite-wellknown-http = dendrite-http // {
+          dendrite-http-wellknown = dendrite-http // {
             service = "dendrite-wellknown";
             middlewares = [ "matrix-wellknown" ];
           };
-          dendrite-wellknown-tls = dendrite-tls // {
+          dendrite-tls-wellknown = dendrite-tls // {
             service = "dendrite-wellknown";
             middlewares = [ "matrix-wellknown" ];
           };
-          dendrite-wellknown-https = dendrite-https // {
+          dendrite-https-wellknown = dendrite-https // {
             service = "dendrite-wellknown";
             middlewares = [ "matrix-wellknown" ];
           };
