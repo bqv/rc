@@ -102,12 +102,11 @@
           };
           dendrite-http = {
             entryPoints = [ "dendrite" ];
-            rule = "Host(`m.${domains.srvc}`)";
+            rule = "Host(`*`)";
             service = "dendrite";
           };
           dendrite-https = dendrite-http // {
             entryPoints = [ "dendrite-tls" ];
-            tls.domains = [{ main = "m.${domains.srvc}"; }];
           };
           construct-http = {
             entryPoints = [ "http" ];
