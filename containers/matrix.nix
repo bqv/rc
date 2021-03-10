@@ -53,7 +53,6 @@ in {
                 hostname = hostAddress;
               }; name: "postgresql://${authority}@${hostname}/dendrite-${name}?sslmode=disable";
             in {
-              global.api_registration_disabled = false;
               global.server_name = "${usr.secrets.domains.srvc}:${toString httpPort}";
               global.kafka.naffka_database.connection_string = mkDb "naffka";
               app_service_api.database.connection_string = mkDb "appservice";
@@ -68,6 +67,7 @@ in {
               user_api.device_database.connection_string = mkDb "userapi-devices";
               client_api = {
                 inherit (usr.secrets.matrix.synapse) registration_shared_secret;
+                registration_disabled = false;
               };
               mscs.mscs = [ "msc2946" ];
              #public_baseurl = "https://matrix.${usr.secrets.domains.srvc}/";
