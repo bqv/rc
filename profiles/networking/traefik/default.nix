@@ -101,7 +101,7 @@
             tls.domains = [{ main = "tw.${domains.srvc}"; }];
           };
           dendrite-http = {
-            entryPoints = [];
+            entryPoints = [ "dendrite" ];
             rule = "Host(`*`)";
             service = "dendrite";
           };
@@ -263,6 +263,7 @@
               replacement = "\${1}://dev.${domains.home}/nixrc/\${2}";
             };
           };
+          matrix-api = { addPrefix = { prefix = "_matrix"; }; };
          #Middleware00 = { addPrefix = { prefix = "foobar"; }; };
          #Middleware01 = {
          #  basicAuth = {
@@ -637,16 +638,6 @@
             rule = "HostSNI(`*`)";
             service = "klaus";
           };
-          dendrite = {
-            entryPoints = [ "dendrite" ];
-            rule = "HostSNI(`*`)";
-            service = "dendrite";
-          };
-          dendrite-tls = {
-            entryPoints = [ "dendrite-tls" ];
-            rule = "HostSNI(`*`)";
-            service = "dendrite-tls";
-          };
           transmission-dht-tcp = {
             entryPoints = [ "transmission-dht-tcp" ];
             rule = "HostSNI(`*`)";
@@ -689,18 +680,6 @@
           irc.loadBalancer = {
             servers = [
               { address = "${hosts.wireguard.ipv4.delta}:6697"; }
-            ];
-            terminationDelay = 100;
-          };
-          dendrite.loadBalancer = {
-            servers = [
-              { address = "10.7.0.2:8008"; }
-            ];
-            terminationDelay = 100;
-          };
-          dendrite-tls.loadBalancer = {
-            servers = [
-              { address = "10.7.0.2:8448"; }
             ];
             terminationDelay = 100;
           };
