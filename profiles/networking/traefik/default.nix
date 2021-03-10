@@ -133,15 +133,6 @@
             entryPoints = [ "dendrite-tls" ];
             tls.domains = [{ main = "${domains.srvc}"; }];
           };
-          construct-http = {
-            entryPoints = [ "http" ];
-            rule = "Host(`cs.${domains.srvc}`)";
-            service = "construct";
-          };
-          construct-https = construct-http // {
-            entryPoints = [ "https" "construct" ];
-            tls.domains = [{ main = "cs.${domains.srvc}"; }];
-          };
           certauth = {
             entryPoints = [ "http" "https" ];
             rule = "Host(`ca.${domains.home}`)";
