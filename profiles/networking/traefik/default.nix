@@ -100,13 +100,13 @@
             entryPoints = [ "https" ];
             tls.domains = [{ main = "tw.${domains.srvc}"; }];
           };
-          synapse-http = {
+          dendrite-http = {
             entryPoints = [ "http" ];
             rule = "Host(`sn.${domains.srvc}`)";
-            service = "synapse";
+            service = "dendrite";
           };
-          synapse-https = synapse-http // {
-            entryPoints = [ "https" "synapse" ];
+          dendrite-https = dendrite-http // {
+            entryPoints = [ "https" "dendrite" ];
             tls.domains = [{ main = "sn.${domains.srvc}"; }];
           };
           construct-http = {
@@ -518,7 +518,7 @@
               { url = "https://10.6.0.2:443"; }
             ];
           };
-          synapse.loadBalancer = {
+          dendrite.loadBalancer = {
             servers = [
               { url = "https://10.7.0.2:8008"; }
             ];
@@ -843,7 +843,7 @@
         ircs = {
           address = ":6697/tcp";
         };
-        synapse = {
+        dendrite = {
           address = ":8008/tcp";
         };
         yacy = {
