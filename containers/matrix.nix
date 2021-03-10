@@ -66,8 +66,8 @@ in {
               user_api.account_database.connection_string = mkDb "userapi-accounts";
               user_api.device_database.connection_string = mkDb "userapi-devices";
               client_api = {
-                inherit (usr.secrets.matrix.synapse) registration_shared_secret;
                 registration_disabled = false;
+                inherit (usr.secrets.matrix.synapse) registration_shared_secret;
               };
              #mscs.mscs = [ "msc2946" ];
              #public_baseurl = "https://matrix.${usr.secrets.domains.srvc}/";
