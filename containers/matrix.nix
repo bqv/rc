@@ -51,7 +51,7 @@ in {
               mkDb = with {
                 authority = "dendrite";
                 hostname = hostAddress;
-              }; name: "postgresql://${authority}@${hostname}/dendrite-${name}";
+              }; name: "postgresql://${authority}@${hostname}/dendrite-${name}?sslmode=disable";
             in {
               api_registration_disabled = false;
               server_name = "${usr.secrets.domains.srvc}:${toString httpPort}";
