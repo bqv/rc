@@ -104,9 +104,10 @@
             entryPoints = [ "dendrite" ];
             rule = "Host(`*`)";
             service = "dendrite";
+            middlewares = [ "matrix-api" ];
           };
           dendrite-https = dendrite-http // {
-            entryPoints = [];
+            entryPoints = [ "dendrite-tls" ];
           };
           construct-http = {
             entryPoints = [ "http" ];
@@ -520,8 +521,14 @@
             ];
           };
           dendrite.loadBalancer = {
+            passHostHeader = true;
             servers = [
               { url = "http://10.7.0.2:8008"; }
+            ];
+          };
+          dendrite-wellknown.loadBalancer = {
+            servers = [
+              { url = "http://10.7.0.2:80"; }
             ];
           };
           construct.loadBalancer = {
