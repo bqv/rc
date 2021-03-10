@@ -111,6 +111,7 @@
             rule = "Host(`matrix.${domains.srvc}`) && Host(`m.${domains.srvc}`)";
             tls.domains = [
               { main = "matrix.${domains.srvc}"; }
+              { main = "m.${domains.srvc}"; }
             ];
           };
           dendrite-https = dendrite-http // {
