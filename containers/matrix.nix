@@ -75,6 +75,7 @@ in {
             tlsKey = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
           };
 
+          services.nginx.enable = true;
           services.nginx.virtualHosts.wellknown-matrix = {
             locations = {
              #"/.well-known/matrix/server".extraConfig = ''
