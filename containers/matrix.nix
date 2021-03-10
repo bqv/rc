@@ -84,9 +84,9 @@ in {
               "${pkgs.matrix-dendrite}/bin/dendrite-monolith-server"
               "--config /run/matrix-dendrite/dendrite.yaml"
             ] ++ lib.optionals (cfg.httpPort != null) [
-              "--http-bind-address :${builtins.toString cfg.httpPort}"
+              "--http-bind-address 0.0.0.0:${builtins.toString cfg.httpPort}"
             ] ++ lib.optionals (cfg.httpsPort != null) [
-              "--https-bind-address :${builtins.toString cfg.httpsPort}"
+              "--https-bind-address 0.0.0.0:${builtins.toString cfg.httpsPort}"
             ] ++ lib.optionals (cfg.tlsCert != null && cfg.tlsKey != null) [
               "--tls-cert ${cfg.tlsCert}"
               "--tls-key ${cfg.tlsKey}"
