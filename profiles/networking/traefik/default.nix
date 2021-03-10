@@ -75,6 +75,7 @@
           };
           yacy = {
             entryPoints = [ "yacy" ];
+            rule = "Host(`yacy.${domains.home}`)";
             service = "yacy";
           };
           gpx = {
@@ -100,23 +101,45 @@
             entryPoints = [ "https" ];
             tls.domains = [{ main = "tw.${domains.srvc}"; }];
           };
-          dendrite-http = {
-            entryPoints = [ "http" ];
-            rule = "Host(`sn.${domains.srvc}`)";
+          dendrite = {
+            entryPoints = [ "dendrite" ];
+            rule = "Host(`*`) && PathPrefix(`/_matrix`)";
             service = "dendrite";
+            middlewares = [ "matrix-api" ];
+          };
+          dendrite-http = dendrite // {
+            entryPoints = [ "http" ];
+            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/_matrix`)";
           };
           dendrite-https = dendrite-http // {
-            entryPoints = [ "https" "dendrite" ];
-            tls.domains = [{ main = "sn.${domains.srvc}"; }];
+            entryPoints = [ "https" ];
+            tls.domains = [
+              { main = "matrix.${domains.srvc}"; }
+              { main = "m.${domains.srvc}"; }
+            ];
           };
-          construct-http = {
-            entryPoints = [ "http" ];
-            rule = "Host(`cs.${domains.srvc}`)";
-            service = "construct";
+          dendrite-tls = dendrite // {
+            entryPoints = [ "dendrite-tls" ];
+            tls.domains = [{ main = "${domains.srvc}"; }];
           };
-          construct-https = construct-http // {
-            entryPoints = [ "https" "construct" ];
-            tls.domains = [{ main = "cs.${domains.srvc}"; }];
+          dendrite-wellknown = dendrite // {
+            rule = "Host(`*`) && PathPrefix(`/.well-known/matrix`)";
+            service = "dendrite-wellknown";
+            middlewares = [ "matrix-wellknown" ];
+          };
+          dendrite-http-wellknown = dendrite-http // {
+            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
+            service = "dendrite-wellknown";
+            middlewares = [ "matrix-wellknown" ];
+          };
+          dendrite-https-wellknown = dendrite-https // {
+            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
+            service = "dendrite-wellknown";
+            middlewares = [ "matrix-wellknown" ];
+          };
+          dendrite-tls-wellknown = dendrite-wellknown // {
+            entryPoints = [ "dendrite-tls" ];
+            tls.domains = [{ main = "${domains.srvc}"; }];
           };
           certauth = {
             entryPoints = [ "http" "https" ];
@@ -263,6 +286,12 @@
               regex = "^(https?)://rc.${domains.home}/(.*)";
               replacement = "\${1}://dev.${domains.home}/nixrc/\${2}";
             };
+          };
+          matrix-api = {
+            stripPrefix.prefixes = [ "/_matrix" ];
+          };
+          matrix-wellknown = {
+            stripPrefix.prefixes = [ "/.well-known/matrix" ];
           };
          #Middleware00 = { addPrefix = { prefix = "foobar"; }; };
          #Middleware01 = {
@@ -519,8 +548,14 @@
             ];
           };
           dendrite.loadBalancer = {
+            passHostHeader = true;
             servers = [
-              { url = "https://10.7.0.2:8008"; }
+              { url = "http://10.7.0.2:8008"; }
+            ];
+          };
+          dendrite-wellknown.loadBalancer = {
+            servers = [
+              { url = "http://10.7.0.2:80"; }
             ];
           };
           construct.loadBalancer = {
@@ -843,11 +878,14 @@
         ircs = {
           address = ":6697/tcp";
         };
+        yacy = {
+          address = ":8090/tcp";
+        };
         dendrite = {
           address = ":8008/tcp";
         };
-        yacy = {
-          address = ":8090/tcp";
+        dendrite-tls = {
+          address = ":8448/tcp";
         };
         jellyfin = {
           address = ":8096/tcp";
