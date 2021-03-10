@@ -54,7 +54,7 @@ in {
               }; name: "postgresql://${authority}@${hostname}/dendrite-${name}";
             in {
               api_registration_disabled = false;
-              server_name = "${usr.secrets.domains.srvc}:${httpPort}";
+              server_name = "${usr.secrets.domains.srvc}:${toString httpPort}";
               kafka.naffka_database.connection_string = mkDb "naffka";
               app_service_api.database.connection_string = mkDb "appservice";
               federation_sender.database.connection_string = mkDb "federationsender";
