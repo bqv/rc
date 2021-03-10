@@ -8,7 +8,19 @@ in {
   services.postgresql.ensureUsers = [
     { name = "matrix-dendrite"; ensurePermissions."DATABASE \"matrix-dendrite\"" = "ALL PRIVILEGES"; }
   ];
-  services.postgresql.ensureDatabases = [ "matrix-dendrite" ];
+  services.postgresql.ensureDatabases = [
+    "dendrite-naffka";
+    "dendrite-appservice";
+    "dendrite-federationsender";
+    "dendrite-keyserver";
+    "dendrite-mediaapi";
+    "dendrite-mscs";
+    "dendrite-roomserver";
+    "dendrite-signingkeyserver";
+    "dendrite-syncapi";
+    "dendrite-userapi-accounts";
+    "dendrite-userapi-devices";
+  ];
 
   containers.matrix =
     {
