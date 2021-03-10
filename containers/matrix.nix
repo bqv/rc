@@ -75,7 +75,7 @@ in {
             tlsKey = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
           };
 
-          services.nginx.virtualHosts.${cfg.nginxVhost} = {
+          services.nginx.virtualHosts.well-known-matrix = {
             locations = {
               "/.well-known/matrix/server".extraConfig = ''
                 return 200 '{ "m.server": "${cfg.nginxVhost}:443" }';
@@ -84,16 +84,6 @@ in {
                 return 200 '{ "m.homeserver": { "base_url": "https://${cfg.nginxVhost}" } }';
               '';
               "/_matrix".proxyPass = "http://localhost:8008";
-            };
-          };
-          services.nginx.virtualHosts.${cfg.serverName} = {
-            locations = {
-              "/.well-known/matrix/server".extraConfig = ''
-                return 200 '{ "m.server": "${cfg.nginxVhost}:443" }';
-              '';
-              "/.well-known/matrix/client".extraConfig = ''
-                return 200 '{ "m.homeserver": { "base_url": "https://${cfg.nginxVhost}" } }';
-              '';
             };
           };
 
