@@ -101,12 +101,12 @@
             tls.domains = [{ main = "tw.${domains.srvc}"; }];
           };
           dendrite-http = {
-            entryPoints = [ "dendrite" ];
+            entryPoints = [];
             rule = "Host(`*`)";
             service = "dendrite";
           };
           dendrite-https = dendrite-http // {
-            entryPoints = [ "dendrite-tls" ];
+            entryPoints = [];
           };
           construct-http = {
             entryPoints = [ "http" ];
