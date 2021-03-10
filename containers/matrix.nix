@@ -76,8 +76,21 @@ in {
             tlsKey = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
           };
 
-          systemd.services.matrix-dendrite = {
+          systemd.services.matrix-dendrite = let
+            cfg = config.services.matrix-dendrite;
+          in {
             serviceConfig.Group = "keys";
+            serviceConfig.ExecStart = lib.strings.concatStringsSep " " ([
+              "${pkgs.matrix-dendrite}/bin/dendrite-monolith-server"
+              "--config /run/matrix-dendrite/dendrite.yaml"
+            ] ++ lib.optionals (cfg.httpPort != null) [
+              "--http-bind-address :${builtins.toString cfg.httpPort}"
+            ] ++ lib.optionals (cfg.httpsPort != null) [
+              "--https-bind-address :${builtins.toString cfg.httpsPort}"
+            ] ++ lib.optionals (cfg.tlsCert != null && cfg.tlsKey != null) [
+              "--tls-cert ${cfg.tlsCert}"
+              "--tls-key ${cfg.tlsKey}"
+            ]);
           };
 
           networking.firewall.enable = false;
