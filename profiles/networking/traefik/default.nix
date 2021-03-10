@@ -520,7 +520,7 @@
           };
           synapse.loadBalancer = {
             servers = [
-              { url = "https://10.7.0.2:8448"; }
+              { url = "https://10.7.0.2:8008"; }
             ];
           };
           construct.loadBalancer = {
