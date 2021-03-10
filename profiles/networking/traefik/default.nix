@@ -102,12 +102,12 @@
           };
           dendrite-http = {
             entryPoints = [ "dendrite" ];
-            rule = "Host(`matrix.${domains.srvc}`)";
+            rule = "Host(`m.${domains.srvc}`)";
             service = "dendrite";
           };
           dendrite-https = dendrite-http // {
             entryPoints = [ "dendrite-tls" ];
-            tls.domains = [{ main = "sn.${domains.srvc}"; }];
+            tls.domains = [{ main = "m.${domains.srvc}"; }];
           };
           construct-http = {
             entryPoints = [ "http" ];
@@ -520,7 +520,7 @@
           };
           dendrite.loadBalancer = {
             servers = [
-              { url = "https://10.7.0.2:8448"; }
+              { url = "http://10.7.0.2:8008"; }
             ];
           };
           construct.loadBalancer = {
