@@ -75,6 +75,17 @@ in {
             tlsKey = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
           };
 
+          services.nginx.virtualHosts.${cfg.serverName} = {
+            locations = {
+              "/.well-known/matrix/server".extraConfig = ''
+                return 200 '{ "m.server": "${cfg.nginxVhost}:443" }';
+              '';
+              "/.well-known/matrix/client".extraConfig = ''
+                return 200 '{ "m.homeserver": { "base_url": "https://${cfg.nginxVhost}" } }';
+              '';
+            };
+          };
+
           systemd.services.matrix-dendrite = let
             cfg = config.services.matrix-dendrite;
           in {
