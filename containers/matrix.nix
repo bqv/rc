@@ -75,7 +75,7 @@ in {
             tlsKey = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
           };
 
-          services.nginx.virtualHosts.well-known-matrix = {
+          services.nginx.virtualHosts.wellknown-matrix = {
             locations = {
              #"/.well-known/matrix/server".extraConfig = ''
              #  return 200 '{ "m.server": "${cfg.nginxVhost}:443" }';
