@@ -682,6 +682,16 @@
             ];
             terminationDelay = 100;
           };
+          dendrite.loadBalancer = {
+            servers = [
+              { address = "10.7.0.2:8008"; }
+            ];
+          };
+          dendrite-tls.loadBalancer = {
+            servers = [
+              { address = "10.7.0.2:8448"; }
+            ];
+          };
           transmission-dht.loadBalancer = {
             servers = [
               { address = "10.11.0.2:51413"; }
