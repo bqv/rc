@@ -32,34 +32,28 @@ in {
             httpPort = 8008;
             settings = let
               mkDb = with {
-                authority = "dendrite:pass";
-                hostname = "";
+                authority = "dendrite";
+                hostname = hostAddress;
               }; name: "postgresql://${authority}@${hostname}/dendrite-${name}";
             in {
               api_registration_disabled = false;
               server_name = "${usr.secrets.domains.srvc}:${httpPort}";
               kafka.naffka_database.connection_string = mkDb "naffka";
-              app_service_api.database.connection_string = mkDb "app";
-              federation_sender.database.connection_string = mkDb "app";
-              key_server.database.connection_string = mkDb "app";
-              media_api.database.connection_string = mkDb "app";
-              mscs.database.connection_string = mkDb "app";
-              room_server.database.connection_string = mkDb "app";
-              signing_key_server.database.connection_string = mkDb "app";
-              sync_api.database.connection_string = mkDb "app";
-              user_api.account_database.connection_string = mkDb "app";
-              user_api.device_database.connection_string = mkDb "app";
+              app_service_api.database.connection_string = mkDb "appservice";
+              federation_sender.database.connection_string = mkDb "federationsender";
+              key_server.database.connection_string = mkDb "keyserver";
+              media_api.database.connection_string = mkDb "mediaapi";
+              mscs.database.connection_string = mkDb "mscs";
+              room_server.database.connection_string = mkDb "roomserver";
+              signing_key_server.database.connection_string = mkDb "signingkeyserver";
+              sync_api.database.connection_string = mkDb "syncapi";
+              user_api.account_database.connection_string = mkDb "userapi-accounts";
+              user_api.device_database.connection_string = mkDb "userapi-devices";
               client_api = {
                 inherit (usr.secrets.matrix.synapse) registration_shared_secret;
               };
               mscs.mscs = [ "msc2946" ];
              #public_baseurl = "https://matrix.${usr.secrets.domains.srvc}/";
-             #database_type = "psycopg2";
-             #database_args = {
-             #  user = "matrix-dendrite";
-             #  database = "matrix-dendrite";
-             #  host = hostAddress;
-             #};
             };
             tlsCert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
             tlsKey = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
