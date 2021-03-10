@@ -75,6 +75,7 @@
           };
           yacy = {
             entryPoints = [ "yacy" ];
+            rule = "Host(`yacy.${domains.home}`)";
             service = "yacy";
           };
           gpx = {
