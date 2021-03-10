@@ -76,7 +76,7 @@ in {
             tlsKey = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
           };
 
-          systemd.services.matrix-dendrite.group = "keys";
+          systemd.services.matrix-dendrite.serviceConfig.Group = "keys";
 
           networking.firewall.enable = false;
 
