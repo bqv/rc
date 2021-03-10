@@ -93,11 +93,7 @@ in {
             };
           };
 
-          systemd.services.matrix-dendrite = let
-            cfg = config.services.matrix-dendrite;
-          in {
-            serviceConfig.Group = "keys";
-          };
+          systemd.services.matrix-dendrite.serviceConfig.Group = "keys";
 
           networking.firewall.enable = false;
 
