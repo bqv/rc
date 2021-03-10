@@ -101,35 +101,43 @@
             entryPoints = [ "https" ];
             tls.domains = [{ main = "tw.${domains.srvc}"; }];
           };
-          dendrite-http = {
+          dendrite = {
             entryPoints = [ "dendrite" ];
             rule = "Host(`*`) && PathPrefix(`/_matrix`)";
             service = "dendrite";
             middlewares = [ "matrix-api" ];
           };
-          dendrite-tls = dendrite-http // {
-            entryPoints = [ "http" "https" ];
+          dendrite-http = dendrite // {
+            entryPoints = [ "http" ];
             rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/_matrix`)";
+          };
+          dendrite-https = dendrite-http // {
+            entryPoints = [ "https" ];
             tls.domains = [
               { main = "matrix.${domains.srvc}"; }
               { main = "m.${domains.srvc}"; }
             ];
           };
-          dendrite-https = dendrite-http // {
+          dendrite-tls = dendrite // {
             entryPoints = [ "dendrite-tls" ];
             tls.domains = [{ main = "${domains.srvc}"; }];
           };
-          dendrite-http-wellknown = dendrite-http // {
+          dendrite-wellknown = dendrite // {
             rule = "Host(`*`) && PathPrefix(`/.well-known/matrix`)";
             service = "dendrite-wellknown";
             middlewares = [ "matrix-wellknown" ];
           };
-          dendrite-tls-wellknown = dendrite-tls // {
+          dendrite-http-wellknown = dendrite-http // {
             rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
             service = "dendrite-wellknown";
             middlewares = [ "matrix-wellknown" ];
           };
-          dendrite-https-wellknown = dendrite-http-wellknown // {
+          dendrite-https-wellknown = dendrite-https // {
+            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
+            service = "dendrite-wellknown";
+            middlewares = [ "matrix-wellknown" ];
+          };
+          dendrite-tls-wellknown = dendrite-wellknown // {
             entryPoints = [ "dendrite-tls" ];
             tls.domains = [{ main = "${domains.srvc}"; }];
           };
