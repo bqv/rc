@@ -85,10 +85,10 @@ in {
              #'';
              #"/_matrix".proxyPass = "http://localhost:8008";
               "/server".extraConfig = ''
-                return 200 '{ "m.server": "${cfg.nginxVhost}:443" }';
+                return 200 '{ "m.server": "${usr.secrets.domains.srvc}:443" }';
               '';
               "/client".extraConfig = ''
-                return 200 '{ "m.homeserver": { "base_url": "https://${cfg.nginxVhost}" } }';
+                return 200 '{ "m.homeserver": { "base_url": "https://${usr.secrets.domains.srvc}" } }';
               '';
             };
           };
