@@ -68,7 +68,7 @@ in {
                 registration_disabled = false;
                 inherit (usr.secrets.matrix.synapse) registration_shared_secret;
               };
-             #mscs.mscs = [ "msc2946" ];
+              mscs.mscs = [ "msc2946" ];
              #public_baseurl = "https://matrix.${usr.secrets.domains.srvc}/";
             };
             tlsCert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
