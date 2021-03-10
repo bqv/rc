@@ -637,6 +637,16 @@
             rule = "HostSNI(`*`)";
             service = "klaus";
           };
+          dendrite = {
+            entryPoints = [ "dendrite" ];
+            rule = "HostSNI(`*`)";
+            service = "dendrite";
+          };
+          dendrite-tls = {
+            entryPoints = [ "dendrite-tls" ];
+            rule = "HostSNI(`*`)";
+            service = "dendrite-tls";
+          };
           transmission-dht-tcp = {
             entryPoints = [ "transmission-dht-tcp" ];
             rule = "HostSNI(`*`)";
