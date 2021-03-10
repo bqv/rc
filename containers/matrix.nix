@@ -80,12 +80,6 @@ in {
             cfg = config.services.matrix-dendrite;
           in {
             serviceConfig.Group = "keys";
-            serviceConfig.ExecStart = lib.mkForce (lib.strings.concatStringsSep " " ([
-              "${pkgs.matrix-dendrite}/bin/dendrite-monolith-server"
-              "--config /run/matrix-dendrite/dendrite.yaml"
-            ] ++ lib.optionals (cfg.httpPort != null) [
-              "--http-bind-address 0.0.0.0:${builtins.toString cfg.httpPort}"
-            ]));
           };
 
           networking.firewall.enable = false;
