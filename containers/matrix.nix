@@ -4,23 +4,26 @@ let
   hostAddress = "10.7.0.1";
   localAddress = "10.7.0.2";
 in {
-  services.postgresql.enable = true;
+  services.postgresql = let
+    databases = [
+      "naffka"
+      "appservice"
+      "federationsender"
+      "keyserver"
+      "mediaapi"
+      "mscs"
+      "roomserver"
+      "signingkeyserver"
+      "syncapi"
+      "userapi-accounts"
+      "userapi-devices"
+    ];
+  in {
+    enable = true;
   services.postgresql.ensureUsers = [
-    { name = "matrix-dendrite"; ensurePermissions."DATABASE \"matrix-dendrite\"" = "ALL PRIVILEGES"; }
+    { name = "dendrite"; ensurePermissions."DATABASE \"matrix-dendrite\"" = "ALL PRIVILEGES"; }
   ];
-  services.postgresql.ensureDatabases = [
-    "dendrite-naffka";
-    "dendrite-appservice";
-    "dendrite-federationsender";
-    "dendrite-keyserver";
-    "dendrite-mediaapi";
-    "dendrite-mscs";
-    "dendrite-roomserver";
-    "dendrite-signingkeyserver";
-    "dendrite-syncapi";
-    "dendrite-userapi-accounts";
-    "dendrite-userapi-devices";
-  ];
+  services.postgresql.ensureDatabases = map (x: "dendrite-${x}") databases;
 
   containers.matrix =
     {
