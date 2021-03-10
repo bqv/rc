@@ -42,7 +42,17 @@ in {
               app_service_api.database.connection_string = mkDb "app";
               federation_sender.database.connection_string = mkDb "app";
               key_server.database.connection_string = mkDb "app";
-             #inherit (usr.secrets.matrix.synapse) registration_shared_secret;
+              media_api.database.connection_string = mkDb "app";
+              mscs.database.connection_string = mkDb "app";
+              room_server.database.connection_string = mkDb "app";
+              signing_key_server.database.connection_string = mkDb "app";
+              sync_api.database.connection_string = mkDb "app";
+              user_api.account_database.connection_string = mkDb "app";
+              user_api.device_database.connection_string = mkDb "app";
+              client_api = {
+                inherit (usr.secrets.matrix.synapse) registration_shared_secret;
+              };
+              mscs.mscs = [ "msc2946" ];
              #public_baseurl = "https://matrix.${usr.secrets.domains.srvc}/";
              #database_type = "psycopg2";
              #database_args = {
