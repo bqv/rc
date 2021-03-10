@@ -284,8 +284,12 @@
               replacement = "\${1}://dev.${domains.home}/nixrc/\${2}";
             };
           };
-          matrix-api = { stripPrefix.prefixes = [ "/_matrix" ]; };
-          matrix-wellknown = { stripPrefix.prefixes = [ "/.well-known/matrix" ]; };
+          matrix-api = {
+            stripPrefix.prefixes = [ "/_matrix" ];
+          };
+          matrix-wellknown = {
+            stripPrefix.prefixes = [ "/.well-known/matrix" ];
+          };
          #Middleware00 = { addPrefix = { prefix = "foobar"; }; };
          #Middleware01 = {
          #  basicAuth = {
