@@ -116,6 +116,7 @@
           };
           dendrite-https = dendrite-http // {
             entryPoints = [ "dendrite-tls" ];
+            tls.domains = [{ main = "${domains.srvc}"; }];
           };
           dendrite-wellknown-http = dendrite-http // {
             service = "dendrite-wellknown";
