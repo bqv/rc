@@ -44,7 +44,7 @@ in {
           services.matrix-dendrite = rec {
             enable = true;
             #environmentFile = null;
-            generatePrivateKey = false;
+            generatePrivateKey = true;
             generateTls = false;
             httpPort = 8008;
             settings.global = let
