@@ -88,7 +88,7 @@ in {
                 return 200 '{ "m.server": "${usr.secrets.domains.srvc}:443" }';
               '';
               "/client".extraConfig = ''
-                return 200 '{ "m.homeserver": { "base_url": "https://${usr.secrets.domains.srvc}" } }';
+                return 200 '{ "m.homeserver": { "base_url": "https://m.${usr.secrets.domains.srvc}" } }';
               '';
             };
           };
