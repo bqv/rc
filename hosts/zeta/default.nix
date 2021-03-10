@@ -144,7 +144,7 @@
       host  all all 127.0.0.1/32 md5
       host  all all ::1/128      md5
       host  ${mastodon.name} ${mastodon.user} ${config.containers.mastodon.localAddress}/24 trust
-      host  ${matrix-synapse.database_name} ${matrix-synapse.database_user} ${config.containers.matrix.localAddress}/24 trust
+      host  all matrix-synapse ${config.containers.matrix.localAddress}/24 trust
      '');
   services.openssh.enable = true;
   services.openssh.forwardX11 = true;
