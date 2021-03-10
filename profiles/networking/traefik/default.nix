@@ -101,12 +101,12 @@
             tls.domains = [{ main = "tw.${domains.srvc}"; }];
           };
           dendrite-http = {
-            entryPoints = [ "http" ];
-            rule = "Host(`sn.${domains.srvc}`)";
+            entryPoints = [ "dendrite" ];
+            rule = "Host(`matrix.${domains.srvc}`)";
             service = "dendrite";
           };
           dendrite-https = dendrite-http // {
-            entryPoints = [ "https" "dendrite" ];
+            entryPoints = [ "dendrite-tls" ];
             tls.domains = [{ main = "sn.${domains.srvc}"; }];
           };
           construct-http = {
@@ -520,7 +520,7 @@
           };
           dendrite.loadBalancer = {
             servers = [
-              { url = "https://10.7.0.2:8008"; }
+              { url = "https://10.7.0.2:8448"; }
             ];
           };
           construct.loadBalancer = {
@@ -842,9 +842,6 @@
         };
         ircs = {
           address = ":6697/tcp";
-        };
-        dendrite = {
-          address = ":8008/tcp";
         };
         yacy = {
           address = ":8090/tcp";
