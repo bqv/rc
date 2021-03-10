@@ -108,7 +108,7 @@
           };
           dendrite-tls = dendrite-http // {
             entryPoints = [ "http" "https" ];
-            rule = "Host(`matrix.${domains.srvc}`) && Host(`m.${domains.srvc}`)";
+            rule = "Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)";
             tls.domains = [
               { main = "matrix.${domains.srvc}"; }
               { main = "m.${domains.srvc}"; }
@@ -117,14 +117,17 @@
           dendrite-https = dendrite-http // {
             entryPoints = [ "dendrite-tls" ];
           };
-          dendrite-wellknown-http = {
-            entryPoints = [ "dendrite" ];
-            rule = "Host(`*`)";
-            service = "dendrite";
+          dendrite-wellknown-http = dendrite-http // {
+            service = "dendrite-wellknown";
             middlewares = [ "matrix-wellknown" ];
           };
-          dendrite-wellknown-https = dendrite-http // {
-            entryPoints = [ "dendrite-tls" ];
+          dendrite-wellknown-tls = dendrite-tls // {
+            service = "dendrite-wellknown";
+            middlewares = [ "matrix-wellknown" ];
+          };
+          dendrite-wellknown-https = dendrite-https // {
+            service = "dendrite-wellknown";
+            middlewares = [ "matrix-wellknown" ];
           };
           construct-http = {
             entryPoints = [ "http" ];
