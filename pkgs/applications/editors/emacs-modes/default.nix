@@ -111,7 +111,7 @@ in lib.recurseIntoAttrs rec {
     version = src.shortRev;
     src = inputs.matrix-client;
     buildInputs = with emacsPackages; [
-      a buttercup dash f ht json request s #dash
+      a buttercup dash f ht request s #dash
     ];
   };
 
