@@ -112,7 +112,7 @@ in lib.recurseIntoAttrs rec {
     src = inputs.matrix-client;
     buildInputs = with emacsPackages; [
       a buttercup dash f ht request s
-      anaphora dash-functional esxml-query ov rainbow-identifiers tracking
+      anaphora dash-functional esxml ov rainbow-identifiers tracking
     ];
   };
 
