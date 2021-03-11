@@ -129,6 +129,7 @@
     mactelnet = { url = "github:haakonnessjoen/mac-telnet"; flake = false; };
     gh-notify = { url = "github:anticomputer/gh-notify"; flake = false; };
     dendrite = { url = "github:matrix-org/dendrite"; flake = false; };
+    matrix-client = { url = "github:alphapapa/matrix-client.el"; flake = false; };
   };
 
   outputs = inputs: with builtins; let
@@ -266,7 +267,7 @@
                     inherit (withEmacsFlake) emacsPackagesFor;
                     epkgs = withEmacsFlake.withSelfFlake.withEmacs.emacsPackagesFor emacs;
                   in (emacsPackagesFor emacs).overrideScope' (_: _: {
-                    inherit (epkgs) bitwarden ivy-exwm emacs-webkit;
+                    inherit (epkgs) bitwarden ivy-exwm emacs-webkit matrix-client;
                     inherit (epkgs) flycheck-purescript eterm-256color gh-notify;
                     inherit (epkgs) emacsbridge font-lock-ext sln-mode;
                     inherit (epkgs) emacs-ffi explain-pause-mode weechat-patched;
