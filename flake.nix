@@ -290,6 +290,7 @@
                   inherit (withRel2003) bcachefs-tools; # to match kernel ver
                   inherit (withNaersk.withSelfFlake) wgvanity wold mactelnet;
                   inherit (withNix.withSelfFlake) nix-bundle;
+                  inherit (withSelfFlake) matrix-dendrite;
 
                  #inherit (withSmall) firefox firefox-unwrapped;
                  #inherit (withSmall) thunderbird obs-studio webkitgtk chromium qemu;
