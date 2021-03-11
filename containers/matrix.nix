@@ -53,6 +53,7 @@ in {
               }; name: "postgresql://${authority}@${hostname}/dendrite-${name}?sslmode=disable";
             in {
               global.server_name = "${usr.secrets.domains.srvc}";
+              global.disable_federation = false;
               global.kafka.use_naffka = true;
               global.kafka.topic_prefix = "Dendrite";
               global.kafka.naffka_database.connection_string = mkDb "naffka";
