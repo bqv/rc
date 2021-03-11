@@ -101,14 +101,10 @@
             entryPoints = [ "https" ];
             tls.domains = [{ main = "tw.${domains.srvc}"; }];
           };
-          dendrite = {
-            entryPoints = [ "dendrite" ];
-            rule = "PathPrefix(`/_matrix`)";
-            service = "dendrite";
-          };
-          dendrite-http = dendrite // {
+          dendrite-http = {
             entryPoints = [ "http" ];
             rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/_matrix`)";
+            service = "dendrite";
           };
           dendrite-https = dendrite-http // {
             entryPoints = [ "https" ];
@@ -117,28 +113,15 @@
               { main = "m.${domains.srvc}"; }
             ];
           };
-          dendrite-tls = dendrite // {
-            entryPoints = [ "dendrite-tls" ];
-            tls.domains = [{ main = "${domains.srvc}"; }];
-          };
-          dendrite-wellknown = dendrite // {
-            rule = "PathPrefix(`/.well-known/matrix`)";
-            service = "dendrite-wellknown";
-            middlewares = [ "matrix-wellknown" ];
-          };
           dendrite-http-wellknown = dendrite-http // {
-            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
+            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`) || Host(`${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
             service = "dendrite-wellknown";
             middlewares = [ "matrix-wellknown" ];
           };
           dendrite-https-wellknown = dendrite-https // {
-            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
+            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`) || Host(`${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
             service = "dendrite-wellknown";
             middlewares = [ "matrix-wellknown" ];
-          };
-          dendrite-tls-wellknown = dendrite-wellknown // {
-            entryPoints = [ "dendrite-tls" ];
-            tls.domains = [{ main = "${domains.srvc}"; }];
           };
           certauth = {
             entryPoints = [ "http" "https" ];
@@ -669,6 +652,16 @@
             rule = "HostSNI(`*`)";
             service = "klaus";
           };
+          dendrite = {
+            entryPoints = [ "dendrite" ];
+            rule = "HostSNI(`*`)";
+            service = "dendrite";
+          };
+          dendrite-tls = {
+            entryPoints = [ "dendrite-tls" ];
+            rule = "HostSNI(`*`)";
+            service = "dendrite-tls";
+          };
           transmission-dht-tcp = {
             entryPoints = [ "transmission-dht-tcp" ];
             rule = "HostSNI(`*`)";
@@ -714,6 +707,18 @@
             ];
             terminationDelay = 100;
           };
+         #dendrite.loadBalancer = {
+         #  servers = [
+         #    { address = "10.7.0.2:8008"; }
+         #  ];
+         #  terminationDelay = 100;
+         #};
+         #dendrite-tls.loadBalancer = {
+         #  servers = [
+         #    { address = "10.7.0.2:8448"; }
+         #  ];
+         #  terminationDelay = 100;
+         #};
           transmission-dht.loadBalancer = {
             servers = [
               { address = "10.11.0.2:51413"; }
@@ -923,10 +928,23 @@
       };
 
       accessLog = {
-        filePath = "/var/log/access";
+        filePath = "/var/log/traefik/access.json";
         format = "json";
+        fields.headers.defaultMode = "keep";
         bufferingSize = 100;
       };
+    };
+  };
+
+  services.logrotate = {
+    enable = true;
+    paths.traefik = {
+      enable = true;
+      path = "/var/log/traefik/access.*";
+      user = config.systemd.services.traefik.serviceConfig.User;
+      group = config.systemd.services.traefik.serviceConfig.Group;
+      frequency = "daily";
+      keep = 16;
     };
   };
 }
