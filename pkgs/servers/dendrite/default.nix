@@ -6,7 +6,7 @@ buildGoModule rec {
 
   src = withSources.dendrite;
 
-  vendorSha256 = "NnSxqjY5HcSnxWbn9OAperNhysMZbpaOVlR5EHfzPNA=";
+  vendorSha256 = "CDCgp693pM+83ATPzmE35utYvQPb5sFal0xN5oasKSg=";
 
   passthru.config = "${src}/dendrite-config.yaml";
 }
