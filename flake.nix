@@ -129,6 +129,7 @@
     mactelnet = { url = "github:haakonnessjoen/mac-telnet"; flake = false; };
     gh-notify = { url = "github:anticomputer/gh-notify"; flake = false; };
     dendrite = { url = "github:matrix-org/dendrite"; flake = false; };
+    matrix-client = { url = "github:alphapapa/matrix-client.el"; flake = false; };
   };
 
   outputs = inputs: with builtins; let
