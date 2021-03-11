@@ -111,7 +111,8 @@ in lib.recurseIntoAttrs rec {
     version = src.shortRev;
     src = inputs.matrix-client;
     buildInputs = with emacsPackages; [
-      a anaphora buttercup dash dash-functional f ht ov rainbow-identifiers request s
+      a buttercup dash f ht request s
+      anaphora dash-functional ov rainbow-identifiers
     ];
   };
 
