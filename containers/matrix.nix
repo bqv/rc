@@ -4,27 +4,13 @@ let
   hostAddress = "10.7.0.1";
   localAddress = "10.7.0.2";
 in {
-  services.postgresql = let
-    databases = [
-      "naffka"
-      "appservice"
-      "federationsender"
-      "keyserver"
-      "mediaapi"
-      "mscs"
-      "roomserver"
-      "signingkeyserver"
-      "syncapi"
-      "userapi-accounts"
-      "userapi-devices"
-    ];
-  in {
+  services.postgresql = {
     enable = true;
-    ensureUsers = map (x: {
+    ensureUsers = [{
       name = "dendrite";
-      ensurePermissions."DATABASE \"dendrite-${x}\"" = "ALL PRIVILEGES";
-    }) databases;
-    ensureDatabases = map (x: "dendrite-${x}") databases;
+      ensurePermissions."DATABASE \"dendrite\"" = "ALL PRIVILEGES";
+    }];
+    ensureDatabases = [ "dendrite" ];
   };
 
   containers.matrix =
@@ -40,17 +26,25 @@ in {
         {
           #environment.memoryAllocator.provider = "jemalloc";
 
-          environment.systemPackages = with pkgs; [ screen ];
+          nixpkgs = { inherit pkgs; };
+
+          environment.systemPackages = with pkgs; [ screen jq vim ipfs ipfscat ];
+          environment.variables = {
+            IPFS_PATH = "/var/lib/ipfs";
+          };
+
           services.matrix-dendrite = rec {
             enable = true;
             generatePrivateKey = true;
             generateTls = false;
             httpPort = 8008;
+            httpsPort = 8448;
             settings = let
               mkDb = with {
                 authority = "dendrite";
                 hostname = hostAddress;
-              }; name: "postgresql://${authority}@${hostname}/dendrite-${name}?sslmode=disable";
+                database = "dendrite";
+              }; name: "postgresql://${authority}@${hostname}/${database}?sslmode=disable";
             in {
               global.server_name = "${usr.secrets.domains.srvc}";
               global.disable_federation = false;
@@ -64,6 +58,8 @@ in {
               mscs.database.connection_string = mkDb "mscs";
               room_server.database.connection_string = mkDb "roomserver";
               signing_key_server.database.connection_string = mkDb "signingkeyserver";
+              signing_key_server.prefer_direct_fetch = false;
+              signing_key_server.key_perspectives = [];
               sync_api.database.connection_string = mkDb "syncapi";
               user_api.account_database.connection_string = mkDb "userapi-accounts";
               user_api.device_database.connection_string = mkDb "userapi-devices";
@@ -72,6 +68,11 @@ in {
                 inherit (usr.secrets.matrix.synapse) registration_shared_secret;
               };
               mscs.mscs = [ "msc2946" ];
+              logging = [{
+                type = "file";
+                level = "debug";
+                params.path = "/var/lib/matrix-dendrite/log";
+              }];
             };
             tlsCert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
             tlsKey = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
@@ -80,15 +81,8 @@ in {
           services.nginx.enable = true;
           services.nginx.virtualHosts.wellknown-matrix = {
             locations = {
-             #"/.well-known/matrix/server".extraConfig = ''
-             #  return 200 '{ "m.server": "${cfg.nginxVhost}:443" }';
-             #'';
-             #"/.well-known/matrix/client".extraConfig = ''
-             #  return 200 '{ "m.homeserver": { "base_url": "https://${cfg.nginxVhost}" } }';
-             #'';
-             #"/_matrix".proxyPass = "http://localhost:8008";
               "/server".extraConfig = ''
-                return 200 '{ "m.server": "${usr.secrets.domains.srvc}:443" }';
+                return 200 '{ "m.server": "m.${usr.secrets.domains.srvc}:443" }';
               '';
               "/client".extraConfig = ''
                 return 200 '{ "m.homeserver": { "base_url": "https://m.${usr.secrets.domains.srvc}" } }';
@@ -126,6 +120,14 @@ in {
         "/var/lib/acme" = {
           hostPath = "/var/lib/acme";
           isReadOnly = true;
+        };
+        "/var/lib/ipfs" = {
+          hostPath = "/var/lib/ipfs";
+          isReadOnly = true;
+        };
+        "/run/ipfs.sock" = {
+          hostPath = "/run/ipfs.sock";
+          isReadOnly = false;
         };
       };
     };
