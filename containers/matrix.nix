@@ -40,6 +40,8 @@ in {
         {
           #environment.memoryAllocator.provider = "jemalloc";
 
+          nixpkgs = { inherit pkgs; };
+
           environment.systemPackages = with pkgs; [ screen ];
           services.matrix-dendrite = rec {
             enable = true;
