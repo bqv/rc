@@ -105,7 +105,6 @@
             entryPoints = [ "dendrite" ];
             rule = "Host(`*`) && PathPrefix(`/_matrix`)";
             service = "dendrite";
-            middlewares = [ "matrix-api" ];
           };
           dendrite-http = dendrite // {
             entryPoints = [ "http" ];
@@ -286,9 +285,6 @@
               regex = "^(https?)://rc.${domains.home}/(.*)";
               replacement = "\${1}://dev.${domains.home}/nixrc/\${2}";
             };
-          };
-          matrix-api = {
-            stripPrefix.prefixes = [ "/_matrix" ];
           };
           matrix-wellknown = {
             stripPrefix.prefixes = [ "/.well-known/matrix" ];
