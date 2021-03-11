@@ -88,7 +88,7 @@ in {
              #'';
              #"/_matrix".proxyPass = "http://localhost:8008";
               "/server".extraConfig = ''
-                return 200 '{ "m.server": "${usr.secrets.domains.srvc}:8008" }';
+                return 200 '{ "m.server": "${usr.secrets.domains.srvc}:8448" }';
               '';
               "/client".extraConfig = ''
                 return 200 '{ "m.homeserver": { "base_url": "https://m.${usr.secrets.domains.srvc}" } }';
