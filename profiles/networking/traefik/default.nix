@@ -103,9 +103,8 @@
           };
           dendrite = {
             entryPoints = [ "dendrite" ];
-            rule = "Host(`*`) && PathPrefix(`/_matrix`)";
+            rule = "PathPrefix(`/_matrix`)";
             service = "dendrite";
-            middlewares = [ "matrix-api" ];
           };
           dendrite-http = dendrite // {
             entryPoints = [ "http" ];
@@ -123,7 +122,7 @@
             tls.domains = [{ main = "${domains.srvc}"; }];
           };
           dendrite-wellknown = dendrite // {
-            rule = "Host(`*`) && PathPrefix(`/.well-known/matrix`)";
+            rule = "PathPrefix(`/.well-known/matrix`)";
             service = "dendrite-wellknown";
             middlewares = [ "matrix-wellknown" ];
           };
@@ -286,9 +285,6 @@
               regex = "^(https?)://rc.${domains.home}/(.*)";
               replacement = "\${1}://dev.${domains.home}/nixrc/\${2}";
             };
-          };
-          matrix-api = {
-            stripPrefix.prefixes = [ "/_matrix" ];
           };
           matrix-wellknown = {
             stripPrefix.prefixes = [ "/.well-known/matrix" ];

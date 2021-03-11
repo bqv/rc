@@ -53,6 +53,9 @@ in {
               }; name: "postgresql://${authority}@${hostname}/dendrite-${name}?sslmode=disable";
             in {
               global.server_name = "${usr.secrets.domains.srvc}";
+              global.disable_federation = false;
+              global.kafka.use_naffka = true;
+              global.kafka.topic_prefix = "Dendrite";
               global.kafka.naffka_database.connection_string = mkDb "naffka";
               app_service_api.database.connection_string = mkDb "appservice";
               federation_sender.database.connection_string = mkDb "federationsender";
@@ -85,7 +88,7 @@ in {
              #'';
              #"/_matrix".proxyPass = "http://localhost:8008";
               "/server".extraConfig = ''
-                return 200 '{ "m.server": "${usr.secrets.domains.srvc}:443" }';
+                return 200 '{ "m.server": "${usr.secrets.domains.srvc}:8448" }';
               '';
               "/client".extraConfig = ''
                 return 200 '{ "m.homeserver": { "base_url": "https://m.${usr.secrets.domains.srvc}" } }';
