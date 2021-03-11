@@ -1017,6 +1017,22 @@
         "type": "github"
       }
     },
+    "matrix-client": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1606771743,
+        "narHash": "sha256-GLM8oCbm6PdEZPsM0ogMtNJr8mWjCKoX6ed5AUrYjuk=",
+        "owner": "alphapapa",
+        "repo": "matrix-client.el",
+        "rev": "d2ac55293c96d4c95971ed8e2a3f6f354565c5ed",
+        "type": "github"
+      },
+      "original": {
+        "owner": "alphapapa",
+        "repo": "matrix-client.el",
+        "type": "github"
+      }
+    },
     "matrix-nio": {
       "flake": false,
       "locked": {
@@ -1693,6 +1709,7 @@
         "lisp": "lisp",
         "mactelnet": "mactelnet",
         "master": "master",
+        "matrix-client": "matrix-client",
         "matrix-nio": "matrix-nio",
         "mfs-replace-root": "mfs-replace-root",
         "mozilla": "mozilla",
