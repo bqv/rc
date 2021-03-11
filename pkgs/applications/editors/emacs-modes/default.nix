@@ -106,4 +106,13 @@ in lib.recurseIntoAttrs rec {
     ];
   };
 
+  matrix-client = trivialBuild rec {
+    pname = "matrix-client.el";
+    version = src.shortRev;
+    src = inputs.matrix-client;
+    buildInputs = with emacsPackages; [
+      #dash
+    ];
+  };
+
 }
