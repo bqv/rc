@@ -103,7 +103,7 @@
           };
           dendrite = {
             entryPoints = [ "dendrite" ];
-            rule = "Host(`*`) && PathPrefix(`/_matrix`)";
+            rule = "PathPrefix(`/_matrix`)";
             service = "dendrite";
           };
           dendrite-http = dendrite // {
@@ -122,7 +122,7 @@
             tls.domains = [{ main = "${domains.srvc}"; }];
           };
           dendrite-wellknown = dendrite // {
-            rule = "Host(`*`) && PathPrefix(`/.well-known/matrix`)";
+            rule = "PathPrefix(`/.well-known/matrix`)";
             service = "dendrite-wellknown";
             middlewares = [ "matrix-wellknown" ];
           };
