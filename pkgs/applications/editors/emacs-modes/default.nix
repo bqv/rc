@@ -3,7 +3,7 @@
 let
   inherit (emacsPackages) trivialBuild emacs;
   inputs = {
-    inherit (withSources) emacs-bitwarden ivy-exwm flycheck-purescript;
+    inherit (withSources) emacs-bitwarden ivy-exwm flycheck-purescript matrix-client;
     inherit (withSources) eterm-256color emacsbridge emacs-webkit gh-notify;
     inherit (withSources) font-lock-ext sln-mode emacs-ffi explain-pause-mode;
   };
