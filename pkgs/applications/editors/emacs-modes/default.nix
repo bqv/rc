@@ -111,7 +111,7 @@ in lib.recurseIntoAttrs rec {
     version = src.shortRev;
     src = inputs.matrix-client;
     buildInputs = with emacsPackages; [
-      #dash
+      anaphora #dash
     ];
   };
 
