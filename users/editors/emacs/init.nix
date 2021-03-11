@@ -19,6 +19,7 @@ let
     (require 'cl-lib)
     (require 's)
     (defun update-load-paths ()
+      (interactive)
       (cl-flet ((add-paths-for (dir) (let ((default-directory dir))
                                        (when (file-directory-p default-directory)
                                          (normal-top-level-add-subdirs-to-load-path)))))
