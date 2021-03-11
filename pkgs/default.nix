@@ -29,8 +29,6 @@ in rec {
 
   dejavu_nerdfont = prev.callPackage ./data/fonts/dejavu-nerdfont { };
 
-  dendrite = prev.callPackage ./servers/dendrite { };
-
   dotnetPackages = recurseIntoAttrs (prev.dotnetPackages.override { overrides = dotnetOverride; });
 
   electronmail = prev.callPackage ./applications/networking/mailreaders/electronmail { };
@@ -60,6 +58,8 @@ in rec {
   lispPackages = recurseIntoAttrs prev.lispPackages;
 
   mactelnet = prev.callPackage ./applications/networking/mactelnet { };
+
+  matrix-dendrite = prev.callPackage ./servers/dendrite { };
 
   miraclecast = prev.callPackage ./os-specific/linux/gnome-network-displays/default.nix { };
 
