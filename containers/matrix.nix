@@ -40,6 +40,8 @@ in {
         {
           #environment.memoryAllocator.provider = "jemalloc";
 
+          nixpkgs = { inherit pkgs; };
+
           environment.systemPackages = with pkgs; [ screen ];
           services.matrix-dendrite = rec {
             enable = true;
@@ -80,15 +82,8 @@ in {
           services.nginx.enable = true;
           services.nginx.virtualHosts.wellknown-matrix = {
             locations = {
-             #"/.well-known/matrix/server".extraConfig = ''
-             #  return 200 '{ "m.server": "${cfg.nginxVhost}:443" }';
-             #'';
-             #"/.well-known/matrix/client".extraConfig = ''
-             #  return 200 '{ "m.homeserver": { "base_url": "https://${cfg.nginxVhost}" } }';
-             #'';
-             #"/_matrix".proxyPass = "http://localhost:8008";
               "/server".extraConfig = ''
-                return 200 '{ "m.server": "${usr.secrets.domains.srvc}:443" }';
+                return 200 '{ "m.server": "${usr.secrets.domains.srvc}:8448" }';
               '';
               "/client".extraConfig = ''
                 return 200 '{ "m.homeserver": { "base_url": "https://m.${usr.secrets.domains.srvc}" } }';
