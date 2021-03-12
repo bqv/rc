@@ -78,7 +78,7 @@ in {
           services.nginx.virtualHosts.wellknown-matrix = {
             locations = {
               "/server".extraConfig = ''
-                return 200 '{ "m.server": "${usr.secrets.domains.srvc}:8448" }';
+                return 200 '{ "m.server": "m.${usr.secrets.domains.srvc}:443" }';
               '';
               "/client".extraConfig = ''
                 return 200 '{ "m.homeserver": { "base_url": "https://m.${usr.secrets.domains.srvc}" } }';
