@@ -28,7 +28,11 @@ in {
 
           nixpkgs = { inherit pkgs; };
 
-          environment.systemPackages = with pkgs; [ screen vim ipfs ];
+          environment.systemPackages = with pkgs; [ screen jq vim ipfs ];
+          environment.variables = {
+            #IPFS_API
+          };
+
           services.matrix-dendrite = rec {
             enable = true;
             generatePrivateKey = true;
