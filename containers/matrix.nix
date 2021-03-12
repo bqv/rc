@@ -53,6 +53,7 @@ in {
               mscs.database.connection_string = mkDb "mscs";
               room_server.database.connection_string = mkDb "roomserver";
               signing_key_server.database.connection_string = mkDb "signingkeyserver";
+              signing_key_server.prefer_direct_fetch = false;
               sync_api.database.connection_string = mkDb "syncapi";
               user_api.account_database.connection_string = mkDb "userapi-accounts";
               user_api.device_database.connection_string = mkDb "userapi-devices";
