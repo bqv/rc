@@ -35,10 +35,10 @@ in {
             generateTls = false;
             httpPort = 8008;
             settings = let
-              pgdb = with {
+              mkDb = with {
                 authority = "dendrite";
                 hostname = hostAddress;
-              }; "postgresql://${authority}@${hostname}/dendrite?sslmode=disable";
+              }; name: "postgresql://${authority}@${hostname}/dendrite?sslmode=disable";
             in {
               global.server_name = "${usr.secrets.domains.srvc}";
               global.disable_federation = false;
