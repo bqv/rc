@@ -39,7 +39,8 @@ in {
               mkDb = with {
                 authority = "dendrite";
                 hostname = hostAddress;
-              }; name: "postgresql://${authority}@${hostname}/dendrite?sslmode=disable";
+                database = "dendrite";
+              }; name: "postgresql://${authority}@${hostname}/${database}?sslmode=disable";
             in {
               global.server_name = "${usr.secrets.domains.srvc}";
               global.disable_federation = false;
