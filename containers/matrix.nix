@@ -6,10 +6,10 @@ let
 in {
   services.postgresql = {
     enable = true;
-    ensureUsers = {
+    ensureUsers = [{
       name = "dendrite";
       ensurePermissions."DATABASE \"dendrite\"" = "ALL PRIVILEGES";
-    };
+    }];
     ensureDatabases = [ "dendrite" ];
   };
 
