@@ -67,7 +67,7 @@ in {
               logging = [{
                 type = "file";
                 level = "debug";
-                params.path = "/var/log/dendrite";
+                params.path = "/var/lib/dendrite/log";
               }];
             };
             tlsCert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
