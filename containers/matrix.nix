@@ -59,10 +59,10 @@ in {
                   server_name = "matrix.org";
                   keys = [
                     { key_id = "ed25519:auto";
-                    public_key = "Noi6WqcDj0QmPxCNQqgezwTlBKrfqehY1u2FyWP9uYw";
+                      public_key = "Noi6WqcDj0QmPxCNQqgezwTlBKrfqehY1u2FyWP9uYw";
                     }
                     { key_id = "ed25519:a_RXGa";
-                    public_key = "l8Hft5qXKn1vfHrg3p4+W8gELQVo8N13JkluMfmn2sQ;";
+                      public_key = "l8Hft5qXKn1vfHrg3p4+W8gELQVo8N13JkluMfmn2sQ;";
                     }
                   ];
                 }
