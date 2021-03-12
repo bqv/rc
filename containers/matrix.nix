@@ -54,17 +54,19 @@ in {
               room_server.database.connection_string = mkDb "roomserver";
               signing_key_server.database.connection_string = mkDb "signingkeyserver";
               signing_key_server.prefer_direct_fetch = false;
-              signing_key_server.key_perspectives = {
-                server_name = "matrix.org";
-                keys = [
-                  { key_id = "ed25519:auto";
+              signing_key_server.key_perspectives = [
+                {
+                  server_name = "matrix.org";
+                  keys = [
+                    { key_id = "ed25519:auto";
                     public_key = "Noi6WqcDj0QmPxCNQqgezwTlBKrfqehY1u2FyWP9uYw";
-                  }
-                  { key_id = "ed25519:a_RXGa";
+                    }
+                    { key_id = "ed25519:a_RXGa";
                     public_key = "l8Hft5qXKn1vfHrg3p4+W8gELQVo8N13JkluMfmn2sQ;";
-                  }
-                ];
-              };
+                    }
+                  ];
+                }
+              ];
               sync_api.database.connection_string = mkDb "syncapi";
               user_api.account_database.connection_string = mkDb "userapi-accounts";
               user_api.device_database.connection_string = mkDb "userapi-devices";
