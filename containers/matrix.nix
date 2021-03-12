@@ -34,6 +34,7 @@ in {
             generatePrivateKey = true;
             generateTls = false;
             httpPort = 8008;
+            httpsPort = 8448;
             settings = let
               mkDb = with {
                 authority = "dendrite";
