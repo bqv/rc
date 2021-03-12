@@ -55,19 +55,7 @@ in {
               room_server.database.connection_string = mkDb "roomserver";
               signing_key_server.database.connection_string = mkDb "signingkeyserver";
               signing_key_server.prefer_direct_fetch = false;
-              signing_key_server.key_perspectives = [{
-                server_name = "cs.xa0.uk";
-                keys = [{
-                  key_id = "ed25519:1UniuHrK";
-                  public_key = "1UniuHrKHqhudGA5H61Btb11La5/2f6LhRzijQCLzjE";
-                }];
-              } {
-                server_name = "sn.xa0.uk";
-                keys = [{
-                  key_id = "ed25519:a_zUxc";
-                  public_key = "f5ScwCaM6EjaAIYIH0+buuZKH4hCiIbXP9wsui6wQ20";
-                }];
-              }];
+              signing_key_server.key_perspectives = [];
               sync_api.database.connection_string = mkDb "syncapi";
               user_api.account_database.connection_string = mkDb "userapi-accounts";
               user_api.device_database.connection_string = mkDb "userapi-devices";
@@ -76,6 +64,11 @@ in {
                 inherit (usr.secrets.matrix.synapse) registration_shared_secret;
               };
               mscs.mscs = [ "msc2946" ];
+              logging = [{
+                type = "file";
+                level = "info";
+                params.path = "/var/log/dendrite";
+              }];
             };
             tlsCert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
             tlsKey = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
