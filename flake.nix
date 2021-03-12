@@ -710,8 +710,8 @@
           echo Deploying ${toplevel}
           export HOST=${inputs.self.passthru.secrets.hosts.wireguard.ipv4.zeta}
           export NIX_SSHOPTS="-o StrictHostKeyChecking=no"
-          nix copy --to ssh://$HOST '${toplevel}' \
-            && ssh $NIX_SSHOPTS $HOST -t \
+          nix copy --to ssh://root@$HOST '${toplevel}' \
+            && ssh $NIX_SSHOPTS root@$HOST -t \
               exec doas ${toplevel}/bin/switch-to-configuration test $@
         '').outPath;
       };
