@@ -56,13 +56,18 @@ in {
               signing_key_server.prefer_direct_fetch = false;
               signing_key_server.key_perspectives = [
                 {
-                  server_name = "matrix.org";
+                  server_name = "cs.xa0.uk";
                   keys = [
-                    { key_id = "ed25519:auto";
-                      public_key = "Noi6WqcDj0QmPxCNQqgezwTlBKrfqehY1u2FyWP9uYw";
+                    { key_id = "ed25519:1UniuHrK";
+                      public_key = "1UniuHrKHqhudGA5H61Btb11La5/2f6LhRzijQCLzjE";
                     }
-                    { key_id = "ed25519:a_RXGa";
-                      public_key = "l8Hft5qXKn1vfHrg3p4+W8gELQVo8N13JkluMfmn2sQ;";
+                  ];
+                }
+                {
+                  server_name = "sn.xa0.uk";
+                  keys = [
+                    { key_id = "ed25519:a_zUxc";
+                      public_key = "f5ScwCaM6EjaAIYIH0+buuZKH4hCiIbXP9wsui6wQ20";
                     }
                   ];
                 }
