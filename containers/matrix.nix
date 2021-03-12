@@ -66,7 +66,7 @@ in {
               mscs.mscs = [ "msc2946" ];
               logging = [{
                 type = "file";
-                level = "info";
+                level = "debug";
                 params.path = "/var/log/dendrite";
               }];
             };
