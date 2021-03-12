@@ -14,7 +14,7 @@ let
       # date = 2021-01-19T14:50:31+01:00;
     };
     patches = [ ./bump-7-to-8.patch ];
-    vendorSha256 = "ZrpHFy3FVAXRfWY812Ly0kL4fX9PuNHX1cD3cbYYNqM=";
+    vendorSha256 = "fxDNmmfTZndQdtG7L7KgdN46f8buUxaa7Ul7gT+/NZA=";
     installCheckPhase = "$out/bin/mfs-replace-root --help";
   };
 in {
