@@ -4,27 +4,13 @@ let
   hostAddress = "10.7.0.1";
   localAddress = "10.7.0.2";
 in {
-  services.postgresql = let
-    databases = [
-      "naffka"
-      "appservice"
-      "federationsender"
-      "keyserver"
-      "mediaapi"
-      "mscs"
-      "roomserver"
-      "signingkeyserver"
-      "syncapi"
-      "userapi-accounts"
-      "userapi-devices"
-    ];
-  in {
+  services.postgresql = {
     enable = true;
-    ensureUsers = map (x: {
+    ensureUsers = [{
       name = "dendrite";
-      ensurePermissions."DATABASE \"dendrite-${x}\"" = "ALL PRIVILEGES";
-    }) databases;
-    ensureDatabases = map (x: "dendrite-${x}") databases;
+      ensurePermissions."DATABASE \"dendrite\"" = "ALL PRIVILEGES";
+    }];
+    ensureDatabases = [ "dendrite" ];
   };
 
   containers.matrix =
@@ -40,6 +26,8 @@ in {
         {
           #environment.memoryAllocator.provider = "jemalloc";
 
+          nixpkgs = { inherit pkgs; };
+
           environment.systemPackages = with pkgs; [ screen ];
           services.matrix-dendrite = rec {
             enable = true;
@@ -50,7 +38,7 @@ in {
               mkDb = with {
                 authority = "dendrite";
                 hostname = hostAddress;
-              }; name: "postgresql://${authority}@${hostname}/dendrite-${name}?sslmode=disable";
+              }; name: "postgresql://${authority}@${hostname}/dendrite?sslmode=disable";
             in {
               global.server_name = "${usr.secrets.domains.srvc}";
               global.disable_federation = false;
@@ -80,13 +68,6 @@ in {
           services.nginx.enable = true;
           services.nginx.virtualHosts.wellknown-matrix = {
             locations = {
-             #"/.well-known/matrix/server".extraConfig = ''
-             #  return 200 '{ "m.server": "${cfg.nginxVhost}:443" }';
-             #'';
-             #"/.well-known/matrix/client".extraConfig = ''
-             #  return 200 '{ "m.homeserver": { "base_url": "https://${cfg.nginxVhost}" } }';
-             #'';
-             #"/_matrix".proxyPass = "http://localhost:8008";
               "/server".extraConfig = ''
                 return 200 '{ "m.server": "${usr.secrets.domains.srvc}:8448" }';
               '';
