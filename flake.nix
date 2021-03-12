@@ -712,7 +712,7 @@
           export NIX_SSHOPTS="-o StrictHostKeyChecking=no"
           nix copy --to ssh://root@$HOST '${toplevel}' \
             && ssh $NIX_SSHOPTS root@$HOST -t \
-              exec {toplevel}/bin/switch-to-configuration test $@
+              exec ${toplevel}/bin/switch-to-configuration test $@
         '').outPath;
       };
       delta = rec {
