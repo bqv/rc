@@ -680,4 +680,16 @@
       };
     };
   };
+
+  services.logrotate = {
+    enable = true;
+    paths.traefik = {
+      enable = true;
+      path = "/var/log/traefik/access.*";
+      user = "traefik";
+      group = "traefik";
+      frequency = "daily";
+      keep = 7;
+    };
+  };
 }
