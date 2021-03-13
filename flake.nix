@@ -703,6 +703,18 @@
                 exec ${activationPackage}/activate $@"
         '').outPath;
       };
+      zeta = rec {
+        type = "app";
+        inherit (inputs.self.nixosConfigurations.zeta.config.system.build) toplevel;
+        program = (pkgs.writeShellScript "test-zeta" ''
+          echo Deploying ${toplevel}
+          export HOST=${inputs.self.passthru.secrets.hosts.wireguard.ipv4.zeta}
+          export NIX_SSHOPTS="-o StrictHostKeyChecking=no"
+          nix copy --to ssh://root@$HOST '${toplevel}' \
+            && ssh $NIX_SSHOPTS root@$HOST -t \
+              exec ${toplevel}/bin/switch-to-configuration test $@
+        '').outPath;
+      };
       delta = rec {
         type = "app";
         inherit (inputs.self.nixosConfigurations.delta.config.system.build) toplevel;
