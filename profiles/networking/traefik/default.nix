@@ -25,20 +25,6 @@
             entryPoints = [ "http" "https" ];
             rule = "Host(`traefik.${domains.home}`)";
             service = "api@internal";
-           #middlewares = [ "auth" ];
-           #tls = {
-           #  domains = [
-           #    {
-           #      main = "foobar";
-           #      sans = [ "foobar" "foobar" ];
-           #    }
-           #    {
-           #      main = "foobar";
-           #      sans = [ "foobar" "foobar" ];
-           #    }
-           #  ];
-           #  options = "foobar";
-           #};
           };
           auth-request = {
             entryPoints = [ "http" "https" ];
@@ -101,14 +87,10 @@
             entryPoints = [ "https" ];
             tls.domains = [{ main = "tw.${domains.srvc}"; }];
           };
-          dendrite = {
-            entryPoints = [ "dendrite" ];
-            rule = "PathPrefix(`/_matrix`)";
-            service = "dendrite";
-          };
-          dendrite-http = dendrite // {
+          dendrite-http = {
             entryPoints = [ "http" ];
             rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/_matrix`)";
+            service = "dendrite";
           };
           dendrite-https = dendrite-http // {
             entryPoints = [ "https" ];
@@ -117,28 +99,15 @@
               { main = "m.${domains.srvc}"; }
             ];
           };
-          dendrite-tls = dendrite // {
-            entryPoints = [ "dendrite-tls" ];
-            tls.domains = [{ main = "${domains.srvc}"; }];
-          };
-          dendrite-wellknown = dendrite // {
-            rule = "PathPrefix(`/.well-known/matrix`)";
-            service = "dendrite-wellknown";
-            middlewares = [ "matrix-wellknown" ];
-          };
           dendrite-http-wellknown = dendrite-http // {
-            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
+            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`) || Host(`${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
             service = "dendrite-wellknown";
-            middlewares = [ "matrix-wellknown" ];
+            middlewares = [ "matrix-wellknown" "no-cors" ];
           };
           dendrite-https-wellknown = dendrite-https // {
-            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
+            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`) || Host(`${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
             service = "dendrite-wellknown";
-            middlewares = [ "matrix-wellknown" ];
-          };
-          dendrite-tls-wellknown = dendrite-wellknown // {
-            entryPoints = [ "dendrite-tls" ];
-            tls.domains = [{ main = "${domains.srvc}"; }];
+            middlewares = [ "matrix-wellknown" "no-cors" ];
           };
           certauth = {
             entryPoints = [ "http" "https" ];
@@ -253,27 +222,6 @@
               { main = "media.${domains.home}"; }
             ];
           };
-         #Router1 = {
-         #  entryPoints = [ "foobar" "foobar" ];
-         #  middlewares = [ "foobar" "foobar" ];
-         #  priority = 42;
-         #  rule = "foobar";
-         #  service = "foobar";
-         #  tls = {
-         #    certResolver = "foobar";
-         #    domains = [
-         #      {
-         #        main = "foobar";
-         #        sans = [ "foobar" "foobar" ];
-         #      }
-         #      {
-         #        main = "foobar";
-         #        sans = [ "foobar" "foobar" ];
-         #      }
-         #    ];
-         #    options = "foobar";
-         #  };
-         #};
         };
 
         middlewares = {
@@ -289,214 +237,13 @@
           matrix-wellknown = {
             stripPrefix.prefixes = [ "/.well-known/matrix" ];
           };
-         #Middleware00 = { addPrefix = { prefix = "foobar"; }; };
-         #Middleware01 = {
-         #  basicAuth = {
-         #    headerField = "foobar";
-         #    realm = "foobar";
-         #    removeHeader = true;
-         #    users = [ "foobar" "foobar" ];
-         #    usersFile = "foobar";
-         #  };
-         #};
-         #Middleware02 = {
-         #  buffering = {
-         #    maxRequestBodyBytes = 42;
-         #    maxResponseBodyBytes = 42;
-         #    memRequestBodyBytes = 42;
-         #    memResponseBodyBytes = 42;
-         #    retryExpression = "foobar";
-         #  };
-         #};
-         #Middleware03 = {
-         #  chain = { middlewares = [ "foobar" "foobar" ]; };
-         #};
-         #Middleware04 = { circuitBreaker = { expression = "foobar"; }; };
-         #Middleware05 = {
-         #  compress = { excludedContentTypes = [ "foobar" "foobar" ]; };
-         #};
-         #Middleware06 = { contentType = { autoDetect = true; }; };
-         #Middleware07 = {
-         #  digestAuth = {
-         #    headerField = "foobar";
-         #    realm = "foobar";
-         #    removeHeader = true;
-         #    users = [ "foobar" "foobar" ];
-         #    usersFile = "foobar";
-         #  };
-         #};
-         #Middleware08 = {
-         #  errors = {
-         #    query = "foobar";
-         #    service = "foobar";
-         #    status = [ "foobar" "foobar" ];
-         #  };
-         #};
-         #Middleware09 = {
-         #  forwardAuth = {
-         #    address = "foobar";
-         #    authResponseHeaders = [ "foobar" "foobar" ];
-         #    tls = {
-         #      ca = "foobar";
-         #      caOptional = true;
-         #      cert = "foobar";
-         #      insecureSkipVerify = true;
-         #      key = "foobar";
-         #    };
-         #    trustForwardHeader = true;
-         #  };
-         #};
-         #Middleware10 = {
-         #  headers = {
-         #    accessControlAllowCredentials = true;
-         #    accessControlAllowHeaders = [ "foobar" "foobar" ];
-         #    accessControlAllowMethods = [ "foobar" "foobar" ];
-         #    accessControlAllowOrigin = "foobar";
-         #    accessControlAllowOriginList = [ "foobar" "foobar" ];
-         #    accessControlExposeHeaders = [ "foobar" "foobar" ];
-         #    accessControlMaxAge = 42;
-         #    addVaryHeader = true;
-         #    allowedHosts = [ "foobar" "foobar" ];
-         #    browserXssFilter = true;
-         #    contentSecurityPolicy = "foobar";
-         #    contentTypeNosniff = true;
-         #    customBrowserXSSValue = "foobar";
-         #    customFrameOptionsValue = "foobar";
-         #    customRequestHeaders = {
-         #      name0 = "foobar";
-         #      name1 = "foobar";
-         #    };
-         #    customResponseHeaders = {
-         #      name0 = "foobar";
-         #      name1 = "foobar";
-         #    };
-         #    featurePolicy = "foobar";
-         #    forceSTSHeader = true;
-         #    frameDeny = true;
-         #    hostsProxyHeaders = [ "foobar" "foobar" ];
-         #    isDevelopment = true;
-         #    publicKey = "foobar";
-         #    referrerPolicy = "foobar";
-         #    sslForceHost = true;
-         #    sslHost = "foobar";
-         #    sslProxyHeaders = {
-         #      name0 = "foobar";
-         #      name1 = "foobar";
-         #    };
-         #    sslRedirect = true;
-         #    sslTemporaryRedirect = true;
-         #    stsIncludeSubdomains = true;
-         #    stsPreload = true;
-         #    stsSeconds = 42;
-         #  };
-         #};
-         #Middleware11 = {
-         #  ipWhiteList = {
-         #    ipStrategy = {
-         #      depth = 42;
-         #      excludedIPs = [ "foobar" "foobar" ];
-         #    };
-         #    sourceRange = [ "foobar" "foobar" ];
-         #  };
-         #};
-         #Middleware12 = {
-         #  inFlightReq = {
-         #    amount = 42;
-         #    sourceCriterion = {
-         #      ipstrategy = {
-         #        depth = 42;
-         #        excludedIPs = [ "foobar" "foobar" ];
-         #      };
-         #      requestHeaderName = "foobar";
-         #      requestHost = true;
-         #    };
-         #  };
-         #};
-         #Middleware13 = {
-         #  passTLSClientCert = {
-         #    info = {
-         #      issuer = {
-         #        commonName = true;
-         #        country = true;
-         #        domainComponent = true;
-         #        locality = true;
-         #        organization = true;
-         #        province = true;
-         #        serialNumber = true;
-         #      };
-         #      notAfter = true;
-         #      notBefore = true;
-         #      sans = true;
-         #      serialNumber = true;
-         #      subject = {
-         #        commonName = true;
-         #        country = true;
-         #        domainComponent = true;
-         #        locality = true;
-         #        organization = true;
-         #        province = true;
-         #        serialNumber = true;
-         #      };
-         #    };
-         #    pem = true;
-         #  };
-         #};
-         #Middleware14 = {
-         #  rateLimit = {
-         #    average = 42;
-         #    burst = 42;
-         #    period = 42;
-         #    sourceCriterion = {
-         #      ipstrategy = {
-         #        depth = 42;
-         #        excludedIPs = [ "foobar" "foobar" ];
-         #      };
-         #      requestHeaderName = "foobar";
-         #      requestHost = true;
-         #    };
-         #  };
-         #};
-         #Middleware16 = {
-         #  redirectScheme = {
-         #    permanent = true;
-         #    port = "foobar";
-         #    scheme = "foobar";
-         #  };
-         #};
-         #Middleware17 = { replacePath = { path = "foobar"; }; };
-         #Middleware18 = {
-         #  replacePathRegex = {
-         #    regex = "foobar";
-         #    replacement = "foobar";
-         #  };
-         #};
-         #Middleware19 = { retry = { attempts = 42; }; };
-         #Middleware20 = {
-         #  stripPrefix = {
-         #    forceSlash = true;
-         #    prefixes = [ "foobar" "foobar" ];
-         #  };
-         #};
-         #Middleware21 = {
-         #  stripPrefixRegex = { regex = [ "foobar" "foobar" ]; };
-         #};
+          no-cors = {
+            headers.accesscontrolalloworigin = "*";
+          };
         };
 
         services = {
           auth.loadBalancer = {
-           #healthCheck = {
-           #  followRedirects = true;
-           #  headers = {
-           #    name0 = "foobar";
-           #    name1 = "foobar";
-           #  };
-           #  hostname = "foobar";
-           #  interval = "foobar";
-           #  path = "foobar";
-           #  port = 42;
-           #  scheme = "foobar";
-           #  timeout = "foobar";
-           #};
             passHostHeader = true;
             responseForwarding = { flushInterval = "100ms"; };
             servers = [
@@ -623,24 +370,6 @@
               { url = "http://10.11.0.2:6767"; }
             ];
           };
-         #mirror-sample.mirroring = {
-         #  maxBodySize = 42;
-         #  mirrors = [
-         #    { name = "http://127.0.0.1:8384"; percent = 42; }
-         #  ];
-         #  service = "foobar";
-         #};
-         #weighted-sample.weighted = {
-         #  services = [
-         #    { name = "foobar"; weight = 42; }
-         #  ];
-         #  sticky.cookie = {
-         #    httpOnly = true;
-         #    name = "foobar";
-         #    sameSite = "foobar";
-         #    secure = true;
-         #  };
-         #};
         };
       };
 
@@ -668,6 +397,16 @@
             entryPoints = [ "ssh-alt" ];
             rule = "HostSNI(`*`)";
             service = "klaus";
+          };
+          dendrite = {
+            entryPoints = [ "dendrite" ];
+            rule = "HostSNI(`*`)";
+            service = "dendrite";
+          };
+          dendrite-tls = {
+            entryPoints = [ "dendrite-tls" ];
+            rule = "HostSNI(`*`)";
+            service = "dendrite-tls";
           };
           transmission-dht-tcp = {
             entryPoints = [ "transmission-dht-tcp" ];
@@ -711,6 +450,18 @@
           irc.loadBalancer = {
             servers = [
               { address = "${hosts.wireguard.ipv4.delta}:6697"; }
+            ];
+            terminationDelay = 100;
+          };
+          dendrite.loadBalancer = {
+            servers = [
+              { address = "10.7.0.2:8008"; }
+            ];
+            terminationDelay = 100;
+          };
+          dendrite-tls.loadBalancer = {
+            servers = [
+              { address = "10.7.0.2:8448"; }
             ];
             terminationDelay = 100;
           };
@@ -818,21 +569,21 @@
             trustedIPs = [ "127.0.0.1" "${hosts.wireguard.ipv4.zeta}/8" ];
           };
          #http = {
-         # #middlewares = [ "auth@file" "strip@file" ];
-         # #tls = {
-         # #  certResolver = "foobar";
-         # #  domains = [
-         # #    {
-         # #      main = "foobar";
-         # #      sans = [ "foobar" "foobar" ];
-         # #    }
-         # #    {
-         # #      main = "foobar";
-         # #      sans = [ "foobar" "foobar" ];
-         # #    }
-         # #  ];
-         # #  options = "foobar";
-         # #};
+         #  middlewares = [ "auth@file" "strip@file" ];
+         #  tls = {
+         #    certResolver = "foobar";
+         #    domains = [
+         #      {
+         #        main = "foobar";
+         #        sans = [ "foobar" "foobar" ];
+         #      }
+         #      {
+         #        main = "foobar";
+         #        sans = [ "foobar" "foobar" ];
+         #      }
+         #    ];
+         #    options = "foobar";
+         #  };
          #};
           proxyProtocol = {
             insecure = true;
@@ -903,7 +654,6 @@
       providers = {
         providersThrottleDuration = 10;
 
-       #docker.exposedByDefault = false;
         file = {
           debugLogGeneratedTemplate = true;
          #directory = "foobar";

@@ -259,11 +259,11 @@
     "dendrite": {
       "flake": false,
       "locked": {
-        "lastModified": 1613643494,
-        "narHash": "sha256-CXkPJqiHcFVWUPAHU4S+8/qVDqI8awrNH8J+dfAX2UM=",
+        "lastModified": 1615227388,
+        "narHash": "sha256-96EurIxPgAdzDdccxy6HtHtjCKztHFw30Y9qKCjoGeg=",
         "owner": "matrix-org",
         "repo": "dendrite",
-        "rev": "3069079e37510dbda59b2b272ce133ef81832d7b",
+        "rev": "3c419be6af2938170d2c04f56d8616c0129ca673",
         "type": "github"
       },
       "original": {
@@ -1420,10 +1420,10 @@
     },
     "priv": {
       "locked": {
-        "narHash": "sha256-BAez5PId3CorMwhafpWwaWSK4lHeXNmSB4OlDSQ3Ji0=",
+        "narHash": "sha256-c4uTzhH1SdK76iwvSHeTZy2bva5KnyE47zkNx63eDHc=",
         "ref": "default",
-        "rev": "1ef050868075d113189e0d50fb9c0e508be50569",
-        "revCount": 14,
+        "rev": "d2b95fcd82b297951f3406b645fa3762ddb2af50",
+        "revCount": 15,
         "type": "hg",
         "url": "ssh://bao@delta/../../srv/hg/nixpriv"
       },

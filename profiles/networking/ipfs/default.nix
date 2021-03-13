@@ -135,7 +135,10 @@ in {
   };
 
   systemd.services.ipfs-init.serviceConfig.TimeoutStartSec = "20s";
-  systemd.services.ipfs-init.serviceConfig.ExecStartPre = ''
+  systemd.services.ipfs-init.serviceConfig.ExecStartPre = pkgs.writeShellScript "ipfs-init-pre" ''
+    echo Migrating
+    ${pkgs.ipfs-migrator}/bin/fs-repo-migrations -y
+    echo Clearing MFS
     ${mfs-replace-root}/bin/mfs-replace-root QmUNLLsPACCz1vLxQVkXqqLX5R1X345qqfHbsf67hvA3Nn
   '';
 

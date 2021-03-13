@@ -28,17 +28,24 @@ in {
 
           nixpkgs = { inherit pkgs; };
 
-          environment.systemPackages = with pkgs; [ screen ];
+          environment.systemPackages = with pkgs; [ screen jq vim ipfs ipfscat ];
+          environment.variables = {
+            IPFS_PATH = "/var/lib/ipfs";
+          };
+
           services.matrix-dendrite = rec {
             enable = true;
             generatePrivateKey = true;
             generateTls = false;
             httpPort = 8008;
+            httpsPort = 8448;
             settings = let
               mkDb = with {
-                authority = "dendrite";
+                login = "dendrite";
                 hostname = hostAddress;
-              }; name: "postgresql://${authority}@${hostname}/dendrite?sslmode=disable";
+                database = "dendrite";
+                args = "sslmode=disable";
+              }; name: "postgresql://${login}@${hostname}/${database}?${args}";
             in {
               global.server_name = "${usr.secrets.domains.srvc}";
               global.disable_federation = false;
@@ -52,7 +59,19 @@ in {
               mscs.database.connection_string = mkDb "mscs";
               room_server.database.connection_string = mkDb "roomserver";
               signing_key_server.database.connection_string = mkDb "signingkeyserver";
+              signing_key_server.prefer_direct_fetch = false;
+              signing_key_server.key_perspectives = [{
+                server_name = "matrix.org";
+                keys = [{
+                  key_id = "ed25519:auto";
+                  public_key = "Noi6WqcDj0QmPxCNQqgezwTlBKrfqehY1u2FyWP9uYw";
+                } {
+                  key_id = "ed25519:a_RXGa";
+                  public_key = "l8Hft5qXKn1vfHrg3p4+W8gELQVo8N13JkluMfmn2sQ";
+                }];
+              }];
               sync_api.database.connection_string = mkDb "syncapi";
+              sync_api.real_ip_header = "X-Real-IP";
               user_api.account_database.connection_string = mkDb "userapi-accounts";
               user_api.device_database.connection_string = mkDb "userapi-devices";
               client_api = {
@@ -60,6 +79,11 @@ in {
                 inherit (usr.secrets.matrix.synapse) registration_shared_secret;
               };
               mscs.mscs = [ "msc2946" ];
+              logging = [{
+                type = "file";
+                level = "debug";
+                params.path = "/var/lib/matrix-dendrite/log";
+              }];
             };
             tlsCert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
             tlsKey = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
@@ -69,7 +93,7 @@ in {
           services.nginx.virtualHosts.wellknown-matrix = {
             locations = {
               "/server".extraConfig = ''
-                return 200 '{ "m.server": "${usr.secrets.domains.srvc}:8448" }';
+                return 200 '{ "m.server": "m.${usr.secrets.domains.srvc}:443" }';
               '';
               "/client".extraConfig = ''
                 return 200 '{ "m.homeserver": { "base_url": "https://m.${usr.secrets.domains.srvc}" } }';
@@ -107,6 +131,14 @@ in {
         "/var/lib/acme" = {
           hostPath = "/var/lib/acme";
           isReadOnly = true;
+        };
+        "/var/lib/ipfs" = {
+          hostPath = "/var/lib/ipfs";
+          isReadOnly = true;
+        };
+        "/run/ipfs.sock" = {
+          hostPath = "/run/ipfs.sock";
+          isReadOnly = false;
         };
       };
     };
