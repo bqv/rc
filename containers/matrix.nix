@@ -41,10 +41,11 @@ in {
             httpsPort = 8448;
             settings = let
               mkDb = with {
-                authority = "dendrite";
+                login = "dendrite";
                 hostname = hostAddress;
                 database = "dendrite";
-              }; name: "postgresql://${authority}@${hostname}/${database}?sslmode=disable";
+                args = "sslmode=disable";
+              }; name: "postgresql://${login}@${hostname}/${database}?${args}";
             in {
               global.server_name = "${usr.secrets.domains.srvc}";
               global.disable_federation = false;
