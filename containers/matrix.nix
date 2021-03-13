@@ -62,6 +62,7 @@ in {
               signing_key_server.prefer_direct_fetch = false;
               signing_key_server.key_perspectives = [];
               sync_api.database.connection_string = mkDb "syncapi";
+              sync_api.real_ip_header = "X-Real-IP";
               user_api.account_database.connection_string = mkDb "userapi-accounts";
               user_api.device_database.connection_string = mkDb "userapi-devices";
               client_api = {
