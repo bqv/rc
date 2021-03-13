@@ -28,17 +28,23 @@ in {
 
           nixpkgs = { inherit pkgs; };
 
-          environment.systemPackages = with pkgs; [ screen ];
+          environment.systemPackages = with pkgs; [ screen jq vim ipfs ];
+          environment.variables = {
+            #IPFS_API
+          };
+
           services.matrix-dendrite = rec {
             enable = true;
             generatePrivateKey = true;
             generateTls = false;
             httpPort = 8008;
+            httpsPort = 8448;
             settings = let
               mkDb = with {
                 authority = "dendrite";
                 hostname = hostAddress;
-              }; name: "postgresql://${authority}@${hostname}/dendrite?sslmode=disable";
+                database = "dendrite";
+              }; name: "postgresql://${authority}@${hostname}/${database}?sslmode=disable";
             in {
               global.server_name = "${usr.secrets.domains.srvc}";
               global.disable_federation = false;
@@ -52,6 +58,8 @@ in {
               mscs.database.connection_string = mkDb "mscs";
               room_server.database.connection_string = mkDb "roomserver";
               signing_key_server.database.connection_string = mkDb "signingkeyserver";
+              signing_key_server.prefer_direct_fetch = false;
+              signing_key_server.key_perspectives = [];
               sync_api.database.connection_string = mkDb "syncapi";
               user_api.account_database.connection_string = mkDb "userapi-accounts";
               user_api.device_database.connection_string = mkDb "userapi-devices";
@@ -60,6 +68,11 @@ in {
                 inherit (usr.secrets.matrix.synapse) registration_shared_secret;
               };
               mscs.mscs = [ "msc2946" ];
+              logging = [{
+                type = "file";
+                level = "debug";
+                params.path = "/var/lib/matrix-dendrite/log";
+              }];
             };
             tlsCert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
             tlsKey = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
@@ -69,7 +82,7 @@ in {
           services.nginx.virtualHosts.wellknown-matrix = {
             locations = {
               "/server".extraConfig = ''
-                return 200 '{ "m.server": "${usr.secrets.domains.srvc}:8448" }';
+                return 200 '{ "m.server": "m.${usr.secrets.domains.srvc}:443" }';
               '';
               "/client".extraConfig = ''
                 return 200 '{ "m.homeserver": { "base_url": "https://m.${usr.secrets.domains.srvc}" } }';
