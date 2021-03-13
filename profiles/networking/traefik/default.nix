@@ -689,7 +689,7 @@
       user = "traefik";
       group = "traefik";
       frequency = "daily";
-      keep = 7;
+      keep = 16;
     };
   };
 }
