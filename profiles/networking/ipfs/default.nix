@@ -13,7 +13,8 @@ let
       sha256 = "07vsyg22djsapxl506y0d9n35br909238zrgwgyykq8dgrb34x0c";
       # date = 2021-01-19T14:50:31+01:00;
     };
-    vendorSha256 = "ZrpHFy3FVAXRfWY81VLy0kL4fX9PuNHX1cD3cbYYNqM=";
+    patches = [ ./bump-7-to-8.patch ];
+    vendorSha256 = "fxDNmmfTZndQdtG7L7KgdN46f8buUxaa7Ul7gT+/NZA=";
     installCheckPhase = "$out/bin/mfs-replace-root --help";
   };
 in {
@@ -134,7 +135,10 @@ in {
   };
 
   systemd.services.ipfs-init.serviceConfig.TimeoutStartSec = "20s";
-  systemd.services.ipfs-init.serviceConfig.ExecStartPre = ''
+  systemd.services.ipfs-init.serviceConfig.ExecStartPre = pkgs.writeShellScript "ipfs-init-pre" ''
+    echo Migrating
+    ${pkgs.ipfs-migrator}/bin/fs-repo-migrations -y
+    echo Clearing MFS
     ${mfs-replace-root}/bin/mfs-replace-root QmUNLLsPACCz1vLxQVkXqqLX5R1X345qqfHbsf67hvA3Nn
   '';
 
