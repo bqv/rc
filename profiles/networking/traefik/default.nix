@@ -675,7 +675,7 @@
       accessLog = {
         filePath = "/var/log/traefik/access.json";
         format = "json";
-        fields.headers.oefaultMode = "keep";
+        fields.headers.defaultMode = "keep";
         bufferingSize = 100;
       };
     };
