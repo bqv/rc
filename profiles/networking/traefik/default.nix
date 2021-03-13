@@ -105,6 +105,7 @@
             entryPoints = [ "http" ];
             rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/_matrix`)";
             service = "dendrite";
+            middlewares = [ "no-cors" ];
           };
           dendrite-https = dendrite-http // {
             entryPoints = [ "https" ];
@@ -116,12 +117,12 @@
           dendrite-http-wellknown = dendrite-http // {
             rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`) || Host(`${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
             service = "dendrite-wellknown";
-            middlewares = [ "matrix-wellknown" ];
+            middlewares = [ "matrix-wellknown" "no-cors" ];
           };
           dendrite-https-wellknown = dendrite-https // {
             rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`) || Host(`${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
             service = "dendrite-wellknown";
-            middlewares = [ "matrix-wellknown" ];
+            middlewares = [ "matrix-wellknown" "no-cors" ];
           };
           certauth = {
             entryPoints = [ "http" "https" ];
@@ -236,27 +237,6 @@
               { main = "media.${domains.home}"; }
             ];
           };
-         #Router1 = {
-         #  entryPoints = [ "foobar" "foobar" ];
-         #  middlewares = [ "foobar" "foobar" ];
-         #  priority = 42;
-         #  rule = "foobar";
-         #  service = "foobar";
-         #  tls = {
-         #    certResolver = "foobar";
-         #    domains = [
-         #      {
-         #        main = "foobar";
-         #        sans = [ "foobar" "foobar" ];
-         #      }
-         #      {
-         #        main = "foobar";
-         #        sans = [ "foobar" "foobar" ];
-         #      }
-         #    ];
-         #    options = "foobar";
-         #  };
-         #};
         };
 
         middlewares = {
