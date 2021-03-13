@@ -31,6 +31,7 @@
   boot.kernel.sysctl = {
     "net.core.somaxconn" = 512;
     "vm.overcommit_memory" = 1;
+    "net.ipv6.conf.all.forwarding" = 0;
   };
 
   boot.kernelParams = [
