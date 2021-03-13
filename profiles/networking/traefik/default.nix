@@ -686,8 +686,8 @@
     paths.traefik = {
       enable = true;
       path = "/var/log/traefik/access.*";
-      user = "traefik";
-      group = "traefik";
+      user = config.systemd.services.traefik.serviceConfig.User;
+      group = config.systemd.services.traefik.serviceConfig.Group;
       frequency = "daily";
       keep = 16;
     };
