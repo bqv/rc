@@ -91,7 +91,6 @@
             entryPoints = [ "http" ];
             rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/_matrix`)";
             service = "dendrite";
-            middlewares = [ "no-cors" ];
           };
           dendrite-https = dendrite-http // {
             entryPoints = [ "https" ];
