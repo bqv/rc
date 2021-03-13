@@ -272,6 +272,9 @@
           matrix-wellknown = {
             stripPrefix.prefixes = [ "/.well-known/matrix" ];
           };
+          no-cors = {
+            headers.accesscontrolalloworigin = "*";
+          };
          #Middleware00 = { addPrefix = { prefix = "foobar"; }; };
          #Middleware01 = {
          #  basicAuth = {
