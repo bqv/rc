@@ -28,7 +28,7 @@ in {
 
           nixpkgs = { inherit pkgs; };
 
-          environment.systemPackages = with pkgs; [ screen jq vim ipfs ];
+          environment.systemPackages = with pkgs; [ screen jq vim ipfs ipfscat ];
           environment.variables = {
             IPFS_PATH = "/var/lib/ipfs";
           };
