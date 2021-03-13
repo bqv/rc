@@ -30,7 +30,7 @@ in {
 
           environment.systemPackages = with pkgs; [ screen jq vim ipfs ];
           environment.variables = {
-            #IPFS_API
+            IPFS_PATH = "/var/lib/ipfs";
           };
 
           services.matrix-dendrite = rec {
@@ -120,6 +120,14 @@ in {
         "/var/lib/acme" = {
           hostPath = "/var/lib/acme";
           isReadOnly = true;
+        };
+        "/var/lib/ipfs" = {
+          hostPath = "/var/lib/ipfs";
+          isReadOnly = true;
+        };
+        "/run/ipfs.sock" = {
+          hostPath = "/run/ipfs.sock";
+          isReadOnly = false;
         };
       };
     };
