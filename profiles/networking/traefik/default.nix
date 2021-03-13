@@ -101,10 +101,14 @@
             entryPoints = [ "https" ];
             tls.domains = [{ main = "tw.${domains.srvc}"; }];
           };
-          dendrite-http = {
+          dendrite = {
+            entryPoints = [ "dendrite" ];
+            rule = "PathPrefix(`/_matrix`)";
+            service = "dendrite";
+          };
+          dendrite-http = dendrite // {
             entryPoints = [ "http" ];
             rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/_matrix`)";
-            service = "dendrite";
           };
           dendrite-https = dendrite-http // {
             entryPoints = [ "https" ];
@@ -113,15 +117,28 @@
               { main = "m.${domains.srvc}"; }
             ];
           };
+          dendrite-tls = dendrite // {
+            entryPoints = [ "dendrite-tls" ];
+            tls.domains = [{ main = "${domains.srvc}"; }];
+          };
+          dendrite-wellknown = dendrite // {
+            rule = "PathPrefix(`/.well-known/matrix`)";
+            service = "dendrite-wellknown";
+            middlewares = [ "matrix-wellknown" ];
+          };
           dendrite-http-wellknown = dendrite-http // {
-            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`) || Host(`${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
+            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
             service = "dendrite-wellknown";
             middlewares = [ "matrix-wellknown" ];
           };
           dendrite-https-wellknown = dendrite-https // {
-            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`) || Host(`${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
+            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
             service = "dendrite-wellknown";
             middlewares = [ "matrix-wellknown" ];
+          };
+          dendrite-tls-wellknown = dendrite-wellknown // {
+            entryPoints = [ "dendrite-tls" ];
+            tls.domains = [{ main = "${domains.srvc}"; }];
           };
           certauth = {
             entryPoints = [ "http" "https" ];
@@ -652,16 +669,6 @@
             rule = "HostSNI(`*`)";
             service = "klaus";
           };
-          dendrite = {
-            entryPoints = [ "dendrite" ];
-            rule = "HostSNI(`*`)";
-            service = "dendrite";
-          };
-          dendrite-tls = {
-            entryPoints = [ "dendrite-tls" ];
-            rule = "HostSNI(`*`)";
-            service = "dendrite-tls";
-          };
           transmission-dht-tcp = {
             entryPoints = [ "transmission-dht-tcp" ];
             rule = "HostSNI(`*`)";
@@ -704,18 +711,6 @@
           irc.loadBalancer = {
             servers = [
               { address = "${hosts.wireguard.ipv4.delta}:6697"; }
-            ];
-            terminationDelay = 100;
-          };
-          dendrite.loadBalancer = {
-            servers = [
-              { address = "10.7.0.2:8008"; }
-            ];
-            terminationDelay = 100;
-          };
-          dendrite-tls.loadBalancer = {
-            servers = [
-              { address = "10.7.0.2:8448"; }
             ];
             terminationDelay = 100;
           };
