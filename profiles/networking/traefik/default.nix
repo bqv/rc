@@ -87,27 +87,21 @@
             entryPoints = [ "https" ];
             tls.domains = [{ main = "tw.${domains.srvc}"; }];
           };
-          dendrite-http = {
-            entryPoints = [ "http" ];
-            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/_matrix`)";
-            service = "dendrite";
+          prosody-http = {
+            entryPoints = [ "http" "xmpp-http" ];
+            rule = "(Host(`xmpp.${domains.srvc}`) || Host(`x.${domains.srvc}`) ||"
+              + " Host(`jabber.${domains.srvc}`) || Host(`j.${domains.srvc}`))";
+            service = "prosody-http";
           };
-          dendrite-https = dendrite-http // {
-            entryPoints = [ "https" ];
+          prosody-https = prosody-http // {
+            entryPoints = [ "https" "xmpp-https" ];
+            service = "prosody-https";
             tls.domains = [
-              { main = "matrix.${domains.srvc}"; }
-              { main = "m.${domains.srvc}"; }
+              { main = "xmpp.${domains.srvc}"; }
+              { main = "x.${domains.srvc}"; }
+              { main = "jabber.${domains.srvc}"; }
+              { main = "j.${domains.srvc}"; }
             ];
-          };
-          dendrite-http-wellknown = dendrite-http // {
-            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`) || Host(`${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
-            service = "dendrite-wellknown";
-            middlewares = [ "matrix-wellknown" "no-cors" ];
-          };
-          dendrite-https-wellknown = dendrite-https // {
-            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`) || Host(`${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
-            service = "dendrite-wellknown";
-            middlewares = [ "matrix-wellknown" "no-cors" ];
           };
           certauth = {
             entryPoints = [ "http" "https" ];
@@ -234,9 +228,6 @@
               replacement = "\${1}://dev.${domains.home}/nixrc/\${2}";
             };
           };
-          matrix-wellknown = {
-            stripPrefix.prefixes = [ "/.well-known/matrix" ];
-          };
           no-cors = {
             headers.accesscontrolalloworigin = "*";
           };
@@ -290,20 +281,14 @@
               { url = "https://10.6.0.2:443"; }
             ];
           };
-          dendrite.loadBalancer = {
-            passHostHeader = true;
+          prosody-http.loadBalancer = {
             servers = [
-              { url = "http://10.7.0.2:8008"; }
+              { url = "http://10.7.0.2:5280"; }
             ];
           };
-          dendrite-wellknown.loadBalancer = {
+          prosody-https.loadBalancer = {
             servers = [
-              { url = "http://10.7.0.2:80"; }
-            ];
-          };
-          construct.loadBalancer = {
-            servers = [
-              { url = "https://10.7.0.2:4004"; }
+              { url = "https://10.7.0.2:5281"; }
             ];
           };
           certauth.loadBalancer = {
@@ -398,15 +383,20 @@
             rule = "HostSNI(`*`)";
             service = "klaus";
           };
-          dendrite = {
-            entryPoints = [ "dendrite" ];
+          prosody-files = {
+            entryPoints = [ "xmpp-files" ];
             rule = "HostSNI(`*`)";
-            service = "dendrite";
+            service = "prosody-files";
           };
-          dendrite-tls = {
-            entryPoints = [ "dendrite-tls" ];
+          prosody-client = {
+            entryPoints = [ "xmpp-client" ];
             rule = "HostSNI(`*`)";
-            service = "dendrite-tls";
+            service = "prosody-client";
+          };
+          prosody-server = {
+            entryPoints = [ "xmpp-server" ];
+            rule = "HostSNI(`*`)";
+            service = "prosody-server";
           };
           transmission-dht-tcp = {
             entryPoints = [ "transmission-dht-tcp" ];
@@ -453,18 +443,24 @@
             ];
             terminationDelay = 100;
           };
-         #dendrite.loadBalancer = {
-         #  servers = [
-         #    { address = "10.7.0.2:8008"; }
-         #  ];
-         #  terminationDelay = 100;
-         #};
-         #dendrite-tls.loadBalancer = {
-         #  servers = [
-         #    { address = "10.7.0.2:8448"; }
-         #  ];
-         #  terminationDelay = 100;
-         #};
+          prosody-files.loadBalancer = {
+            servers = [
+              { address = "10.7.0.2:5000"; }
+            ];
+            terminationDelay = 100;
+          };
+          prosody-client.loadBalancer = {
+            servers = [
+              { address = "10.7.0.2:5222"; }
+            ];
+            terminationDelay = 100;
+          };
+          prosody-server.loadBalancer = {
+            servers = [
+              { address = "10.7.0.2:5269"; }
+            ];
+            terminationDelay = 100;
+          };
           transmission-dht.loadBalancer = {
             servers = [
               { address = "10.11.0.2:51413"; }
@@ -628,11 +624,20 @@
         yacy = {
           address = ":8090/tcp";
         };
-        dendrite = {
-          address = ":8008/tcp";
+        xmpp-files = {
+          address = ":5000/tcp";
         };
-        dendrite-tls = {
-          address = ":8448/tcp";
+        xmpp-client = {
+          address = ":5222/tcp";
+        };
+        xmpp-server = {
+          address = ":5269/tcp";
+        };
+        xmpp-http = {
+          address = ":5280/tcp";
+        };
+        xmpp-https = {
+          address = ":5281/tcp";
         };
         jellyfin = {
           address = ":8096/tcp";
