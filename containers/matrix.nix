@@ -47,6 +47,7 @@ in {
             httpsPorts = [ 5281 ];
             bosh = true;
             group = "keys";
+            modules.groups = true;
             modules.legacyauth = true;
             modules.websocket = true;
             ssl.cert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
