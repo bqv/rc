@@ -11,7 +11,7 @@ in {
     ../../containers/authority.nix # 10. 4.0.x
     ../../containers/search.nix    # 10. 5.0.x
     ../../containers/mastodon.nix  # 10. 6.0.x
-    ../../containers/matrix.nix    # 10. 7.0.x
+    ../../containers/xmpp.nix      # 10. 7.0.x
     ../../containers/hydroxide.nix # 10. 8.0.x
     ../../containers/anki.nix      # 10. 9.0.x
     ../../containers/klaus.nix     # 10.10.0.x
