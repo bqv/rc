@@ -28,14 +28,14 @@ in {
 
           environment.systemPackages = with pkgs; [ jq vim ipfs ipfscat ];
           environment.variables = {
-            IPFS_PATH = pkgs.runCommand "ipfs-path" {
+            IPFS_PATH = (pkgs.runCommand "ipfs-path" {
               api = "/ip4/${usr.secrets.hosts.wireguard.ipv4.zeta}/tcp/5001";
               passAsFile = [ "api" ];
             } ''
               mkdir $out
               ln -s $apiPath $out/api
             '';
-          };
+          }).out;
 
           services.prosody = rec {
             enable = true;
