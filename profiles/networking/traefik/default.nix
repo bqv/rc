@@ -612,19 +612,19 @@
         yacy = {
           address = ":8090/tcp";
         };
-        prosody-files = {
+        xmpp-files = {
           address = ":5000/tcp";
         };
-        prosody-client = {
+        xmpp-client = {
           address = ":5222/tcp";
         };
-        prosody-server = {
+        xmpp-server = {
           address = ":5269/tcp";
         };
-        prosody-http = {
+        xmpp-http = {
           address = ":5280/tcp";
         };
-        prosody-https = {
+        xmpp-https = {
           address = ":5281/tcp";
         };
         jellyfin = {
