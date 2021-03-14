@@ -60,7 +60,9 @@ in {
             uploadHttp = {
               domain = "xmpp.xa0.uk";
             };
-            disco_items = "xmpp.xa0.uk";
+            disco_items = [{
+              url = "xmpp.xa0.uk";
+            }];
             virtualhosts = "xmpp.xa0.uk";
           };
 
