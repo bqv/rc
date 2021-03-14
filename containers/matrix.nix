@@ -41,12 +41,12 @@ in {
             enable = true;
             admins = [ "bqv@jix.im" ];
             allowRegistration = true;
-            admin_adhoc = true;
-            admin_telnet = true;
             httpPorts = [ 5280 ];
             httpsPorts = [ 5281 ];
-            bosh = true;
             group = "keys";
+            modules.admin_adhoc = true;
+            modules.admin_telnet = true;
+            modules.bosh = true;
             modules.groups = true;
             modules.legacyauth = true;
             modules.websocket = true;
