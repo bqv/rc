@@ -69,6 +69,9 @@ in {
            #disco_items = [{
            #  url = "xmpp.xa0.uk";
            #}];
+            virtualHosts = [{
+              url = "xa0.uk";
+            }];
           };
 
           networking.firewall.enable = false;
