@@ -47,8 +47,9 @@ in {
             httpsPorts = [ 5281 ];
             bosh = true;
             modules.legacyauth = true;
-            tlsCert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
-            tlsKey = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
+            modules.websocket = true;
+            ssl.cert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
+            ssl.key = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
           };
 
           services.nginx.enable = true;
