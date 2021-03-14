@@ -7,10 +7,10 @@ in {
   services.postgresql = {
     enable = true;
     ensureUsers = [{
-      name = "dendrite";
-      ensurePermissions."DATABASE \"dendrite\"" = "ALL PRIVILEGES";
+      name = "prosody";
+      ensurePermissions."DATABASE \"prosody\"" = "ALL PRIVILEGES";
     }];
-    ensureDatabases = [ "dendrite" ];
+    ensureDatabases = [ "prosody" ];
   };
 
   containers.xmpp =
@@ -37,7 +37,7 @@ in {
             '';
           };
 
-          services.matrix-dendrite = rec {
+          services.prosody = rec {
             enable = true;
             generatePrivateKey = true;
             generateTls = false;
@@ -110,10 +110,6 @@ in {
           };
 
           networking.firewall.enable = false;
-
-         #users.users.construct.extraGroups = [
-         #  "keys"
-         #];
         };
       bindMounts = {
         "/var/lib/acme" = {
