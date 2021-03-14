@@ -90,7 +90,7 @@
           prosody-http = {
             entryPoints = [ "http" ];
             rule = "(Host(`xmpp.${domains.srvc}`) || Host(`x.${domains.srvc}`) ||"
-              + " Host(`jabber.${domains.srvc}`) || Host(`j.${domains.srvc}`)) && PathPrefix(`/_matrix`)";
+              + " Host(`jabber.${domains.srvc}`) || Host(`j.${domains.srvc}`))";
             service = "prosody";
           };
           prosody-https = prosody-http // {
