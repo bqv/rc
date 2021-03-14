@@ -4,14 +4,14 @@ let
   hostAddress = "10.7.0.1";
   localAddress = "10.7.0.2";
 in {
-  services.postgresql = {
-    enable = true;
-    ensureUsers = [{
-      name = "prosody";
-      ensurePermissions."DATABASE \"prosody\"" = "ALL PRIVILEGES";
-    }];
-    ensureDatabases = [ "prosody" ];
-  };
+ #services.postgresql = {
+ #  enable = true;
+ #  ensureUsers = [{
+ #    name = "prosody";
+ #    ensurePermissions."DATABASE \"prosody\"" = "ALL PRIVILEGES";
+ #  }];
+ #  ensureDatabases = [ "prosody" ];
+ #};
 
   containers.xmpp =
     {
