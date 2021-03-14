@@ -87,27 +87,17 @@
             entryPoints = [ "https" ];
             tls.domains = [{ main = "tw.${domains.srvc}"; }];
           };
-          dendrite-http = {
+          prosody-http = {
             entryPoints = [ "http" ];
             rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/_matrix`)";
-            service = "dendrite";
+            service = "prosody";
           };
-          dendrite-https = dendrite-http // {
+          prosody-https = prosody-http // {
             entryPoints = [ "https" ];
             tls.domains = [
               { main = "matrix.${domains.srvc}"; }
               { main = "m.${domains.srvc}"; }
             ];
-          };
-          dendrite-http-wellknown = dendrite-http // {
-            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`) || Host(`${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
-            service = "dendrite-wellknown";
-            middlewares = [ "matrix-wellknown" "no-cors" ];
-          };
-          dendrite-https-wellknown = dendrite-https // {
-            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`) || Host(`${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
-            service = "dendrite-wellknown";
-            middlewares = [ "matrix-wellknown" "no-cors" ];
           };
           certauth = {
             entryPoints = [ "http" "https" ];
@@ -290,15 +280,10 @@
               { url = "https://10.6.0.2:443"; }
             ];
           };
-          dendrite.loadBalancer = {
+          prosody.loadBalancer = {
             passHostHeader = true;
             servers = [
               { url = "http://10.7.0.2:8008"; }
-            ];
-          };
-          dendrite-wellknown.loadBalancer = {
-            servers = [
-              { url = "http://10.7.0.2:80"; }
             ];
           };
           construct.loadBalancer = {
@@ -398,15 +383,15 @@
             rule = "HostSNI(`*`)";
             service = "klaus";
           };
-          dendrite = {
-            entryPoints = [ "dendrite" ];
+          prosody = {
+            entryPoints = [ "prosody" ];
             rule = "HostSNI(`*`)";
-            service = "dendrite";
+            service = "prosody";
           };
-          dendrite-tls = {
-            entryPoints = [ "dendrite-tls" ];
+          prosody-tls = {
+            entryPoints = [ "prosody-tls" ];
             rule = "HostSNI(`*`)";
-            service = "dendrite-tls";
+            service = "prosody-tls";
           };
           transmission-dht-tcp = {
             entryPoints = [ "transmission-dht-tcp" ];
@@ -453,13 +438,13 @@
             ];
             terminationDelay = 100;
           };
-         #dendrite.loadBalancer = {
+         #prosody.loadBalancer = {
          #  servers = [
          #    { address = "10.7.0.2:8008"; }
          #  ];
          #  terminationDelay = 100;
          #};
-         #dendrite-tls.loadBalancer = {
+         #prosody-tls.loadBalancer = {
          #  servers = [
          #    { address = "10.7.0.2:8448"; }
          #  ];
@@ -628,11 +613,11 @@
         yacy = {
           address = ":8090/tcp";
         };
-        dendrite = {
-          address = ":8008/tcp";
+        prosody = {
+          address = ":5280/tcp";
         };
-        dendrite-tls = {
-          address = ":8448/tcp";
+        prosody-tls = {
+          address = ":5281/tcp";
         };
         jellyfin = {
           address = ":8096/tcp";
