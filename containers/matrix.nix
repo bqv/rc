@@ -13,7 +13,7 @@ in {
     ensureDatabases = [ "dendrite" ];
   };
 
-  containers.matrix =
+  containers.xmpp =
     {
       autoStart = true;
       enableTun = true;
@@ -24,11 +24,9 @@ in {
         { ... }:
 
         {
-          #environment.memoryAllocator.provider = "jemalloc";
-
           nixpkgs = { inherit pkgs; };
 
-          environment.systemPackages = with pkgs; [ screen jq vim ipfs ipfscat ];
+          environment.systemPackages = with pkgs; [ jq vim ipfs ipfscat ];
           environment.variables = {
             IPFS_PATH = "/var/lib/ipfs";
           };
