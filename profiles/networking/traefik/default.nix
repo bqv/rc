@@ -281,13 +281,11 @@
             ];
           };
           prosody-http.loadBalancer = {
-            passHostHeader = true;
             servers = [
               { url = "http://10.7.0.2:5280"; }
             ];
           };
           prosody-https.loadBalancer = {
-            passHostHeader = true;
             servers = [
               { url = "https://10.7.0.2:5281"; }
             ];
