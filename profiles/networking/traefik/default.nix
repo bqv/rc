@@ -102,16 +102,6 @@
               { main = "j.${domains.srvc}"; }
             ];
           };
-          prosody-http-wellknown = prosody-http // {
-            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`) || Host(`${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
-            service = "prosody-wellknown";
-            middlewares = [ "matrix-wellknown" "no-cors" ];
-          };
-          prosody-https-wellknown = prosody-https // {
-            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`) || Host(`${domains.srvc}`)) && PathPrefix(`/.well-known/matrix`)";
-            service = "prosody-wellknown";
-            middlewares = [ "matrix-wellknown" "no-cors" ];
-          };
           certauth = {
             entryPoints = [ "http" "https" ];
             rule = "Host(`ca.${domains.home}`)";
@@ -237,9 +227,6 @@
               replacement = "\${1}://dev.${domains.home}/nixrc/\${2}";
             };
           };
-          matrix-wellknown = {
-            stripPrefix.prefixes = [ "/.well-known/matrix" ];
-          };
           no-cors = {
             headers.accesscontrolalloworigin = "*";
           };
@@ -297,12 +284,6 @@
             passHostHeader = true;
             servers = [
               { url = "http://10.7.0.2:8008"; }
-            ];
-          };
-          prosody-wellknown.loadBalancer = {
-            passHostHeader = true;
-            servers = [
-              { url = "http://10.7.0.2:80"; }
             ];
           };
           construct.loadBalancer = {
