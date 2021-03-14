@@ -46,14 +46,11 @@ in {
             httpPorts = [ 5280 ];
             httpsPorts = [ 5281 ];
             bosh = true;
+            group = "keys";
             modules.legacyauth = true;
             modules.websocket = true;
             ssl.cert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
             ssl.key = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
-          };
-
-          systemd.services.prosody = {
-            serviceConfig.Group = "keys";
           };
 
           networking.firewall.enable = false;
