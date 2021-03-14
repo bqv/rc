@@ -91,10 +91,11 @@
             entryPoints = [ "http" "xmpp-http" ];
             rule = "(Host(`xmpp.${domains.srvc}`) || Host(`x.${domains.srvc}`) ||"
               + " Host(`jabber.${domains.srvc}`) || Host(`j.${domains.srvc}`))";
-            service = "prosody";
+            service = "prosody-http";
           };
           prosody-https = prosody-http // {
             entryPoints = [ "https" "xmpp-https" ];
+            service = "prosody-https";
             tls.domains = [
               { main = "xmpp.${domains.srvc}"; }
               { main = "x.${domains.srvc}"; }
