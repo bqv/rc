@@ -37,14 +37,10 @@ in {
             ''}";
           };
 
-          services.bibuomi.enable = false;
           services.prosody = rec {
             enable = true;
             admins = [ "bqv@jix.im" ];
             allowRegistration = true;
-            extraConfig = ''
-              local_interfaces = { "*", "::" }
-            '';
             httpPorts = [ 5280 ];
             httpsPorts = [ 5281 ];
             group = "keys";
@@ -55,20 +51,15 @@ in {
             modules.legacyauth = true;
             modules.websocket = true;
             muc = [{
-              domain = "muc.xa0.uk";
+              domain = "xa0.uk";
               maxHistoryMessages = 10000;
               name = "Zeta Prosody";
             }];
-            ssl = {
-              cert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
-              key = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
-            };
+            ssl.cert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
+            ssl.key = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
             uploadHttp = {
-              domain = "xmpp.xa0.uk";
+              domain = "xa0.uk";
             };
-           #disco_items = [{
-           #  url = "xmpp.xa0.uk";
-           #}];
           };
 
           networking.firewall.enable = false;
