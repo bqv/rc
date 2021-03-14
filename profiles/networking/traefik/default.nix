@@ -88,13 +88,13 @@
             tls.domains = [{ main = "tw.${domains.srvc}"; }];
           };
           prosody-http = {
-            entryPoints = [ "http" ];
+            entryPoints = [ "http" "xmpp-http" ];
             rule = "(Host(`xmpp.${domains.srvc}`) || Host(`x.${domains.srvc}`) ||"
               + " Host(`jabber.${domains.srvc}`) || Host(`j.${domains.srvc}`))";
             service = "prosody";
           };
           prosody-https = prosody-http // {
-            entryPoints = [ "https" ];
+            entryPoints = [ "https" "xmpp-https" ];
             tls.domains = [
               { main = "xmpp.${domains.srvc}"; }
               { main = "x.${domains.srvc}"; }
@@ -280,15 +280,16 @@
               { url = "https://10.6.0.2:443"; }
             ];
           };
-          prosody.loadBalancer = {
+          prosody-http.loadBalancer = {
             passHostHeader = true;
             servers = [
               { url = "http://10.7.0.2:5280"; }
             ];
           };
-          construct.loadBalancer = {
+          prosody-https.loadBalancer = {
+            passHostHeader = true;
             servers = [
-              { url = "https://10.7.0.2:4004"; }
+              { url = "https://10.7.0.2:5281"; }
             ];
           };
           certauth.loadBalancer = {
