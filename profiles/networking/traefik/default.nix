@@ -459,13 +459,13 @@
           };
          #prosody.loadBalancer = {
          #  servers = [
-         #    { address = "10.7.0.2:8008"; }
+         #    { address = "10.7.0.2:5280"; }
          #  ];
          #  terminationDelay = 100;
          #};
          #prosody-tls.loadBalancer = {
          #  servers = [
-         #    { address = "10.7.0.2:8448"; }
+         #    { address = "10.7.0.2:5281"; }
          #  ];
          #  terminationDelay = 100;
          #};
