@@ -52,25 +52,17 @@ in {
             ssl.key = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
           };
 
-          services.nginx.enable = true;
-          services.nginx.virtualHosts.wellknown-matrix = {
-            locations = {
-              "/server".extraConfig = ''
-                return 200 '{ "m.server": "m.${usr.secrets.domains.srvc}:443" }';
-              '';
-              "/client".extraConfig = ''
-                return 200 '{ "m.homeserver": { "base_url": "https://m.${usr.secrets.domains.srvc}" } }';
-              '';
-            };
-          };
-
-          systemd.services.matrix-dendrite = {
+          systemd.services.prosody = {
             serviceConfig.Group = "keys";
           };
 
           networking.firewall.enable = false;
         };
       bindMounts = {
+        "/var/lib/prosody" = {
+          hostPath = "/var/lib/prosody";
+          isReadOnly = false;
+        };
         "/var/lib/acme" = {
           hostPath = "/var/lib/acme";
           isReadOnly = true;
