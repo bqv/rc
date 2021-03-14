@@ -50,8 +50,15 @@ in {
             modules.groups = true;
             modules.legacyauth = true;
             modules.websocket = true;
+            muc = [{
+              domain = "xa0.uk";
+              maxHistoryMessages = 10000;
+            }];
             ssl.cert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
             ssl.key = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
+            uploadHttp = {
+              domain = "xa0.uk";
+            };
           };
 
           networking.firewall.enable = false;
