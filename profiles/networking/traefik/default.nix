@@ -453,18 +453,18 @@
             ];
             terminationDelay = 100;
           };
-          dendrite.loadBalancer = {
-            servers = [
-              { address = "10.7.0.2:8008"; }
-            ];
-            terminationDelay = 100;
-          };
-          dendrite-tls.loadBalancer = {
-            servers = [
-              { address = "10.7.0.2:8448"; }
-            ];
-            terminationDelay = 100;
-          };
+         #dendrite.loadBalancer = {
+         #  servers = [
+         #    { address = "10.7.0.2:8008"; }
+         #  ];
+         #  terminationDelay = 100;
+         #};
+         #dendrite-tls.loadBalancer = {
+         #  servers = [
+         #    { address = "10.7.0.2:8448"; }
+         #  ];
+         #  terminationDelay = 100;
+         #};
           transmission-dht.loadBalancer = {
             servers = [
               { address = "10.11.0.2:51413"; }
@@ -673,10 +673,23 @@
       };
 
       accessLog = {
-        filePath = "/var/log/access";
+        filePath = "/var/log/traefik/access.json";
         format = "json";
+        fields.headers.defaultMode = "keep";
         bufferingSize = 100;
       };
+    };
+  };
+
+  services.logrotate = {
+    enable = true;
+    paths.traefik = {
+      enable = true;
+      path = "/var/log/traefik/access.*";
+      user = config.systemd.services.traefik.serviceConfig.User;
+      group = config.systemd.services.traefik.serviceConfig.Group;
+      frequency = "daily";
+      keep = 16;
     };
   };
 }
