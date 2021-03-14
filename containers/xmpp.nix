@@ -56,8 +56,10 @@ in {
               maxHistoryMessages = 10000;
               name = "Zeta Prosody";
             }];
-            ssl.cert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
-            ssl.key = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
+            ssl = {
+              cert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
+              key = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
+            };
             uploadHttp = {
               domain = "xmpp.xa0.uk";
             };
