@@ -41,9 +41,11 @@ in {
             enable = true;
             admins = [ "bqv@jix.im" ];
             allowRegistration = true;
+            admin_adhoc = true;
             admin_telnet = true;
             httpPorts = [ 5280 ];
             httpsPorts = [ 5281 ];
+            bosh = true;
             settings = let
               mkDb = with {
                 login = "dendrite";
