@@ -51,15 +51,17 @@ in {
             modules.legacyauth = true;
             modules.websocket = true;
             muc = [{
-              domain = "xa0.uk";
+              domain = "muc.xa0.uk";
               maxHistoryMessages = 10000;
               name = "Zeta Prosody";
             }];
             ssl.cert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
             ssl.key = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
             uploadHttp = {
-              domain = "xa0.uk";
+              domain = "xmpp.xa0.uk";
             };
+            disco_items = "xmpp.xa0.uk";
+            virtualhosts = "xmpp.xa0.uk";
           };
 
           networking.firewall.enable = false;
