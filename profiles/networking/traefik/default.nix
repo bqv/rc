@@ -383,15 +383,20 @@
             rule = "HostSNI(`*`)";
             service = "klaus";
           };
-          prosody = {
-            entryPoints = [ "prosody" ];
+          prosody-files = {
+            entryPoints = [ "xmpp-files" ];
             rule = "HostSNI(`*`)";
-            service = "prosody";
+            service = "prosody-files";
           };
-          prosody-tls = {
-            entryPoints = [ "prosody-tls" ];
+          prosody-client = {
+            entryPoints = [ "xmpp-client" ];
             rule = "HostSNI(`*`)";
-            service = "prosody-tls";
+            service = "prosody-client";
+          };
+          prosody-server = {
+            entryPoints = [ "xmpp-server" ];
+            rule = "HostSNI(`*`)";
+            service = "prosody-server";
           };
           transmission-dht-tcp = {
             entryPoints = [ "transmission-dht-tcp" ];
@@ -438,18 +443,24 @@
             ];
             terminationDelay = 100;
           };
-         #prosody.loadBalancer = {
-         #  servers = [
-         #    { address = "10.7.0.2:5280"; }
-         #  ];
-         #  terminationDelay = 100;
-         #};
-         #prosody-tls.loadBalancer = {
-         #  servers = [
-         #    { address = "10.7.0.2:5281"; }
-         #  ];
-         #  terminationDelay = 100;
-         #};
+          prosody-files.loadBalancer = {
+            servers = [
+              { address = "10.7.0.2:5000"; }
+            ];
+            terminationDelay = 100;
+          };
+          prosody-client.loadBalancer = {
+            servers = [
+              { address = "10.7.0.2:5222"; }
+            ];
+            terminationDelay = 100;
+          };
+          prosody-server.loadBalancer = {
+            servers = [
+              { address = "10.7.0.2:5269"; }
+            ];
+            terminationDelay = 100;
+          };
           transmission-dht.loadBalancer = {
             servers = [
               { address = "10.11.0.2:51413"; }
