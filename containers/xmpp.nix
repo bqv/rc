@@ -43,7 +43,7 @@ in {
             admins = [ "bqv@jix.im" ];
             allowRegistration = true;
             extraConfig = ''
-              local_interfaces = { "*" "::" }
+              local_interfaces = { "*", "::" }
             '';
             httpPorts = [ 5280 ];
             httpsPorts = [ 5281 ];
