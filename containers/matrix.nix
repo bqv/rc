@@ -116,33 +116,9 @@ in {
          #];
         };
       bindMounts = {
-        "/var/lib/private/matrix-dendrite" = {
-          hostPath = "/var/lib/dendrite";
-          isReadOnly = false;
-        };
-        "/var/lib/matrix-synapse" = {
-          hostPath = "/var/lib/synapse";
-          isReadOnly = false;
-        };
-        "/var/lib/construct" = {
-          hostPath = "/var/lib/construct";
-          isReadOnly = false;
-        };
-        "/var/log/construct" = {
-          hostPath = "/var/log/construct";
-          isReadOnly = false;
-        };
         "/var/lib/acme" = {
           hostPath = "/var/lib/acme";
           isReadOnly = true;
-        };
-        "/var/lib/ipfs" = {
-          hostPath = "/var/lib/ipfs";
-          isReadOnly = true;
-        };
-        "/run/ipfs.sock" = {
-          hostPath = "/run/ipfs.sock";
-          isReadOnly = false;
         };
       };
     };
