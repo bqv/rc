@@ -612,10 +612,19 @@
         yacy = {
           address = ":8090/tcp";
         };
-        prosody = {
+        prosody-files = {
+          address = ":5000/tcp";
+        };
+        prosody-client = {
+          address = ":5222/tcp";
+        };
+        prosody-server = {
+          address = ":5269/tcp";
+        };
+        prosody-http = {
           address = ":5280/tcp";
         };
-        prosody-tls = {
+        prosody-https = {
           address = ":5281/tcp";
         };
         jellyfin = {
