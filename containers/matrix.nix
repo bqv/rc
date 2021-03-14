@@ -40,9 +40,10 @@ in {
           services.prosody = rec {
             enable = true;
             admins = [ "bqv@jix.im" ];
-            allowRegistration = false;
-            httpPort = 8008;
-            httpsPort = 8448;
+            allowRegistration = true;
+            admin_telnet = true;
+            httpPorts = [ 5280 ];
+            httpsPorts = [ 5281 ];
             settings = let
               mkDb = with {
                 login = "dendrite";
