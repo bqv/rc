@@ -89,14 +89,17 @@
           };
           prosody-http = {
             entryPoints = [ "http" ];
-            rule = "(Host(`matrix.${domains.srvc}`) || Host(`m.${domains.srvc}`)) && PathPrefix(`/_matrix`)";
+            rule = "(Host(`xmpp.${domains.srvc}`) || Host(`x.${domains.srvc}`) ||"
+              + " Host(`jabber.${domains.srvc}`) || Host(`j.${domains.srvc}`)) && PathPrefix(`/_matrix`)";
             service = "prosody";
           };
           prosody-https = prosody-http // {
             entryPoints = [ "https" ];
             tls.domains = [
-              { main = "matrix.${domains.srvc}"; }
-              { main = "m.${domains.srvc}"; }
+              { main = "xmpp.${domains.srvc}"; }
+              { main = "x.${domains.srvc}"; }
+              { main = "jabber.${domains.srvc}"; }
+              { main = "j.${domains.srvc}"; }
             ];
           };
           certauth = {
