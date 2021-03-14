@@ -28,13 +28,13 @@ in {
 
           environment.systemPackages = with pkgs; [ jq vim ipfs ipfscat ];
           environment.variables = {
-            IPFS_PATH = pkgs.runCommand "ipfs-path" {
+            IPFS_PATH = (pkgs.runCommand "ipfs-path" {
               api = "/ip4/${usr.secrets.hosts.wireguard.ipv4.zeta}/tcp/5001";
               passAsFile = [ "api" ];
             } ''
               mkdir $out
               ln -s $apiPath $out/api
-            '';
+            '').out;
           };
 
           services.prosody = rec {
@@ -50,8 +50,16 @@ in {
             modules.groups = true;
             modules.legacyauth = true;
             modules.websocket = true;
+            muc = [{
+              domain = "xa0.uk";
+              maxHistoryMessages = 10000;
+              name = "Zeta Prosody";
+            }];
             ssl.cert = "/var/lib/acme/${usr.secrets.domains.srvc}/fullchain.pem";
             ssl.key = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
+            uploadHttp = {
+              domain = "xa0.uk";
+            };
           };
 
           networking.firewall.enable = false;
