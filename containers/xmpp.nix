@@ -37,6 +37,7 @@ in {
             ''}";
           };
 
+          services.bibuomi.enable = false;
           services.prosody = rec {
             enable = true;
             admins = [ "bqv@jix.im" ];
