@@ -245,7 +245,7 @@
     clipmenu bitwarden bitwarden-cli pass protonmail-bridge
     nix-bundle nix-output-monitor
 
-    ckb-next dino element-desktop nheko discord ripcord
+    ckb-next element-desktop nheko discord ripcord
     brave vivaldi vivaldi-ffmpeg-codecs vivaldi-widevine
     qutebrowser firefox thunderbird electronmail mpv apvlv
 
