@@ -63,7 +63,6 @@ in {
             disco_items = [{
               url = "xmpp.xa0.uk";
             }];
-            virtualhosts = "xmpp.xa0.uk";
           };
 
           networking.firewall.enable = false;
