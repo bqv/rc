@@ -283,7 +283,7 @@
           prosody.loadBalancer = {
             passHostHeader = true;
             servers = [
-              { url = "http://10.7.0.2:8008"; }
+              { url = "http://10.7.0.2:5280"; }
             ];
           };
           construct.loadBalancer = {
