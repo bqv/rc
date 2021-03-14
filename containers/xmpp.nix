@@ -34,8 +34,8 @@ in {
             } ''
               mkdir $out
               ln -s $apiPath $out/api
-            '';
-          }).out;
+            '').out;
+          };
 
           services.prosody = rec {
             enable = true;
