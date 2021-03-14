@@ -29,7 +29,7 @@ in {
           environment.systemPackages = with pkgs; [ jq vim ipfs ipfscat ];
           environment.variables = {
             IPFS_PATH = pkgs.runCommand "ipfs-path" {
-              api = "/var/lib/ipfs";
+              api = "/ip4/${usr.secrets.hosts.wireguard.ipv4.zeta}/tcp/5001";
               passAsFile = [ "api" ];
             } ''
               mkdir $out
