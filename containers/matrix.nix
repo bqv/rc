@@ -39,8 +39,8 @@ in {
 
           services.prosody = rec {
             enable = true;
-            generatePrivateKey = true;
-            generateTls = false;
+            admins = [ "bqv@jix.im" ];
+            allowRegistration = false;
             httpPort = 8008;
             httpsPort = 8448;
             settings = let
