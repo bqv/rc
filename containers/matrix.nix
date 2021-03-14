@@ -28,7 +28,13 @@ in {
 
           environment.systemPackages = with pkgs; [ jq vim ipfs ipfscat ];
           environment.variables = {
-            IPFS_PATH = "/var/lib/ipfs";
+            IPFS_PATH = pkgs.runCommand "ipfs-path" {
+              api = "/var/lib/ipfs";
+              passAsFile = [ "api" ];
+            } ''
+              mkdir $out
+              ln -s $apiPath $out/api
+            '';
           };
 
           services.matrix-dendrite = rec {
