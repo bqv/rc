@@ -69,8 +69,9 @@ in {
            #disco_items = [{
            #  url = "xmpp.xa0.uk";
            #}];
-            virtualHosts."xa0.uk" = {
-              url = "xa0.uk";
+            virtualHosts.srvc = {
+              enabled = true;
+              domain = "xa0.uk";
             };
           };
 
