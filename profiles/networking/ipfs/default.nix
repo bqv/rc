@@ -9,11 +9,10 @@ let
     name = "mfs-replace-root";
     src = pkgs.fetchgit {
       url = "https://github.com/hsanjuan/mfs-replace-root";
-      rev = "5502708ff19beaf9fc737a0b5ac30317145315f9";
-      sha256 = "07vsyg22djsapxl506y0d9n35br909238zrgwgyykq8dgrb34x0c";
-      # date = 2021-01-19T14:50:31+01:00;
+      rev = "83d3c875172f57b2956e31cb3bec26a51588f418";
+      sha256 = "150w93rpi2a3q2n1ksfw9f8x1q0wb513pipbwwjv0mvzn3hzqqp2";
+      # date = 2021-03-14T18:15:22+01:00;
     };
-    patches = [ ./bump-7-to-8.patch ];
     vendorSha256 = "fxDNmmfTZndQdtG7L7KgdN46f8buUxaa7Ul7gT+/NZA=";
     installCheckPhase = "$out/bin/mfs-replace-root --help";
   };
