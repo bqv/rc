@@ -93,7 +93,7 @@ in {
 
           networking.firewall.enable = false;
           networking.nameservers = [ "62.210.16.6" "62.210.16.7" ];
-          networking.extraHosts = ''${localAddress} twitter.com'';
+          networking.extraHosts = ''${localAddress}'';
 
           security.acme.acceptTerms = true;
           security.acme.email = "ssl@${usr.secrets.domains.home}";
