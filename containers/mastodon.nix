@@ -28,10 +28,6 @@ in {
         { config, stdenv, ... }:
 
         {
-          imports = [
-            ../modules/services/mastodon
-          ];
-
           nixpkgs.pkgs = pkgs;
           nixpkgs.config.allowUnfree = true;
 
