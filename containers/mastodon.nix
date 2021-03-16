@@ -5,12 +5,6 @@ let
   securityLimits = config.environment.etc.limits;
   hostAddress = "10.6.0.1";
   localAddress = "10.6.0.2";
-
-  twitterCfg = with usr.secrets.mastodon.twitter; {
-    inherit key crt;
-    keyFile = pkgs.writeText "selfsigned.key" key;
-    crtFile = pkgs.writeText "selfsigned.crt" crt;
-  };
 in {
   services.postgresql.enable = true;
   services.postgresql.ensureUsers = [
@@ -103,58 +97,6 @@ in {
 
           security.acme.acceptTerms = true;
           security.acme.email = "ssl@${usr.secrets.domains.home}";
-          security.pki.certificates = [ twitterCfg.crt ];
-
-          boot.enableContainers = true;
-          boot.kernel.sysctl = {
-            "net.ipv4.ip_forward" = "1";
-          };
-          containers.twitterpub =
-            {
-              autoStart = true;
-
-              config =
-                { config, stdenv, ... }:
-
-                {
-                  nixpkgs.pkgs = pkgs;
-                  nixpkgs.config.allowUnfree = true;
-
-                  environment.systemPackages = with pkgs; [
-                    twitterpub vim wget
-                  ];
-
-                  networking.firewall.enable = false;
-
-                  systemd.services.twitterpub = {
-                    serviceConfig = let
-                      configToml = pkgs.writeText "twitterpub.toml" ''
-                        Domain = "tw.${usr.secrets.domains.srvc}"
-                        Listen = ":443"
-                        TLS = true
-                        CertFile = "${twitterCfg.crtFile}"
-                        KeyFile = "${twitterCfg.keyFile}"
-                      '';
-                    in rec {
-                      WorkingDirectory = "/var/lib/twitterpub";
-                      ExecStartPre = pkgs.writeShellScript "setup-twitterpub" ''
-                        mkdir -p ${WorkingDirectory}
-                        ln -sf ${configToml} ${WorkingDirectory}/twitterpub.toml
-                        ln -sf ${pkgs.twitterpub.src}/main.html ${WorkingDirectory}/main.html
-                      '';
-                      ExecStart = "${pkgs.twitterpub}/bin/twitterpub";
-                      Restart = "always";
-                    };
-                    wantedBy = [ "default.target" ];
-                  };
-                };
-              bindMounts = {
-                "/var/lib/twitterpub" = {
-                  hostPath = "/var/lib/mastodon/twitterpub";
-                  isReadOnly = false;
-                };
-              };
-            };
         };
       bindMounts = {
         "/var/lib/mastodon" = {
