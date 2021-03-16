@@ -62,6 +62,7 @@ in {
           services.mastodon.smtp = {
             createLocally = true;
             fromAddress = "mastodon@${usr.secrets.domains.srvc}";
+            user = "mastodon";
           };
           services.mastodon.configureNginx = true;
           services.mastodon.package = pkgs.mastodon;
