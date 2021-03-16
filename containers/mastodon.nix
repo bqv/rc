@@ -72,7 +72,7 @@ in {
           services.nginx = {
             enable = true;
             enableReload = true;
-            virtualHosts."${cfg.localDomain}" = {
+            virtualHosts."${usr.secrets.domains.srvc}" = {
               #enableACME = lib.mkForce false;
               serverAliases = [
                 "u.${usr.secrets.domains.srvc}"
