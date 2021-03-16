@@ -272,6 +272,7 @@
             ];
           };
           mastodon.loadBalancer = {
+            passHostHeader = true;
             servers = [
               { url = "https://10.6.0.2:8443"; }
             ];
