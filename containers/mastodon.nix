@@ -1,7 +1,7 @@
 { config, pkgs, lib, usr, ... }:
 
 let
-  cfg = config.services.mastodon;
+  cfg = config.containers.mastodon.config.services.mastodon;
   securityLimits = config.environment.etc.limits;
   hostAddress = "10.6.0.1";
   localAddress = "10.6.0.2";
