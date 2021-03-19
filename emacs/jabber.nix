@@ -4,7 +4,11 @@
   emacs.loader.jabber = {
     demand = true;
     package = epkgs: epkgs.jabber.overrideAttrs (drv: {
-      src = "https://tildegit.org/wgreenhouse/emacs-jabber.git";
+      src = pkgs.fetchGit {
+        url = "https://tildegit.org/wgreenhouse/emacs-jabber.git";
+        rev = "master";
+        sha256 = "null";
+      };
     });
     config = ''
       nil
