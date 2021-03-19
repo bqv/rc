@@ -3,7 +3,7 @@
 {
   emacs.loader.jabber = {
     demand = true;
-    package = epkgs: epkgs.melpaBuild rec {
+    package = epkgs: epkgs.trivialBuild rec {
       pname = "jabber";
       version = lib.substring 0 7 src.rev;
       src = pkgs.fetchgit {
