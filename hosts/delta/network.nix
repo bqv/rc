@@ -168,6 +168,11 @@
           value = hosts.lan.theta;
           policy = "accept";
         };
+        leo = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["ssh" "default"] {
+          protocol = "ip"; field = "saddr";
+          value = hosts.lan.leo;
+          policy = "accept";
+        };
       };
     };
   };
