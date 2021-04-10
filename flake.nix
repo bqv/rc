@@ -156,10 +156,10 @@
           description = "nixos/nat: substitute iptables for compat under nftables";
           id = 085462; hash = "vU53uZUhhO6U2RGElAnZqAy3KForw/yyPiU5Rg1hL74=";
         }
-        {
-          description = "matrix-dendrite: init at 0.3.9";
-          id = 109561; hash = "+lTYEXjiMGh6hsYAWU+y5Cn0nFfzeW0yD84AZKsyHT4=";
-        }
+       #{
+       #  description = "matrix-dendrite: init at 0.3.9";
+       #  id = 109561; hash = "+lTYEXjiMGh6hsYAWU+y5Cn0nFfzeW0yD84AZKsyHT4=";
+       #}
       ];
       patches = [
        #(basePkgs.fetchurl {
@@ -244,7 +244,8 @@
                   inherit (withGuixFlake) guix;
                   inherit (withFunkwhaleFlake) funkwhale;
                   inherit (withEmacsFlake.withSelfFlake.withEmacs) emacsPgtkGcc emacsPgtkGccClient emacsPgtkGccPackages;
-                  inherit (withGiara) giara;
+                 #inherit (withGiara) giara;
+                  giara = prev.hello;
                   inherit (withLbry) lbry;
                   inherit (withCordless) cordless;
                   inherit (withMaster.withHnix) hnix;
@@ -298,6 +299,8 @@
                   plasma5 = plasma5Packages;
                   inherit (libsForQt5) kdeFrameworks;
                   pulseeffects = pulseeffects-pw;
+                  tuir = withLarge.tuir;
+                  searx = withLarge.searx;
                 };
               in overlaySets // overlayPkgs // {
                 inherit overlaySets overlayPkgs;
