@@ -9,6 +9,10 @@
     alsa.enable = true;
     jack.enable = true;
     pulse.enable = true;
+    media-session.config.bluez-monitor = {
+      bluez5.msbc-support = true;
+      bluez5.sbc-xq-support = true;
+    };
   };
 
   xdg.portal = {
