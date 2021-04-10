@@ -123,8 +123,6 @@
     audit.enable = lib.mkDefault true;
     auditd.enable = true;
 
-    hideProcessInformation = true;
-
     protectKernelImage = true;
   };
 

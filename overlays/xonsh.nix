@@ -25,7 +25,7 @@ in with final.xontribs; rec {
     propagatedBuildInputs = [
       python.pkgs.ply
       python.pkgs.prompt_toolkit
-      python.pkgs.pygments
+     #python.pkgs.pygments
 
       python.pkgs.nixpkgs
       python.pkgs.pip
