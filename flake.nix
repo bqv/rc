@@ -159,7 +159,7 @@
        #{
        #  description = "matrix-dendrite: init at 0.3.9";
        #  id = 109561; hash = "+lTYEXjiMGh6hsYAWU+y5Cn0nFfzeW0yD84AZKsyHT4=";
-       #}
+       #} # broken, for now
       ];
       patches = [
        #(basePkgs.fetchurl {
@@ -241,11 +241,12 @@
                   appendOverlays = exts: (final.appendOverlays exts).withPins;
 
                   # this is one light breeze away from infrec
+                  inherit (withDevshellFlake) devshell;
+                  mkDevShell = configuration: (withDevshellFlake.devshell.eval { inherit configuration; }).shell;
                   inherit (withGuixFlake) guix;
                   inherit (withFunkwhaleFlake) funkwhale;
                   inherit (withEmacsFlake.withSelfFlake.withEmacs) emacsPgtkGcc emacsPgtkGccClient emacsPgtkGccPackages;
-                 #inherit (withGiara) giara;
-                  giara = prev.hello;
+                  giara = builtins.trace "pkgs.giara: broken, for now" prev.hello; #inherit (withGiara) giara;
                   inherit (withLbry) lbry;
                   inherit (withCordless) cordless;
                   inherit (withLarge.withHnix) hnix;
@@ -299,8 +300,8 @@
                   plasma5 = plasma5Packages;
                   inherit (libsForQt5) kdeFrameworks;
                   pulseeffects = pulseeffects-pw;
-                  tuir = withLarge.tuir;
-                  searx = withLarge.searx;
+                  tuir = builtins.trace "pkgs.tuir: held back because broken, for now" withLarge.tuir;
+                  searx = builtins.trace "pkgs.searx: held back because a dep is broken, for now" withLarge.searx;
                 };
               in overlaySets // overlayPkgs // {
                 inherit overlaySets overlayPkgs;
@@ -884,7 +885,11 @@
                   };
                   baduk = {
                     imports = [ (import inputs.baduk) ];
+                   #baduk.sabaki.enable = false; # needs flake-ification patches
                     baduk.sabaki.engines = lib.mkDefault [];
+                   #baduk.gnugo.enable = false;
+                   #baduk.katago.enable = false;
+                   #baduk.leela-zero.enable = false;
                   };
                   impermanence = import "${inputs.impermanence}/home-manager.nix";
                 in flakeModules ++ [
@@ -963,7 +968,8 @@
     devShell = forAllSystems ({ system, ... }:
       let
         pkgs = import channels.pkgs { inherit system; overlays = [ inputs.devshell.overlay ]; };
-      in pkgs.mkDevShell {
+        mkDevShell = configuration: (pkgs.devshell.eval { inherit configuration; }).shell;
+      in mkDevShell {
         packages = with pkgs; let
           git-crypt = pkgs.git-crypt.overrideAttrs (attrs: rec {
             worktreePatch = fetchurl {
@@ -978,7 +984,7 @@
           git git-crypt git-secrets nixfmt
         ];
 
-        env.NIX_CONF_DIR = with pkgs; let
+        env = with pkgs; let
           nixConf = ''
             ${lib.optionalString (builtins.pathExists /etc/nix/nix.conf)
               (builtins.readFile /etc/nix/nix.conf)}
@@ -986,11 +992,14 @@
             print-build-logs = true
             access-tokens = "github.com=${secrets.git.github.oauth-token}"
           '';
-        in linkFarm "nix-conf-dir" ( [
-          { name = "nix.conf"; path = writeText "flakes-nix.conf" nixConf; }
-          { name = "registry.json"; path = /etc/nix/registry.json; }
-          { name = "machines"; path = /etc/nix/machines; }
-        ] );
+        in [{
+          name = "NIX_CONF_DIR";
+          value = "${linkFarm "nix-conf-dir" ( [
+            { name = "nix.conf"; path = writeText "flakes-nix.conf" nixConf; }
+            { name = "registry.json"; path = /etc/nix/registry.json; }
+            { name = "machines"; path = /etc/nix/machines; }
+          ] )}";
+        }];
 
         commands = [{
           name = "forecast";
