@@ -924,11 +924,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1611535491,
-        "narHash": "sha256-mXjeRxW7LyY7EPEl1nPIN2ppyR5uu2EdkdOYVrdrLsk=",
+        "lastModified": 1618187913,
+        "narHash": "sha256-Yhhs941hRoTkyfUt3kRvpuvkr/WAB1nYEjNztFIHJiE=",
         "owner": "nix-lisp",
         "repo": "lisp-overlay",
-        "rev": "22194e9565cf7d8141961d4ea3b0ef2eb1d5c257",
+        "rev": "9b7f2679171a46d297ce153aab5e90ebbba3d9bc",
         "type": "github"
       },
       "original": {
