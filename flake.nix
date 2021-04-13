@@ -26,7 +26,7 @@
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
     pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
 
-    nix.url = "github:nixos/nix/progress-bar";                #|- Nix
+    nix.url = "github:nixos/nix";                             #|- Nix
     nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; #|  ^^^IPFS
 
     dwarffs.url = "github:edolstra/dwarffs";         #|- Dwarffs

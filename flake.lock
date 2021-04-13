@@ -363,11 +363,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1597153508,
-        "narHash": "sha256-VHg3MYVgQ12LeRSU2PSoDeKlSPD8PYYEFxxwkVVDRd0=",
+        "lastModified": 1611240086,
+        "narHash": "sha256-z8NmKUm7rfcAIkwtO4JZZo2KKDNQmHyExgNFRRzi1kM=",
         "owner": "edolstra",
         "repo": "dwarffs",
-        "rev": "d181d714fd36eb06f4992a1997cd5601e26db8f5",
+        "rev": "f691e2c991e75edb22836f1dbe632c40324215c5",
         "type": "github"
       },
       "original": {
@@ -985,22 +985,6 @@
         "type": "github"
       }
     },
-    "lowdown-src_3": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1598695561,
-        "narHash": "sha256-gyH/5j+h/nWw0W8AcR2WKvNBUsiQ7QuxqSJNXAwV+8E=",
-        "owner": "kristapsdz",
-        "repo": "lowdown",
-        "rev": "1705b4a26fbf065d9574dce47a94e8c7c79e052f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "kristapsdz",
-        "repo": "lowdown",
-        "type": "github"
-      }
-    },
     "mactelnet": {
       "flake": false,
       "locked": {
@@ -1154,7 +1138,7 @@
     },
     "nix-ipfs": {
       "inputs": {
-        "lowdown-src": "lowdown-src_3",
+        "lowdown-src": "lowdown-src_2",
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
@@ -1174,20 +1158,18 @@
     },
     "nix_2": {
       "inputs": {
-        "lowdown-src": "lowdown-src_2",
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1609844423,
-        "narHash": "sha256-DqO85mYA6KKdZv7oowsnhhR4VSn9705PMsOvjZ+mLYU=",
+        "lastModified": 1618207539,
+        "narHash": "sha256-8+bT+kzefSlC/l+pG60JdAqrls+04PlBBU6XN/YLLhg=",
         "owner": "nixos",
         "repo": "nix",
-        "rev": "1af0a165d4489f87e4b9d5412b3fbf35a02927ee",
+        "rev": "525015be7f908876e04e8d99c26b9ba8d13fb5d7",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "progress-bar",
         "repo": "nix",
         "type": "github"
       }
