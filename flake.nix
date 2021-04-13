@@ -130,6 +130,7 @@
     gh-notify = { url = "github:anticomputer/gh-notify"; flake = false; };
     dendrite = { url = "github:matrix-org/dendrite"; flake = false; };
     matrix-client = { url = "github:alphapapa/matrix-client.el"; flake = false; };
+    git-bug = { url = "github:michaelmure/git-bug"; flake = false; };
   };
 
   outputs = inputs: with builtins; let
@@ -294,6 +295,7 @@
                   inherit (withNaersk.withSelfFlake) wgvanity wold mactelnet;
                   inherit (withNix.withSelfFlake) nix-bundle;
                   inherit (withSelfFlake) matrix-dendrite;
+                  inherit (withGit-bug) git-bug;
 
                  #inherit (withSmall) firefox firefox-unwrapped;
                  #inherit (withSmall) thunderbird obs-studio webkitgtk chromium qemu;

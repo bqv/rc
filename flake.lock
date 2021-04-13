@@ -633,6 +633,22 @@
         "url": "https://gitlab.gnome.org/world/giara"
       }
     },
+    "git-bug": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1618248389,
+        "narHash": "sha256-Cx+Awk3TkOLnuhN81Ad6swjjxVjYuMPTQubyn8NNF98=",
+        "owner": "michaelmure",
+        "repo": "git-bug",
+        "rev": "62fb09a53cc626ac581f33b466a1cdf14eb6ed89",
+        "type": "github"
+      },
+      "original": {
+        "owner": "michaelmure",
+        "repo": "git-bug",
+        "type": "github"
+      }
+    },
     "git-get": {
       "flake": false,
       "locked": {
@@ -1692,6 +1708,7 @@
         "funkwhale": "funkwhale",
         "gh-notify": "gh-notify",
         "giara": "giara",
+        "git-bug": "git-bug",
         "git-get": "git-get",
         "git-pullrequest": "git-pullrequest",
         "git-remote-ipfs": "git-remote-ipfs",
