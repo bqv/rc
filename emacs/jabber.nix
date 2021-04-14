@@ -3,19 +3,17 @@
 {
   emacs.loader.jabber = {
     demand = true;
-    package = epkgs: epkgs.trivialBuild rec {
+    package = epkgs: if true then (builtins.trace "emacs.jabber: build fails" pkgs.emacs.pkgs.jabber) else (epkgs.trivialBuild rec {
       pname = "jabber";
-      version = lib.substring 0 7 src.rev;
-      src = pkgs.fetchgit {
-        url = "https://tildegit.org/wgreenhouse/emacs-jabber.git";
-        rev = "69d6122858f036958323c50f81423389b0f91d69";
-        sha256 = "0vg5zwcc7afwbjbravbbwjbfpd3jz2i4zckmnlpg5cabidlxwjzr";
-        # date = 2021-03-16T20:16:52-04:00;
+      version = lib.substring 0 7 (src.rev or src.outputHash);
+      src = pkgs.fetchzip {
+        url = "https://gitlab.com/cnngimenez/emacs-jabber/-/archive/lexical-binding/emacs-jabber-lexical-binding.tar.gz";
+        sha256 = "Fnrk3DIbbJUx+y4kwoJU0DSBvVBmMghk8dEZtLTGths=";
       };
       buildInputs = with epkgs; [
-        srv fsm
+        srv fsm literate-elisp
       ];
-    };
+    });
     config = ''
       nil
     '';
