@@ -44,6 +44,22 @@
       '';
     };
 
+    services.greetd = {
+      enable = false;
+      vt = 1;
+      settings = {
+        default_session = {
+          command = "${pkgs.greetd.tuigreet}/bin/tuigreet --time --cmd ${swcd}";
+          user = "${config.users.users.greeter.name}";
+        };
+
+        initial_session = {
+          command = "${swcd}";
+          user = "${config.users.users.bao.name}";
+        };
+      };
+    };
+
     security.pam.services.greetd = {
       allowNullPassword = true;
       startSession = true;
