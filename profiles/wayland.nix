@@ -99,7 +99,7 @@
       };
 
       serviceConfig = {
-        ExecStart = lib.mkForce "${pkgs.greetd}/bin/greetd";
+        ExecStart = lib.mkForce "${pkgs.greetd.greetd}/bin/greetd";
 
         IgnoreSIGPIPE = "no";
         SendSIGHUP = "yes";
