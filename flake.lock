@@ -363,11 +363,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1597153508,
-        "narHash": "sha256-VHg3MYVgQ12LeRSU2PSoDeKlSPD8PYYEFxxwkVVDRd0=",
+        "lastModified": 1611240086,
+        "narHash": "sha256-z8NmKUm7rfcAIkwtO4JZZo2KKDNQmHyExgNFRRzi1kM=",
         "owner": "edolstra",
         "repo": "dwarffs",
-        "rev": "d181d714fd36eb06f4992a1997cd5601e26db8f5",
+        "rev": "f691e2c991e75edb22836f1dbe632c40324215c5",
         "type": "github"
       },
       "original": {
@@ -378,11 +378,11 @@
     },
     "emacs": {
       "locked": {
-        "lastModified": 1613969560,
-        "narHash": "sha256-mUQd59dV4wdXVwiZwp7sDMaecYjvOKi+LxmxQ49QAwc=",
+        "lastModified": 1618197716,
+        "narHash": "sha256-PAc6oslesUzIZ5yIUdYOVfmkr9XK/KiRE6cJ+zR7Lxk=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "d449fdece326f09803dc804006f3d68da5cfcd1b",
+        "rev": "58a4432c801b8d63ce267ae54bfb04f7b511f06b",
         "type": "github"
       },
       "original": {
@@ -631,6 +631,22 @@
       "original": {
         "type": "git",
         "url": "https://gitlab.gnome.org/world/giara"
+      }
+    },
+    "git-bug": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1618248389,
+        "narHash": "sha256-Cx+Awk3TkOLnuhN81Ad6swjjxVjYuMPTQubyn8NNF98=",
+        "owner": "michaelmure",
+        "repo": "git-bug",
+        "rev": "62fb09a53cc626ac581f33b466a1cdf14eb6ed89",
+        "type": "github"
+      },
+      "original": {
+        "owner": "michaelmure",
+        "repo": "git-bug",
+        "type": "github"
       }
     },
     "git-get": {
@@ -924,11 +940,11 @@
         "nixpkgs": "nixpkgs_4"
       },
       "locked": {
-        "lastModified": 1611535491,
-        "narHash": "sha256-mXjeRxW7LyY7EPEl1nPIN2ppyR5uu2EdkdOYVrdrLsk=",
+        "lastModified": 1618187913,
+        "narHash": "sha256-Yhhs941hRoTkyfUt3kRvpuvkr/WAB1nYEjNztFIHJiE=",
         "owner": "nix-lisp",
         "repo": "lisp-overlay",
-        "rev": "22194e9565cf7d8141961d4ea3b0ef2eb1d5c257",
+        "rev": "9b7f2679171a46d297ce153aab5e90ebbba3d9bc",
         "type": "github"
       },
       "original": {
@@ -969,22 +985,6 @@
         "type": "github"
       }
     },
-    "lowdown-src_3": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1598695561,
-        "narHash": "sha256-gyH/5j+h/nWw0W8AcR2WKvNBUsiQ7QuxqSJNXAwV+8E=",
-        "owner": "kristapsdz",
-        "repo": "lowdown",
-        "rev": "1705b4a26fbf065d9574dce47a94e8c7c79e052f",
-        "type": "github"
-      },
-      "original": {
-        "owner": "kristapsdz",
-        "repo": "lowdown",
-        "type": "github"
-      }
-    },
     "mactelnet": {
       "flake": false,
       "locked": {
@@ -1003,11 +1003,11 @@
     },
     "master": {
       "locked": {
-        "lastModified": 1614030044,
-        "narHash": "sha256-E7FZwYNu23rQ/RgJpsxnx8Kepf3Gfmex9ntPi8irWQs=",
+        "lastModified": 1617998220,
+        "narHash": "sha256-Hs1ayIYU9Y2L86ie046iVWWYh+95yoDrJL/5NhqcslU=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "eb01bbdf8c4dcd10b249102febeda0f82f3126e9",
+        "rev": "cbdbd24665dc5323b608281c470cd347cb3c2213",
         "type": "github"
       },
       "original": {
@@ -1138,7 +1138,7 @@
     },
     "nix-ipfs": {
       "inputs": {
-        "lowdown-src": "lowdown-src_3",
+        "lowdown-src": "lowdown-src_2",
         "nixpkgs": "nixpkgs_6"
       },
       "locked": {
@@ -1158,20 +1158,18 @@
     },
     "nix_2": {
       "inputs": {
-        "lowdown-src": "lowdown-src_2",
         "nixpkgs": "nixpkgs_5"
       },
       "locked": {
-        "lastModified": 1609844423,
-        "narHash": "sha256-DqO85mYA6KKdZv7oowsnhhR4VSn9705PMsOvjZ+mLYU=",
+        "lastModified": 1618207539,
+        "narHash": "sha256-8+bT+kzefSlC/l+pG60JdAqrls+04PlBBU6XN/YLLhg=",
         "owner": "nixos",
         "repo": "nix",
-        "rev": "1af0a165d4489f87e4b9d5412b3fbf35a02927ee",
+        "rev": "525015be7f908876e04e8d99c26b9ba8d13fb5d7",
         "type": "github"
       },
       "original": {
         "owner": "nixos",
-        "ref": "progress-bar",
         "repo": "nix",
         "type": "github"
       }
@@ -1692,6 +1690,7 @@
         "funkwhale": "funkwhale",
         "gh-notify": "gh-notify",
         "giara": "giara",
+        "git-bug": "git-bug",
         "git-get": "git-get",
         "git-pullrequest": "git-pullrequest",
         "git-remote-ipfs": "git-remote-ipfs",
@@ -1818,11 +1817,11 @@
     },
     "small": {
       "locked": {
-        "lastModified": 1613984754,
-        "narHash": "sha256-CGsiTsuRq0fWwWRzzn0a+MxO2EUJT3M3qt0/n9RUjMY=",
+        "lastModified": 1617958939,
+        "narHash": "sha256-xkeCxiK3nwyiU+MrI0pNEVFAfCtl1YgUXJKe13Z67s4=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "8377eef0274f7945be3b195ebb99398309a55826",
+        "rev": "6f630a97e159585cae38a483adcbcbb9f59e2d0e",
         "type": "github"
       },
       "original": {

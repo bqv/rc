@@ -26,7 +26,7 @@
     pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
     pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
 
-    nix.url = "github:nixos/nix/progress-bar";                #|- Nix
+    nix.url = "github:nixos/nix";                             #|- Nix
     nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; #|  ^^^IPFS
 
     dwarffs.url = "github:edolstra/dwarffs";         #|- Dwarffs
@@ -130,6 +130,7 @@
     gh-notify = { url = "github:anticomputer/gh-notify"; flake = false; };
     dendrite = { url = "github:matrix-org/dendrite"; flake = false; };
     matrix-client = { url = "github:alphapapa/matrix-client.el"; flake = false; };
+    git-bug = { url = "github:michaelmure/git-bug"; flake = false; };
   };
 
   outputs = inputs: with builtins; let
@@ -155,11 +156,11 @@
         {
           description = "nixos/nat: substitute iptables for compat under nftables";
           id = 085462; hash = "vU53uZUhhO6U2RGElAnZqAy3KForw/yyPiU5Rg1hL74=";
-        }
-        {
-          description = "matrix-dendrite: init at 0.3.9";
-          id = 109561; hash = "+lTYEXjiMGh6hsYAWU+y5Cn0nFfzeW0yD84AZKsyHT4=";
-        }
+        } # see also #81172
+       #{
+       #  description = "matrix-dendrite: init at 0.3.9";
+       #  id = 109561; hash = "+lTYEXjiMGh6hsYAWU+y5Cn0nFfzeW0yD84AZKsyHT4=";
+       #} # broken, for now
       ];
       patches = [
        #(basePkgs.fetchurl {
@@ -241,13 +242,15 @@
                   appendOverlays = exts: (final.appendOverlays exts).withPins;
 
                   # this is one light breeze away from infrec
+                  inherit (withDevshellFlake) devshell;
+                  mkDevShell = configuration: (withDevshellFlake.devshell.eval { inherit configuration; }).shell;
                   inherit (withGuixFlake) guix;
                   inherit (withFunkwhaleFlake) funkwhale;
                   inherit (withEmacsFlake.withSelfFlake.withEmacs) emacsPgtkGcc emacsPgtkGccClient emacsPgtkGccPackages;
-                  inherit (withGiara) giara;
+                  giara = builtins.trace "pkgs.giara: broken, for now" prev.hello; #inherit (withGiara) giara;
                   inherit (withLbry) lbry;
                   inherit (withCordless) cordless;
-                  inherit (withMaster.withHnix) hnix;
+                  inherit (withLarge.withHnix) hnix;
                   inherit (withNix) nixFlakes nix-static nix-ipfs;
                   inherit (withInsecureSSL) epsxe;
                   inherit (withHydraFlake.withNix.withHydra) hydra hydra-unstable;
@@ -292,12 +295,15 @@
                   inherit (withNaersk.withSelfFlake) wgvanity wold mactelnet;
                   inherit (withNix.withSelfFlake) nix-bundle;
                   inherit (withSelfFlake) matrix-dendrite;
+                  inherit (withGit-bug) git-bug;
 
                  #inherit (withSmall) firefox firefox-unwrapped;
                  #inherit (withSmall) thunderbird obs-studio webkitgtk chromium qemu;
                   plasma5 = plasma5Packages;
                   inherit (libsForQt5) kdeFrameworks;
                   pulseeffects = pulseeffects-pw;
+                  tuir = builtins.trace "pkgs.tuir: held back because broken, for now" withLarge.tuir;
+                  searx = builtins.trace "pkgs.searx: held back because a dep is broken, for now" withLarge.searx;
                 };
               in overlaySets // overlayPkgs // {
                 inherit overlaySets overlayPkgs;
@@ -881,7 +887,11 @@
                   };
                   baduk = {
                     imports = [ (import inputs.baduk) ];
+                   #baduk.sabaki.enable = false; # needs flake-ification patches
                     baduk.sabaki.engines = lib.mkDefault [];
+                   #baduk.gnugo.enable = false;
+                   #baduk.katago.enable = false;
+                   #baduk.leela-zero.enable = false;
                   };
                   impermanence = import "${inputs.impermanence}/home-manager.nix";
                 in flakeModules ++ [
@@ -960,7 +970,8 @@
     devShell = forAllSystems ({ system, ... }:
       let
         pkgs = import channels.pkgs { inherit system; overlays = [ inputs.devshell.overlay ]; };
-      in pkgs.mkDevShell {
+        mkDevShell = configuration: (pkgs.devshell.eval { inherit configuration; }).shell;
+      in mkDevShell {
         packages = with pkgs; let
           git-crypt = pkgs.git-crypt.overrideAttrs (attrs: rec {
             worktreePatch = fetchurl {
@@ -975,7 +986,7 @@
           git git-crypt git-secrets nixfmt
         ];
 
-        env.NIX_CONF_DIR = with pkgs; let
+        env = with pkgs; let
           nixConf = ''
             ${lib.optionalString (builtins.pathExists /etc/nix/nix.conf)
               (builtins.readFile /etc/nix/nix.conf)}
@@ -983,11 +994,14 @@
             print-build-logs = true
             access-tokens = "github.com=${secrets.git.github.oauth-token}"
           '';
-        in linkFarm "nix-conf-dir" ( [
-          { name = "nix.conf"; path = writeText "flakes-nix.conf" nixConf; }
-          { name = "registry.json"; path = /etc/nix/registry.json; }
-          { name = "machines"; path = /etc/nix/machines; }
-        ] );
+        in [{
+          name = "NIX_CONF_DIR";
+          value = "${linkFarm "nix-conf-dir" ( [
+            { name = "nix.conf"; path = writeText "flakes-nix.conf" nixConf; }
+            { name = "registry.json"; path = /etc/nix/registry.json; }
+            { name = "machines"; path = /etc/nix/machines; }
+          ] )}";
+        }];
 
         commands = [{
           name = "forecast";
