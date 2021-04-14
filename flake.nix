@@ -248,7 +248,6 @@
                   inherit (withFunkwhaleFlake) funkwhale;
                   inherit (withEmacsFlake.withSelfFlake.withEmacs) emacsPgtkGcc emacsPgtkGccClient emacsPgtkGccPackages;
                   giara = builtins.trace "pkgs.giara: broken, for now" prev.hello; #inherit (withGiara) giara;
-                  inherit (withLbry) lbry;
                   inherit (withCordless) cordless;
                   inherit (withLarge.withHnix) hnix;
                   inherit (withNix) nixFlakes nix-static nix-ipfs;
