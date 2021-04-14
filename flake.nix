@@ -257,7 +257,6 @@
                   inherit (withApparmorFlake) apparmorRulesFromClosure;
                   iputils = iputils // { inherit (withApparmorFlake.iputils) apparmor; }; # shh it's fine
                   inetutils = inetutils // { inherit (withApparmorFlake.inetutils) apparmor; }; # shh it's fine
-                  inherit (withNaersk.withSelfFlake) greetd;
                   inherit (withSelfFlake) velox electronmail;
                   dotnetPackages = dotnetPackages // {
                     inherit (withSelfFlake.dotnetPackages) azure-functions-core-tools;
