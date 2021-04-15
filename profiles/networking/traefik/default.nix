@@ -17,7 +17,7 @@ in {
  #                                 router.tls.domains)
  #  config.services.traefik.dynamicConfigOptions.http.routers
  #);
-  environment.etc = {
+  environment.etc = lib.mkIf config.services.traefik.enable {
     "traefik/traefik.toml".source = staticConfigFile;
     "traefik/rules.toml".source = dynamicConfigFile;
   };
