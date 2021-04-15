@@ -1,14 +1,6 @@
 { config, lib, pkgs, usr, domains, hosts, ... }:
 
-let
-  staticConfigFile = lib.removePrefix "--configfile=" (
-    lib.findSingle (lib.hasPrefix "--configfile=") null null
-      (lib.splitString " " config.systemd.services.traefik.serviceConfig.ExecStart)
-  );
-  dynamicConfigFile = (
-    builtins.fromTOML (builtins.readFile staticConfigFile)
-  ).providers.file.filename;
-in {
+{
   systemd.services.traefik.serviceConfig.LimitNPROC = lib.mkForce null; # Ridiculous and broken
   users.users.traefik.extraGroups = [ "keys" ]; # For acme certificates
 
@@ -18,7 +10,15 @@ in {
  #  config.services.traefik.dynamicConfigOptions.http.routers
  #);
 
-  environment.etc = lib.mkIf config.services.traefik.enable {
+  environment.etc = let
+    staticConfigFile = lib.removePrefix "--configfile=" (
+      lib.findSingle (lib.hasPrefix "--configfile=") null null
+        (lib.splitString " " config.systemd.services.traefik.serviceConfig.ExecStart)
+    );
+    dynamicConfigFile = (
+      builtins.fromTOML (builtins.readFile staticConfigFile)
+    ).providers.file.filename;
+  in lib.mkIf config.services.traefik.enable {
     "traefik/traefik.toml".source = staticConfigFile;
     "traefik/rules.toml".source = dynamicConfigFile;
   };
