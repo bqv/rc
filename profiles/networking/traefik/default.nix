@@ -17,6 +17,10 @@ in {
  #                                 router.tls.domains)
  #  config.services.traefik.dynamicConfigOptions.http.routers
  #);
+  environment.etc = {
+    "traefik/traefik.toml".source = staticConfigFile;
+    "traefik/rules.toml".source = dynamicConfigFile;
+  };
 
   services.traefik = {
     enable = true;
