@@ -1,6 +1,11 @@
 { config, lib, pkgs, usr, domains, hosts, ... }:
 
-{
+let
+  staticConfigFile = lib.removePrefix "--configfile=" (
+    lib.findSingle (lib.hasPrefix "--configfile=") null null
+      (lib.splitString " " config.systemd.services.traefik.serviceConfig.ExecStart)
+  );
+in {
   systemd.services.traefik.serviceConfig.LimitNPROC = lib.mkForce null; # Ridiculous and broken
   users.users.traefik.extraGroups = [ "keys" ]; # For acme certificates
 
