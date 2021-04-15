@@ -5,6 +5,9 @@ let
     lib.findSingle (lib.hasPrefix "--configfile=") null null
       (lib.splitString " " config.systemd.services.traefik.serviceConfig.ExecStart)
   );
+  dynamicConfigFile = (
+    builtins.fromTOML (builtins.readFile staticConfigFile)
+  ).providers.file.filename;
 in {
   systemd.services.traefik.serviceConfig.LimitNPROC = lib.mkForce null; # Ridiculous and broken
   users.users.traefik.extraGroups = [ "keys" ]; # For acme certificates
