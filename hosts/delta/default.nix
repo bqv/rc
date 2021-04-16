@@ -212,6 +212,20 @@
      #};
     };
   };
+  services.minecraft = {
+    enable = true;
+    eula = true;
+    declarative = true;
+    serverProperties = {
+      server-port = 26556;
+      difficulty = 1;
+      gamemode = 1;
+      max-players = 8;
+      motd = "Kany0 City";
+      enable-rcon = true;
+      "rcon.password" = "kany0";
+    };
+  };
   systemd.services.flake-ci = {
     enable = true;
     description = "Flake CI";
