@@ -136,6 +136,11 @@
           value = 9999;
           policy = "accept";
         };
+        minecraft = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = 25565;
+          policy = "accept";
+        };
         udpports = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "udp"; field = "dport";
           value = lib.range 32768 65535;
