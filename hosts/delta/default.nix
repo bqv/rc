@@ -223,7 +223,7 @@
       max-players = 8;
       motd = "Kany0 City";
       enable-rcon = true;
-      "rcon.password" = "password";
+      "rcon.password" = "ihaveafirewall";
     };
   };
   systemd.services.flake-ci = {
