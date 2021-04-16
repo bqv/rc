@@ -217,11 +217,11 @@
     eula = true;
     declarative = true;
     serverProperties = {
-      server-port = 26556;
-      difficulty = 1;
-      gamemode = 1;
-      max-players = 8;
       motd = "Kany0 City";
+      server-port = 25565;
+      difficulty = 1;
+      gamemode = "survival";
+      max-players = 16;
       enable-rcon = true;
       "rcon.password" = "ihaveafirewall";
     };
