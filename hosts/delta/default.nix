@@ -199,6 +199,7 @@
   services.searx.enable = true;
   services.hydra.enable = false; # disabled because holy wtf
   services.flake-ci.enable = true;
+  services.grocy.enable = true;
   services.gitfs = {
     enable = true;
     mounts = {
@@ -216,6 +217,7 @@
   services.minecraft-server = {
     enable = true;
     eula = true;
+    package = pkgs.papermc;
     declarative = true;
     serverProperties = {
       motd = "Kany0 City";
