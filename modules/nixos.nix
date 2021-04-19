@@ -5,6 +5,7 @@
   ./services/gitfs.nix
   ./services/hydroxide/default.nix
   ./services/ipfs-cluster/default.nix
+  ./services/grocy.nix
   ./security/mitigations.nix
   ./system/machines.nix
   ./networking/nftables.nix
