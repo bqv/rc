@@ -126,6 +126,11 @@
           value = 6600;
           policy = "accept";
         };
+        grocy = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
+          protocol = "tcp"; field = "dport";
+          value = 8789;
+          policy = "accept";
+        };
         searx = dag.entryBetween ["basic-icmp6" "basic-icmp" "ping6" "ping"] ["default"] {
           protocol = "tcp"; field = "dport";
           value = 8888;
