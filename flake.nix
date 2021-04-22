@@ -70,6 +70,7 @@
     haskell.url = "github:input-output-hk/haskell.nix"; # Haskell.nix
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
+    android.url = "github:tadfisher/android-nixpkgs";   # Android SDK
 
     xontribs.url = "github:bqv/xontribs"; #|- Xontribs
     xontribs.inputs = {
@@ -86,7 +87,8 @@
     snack = { url = "github:nmattia/snack"; flake = false; };                      # Snack
     napalm = { url = "github:nmattia/napalm"; flake = false; };                    # Napalm
     statichask = { url = "github:nh2/static-haskell-nix"; flake = false; };        # Static Haskell
-    anki-sync = { url = "github:ankicommunity/anki-sync-server/125f7bb1"; flake = false; }; # Anki Server
+   #anki-sync = { url = "github:ankicommunity/anki-sync-server/125f7bb1"; flake = false; }; # Anki Server
+    android-nix = { url = "github:tmcl/minimal-android-nix-example"; flake = false; };
     conix = { url = "github:thenerd247/conix"; flake = false; };
     matrix-nio = { url = "github:poljar/matrix-nio/98f0c244"; flake = false; };
     weechat-matrix = { url = "github:poljar/weechat-matrix/d4158416"; flake = false; };

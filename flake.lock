@@ -23,26 +23,44 @@
         "type": "github"
       }
     },
-    "anki-sync": {
-      "flake": false,
+    "android": {
+      "inputs": {
+        "flake-utils": "flake-utils",
+        "nixpkgs": "nixpkgs"
+      },
       "locked": {
-        "lastModified": 1593215456,
-        "narHash": "sha256-3LBdVegRTCYsQkJ87ZFjHW04SPZrqE3TGDGOM+PnNgk=",
-        "owner": "ankicommunity",
-        "repo": "anki-sync-server",
-        "rev": "125f7bb1b58ccdeeaa710d4500844b7a4cfae85c",
+        "lastModified": 1619122008,
+        "narHash": "sha256-L3SECTBa79Jo/iC8gsnf+lfUSLgSi9ek6F4HNrjYSU4=",
+        "owner": "tadfisher",
+        "repo": "android-nixpkgs",
+        "rev": "8f954ca5e3ef435b5aea70f36ddb6cdc42bd9c14",
         "type": "github"
       },
       "original": {
-        "owner": "ankicommunity",
-        "ref": "125f7bb1",
-        "repo": "anki-sync-server",
+        "owner": "tadfisher",
+        "repo": "android-nixpkgs",
+        "type": "github"
+      }
+    },
+    "android-nix": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1619056566,
+        "narHash": "sha256-j8zIEi96Qgd2a/viVqu0yikY4qDWNLHnG41OschZY1o=",
+        "owner": "tmcl",
+        "repo": "minimal-android-nix-example",
+        "rev": "fa2df65847530d6cd7e349edd4c147f37fc8aed9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tmcl",
+        "repo": "minimal-android-nix-example",
         "type": "github"
       }
     },
     "apparmor": {
       "inputs": {
-        "nixpkgs": "nixpkgs"
+        "nixpkgs": "nixpkgs_2"
       },
       "locked": {
         "lastModified": 1607995485,
@@ -519,6 +537,21 @@
         "type": "github"
       }
     },
+    "flake-utils": {
+      "locked": {
+        "lastModified": 1614513358,
+        "narHash": "sha256-LakhOx3S1dRjnh0b5Dg3mbZyH0ToC9I8Y2wKSkBaTzU=",
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "rev": "5466c5bbece17adaab2d82fae80b46e807611bf3",
+        "type": "github"
+      },
+      "original": {
+        "owner": "numtide",
+        "repo": "flake-utils",
+        "type": "github"
+      }
+    },
     "flycheck-purescript": {
       "flake": false,
       "locked": {
@@ -569,7 +602,7 @@
     },
     "funkwhale": {
       "inputs": {
-        "nixpkgs": "nixpkgs_2"
+        "nixpkgs": "nixpkgs_3"
       },
       "locked": {
         "lastModified": 1613742170,
@@ -937,7 +970,7 @@
     },
     "lisp": {
       "inputs": {
-        "nixpkgs": "nixpkgs_4"
+        "nixpkgs": "nixpkgs_5"
       },
       "locked": {
         "lastModified": 1618187913,
@@ -1121,7 +1154,7 @@
     "nix": {
       "inputs": {
         "lowdown-src": "lowdown-src",
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_4"
       },
       "locked": {
         "lastModified": 1605715425,
@@ -1139,7 +1172,7 @@
     "nix-ipfs": {
       "inputs": {
         "lowdown-src": "lowdown-src_2",
-        "nixpkgs": "nixpkgs_6"
+        "nixpkgs": "nixpkgs_7"
       },
       "locked": {
         "lastModified": 1602773364,
@@ -1158,7 +1191,7 @@
     },
     "nix_2": {
       "inputs": {
-        "nixpkgs": "nixpkgs_5"
+        "nixpkgs": "nixpkgs_6"
       },
       "locked": {
         "lastModified": 1618207539,
@@ -1176,6 +1209,22 @@
     },
     "nixpkgs": {
       "locked": {
+        "lastModified": 1614989413,
+        "narHash": "sha256-g503bGSdVhLu2cKR5sHG8XetLFrVUzAL3+mrnQJpmdY=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "102eb68ceecbbd32ab1906a53ef5a7269dc9794a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs_2": {
+      "locked": {
         "lastModified": 1607522989,
         "narHash": "sha256-o/jWhOSAlaK7y2M57OIriRt6whuVVocS/T0mG7fd1TI=",
         "owner": "nixos",
@@ -1190,7 +1239,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
+    "nixpkgs_3": {
       "locked": {
         "lastModified": 1612995862,
         "narHash": "sha256-VJPQtC8WDPvQVQGolJqp2i43Yr9bvbyqGK3oWMa5+8g=",
@@ -1206,7 +1255,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_3": {
+    "nixpkgs_4": {
       "locked": {
         "lastModified": 1602702596,
         "narHash": "sha256-fqJ4UgOb4ZUnCDIapDb4gCrtAah5Rnr2/At3IzMitig=",
@@ -1221,7 +1270,7 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_4": {
+    "nixpkgs_5": {
       "locked": {
         "lastModified": 1607018170,
         "narHash": "sha256-C9VzUgeVCfNrzij2exmWupx8RNu7wxNbD8eReMLGy9I=",
@@ -1237,7 +1286,7 @@
         "type": "github"
       }
     },
-    "nixpkgs_5": {
+    "nixpkgs_6": {
       "locked": {
         "lastModified": 1602702596,
         "narHash": "sha256-fqJ4UgOb4ZUnCDIapDb4gCrtAah5Rnr2/At3IzMitig=",
@@ -1252,7 +1301,7 @@
         "type": "indirect"
       }
     },
-    "nixpkgs_6": {
+    "nixpkgs_7": {
       "locked": {
         "lastModified": 1591633336,
         "narHash": "sha256-oVXv4xAnDJB03LvZGbC72vSVlIbbJr8tpjEW5o/Fdek=",
@@ -1662,7 +1711,8 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
-        "anki-sync": "anki-sync",
+        "android": "android",
+        "android-nix": "android-nix",
         "apparmor": "apparmor",
         "baduk": "baduk",
         "bottom": "bottom",
