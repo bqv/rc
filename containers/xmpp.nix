@@ -55,7 +55,7 @@ in {
             modules.legacyauth = true;
             modules.websocket = true;
             muc = [{
-              domain = "muc.xa0.uk";
+              domain = "muc.${usr.secrets.domains.srvc}";
               maxHistoryMessages = 10000;
               name = "Zeta Prosody";
             }];
@@ -64,14 +64,14 @@ in {
               key = "/var/lib/acme/${usr.secrets.domains.srvc}/key.pem";
             };
             uploadHttp = {
-              domain = "xmpp.xa0.uk";
+              domain = "xmpp.${usr.secrets.domains.srvc}";
             };
            #disco_items = [{
-           #  url = "xmpp.xa0.uk";
+           #  url = "xmpp.${usr.secrets.domains.srvc}";
            #}];
             virtualHosts.srvc = {
               enabled = true;
-              domain = "xa0.uk";
+              domain = usr.secrets.domains.srvc;
             };
           };
 
