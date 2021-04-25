@@ -435,18 +435,23 @@
         nix = final: prev: let inherit (prev) system; in rec {
           nixFlakes = nix;
           nixUnstable = nix;
-          nix = inputs.nix.packages.${system}.nix;#.overrideAttrs (drv: {
-         #  patches = (drv.patches or []) ++ [
-         #    (final.fetchpatch {
-         #      name = "libfetcher-file.patch";
-         #      url = "https://github.com/nixos/nix/pull/4153.diff";
-         #      sha256 = "JfcswqOG0V5qlolxxYFOpqXJgENC4Adfk4J8r//tgfA=";
-         #    })
-         #  ];
-         #  passthru = {
-         #    inherit (inputs.nix.packages.${system}.nix) perl-bindings;
-         #  };
-         #});
+          nix = inputs.nix.packages.${system}.nix.overrideAttrs (drv: {
+            patches = (drv.patches or []) ++ [
+             #(final.fetchpatch {
+             #  name = "libfetcher-file.patch";
+             #  url = "https://github.com/nixos/nix/pull/4153.diff";
+             #  sha256 = "JfcswqOG0V5qlolxxYFOpqXJgENC4Adfk4J8r//tgfA=";
+             #})
+              (final.fetchpatch {
+                name = "log-all-ifd.patch";
+                url = "https://github.com/NixOS/nix/pull/3494.diff";
+                sha256 = "OMDCAc3GalFZwdDsaOfcM07e08334yPE+e8KiyVUWYo=";
+              })
+            ];
+            passthru = {
+              inherit (inputs.nix.packages.${system}.nix) perl-bindings;
+            };
+          });
           nix-static = inputs.nix.packages.${system}.nix-static or null;
           nix-ipfs = inputs.nix-ipfs.packages.${system}.nix;
          #nix-ipfs-static = inputs.nix-ipfs.packages.${system}.nix-static;
