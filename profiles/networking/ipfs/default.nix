@@ -133,13 +133,18 @@ in {
     };
   };
 
+  systemd.services.ipfs-init.serviceConfig.User = "ipfs";
+  systemd.services.ipfs-init.serviceConfig.Group = "ipfs";
   systemd.services.ipfs-init.serviceConfig.TimeoutStartSec = "20s";
-  systemd.services.ipfs-init.serviceConfig.ExecStartPre = pkgs.writeShellScript "ipfs-init-pre" ''
-    echo Migrating
-    ${pkgs.ipfs-migrator}/bin/fs-repo-migrations -y
-    echo Clearing MFS
-    ${mfs-replace-root}/bin/mfs-replace-root QmUNLLsPACCz1vLxQVkXqqLX5R1X345qqfHbsf67hvA3Nn
-  '';
+  systemd.services.ipfs-init.serviceConfig.Type = "oneshot";
+  systemd.services.ipfs-init.serviceConfig.RemainAfterExit = true;
+  systemd.services.ipfs-init.serviceConfig.Environment = ''IPFS_PATH=${config.services.ipfs.dataDir}'';
+  systemd.services.ipfs-init.serviceConfig.ExecStart = [
+    "${pkgs.coreutils}/bin/echo Migrating"
+    "${pkgs.ipfs-migrator}/bin/fs-repo-migrations -y"
+    "${pkgs.coreutils}/bin/echo Clearing MFS"
+    "${mfs-replace-root}/bin/mfs-replace-root QmUNLLsPACCz1vLxQVkXqqLX5R1X345qqfHbsf67hvA3Nn"
+  ];
 
   systemd.services.ipfs = builtins.trace "${config.networking.hostName} - ipfs config permissions still broken" {
     serviceConfig.ExecStartPost = "${pkgs.coreutils}/bin/chmod g+r /var/lib/ipfs/config";
