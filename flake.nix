@@ -257,10 +257,7 @@
                   inherit (withGuixFlake) guix;
                   inherit (withFunkwhaleFlake) funkwhale;
                   inherit (withEmacsFlake.withSelfFlake.withEmacs) emacsPgtkGcc emacsPgtkGccClient emacsPgtkGccPackages;
-                  giara = builtins.trace "pkgs.giara: broken, for now" prev.hello; #inherit (withGiara) giara;
-                  inherit (withMaster) lbry;
                   inherit (withCordless) cordless;
-                  inherit (withLarge.withHnix) hnix;
                   inherit (withNix) nixFlakes nix-static nix-ipfs;
                   inherit (withInsecureSSL) epsxe;
                   inherit (withHydraFlake.withNix.withHydra) hydra hydra-unstable;
@@ -290,14 +287,12 @@
                   inherit (withConstructFlake.withConstruct) matrix-construct;
                   inherit (withSelfFlake) yacy;
                   inherit (withRel2003.withSelfFlake) vervis;
-                  inherit (withMaster) mastodon;
 
                   inherit (withSelfFlake) cfcli dgit fsnoop pure shflags taiwins;
                   inherit (withIni2json) ini2json;
                   inherit (withNix.withDwarffsFlake) dwarffs;
                   inherit (withNaersk) naersk;
                   inherit (withXonsh.withXontribsFlake) xonsh;
-                  inherit (withLarge.withNyxt) nyxt;
 
                   inherit (withWeechat) weechatScripts;
                   inherit (withRel2003) bcachefs-tools; # to match kernel ver
@@ -306,13 +301,11 @@
                   inherit (withSelfFlake) matrix-dendrite;
                   inherit (withGit-bug) git-bug;
 
-                 #inherit (withSmall) firefox firefox-unwrapped;
-                 #inherit (withSmall) thunderbird obs-studio webkitgtk chromium qemu;
+                  inherit (withLarge.withHnix) hnix;
+                  inherit (withLarge.withNyxt) nyxt;
                   plasma5 = plasma5Packages;
                   inherit (libsForQt5) kdeFrameworks;
-                  pulseeffects = pulseeffects-pw;
                   tuir = builtins.trace "pkgs.tuir: held back because broken, for now" withLarge.tuir;
-                  searx = builtins.trace "pkgs.searx: held back because a dep is broken, for now" withLarge.searx;
                 };
               in overlaySets // overlayPkgs // {
                 inherit overlaySets overlayPkgs;
