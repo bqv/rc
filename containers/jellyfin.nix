@@ -68,6 +68,7 @@ in {
                 transmission = lib.mapAttrs (_: lib.mkForce) {
                   inherit (hostConfig.users.users.bao) uid group;
                 } // {
+                  isNormalUser = true;
                   extraGroups = [ "transmission" ];
                 };
               };

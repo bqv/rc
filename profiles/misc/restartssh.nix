@@ -7,17 +7,18 @@ in {
     type = with lib.types; nullOr str;
     default = null;
   };
-  config = lib.mkIf (cfg.restartPeriod != null) {
+  config = {
     # Bit meta but helps ensure sshd is bound to all addresses always
-    # TODO: move to profile
-    systemd.services.restart-openssh.script = if cfg.startWhenNeeded
-    then "${pkgs.systemd}/bin/systemctl restart sshd.socket"
-    else "${pkgs.systemd}/bin/systemctl restart sshd.service";
-    systemd.timers.restart-openssh = {
+    systemd.services.restart-openssh.serviceConfig.Type = "oneshot";
+    systemd.services.restart-openssh.serviceConfig.ExecStart = if cfg.startWhenNeeded
+    then "systemctl restart sshd.socket"
+    else "systemctl restart sshd.service";
+    systemd.timers.restart-openssh = lib.mkIf (cfg.restartPeriod != null) {
       timerConfig = {
         OnCalendar = cfg.restartPeriod;
         Unit = "restart-openssh.service";
       };
+      wantedBy = [ "timers.target" ];
     };
   };
 }

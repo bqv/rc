@@ -198,6 +198,8 @@
   xdg.portal.enable = true;
   services.searx.enable = true;
   services.hydra.enable = false; # disabled because holy wtf
+  services.flake-ci.enable = true;
+  services.grocy.enable = true;
   services.gitfs = {
     enable = true;
     mounts = {
@@ -212,23 +214,20 @@
      #};
     };
   };
-  systemd.services.flake-ci = {
+  services.minecraft-server = {
     enable = true;
-    description = "Flake CI";
-    path = [ pkgs.nixUnstable ];
-    serviceConfig.Type = "oneshot";
-    serviceConfig.User = config.users.users.bao.name;
-    serviceConfig.WorkingDirectory = "/srv/git/github.com/bqv/nixrc";
-    serviceConfig.ExecStart = "nix develop -c forecast master small";
-  };
-  systemd.timers.flake-ci = {
-    enable = true;
-    description = "Flake CI timer";
-    timerConfig = {
-      OnCalendar = "hourly";
-      Unit = "flake-ci.service";
+    eula = true;
+    package = pkgs.papermc;
+    declarative = true;
+    serverProperties = {
+      motd = "Kany0 City";
+      server-port = 25565;
+      difficulty = 1;
+      gamemode = "survival";
+      max-players = 16;
+      enable-rcon = true;
+      "rcon.password" = "ihaveafirewalldude";
     };
-    wantedBy = [ "timers.target" ];
   };
 
  #security.pam.loginLimits = [

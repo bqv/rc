@@ -229,6 +229,17 @@
               { main = "media.${domains.home}"; }
             ];
           };
+          grocy-http = {
+            entryPoints = [ "http" ];
+            rule = "Host(`grocy.${domains.home}`)";
+            service = "grocy";
+          };
+          grocy-https = grocy-http // {
+            entryPoints = [ "https" ];
+            tls.domains = [
+              { main = "grocy.${domains.home}"; }
+            ];
+          };
         };
 
         middlewares = {
@@ -267,6 +278,11 @@
           searx.loadBalancer = {
             servers = [
               { url = "http://${hosts.wireguard.ipv4.delta}:8888"; }
+            ];
+          };
+          grocy.loadBalancer = {
+            servers = [
+              { url = "http://${hosts.wireguard.ipv4.delta}:8789"; }
             ];
           };
           hydra.loadBalancer = {

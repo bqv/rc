@@ -135,7 +135,7 @@
     media_player = [{
       platform = "androidtv";
       name = "Omega";
-      host = "192.168.178.128";
+      host = usr.secrets.hosts.lan.omega;
       adb_server_ip = "127.0.0.1";
       apps = {
         "com.google.android.leanbacklauncher" = "Home Screen";
@@ -148,7 +148,7 @@
     notify = [{
       platform = "nfandroidtv";
       name = "AndroidTV";
-      host = "192.168.178.128";
+      host = usr.secrets.hosts.lan.omega;
     }];
     tuya = usr.secrets.hass.tuya;
     zeroconf = {};

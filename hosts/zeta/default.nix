@@ -210,13 +210,16 @@
     };
   };
 
-  systemd.services.restart-sshd = {
+  systemd.services.ensure-ipv6 = {
     serviceConfig = {
       Type = "oneshot";
-      ExecStart = "systemctl restart sshd.service";
     };
+    script = ''
+      set -euo pipefail
+      ping -6 -c1 2620:fe::fe || systemctl restart dhclient.service
+    '';
   };
-  systemd.timers.restart-sshd = {
+  systemd.timers.ensure-ipv6 = {
     timerConfig = {
       OnStartupSec = "1h";
       OnUnitActiveSec = "1h";
