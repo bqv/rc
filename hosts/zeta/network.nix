@@ -188,4 +188,5 @@ in {
     after = [ "dhclient.service" ];
     partOf = [ "dhclient.service" ];
   };
+  boot.kernel.sysctl."net.ipv6.conf.eno1.forwarding" = "0";
 }

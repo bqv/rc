@@ -133,6 +133,7 @@
     services.dunst.enable = true;
     services.emacs.enable = true;
     services.pulseeffects.enable = true;
+    services.pulseeffects.package = pkgs.pulseeffects-pw;
     services.ckb.enable = !config.headless;
 
     #systemd.user.startServices = true; # broken by the [nix-env -> nix profile] move
@@ -285,7 +286,7 @@
 
     qt = {
       enable = true;
-      platformTheme = "gnome";
+      platformTheme = "gtk";
     };
   };
 }

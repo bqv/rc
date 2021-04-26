@@ -88,6 +88,7 @@
       experimental-features = nix-command flakes ca-references recursive-nix
       preallocate-contents = true
       print-build-logs = true
+      log-all-ifd = true
       access-tokens = "github.com=${usr.secrets.git.github.oauth-token}"
     '';
 

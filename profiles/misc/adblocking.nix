@@ -1,15 +1,14 @@
 { pkgs, flake, ... }:
-let
-  inherit (builtins) concatStringsSep;
-  inherit (pkgs) stdenv gnugrep;
-  inherit (builtins) readFile fetchurl;
 
-  hosts = stdenv.mkDerivation {
+let
+  inherit (builtins) concatStringsSep readFile;
+
+  hosts = pkgs.stdenv.mkDerivation {
     name = "hosts";
 
     src = flake.inputs.spotify-adblock;
 
-    nativeBuildInputs = [ gnugrep ];
+    nativeBuildInputs = [ pkgs.gnugrep ];
 
     installPhase = ''
       mkdir -p $out/etc
@@ -33,4 +32,8 @@ let
 
     ];
 
-in { networking.extraHosts = readFile "${hosts}/etc/hosts"; }
+in {
+  networking.extraHosts = readFile "${hosts}/etc/hosts";
+
+  system.extraDependencies = [ hosts ]; # Pin IFD
+}

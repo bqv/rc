@@ -70,6 +70,7 @@
     haskell.url = "github:input-output-hk/haskell.nix"; # Haskell.nix
     utils.url = "github:numtide/flake-utils";           # Flake-utils
     hardware.url = "github:nixos/nixos-hardware";       # Nixos-hardware
+    android.url = "github:tadfisher/android-nixpkgs";   # Android SDK
 
     xontribs.url = "github:bqv/xontribs"; #|- Xontribs
     xontribs.inputs = {
@@ -86,7 +87,8 @@
     snack = { url = "github:nmattia/snack"; flake = false; };                      # Snack
     napalm = { url = "github:nmattia/napalm"; flake = false; };                    # Napalm
     statichask = { url = "github:nh2/static-haskell-nix"; flake = false; };        # Static Haskell
-    anki-sync = { url = "github:ankicommunity/anki-sync-server/125f7bb1"; flake = false; }; # Anki Server
+   #anki-sync = { url = "github:ankicommunity/anki-sync-server/125f7bb1"; flake = false; }; # Anki Server
+    android-nix = { url = "github:tmcl/minimal-android-nix-example"; flake = false; };
     conix = { url = "github:thenerd247/conix"; flake = false; };
     matrix-nio = { url = "github:poljar/matrix-nio/98f0c244"; flake = false; };
     weechat-matrix = { url = "github:poljar/weechat-matrix/d4158416"; flake = false; };
@@ -186,7 +188,15 @@
       legacyPackages = basePkgs.lib.genAttrs allSystems (system: _: import_nixpkgs { inherit system; });
     };
 
+    patchedPkgs = forAllSystems ({ system, ... }:
+      patchNixpkgs (channels.modules.legacyPackages.${system})
+    );
+
     channels = with inputs; {
+      patched = lib.mapAttrs (_: nixpkgs: forAllSystems ({ system, ... }:
+        patchNixpkgs nixpkgs.legacyPackages.${system}
+      )) channels;
+
       pkgs = small;       # For packages
       modules = master;   # For nixos modules
       lib = master;       # For flake-wide lib
@@ -247,10 +257,7 @@
                   inherit (withGuixFlake) guix;
                   inherit (withFunkwhaleFlake) funkwhale;
                   inherit (withEmacsFlake.withSelfFlake.withEmacs) emacsPgtkGcc emacsPgtkGccClient emacsPgtkGccPackages;
-                  giara = builtins.trace "pkgs.giara: broken, for now" prev.hello; #inherit (withGiara) giara;
-                  inherit (withMaster) lbry;
                   inherit (withCordless) cordless;
-                  inherit (withLarge.withHnix) hnix;
                   inherit (withNix) nixFlakes nix-static nix-ipfs;
                   inherit (withInsecureSSL) epsxe;
                   inherit (withHydraFlake.withNix.withHydra) hydra hydra-unstable;
@@ -280,14 +287,12 @@
                   inherit (withConstructFlake.withConstruct) matrix-construct;
                   inherit (withSelfFlake) yacy;
                   inherit (withRel2003.withSelfFlake) vervis;
-                  inherit (withMaster) mastodon;
 
                   inherit (withSelfFlake) cfcli dgit fsnoop pure shflags taiwins;
                   inherit (withIni2json) ini2json;
                   inherit (withNix.withDwarffsFlake) dwarffs;
                   inherit (withNaersk) naersk;
                   inherit (withXonsh.withXontribsFlake) xonsh;
-                  inherit (withLarge.withNyxt) nyxt;
 
                   inherit (withWeechat) weechatScripts;
                   inherit (withRel2003) bcachefs-tools; # to match kernel ver
@@ -296,13 +301,11 @@
                   inherit (withSelfFlake) matrix-dendrite;
                   inherit (withGit-bug) git-bug;
 
-                 #inherit (withSmall) firefox firefox-unwrapped;
-                 #inherit (withSmall) thunderbird obs-studio webkitgtk chromium qemu;
+                  inherit (withLarge.withHnix) hnix;
+                  inherit (withLarge.withNyxt) nyxt;
                   plasma5 = plasma5Packages;
                   inherit (libsForQt5) kdeFrameworks;
-                  pulseeffects = pulseeffects-pw;
                   tuir = builtins.trace "pkgs.tuir: held back because broken, for now" withLarge.tuir;
-                  searx = builtins.trace "pkgs.searx: held back because a dep is broken, for now" withLarge.searx;
                 };
               in overlaySets // overlayPkgs // {
                 inherit overlaySets overlayPkgs;
@@ -433,18 +436,23 @@
         nix = final: prev: let inherit (prev) system; in rec {
           nixFlakes = nix;
           nixUnstable = nix;
-          nix = inputs.nix.packages.${system}.nix;#.overrideAttrs (drv: {
-         #  patches = (drv.patches or []) ++ [
-         #    (final.fetchpatch {
-         #      name = "libfetcher-file.patch";
-         #      url = "https://github.com/nixos/nix/pull/4153.diff";
-         #      sha256 = "JfcswqOG0V5qlolxxYFOpqXJgENC4Adfk4J8r//tgfA=";
-         #    })
-         #  ];
-         #  passthru = {
-         #    inherit (inputs.nix.packages.${system}.nix) perl-bindings;
-         #  };
-         #});
+          nix = inputs.nix.packages.${system}.nix.overrideAttrs (drv: {
+            patches = (drv.patches or []) ++ [
+             #(final.fetchpatch {
+             #  name = "libfetcher-file.patch";
+             #  url = "https://github.com/nixos/nix/pull/4153.diff";
+             #  sha256 = "JfcswqOG0V5qlolxxYFOpqXJgENC4Adfk4J8r//tgfA=";
+             #})
+              (final.fetchpatch {
+                name = "log-all-ifd.patch";
+                url = "https://github.com/NixOS/nix/pull/3494.diff";
+                sha256 = "OMDCAc3GalFZwdDsaOfcM07e08334yPE+e8KiyVUWYo=";
+              })
+            ];
+            passthru = {
+              inherit (inputs.nix.packages.${system}.nix) perl-bindings;
+            };
+          });
           nix-static = inputs.nix.packages.${system}.nix-static or null;
           nix-ipfs = inputs.nix-ipfs.packages.${system}.nix;
          #nix-ipfs-static = inputs.nix-ipfs.packages.${system}.nix-static;
@@ -500,7 +508,7 @@
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }: let
       deployment = import ./deploy {
-        nixpkgs = patchNixpkgs (channels.modules.legacyPackages.${system});
+        nixpkgs = channels.patched.modules.${system};
         deploySystem = system; # By habit, system is deployer, platform is target
       } ({ config, lib, ... }: let
         inherit (config) nodes;
@@ -559,6 +567,12 @@
               '');
             };
           };
+
+         ifdroots = { config, pkgs, ... }: {
+            config.system.extraDependencies = [
+              channels.patched.modules.${system}
+            ];
+          };
         in {
           options = {
             configuration = lib.mkOption {
@@ -573,6 +587,7 @@
 
             configuration = {
               imports = [
+                ifdroots
                #linkage # TODO: figure out how to make this work
                 vmsystem
               ];
