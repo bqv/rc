@@ -837,11 +837,11 @@
     "hnix-overlay": {
       "flake": false,
       "locked": {
-        "lastModified": 1617535905,
-        "narHash": "sha256-RWty+OZ8xda6avd8vo/7qI+ne66VbM5Tg113EWJXPP0=",
+        "lastModified": 1612888980,
+        "narHash": "sha256-B+Rpnql9AosAGJ1WT6Hp3dnsUEi/vQU99NAaAWtk9kA=",
         "owner": "haskell-nix",
         "repo": "hnix",
-        "rev": "fb1f95ef1007ff074119a2aaeda1a5768f4d41fd",
+        "rev": "1939be1381b57e09c5bb4622143dda3345666c12",
         "type": "github"
       },
       "original": {
