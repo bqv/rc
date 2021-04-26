@@ -6,6 +6,6 @@ inputs@{ git-bug, ... }: final: prev: {
     inherit pname doCheck meta;
     version = inputs.git-bug.shortRev;
     src = inputs.git-bug;
-    vendorSha256 = "JYvknwgUeT4lZClBCUivVnOmcsufZwL+D0kYG1qLB2Q=";
+    vendorSha256 = "0ex0rfdC/Pk2950a/nAd3V/1A8k624c6cJWe+12XDy8=";
   });
 }
