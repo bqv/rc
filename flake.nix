@@ -188,7 +188,15 @@
       legacyPackages = basePkgs.lib.genAttrs allSystems (system: _: import_nixpkgs { inherit system; });
     };
 
+    patchedPkgs = forAllSystems ({ system, ... }:
+      patchNixpkgs (channels.modules.legacyPackages.${system})
+    );
+
     channels = with inputs; {
+      patched = lib.mapAttrs (_: nixpkgs: forAllSystems ({ system, ... }:
+        patchNixpkgs nixpkgs.legacyPackages.${system}
+      )) channels;
+
       pkgs = small;       # For packages
       modules = master;   # For nixos modules
       lib = master;       # For flake-wide lib
@@ -507,7 +515,7 @@
 
     defaultPackage = forAllSystems ({ pkgs, system, ... }: let
       deployment = import ./deploy {
-        nixpkgs = patchNixpkgs (channels.modules.legacyPackages.${system});
+        nixpkgs = channels.patched.modules.${system};
         deploySystem = system; # By habit, system is deployer, platform is target
       } ({ config, lib, ... }: let
         inherit (config) nodes;
@@ -566,6 +574,12 @@
               '');
             };
           };
+
+         ifdroots = { config, pkgs, ... }: {
+            config.system.extraDependencies = [
+              channels.patched.modules.${system}
+            ];
+          };
         in {
           options = {
             configuration = lib.mkOption {
@@ -580,6 +594,7 @@
 
             configuration = {
               imports = [
+                ifdroots
                #linkage # TODO: figure out how to make this work
                 vmsystem
               ];
