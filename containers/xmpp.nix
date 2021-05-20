@@ -37,13 +37,23 @@ in {
             ''}";
           };
 
-          services.biboumi.enable = false;
+          services.biboumi = {
+            enable = true;
+            settings = {
+              admin = [ "qy@${usr.secrets.domains.srvc}" ];
+              hostname = "irc.${usr.secrets.domains.srvc}";
+              password = usr.secrets.weechat.credentials.password;
+              xmpp_server_ip = "127.0.0.1";
+            };
+          };
           services.prosody = rec {
             enable = true;
-            admins = [ "bqv@jix.im" ];
+            admins = [ "qy@${usr.secrets.domains.srvc}" ];
             allowRegistration = true;
             extraConfig = ''
               local_interfaces = { "*", "::" }
+              Component "irc.${usr.secrets.domains.srvc}"
+                  component_secret = "${usr.secrets.weechat.credentials.password}";
             '';
             httpPorts = [ 5280 ];
             httpsPorts = [ 5281 ];
