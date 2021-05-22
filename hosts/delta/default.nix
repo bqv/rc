@@ -229,6 +229,17 @@
       "rcon.password" = "ihaveafirewalldude";
     };
   };
+  services.biboumi = {
+    enable = true;
+    settings = {
+      admin = [ "qy@${usr.secrets.domains.srvc}" ];
+      hostname = "irc.${usr.secrets.domains.srvc}";
+     #outgoing_bind = localAddress6;
+      password = usr.secrets.weechat.credentials.password;
+      port = 5347;
+      xmpp_server_ip = usr.secrets.hosts.wireguard.ipv4.zeta;
+    };
+  };
 
  #security.pam.loginLimits = [
  #  { domain = "@wheel"; item = "nofile"; type = "hard"; value = "unlimited"; }

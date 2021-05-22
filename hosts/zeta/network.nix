@@ -188,5 +188,9 @@ in {
     after = [ "dhclient.service" ];
     partOf = [ "dhclient.service" ];
   };
+  boot.kernel.sysctl."net.ipv6.conf.default.forwarding" = "1";
   boot.kernel.sysctl."net.ipv6.conf.eno1.forwarding" = "0";
+  boot.kernel.sysctl."net.ipv6.conf.all.accept_ra" = "2";
+  boot.kernel.sysctl."net.ipv6.conf.default.accept_ra" = "2";
+  boot.kernel.sysctl."net.ipv6.conf.eno1.accept_ra" = "2";
 }

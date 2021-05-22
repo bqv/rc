@@ -3,6 +3,8 @@
 let
   hostAddress = "10.7.0.1";
   localAddress = "10.7.0.2";
+  hostAddress6 = "fec0::ffff:10.7.0.1";
+  localAddress6 = "fec0::ffff:10.7.0.2";
 in {
  #services.postgresql = {
  #  enable = true;
@@ -19,6 +21,7 @@ in {
       enableTun = true;
       privateNetwork = true;
       inherit hostAddress localAddress;
+      inherit hostAddress6 localAddress6;
 
       config =
         { ... }:
@@ -37,15 +40,6 @@ in {
             ''}";
           };
 
-          services.biboumi = {
-            enable = true;
-            settings = {
-              admin = [ "qy@${usr.secrets.domains.srvc}" ];
-              hostname = "irc.${usr.secrets.domains.srvc}";
-              password = usr.secrets.weechat.credentials.password;
-              xmpp_server_ip = "127.0.0.1";
-            };
-          };
           services.prosody = rec {
             enable = true;
             admins = [ "qy@${usr.secrets.domains.srvc}" ];
@@ -53,7 +47,8 @@ in {
             extraConfig = ''
               local_interfaces = { "*", "::" }
               Component "irc.${usr.secrets.domains.srvc}"
-                  component_secret = "${usr.secrets.weechat.credentials.password}";
+                  component_port = { 5347 }
+                  component_secret = "${usr.secrets.weechat.credentials.password}"
             '';
             httpPorts = [ 5280 ];
             httpsPorts = [ 5281 ];

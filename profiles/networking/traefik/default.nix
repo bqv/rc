@@ -428,6 +428,11 @@
             rule = "HostSNI(`*`)";
             service = "prosody-server";
           };
+          prosody-component = {
+            entryPoints = [ "xmpp-component" ];
+            rule = "HostSNI(`*`)";
+            service = "prosody-component";
+          };
           transmission-dht-tcp = {
             entryPoints = [ "transmission-dht-tcp" ];
             rule = "HostSNI(`*`)";
@@ -488,6 +493,12 @@
           prosody-server.loadBalancer = {
             servers = [
               { address = "10.7.0.2:5269"; }
+            ];
+            terminationDelay = 100;
+          };
+          prosody-component.loadBalancer = {
+            servers = [
+              { address = "10.7.0.2:5347"; }
             ];
             terminationDelay = 100;
           };
@@ -668,6 +679,9 @@
         };
         xmpp-https = {
           address = ":5281/tcp";
+        };
+        xmpp-component = {
+          address = ":5347/tcp";
         };
         jellyfin = {
           address = ":8096/tcp";
