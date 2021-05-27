@@ -18,7 +18,7 @@
   hardware.opengl.driSupport = true;
   hardware.pulseaudio.enable = lib.mkDefault true;
 
-  services.gnome3 = {
+  services.gnome = {
     glib-networking.enable = true;
   };
   services.xserver = {

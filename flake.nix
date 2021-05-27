@@ -47,8 +47,6 @@
 
     hydra.url = "github:nixos/hydra/f64230b45edf07d1"; #|- Hydra
 
-    apparmor.url = "github:bqv/apparmor-nix"; #|- Apparmor
-
     emacs.url = "github:nix-community/emacs-overlay"; # Emacs-overlay
 
     lisp.url = "github:nix-lisp/lisp-overlay"; # Lisp-overlay
@@ -56,9 +54,6 @@
     funkwhale.url = "github:mmai/funkwhale-flake"; # Funkwhale
 
     devshell.url = "github:numtide/devshell"; # Devshell
-
-    nyxt.url = "github:atlas-engineer/nyxt"; #|- Nyxt
-    nyxt.inputs.nixpkgs.follows = "/master"; #|
 
     wayland.url = "github:colemickens/nixpkgs-wayland"; #|- Nixpkgs-wayland
     wayland.inputs.nixpkgs.follows = "/small";          #|
@@ -79,6 +74,7 @@
       pipeliner = { url = "github:anki-code/xontrib-pipeliner/daccb6c8a67bbda799dfa2d6d8d829b5e9151c92"; flake = false; };
     };
 
+    nyxt = { url = "github:atlas-engineer/nyxt"; flake = false; };                 # Nyxt
     processmgmt = { url = "github:svanderburg/nix-processmgmt"; flake = false; };  # ProcessMgmt
     hnix-overlay = { url = "github:haskell-nix/hnix"; flake = false; };            # Hnix
     impermanence = { url = "github:nix-community/impermanence"; flake = false; };  # Impermanence
@@ -153,7 +149,7 @@
       }) [
         {
           description = "nixos/anbox: use mainline drivers when available";
-          id = 102341; hash = "NG8/8NfxzwKU30MW8nY11TAklFQ0SyGyG41MqwxdRO0=";
+          id = 102341; hash = "rHKK1id+DHug+4drCfNuPBcGNT3bhQ/bvqYZxf+TVuI=";
         }
         {
           description = "nixos/nat: substitute iptables for compat under nftables";
@@ -261,9 +257,6 @@
                   inherit (withNix) nixFlakes nix-static nix-ipfs;
                   inherit (withInsecureSSL) epsxe;
                   inherit (withHydraFlake.withNix.withHydra) hydra hydra-unstable;
-                  inherit (withApparmorFlake) apparmorRulesFromClosure;
-                  iputils = iputils // { inherit (withApparmorFlake.iputils) apparmor; }; # shh it's fine
-                  inetutils = inetutils // { inherit (withApparmorFlake.inetutils) apparmor; }; # shh it's fine
                   inherit (withSelfFlake) velox electronmail;
                   dotnetPackages = dotnetPackages // {
                     inherit (withSelfFlake.dotnetPackages) azure-functions-core-tools;
@@ -301,11 +294,11 @@
                   inherit (withSelfFlake) matrix-dendrite;
                   inherit (withGit-bug) git-bug;
 
-                  inherit (withLarge.withHnix) hnix;
-                  inherit (withLarge.withNyxt) nyxt;
+                  inherit (withMaster) discord;
+                 #inherit (withLarge.withHnix) hnix;
+                 #inherit (withLarge.withNyxt) nyxt;
                   plasma5 = plasma5Packages;
                   inherit (libsForQt5) kdeFrameworks;
-                  tuir = builtins.trace "pkgs.tuir: held back because broken, for now" withLarge.tuir;
                 };
               in overlaySets // overlayPkgs // {
                 inherit overlaySets overlayPkgs;
@@ -812,7 +805,6 @@
           inherit (inputs.agenix.nixosModules) age;
           hydra = "${inputs.hydra}/hydra-module.nix";
           funkwhale = inputs.funkwhale.nixosModule;
-          apparmor-nix = inputs.apparmor.nixosModule;
 
           # Some common basic stuff
           core = ./profiles/core.nix;
@@ -962,7 +954,7 @@
           modules = flakeModules ++ extraModules ++ [
             home nixpkgs iwd gnupg
             home-manager dwarffs matrix-construct hydra
-            impermanence age guix funkwhale apparmor-nix
+            impermanence age guix funkwhale
           ];
         in {
           inherit system specialArgs;

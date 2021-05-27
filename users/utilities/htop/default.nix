@@ -6,33 +6,33 @@ let
 in {
   config = mkIf cfg.enable {
     programs.htop = {
-      headerMargin = false;
-      meters = {
-        left = [ "LeftCPUs2" "Memory" "Swap" "Hostname" ];
-        right = [ "RightCPUs2" "Tasks" "LoadAverage" "Uptime" ];
+      settings = {
+        header_margin = false;
+        left_meters = [ "LeftCPUs2" "Memory" "Swap" "Hostname" ];
+        right_meters = [ "RightCPUs2" "Tasks" "LoadAverage" "Uptime" ];
+
+        tree_view = true;
+        show_program_path = false;
+
+
+        fields = [
+          "PID"
+          "USER"   
+          "NICE"   
+          "STATE"   
+          "PRIORITY"
+          "PERCENT_CPU"  
+          "M_RESIDENT"
+          "PERCENT_MEM" 
+          "IO_RATE"
+          "STARTTIME"
+          "COMM"
+        ];
+
+        hide_threads = false;
+        hide_kernel_threads = false;
+        hide_userland_threads = true;
       };
-
-      treeView = true;
-      showProgramPath = false;
-
-
-      fields = [
-        "PID"
-        "USER"   
-        "NICE"   
-        "STATE"   
-        "PRIORITY"
-        "PERCENT_CPU"  
-        "M_RESIDENT"
-        "PERCENT_MEM" 
-        "IO_RATE"
-        "STARTTIME"
-        "COMM"
-      ];
-
-      hideThreads = false;
-      hideKernelThreads = false;
-      hideUserlandThreads = true;
     };
   };
 }

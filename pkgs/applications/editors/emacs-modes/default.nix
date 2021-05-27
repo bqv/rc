@@ -52,7 +52,7 @@ in lib.recurseIntoAttrs rec {
 
   emacs-webkit = import inputs.emacs-webkit {
     inherit pkgs;
-    version = inputs.emacs-webkit.shortRev;
+   #version = inputs.emacs-webkit.shortRev;
   };
 
   font-lock-ext = trivialBuild rec {

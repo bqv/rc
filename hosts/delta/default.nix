@@ -90,6 +90,7 @@
     "/home" = hdd // { options = [ "subvol=home" ]; };
     "/srv" = hdd // { options = [ "subvol=srv" ]; };
     "/nix" = ssd // { options = [ "noatime" "nodiratime" "discard=async" ]; };
+    "/gnu" = ssd // { options = [ "noatime" "nodiratime" "discard=async" "subvol=gnu" ]; };
     "/games" = hdd // { options = [ "subvol=games" ]; };
     "/run/hdd" = hdd // { options = [ "subvolid=0" ]; };
     "/run/ssd" = ssd // { options = [ "subvolid=0" "noatime" "nodiratime" "discard=async" ]; };
@@ -115,7 +116,7 @@
   virtualisation.libvirtd.enable = true;
   virtualisation.virtualbox.host.enable = false;
   virtualisation.anbox.enable = true;
-  systemd.network.networks = {
+  systemd.network.networks = lib.mkIf config.virtualisation.anbox.enable {
     "40-anbox0".networkConfig.ConfigureWithoutCarrier = true;
   };
 
@@ -135,6 +136,7 @@
     maxJobs = 8;
     nrBuildUsers = 64;
 
+    sandboxPaths = [ "/bin/sh=${pkgs.bash}/bin/sh" ];
     extraOptions = with usr.units; ''
       min-free = ${toString (gigabytes 48)}
     '';
@@ -267,7 +269,7 @@
     (with hunspellDicts; hunspellWithDicts [ en_GB-large ])
     wineWowPackages.staging
 
-    giara lbry hnix
+    giara lbry haskellPackages.hnix
 
     python3.pkgs.fritzconnection mactelnet wold
   ];

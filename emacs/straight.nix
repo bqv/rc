@@ -8,6 +8,7 @@
       pname = "straight";
       version = src.shortRev;
       src = pkgs.withSources.emacs-straight;
+      buildInputs = [ pkgs.git ];
     };
   };
 }
