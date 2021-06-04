@@ -45,6 +45,7 @@
 	       #:use-module (gnu packages rsync)
 	       #:use-module (gnu packages gnupg)
 	       #:use-module (gnu packages terminals)
+	       #:use-module (gnu packages xdisorg)
 	       #:use-module (flat packages emacs)
 	       #:export (os))
 
@@ -145,7 +146,7 @@
                 stumpwm wireguard emacs-evil emacs-ivy emacs-vterm emacs-geiser
                 efibootmgr dino weechat xinit irssi profanity poezio
 		ungoogled-chromium fish fish-foreign-env netcat
-		xinit setxkbmap rsync gnupg sway awesome termite
+		xinit setxkbmap rsync gnupg sway awesome termite rofi
                 %base-packages))
   
     (setuid-programs (cons*
