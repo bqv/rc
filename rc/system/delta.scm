@@ -44,6 +44,7 @@
 	       #:use-module (gnu packages web)
 	       #:use-module (gnu packages rsync)
 	       #:use-module (gnu packages gnupg)
+	       #:use-module (gnu packages terminals)
 	       #:export (os))
 
 (define (os)
@@ -140,10 +141,10 @@
                 gvfs ;; for user mounts
                 vim htop firefox mosh ripgrep tmux dvtm git go-ipfs file
                 emacs-next neovim nyxt xterm sshfs tree curl screen jq
-                stumpwm wireguard emacs-evil emacs-ivy emacs-vterm
+                stumpwm wireguard emacs-evil emacs-ivy emacs-vterm emacs-geiser
                 efibootmgr dino weechat xinit irssi profanity poezio
 		ungoogled-chromium fish fish-foreign-env netcat
-		xinit setxkbmap rsync gnupg sway awesome
+		xinit setxkbmap rsync gnupg sway awesome termite
                 %base-packages))
   
     (setuid-programs (cons*
