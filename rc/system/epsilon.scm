@@ -32,6 +32,7 @@
 	       #:use-module (gnu packages vim)
 	       #:use-module (gnu packages tmux)
 	       #:use-module (gnu packages screen)
+	       #:declarative? #f
 	       #:export (os))
 
 (define (os)

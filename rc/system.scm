@@ -1,18 +1,28 @@
-(define-module (rc system))
+(define-module (rc system)
+	       #:use-module (rc system delta)
+	       #:use-module (rc system epsilon)
+	       #:export (hosts
+			 systems
+			 current-host
+			 current-system
+			 
+			 delta
+			 epsilon))
+
+(define hosts
+  (hash-fold (lambda (k v p) (cons k p))
+	     '()
+	     (module-submodules (current-module))))
 
 (define-public systems 
-  (map (lambda (f) (string-drop-right f 4))
-       (cddr (reverse
-	       (let ((s (opendir (string-drop-right (current-filename) 4)))
-		     (l '()))
-		 (do ((d (readdir s) (readdir s)))
-		   ((eof-object? d))
-		   (set! l (cons d l)))
-		 (closedir s)
-		 l)))))
+  (map (lambda (host)
+	 (cons (symbol->string host)
+	       (module-ref (hashq-ref (module-submodules (current-module)) host) 'os)))
+       hosts))
 
-(do ((rest systems (cdr rest)))
-  ((nil? rest))
-  (let ((sys (string->symbol (car rest))))
-    (eval `(define-public (,sys) ((@ (rc system ,sys) os)))
-	  (interaction-environment))))
+(define (current-host) (gethostname))
+
+(define (current-system) ((assoc-ref systems (current-host))))
+
+(define (delta) ((assoc-ref systems "delta")))
+(define (epsilon) ((assoc-ref systems "epsilon")))
