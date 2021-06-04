@@ -45,6 +45,7 @@
 	       #:use-module (gnu packages rsync)
 	       #:use-module (gnu packages gnupg)
 	       #:use-module (gnu packages terminals)
+	       #:use-module (flat packages emacs)
 	       #:export (os))
 
 (define (os)
@@ -140,7 +141,7 @@
                 nss-certs ;; for HTTPS access
                 gvfs ;; for user mounts
                 vim htop firefox mosh ripgrep tmux dvtm git go-ipfs file
-                emacs-next neovim nyxt xterm sshfs tree curl screen jq
+                emacs-pgtk-native-comp neovim nyxt xterm sshfs tree curl screen jq
                 stumpwm wireguard emacs-evil emacs-ivy emacs-vterm emacs-geiser
                 efibootmgr dino weechat xinit irssi profanity poezio
 		ungoogled-chromium fish fish-foreign-env netcat
