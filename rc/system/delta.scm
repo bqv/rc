@@ -126,7 +126,6 @@
                                         (type "vfat"))
                            %base-file-systems)))
   
-    ;; Create user `bob' with `alice' as its initial password.
     (users (cons* (user-account
                     (name "leaf")
                     (password (crypt "alice" "$6$abc"))
@@ -136,7 +135,6 @@
                                             "audio" "video")))
                   %base-user-accounts))
   
-    ;; This is where we specify system-wide packages.
     (packages (cons*
                 nss-certs ;; for HTTPS access
                 gvfs ;; for user mounts
@@ -144,8 +142,8 @@
                 emacs-next neovim nyxt xterm sshfs tree curl screen jq
                 stumpwm wireguard emacs-evil emacs-ivy emacs-vterm
                 efibootmgr dino weechat xinit irssi profanity poezio
-  	      ungoogled-chromium fish fish-foreign-env netcat
-  	      xinit setxkbmap rsync gnupg
+		ungoogled-chromium fish fish-foreign-env netcat
+		xinit setxkbmap rsync gnupg sway awesome
                 %base-packages))
   
     (setuid-programs (cons*
@@ -165,9 +163,6 @@
                               (openssh-configuration
                                 (permit-root-login #t)
                                 (openssh openssh-sans-x)))
-                    ;(set-xorg-configuration
-                    ;  (xorg-configuration
-                    ;    (keyboard-layout keyboard-layout)))
                      (service nix-service-type
                               (nix-configuration
                                 (extra-config
