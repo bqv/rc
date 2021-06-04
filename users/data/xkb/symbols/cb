@@ -1,5 +1,0 @@
-partial modifier_keys
-xkb_symbols "swap_super_ctrl" {
-    replace key <LCTL> { [ Super_L ] };
-    replace key <LWIN> { [ Control_L ] };
-};
