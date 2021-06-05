@@ -1,4 +1,5 @@
 (define-module (rc system delta)
+               #:use-module (guix packages)
                #:use-module (gnu)
                #:use-module (gnu packages linux)
                #:use-module (gnu system nss)
@@ -48,7 +49,15 @@
                #:use-module (gnu packages terminals)
                #:use-module (gnu packages xdisorg)
                #:use-module (flat packages emacs)
+               #:use-module (rc packages xmpppy)
                #:export (os))
+
+(define weechat-xmpp
+  (package
+    (inherit weechat)
+    (inputs (cons*
+              `("python-xmpppy" ,python-xmpppy)
+              (package-inputs weechat)))))
 
 (define (os)
   (operating-system
@@ -144,9 +153,9 @@
                 vim htop firefox mosh ripgrep tmux dvtm git go-ipfs file iwd efibootmgr
                 emacs-pgtk-native-comp neovim nyxt xterm sshfs tree curl screen jq
                 stumpwm wireguard emacs-evil emacs-ivy emacs-vterm emacs-geiser
-                xinit setxkbmap rsync gnupg sway awesome termite alacritty
-                dino weechat irssi profanity poezio gajim gajim-omemo
-                ungoogled-chromium fish fish-foreign-env netcat rofi
+                xinit setxkbmap rsync gnupg sway awesome termite alacritty python
+                dino weechat-xmpp irssi profanity poezio gajim gajim-omemo python-xmpppy
+                ungoogled-chromium fish fish-foreign-env netcat rofi python-wrapper
                 %base-packages))
   
     (setuid-programs (cons*
@@ -268,7 +277,8 @@
                        (plain-file "doas.conf"
                                    (string-join (list
                                                   "permit nopass keepenv root" ; allowed to do anything
-                                                  "permit nopass   setenv { SSH_AUTH_SOCK  } :wheel")
+                                                  "permit nopass  setenv { SSH_AUTH_SOCK  } :wheel"
+                                                  "")
                                                 "\n")))
                      (modify-services
                        %desktop-services
