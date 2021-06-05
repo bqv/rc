@@ -52,13 +52,6 @@
                #:use-module (rc packages xmpppy)
                #:export (os))
 
-(define weechat-xmpp
-  (package
-    (inherit weechat)
-    (inputs (cons*
-              `("python-xmpppy" ,python-xmpppy)
-              (package-inputs weechat)))))
-
 (define (os)
   (operating-system
     (host-name "delta")
@@ -154,8 +147,8 @@
                 emacs-pgtk-native-comp neovim nyxt xterm sshfs tree curl screen jq
                 stumpwm wireguard emacs-evil emacs-ivy emacs-vterm emacs-geiser
                 xinit setxkbmap rsync gnupg sway awesome termite alacritty python
-                dino weechat-xmpp irssi profanity poezio gajim gajim-omemo python-xmpppy
                 ungoogled-chromium fish fish-foreign-env netcat rofi python-wrapper
+                dino weechat irssi profanity poezio gajim gajim-omemo
                 %base-packages))
   
     (setuid-programs (cons*
@@ -220,6 +213,13 @@
                                              (provision '(weechat))
                                              (requirement '(networking))
                                              (start #~(make-forkexec-constructor
+                                                        (let ((pythonpath (getenv "PYTHONPATH")))
+                                                          (setenv "PYTHONPATH"
+                                                                  (string-join
+                                                                    (cons #$(file-append python-xmpppy
+                                                                                         "/lib/python3.8/site-packages")
+                                                                          (if pythonpath (list pythonpath) '()))
+                                                                    ":")))
                                                         (list #$(file-append weechat "/bin/weechat-headless")
                                                               "-d" "/var/lib/weechat")))
                                              (stop #~(make-kill-destructor)))))
