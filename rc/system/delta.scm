@@ -145,8 +145,8 @@
                 emacs-pgtk-native-comp neovim nyxt xterm sshfs tree curl screen jq
                 stumpwm wireguard emacs-evil emacs-ivy emacs-vterm emacs-geiser
                 efibootmgr dino weechat xinit irssi profanity poezio
-		ungoogled-chromium fish fish-foreign-env netcat
-		xinit setxkbmap rsync gnupg sway awesome termite rofi
+		ungoogled-chromium fish fish-foreign-env netcat rofi
+		xinit setxkbmap rsync gnupg sway awesome termite alacritty
                 %base-packages))
   
     (setuid-programs (cons*
