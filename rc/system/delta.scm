@@ -215,8 +215,8 @@
                     ;           (config-file "/etc/wpa_supplicant/wpa_supplicant.conf")))
                      (service sddm-service-type
                               (sddm-configuration
-                               ;(auto-login-user "aion")
-                               ;(auto-login-session "stumpwm.desktop")
+                                (auto-login-user "leaf")
+                                (auto-login-session "sway.desktop")
                                 (xorg-configuration
                                   (xorg-configuration
                                     (keyboard-layout keyboard-layout)))))
