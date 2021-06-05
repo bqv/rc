@@ -1,4 +1,5 @@
 (define-module (rc home leaf)
+	       #:use-module (guix gexp)
 	       #:use-module (gnu home)
 	       #:use-module (gnu home-services)
 	       #:use-module (gnu home-services ssh)
@@ -6,14 +7,25 @@
 	       #:use-module (gnu home-services files)
 	       #:use-module (gnu services)
 	       #:use-module (gnu packages admin)
-	       #:use-module (guix gexp)
+               #:use-module (gnu packages chromium)
+               #:use-module (gnu packages emacs)
+               #:use-module (gnu packages emacs-xyz)
+               #:use-module (gnu packages irc)
+               #:use-module (gnu packages messaging)
+               #:use-module (gnu packages terminals)
+               #:use-module (gnu packages web-browsers)
+               #:use-module (nongnu packages mozilla)
+               #:use-module (flat packages emacs)
 	       #:export (env))
 
 (define (env)
   (home-environment
     (home-directory "/home/leaf")
-   ;(symlink-name ".guix-home-env")
-    (packages (list htop))
+   ;(symlink-name ".guix-home")
+    (packages (list firefox ungoogled-chromium nyxt
+                    dino weechat irssi profanity poezio gajim gajim-omemo
+                    termite alacritty
+                    emacs-pgtk-native-comp emacs-evil emacs-ivy emacs-vterm emacs-geiser))
     (services
       (list
 	(service home-bash-service-type

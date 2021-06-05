@@ -1,13 +1,10 @@
 (define-module (rc system delta)
-               #:use-module (guix packages)
-               #:use-module (gnu)
-               #:use-module (gnu packages linux)
-               #:use-module (gnu system nss)
-               #:use-module (nongnu packages linux)
-               #:use-module (nongnu packages mozilla)
-               #:use-module (nongnu system linux-initrd)
                #:use-module (srfi srfi-1)
                #:use-module (gcrypt pk-crypto)
+               #:use-module (guix packages)
+               #:use-module (gnu)
+               #:use-module (gnu system nss)
+               #:use-module (nongnu system linux-initrd)
                #:use-module (gnu services desktop)
                #:use-module (gnu services xorg)
                #:use-module (gnu services sddm)
@@ -16,11 +13,11 @@
                #:use-module (gnu services networking)
                #:use-module (gnu services nix)
                #:use-module (gnu services vpn)
+               #:use-module (gnu packages linux)
                #:use-module (gnu packages certs)
                #:use-module (gnu packages gnome)
                #:use-module (gnu packages vim)
                #:use-module (gnu packages admin)
-               #:use-module (gnu packages chromium)
                #:use-module (gnu packages file)
                #:use-module (gnu packages ssh)
                #:use-module (gnu packages rust-apps)
@@ -33,22 +30,17 @@
                #:use-module (gnu packages cpio)
                #:use-module (gnu packages vpn)
                #:use-module (gnu packages python)
-               #:use-module (gnu packages web-browsers)
                #:use-module (gnu packages curl)
                #:use-module (gnu packages screen)
-               #:use-module (gnu packages emacs)
-               #:use-module (gnu packages emacs-xyz)
                #:use-module (gnu packages xorg)
                #:use-module (gnu packages wm)
                #:use-module (gnu packages ipfs)
-               #:use-module (gnu packages messaging)
-               #:use-module (gnu packages irc)
                #:use-module (gnu packages web)
                #:use-module (gnu packages rsync)
                #:use-module (gnu packages gnupg)
-               #:use-module (gnu packages terminals)
                #:use-module (gnu packages xdisorg)
-               #:use-module (flat packages emacs)
+               #:use-module (gnu packages irc)
+               #:use-module (nongnu packages linux)
                #:use-module (rc packages xmpppy)
                #:export (os))
 
@@ -141,19 +133,16 @@
                   %base-user-accounts))
   
     (packages (cons*
-                nss-certs ;; for HTTPS access
-                gvfs ;; for user mounts
-                vim htop firefox mosh ripgrep tmux dvtm git go-ipfs file iwd efibootmgr
-                emacs-pgtk-native-comp neovim nyxt xterm sshfs tree curl screen jq
-                stumpwm wireguard emacs-evil emacs-ivy emacs-vterm emacs-geiser
-                xinit setxkbmap rsync gnupg sway awesome termite alacritty python
-                ungoogled-chromium fish fish-foreign-env netcat rofi python-wrapper
-                dino weechat irssi profanity poezio gajim gajim-omemo
+                nss-certs vim htop mosh ripgrep tmux dvtm git go-ipfs file iwd
+                neovim sshfs tree curl screen jq gvfs wireguard efibootmgr
+                sway stumpwm awesome xinit xterm setxkbmap rsync gnupg python
+                fish fish-foreign-env netcat rofi python-wrapper
                 %base-packages))
   
     (setuid-programs (cons*
                        #~(string-append #$opendoas "/bin/doas")
                        %setuid-programs))
+
     (sudoers-file (plain-file "sudoers" "\
                               root ALL=(ALL) ALL
                               %wheel ALL=(ALL) NOPASSWD:ALL\n"))
@@ -213,20 +202,23 @@
                                              (provision '(weechat))
                                              (requirement '(networking))
                                              (start #~(make-forkexec-constructor
-                                                        (let ((pythonpath (getenv "PYTHONPATH")))
-                                                          (setenv "PYTHONPATH"
-                                                                  (string-join
-                                                                    (cons #$(file-append python-xmpppy
-                                                                                         "/lib/python3.8/site-packages")
-                                                                          (if pythonpath (list pythonpath) '()))
-                                                                    ":")))
                                                         (list #$(file-append weechat "/bin/weechat-headless")
-                                                              "-d" "/var/lib/weechat")))
-                                             (stop #~(make-kill-destructor)))))
-                     ;(service wpa-supplicant-service-type
-                     ;         (wpa-supplicant-configuration
-                     ;           (interface "wlo1")
-                     ;           (config-file "/etc/wpa_supplicant/wpa_supplicant.conf")))
+                                                              "-d" "/var/lib/weechat")
+                                                        #:environment-variables
+                                                        (list
+                                                          (string-append
+                                                            "PYTHONPATH="
+                                                            (string-join
+                                                              (list
+                                                                #$(file-append python-xmpppy
+                                                                               "/lib/python3.8/site-packages"))
+                                                              ":")))))
+                                             (stop #~(make-kill-destructor))
+                                             (respawn? #t))))
+                    ;(service wpa-supplicant-service-type
+                    ;         (wpa-supplicant-configuration
+                    ;           (interface "wlo1")
+                    ;           (config-file "/etc/wpa_supplicant/wpa_supplicant.conf")))
                      (service sddm-service-type
                               (sddm-configuration
                                 (auto-login-user "leaf")
@@ -277,7 +269,7 @@
                        (plain-file "doas.conf"
                                    (string-join (list
                                                   "permit nopass keepenv root" ; allowed to do anything
-                                                  "permit nopass  setenv { SSH_AUTH_SOCK  } :wheel"
+                                                  "permit nopass setenv { SSH_AUTH_SOCK } :wheel"
                                                   "")
                                                 "\n")))
                      (modify-services
