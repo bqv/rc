@@ -141,12 +141,12 @@
     (packages (cons*
                 nss-certs ;; for HTTPS access
                 gvfs ;; for user mounts
-                vim htop firefox mosh ripgrep tmux dvtm git go-ipfs file iwd
+                vim htop firefox mosh ripgrep tmux dvtm git go-ipfs file iwd efibootmgr
                 emacs-pgtk-native-comp neovim nyxt xterm sshfs tree curl screen jq
                 stumpwm wireguard emacs-evil emacs-ivy emacs-vterm emacs-geiser
-                efibootmgr dino weechat xinit irssi profanity poezio
-                ungoogled-chromium fish fish-foreign-env netcat rofi
                 xinit setxkbmap rsync gnupg sway awesome termite alacritty
+                dino weechat irssi profanity poezio gajim gajim-omemo
+                ungoogled-chromium fish fish-foreign-env netcat rofi
                 %base-packages))
   
     (setuid-programs (cons*
@@ -228,11 +228,7 @@
                     ;(static-networking-service "enp4s0u1" "192.168.178.252"
                     ;                           #:gateway "192.168.178.1"
                     ;                           #:name-servers '("9.9.9.9"))
-                     (service dhcpd-service-type
-                              (dhcpd-configuration
-                                (config-file (plain-file "dhcpcd.conf" ""))
-                                (version "4o6")
-                                (interfaces '("eno2" "wlo1"))))
+                     (service dhcp-client-service-type)
                     ;(service elogind-service-type
                     ;         (elogind-configuration))
                      (service wireguard-service-type
