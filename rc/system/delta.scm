@@ -268,7 +268,7 @@
                        (plain-file "doas.conf"
                                    (string-join (list
                                                   "permit nopass keepenv root" ; allowed to do anything
-                                                  "permit nopass setenv { SSH_AUTH_SOCK  } :wheel")
+                                                  "permit nopass   setenv { SSH_AUTH_SOCK  } :wheel")
                                                 "\n")))
                      (modify-services
                        %desktop-services
