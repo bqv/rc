@@ -2,7 +2,7 @@
 
 let
   wanInterface = "eno1";
-  vlanInterface = idx: "fo${toString idx}";
+ #vlanInterface = idx: "fo${toString idx}";
 in {
   imports = [
     ../../containers/sandbox.nix   # 10. 1.0.x
@@ -43,15 +43,15 @@ in {
       hosts.ipv6.r-zeta
     ];
   };
-  networking.vlans.${vlanInterface 1} = {
-    id = 0;
-    interface = wanInterface;
-  };
-  networking.interfaces.${vlanInterface 1} = {
-    ipv4.addresses = [
-      hosts.ipv4.zeta-alt
-    ];
-  };
+ #networking.vlans.${vlanInterface 1} = {
+ #  id = 0;
+ #  interface = wanInterface;
+ #};
+ #networking.interfaces.${vlanInterface 1} = {
+ #  ipv4.addresses = [
+ #    hosts.ipv4.zeta-alt
+ #  ];
+ #};
 
   networking.nat.enable = true;
   networking.nat.internalInterfaces = ["ve-+"];
@@ -134,31 +134,31 @@ in {
     };
   };
 
-  networking.wireguard.interfaces.wg0 = {
-    postSetup = let
-      wanInterface = vlanInterface 1;
-      ipnat = "${pkgs.iptables}/bin/iptables -w -t nat";
-      proto = proto: "-p ${proto} -m ${proto}";
-      icmp-echo = "--icmp-type 8";
-      from-failover = "-d ${hosts.ipv4.zeta-alt.address}";
-      to-delta = "--to-destination ${hosts.wireguard.ipv4.delta}";
-      lanInterface = "wg0";
-    in ''
-      # Enable packet forwarding to/from the target for established/related connections
-     #iptables -A FORWARD -i ${wanInterface} -o ${lanInterface} -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
-     #iptables -A FORWARD -i ${lanInterface} -o ${wanInterface} -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+ #networking.wireguard.interfaces.wg0 = {
+ #  postSetup = let
+ #    wanInterface = vlanInterface 1;
+ #    ipnat = "${pkgs.iptables}/bin/iptables -w -t nat";
+ #    proto = proto: "-p ${proto} -m ${proto}";
+ #    icmp-echo = "--icmp-type 8";
+ #    from-failover = "-d ${hosts.ipv4.zeta-alt.address}";
+ #    to-delta = "--to-destination ${hosts.wireguard.ipv4.delta}";
+ #    lanInterface = "wg0";
+ #  in ''
+ #    # Enable packet forwarding to/from the target for established/related connections
+ #   #iptables -A FORWARD -i ${wanInterface} -o ${lanInterface} -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
+ #   #iptables -A FORWARD -i ${lanInterface} -o ${wanInterface} -m conntrack --ctstate ESTABLISHED,RELATED -j ACCEPT
 
-      # Enable masquerade on the target
-     #${ipnat} -A nixos-nat-post -o ${lanInterface} -s ${hosts.wireguard.ipv4.delta} -j MASQUERADE
+ #    # Enable masquerade on the target
+ #   #${ipnat} -A nixos-nat-post -o ${lanInterface} -s ${hosts.wireguard.ipv4.delta} -j MASQUERADE
 
-      # Forward from source to target
-     #${ipnat} -A nixos-nat-pre  -i ${wanInterface} ${proto "tcp" } ${from-failover} -j DNAT ${to-delta}
+ #    # Forward from source to target
+ #   #${ipnat} -A nixos-nat-pre  -i ${wanInterface} ${proto "tcp" } ${from-failover} -j DNAT ${to-delta}
 
-      # Hmm.
-     #${ipnat} -A nixos-nat-pre  -i ${wanInterface} ${proto "icmp"} ${from-failover} -j DNAT ${to-delta} ${icmp-echo}
-     #${ipnat} -A nixos-nat-pre  -i ${wanInterface} ${proto "udp" } ${from-failover} -j DNAT ${to-delta}
-    '';
-  };
+ #    # Hmm.
+ #   #${ipnat} -A nixos-nat-pre  -i ${wanInterface} ${proto "icmp"} ${from-failover} -j DNAT ${to-delta} ${icmp-echo}
+ #   #${ipnat} -A nixos-nat-pre  -i ${wanInterface} ${proto "udp" } ${from-failover} -j DNAT ${to-delta}
+ #  '';
+ #};
 
   networking.defaultGateway = hosts.ipv4.r-zeta.address;
   networking.nameservers = [ "9.9.9.9" ];
