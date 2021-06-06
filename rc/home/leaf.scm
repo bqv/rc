@@ -24,7 +24,7 @@
     (home-directory "/home/leaf")
    ;(symlink-name ".guix-home")
     (packages (list firefox ungoogled-chromium nyxt
-                    dino weechat irssi profanity poezio gajim gajim-omemo
+                    dino weechat irssi profanity poezio gajim gajim-omemo gajim-openpgp
                     termite alacritty
                     emacs-pgtk-native-comp emacs-evil emacs-ivy emacs-vterm emacs-geiser))
     (services
