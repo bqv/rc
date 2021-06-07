@@ -6,11 +6,11 @@
     ../../profiles/misc/restartssh.nix
     ../../profiles/security/sudo.nix
     ../../profiles/networking/wireguard
-    ../../profiles/networking/ipfs
-    ../../profiles/networking/tor
+   #../../profiles/networking/ipfs
+   #../../profiles/networking/tor
     ../../profiles/networking/traefik
     ../../profiles/networking/mdns.nix
-    ../../profiles/services/minecraft
+   #../../profiles/services/minecraft
     ../../profiles/services/syncthing
     ../../users/root.nix
     ../../users/bao.nix
