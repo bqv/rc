@@ -13,6 +13,7 @@
                #:use-module (gnu services networking)
                #:use-module (gnu services nix)
                #:use-module (gnu services vpn)
+               #:use-module (rc services biboumi)
                #:use-module (gnu packages linux)
                #:use-module (gnu packages certs)
                #:use-module (gnu packages gnome)
@@ -205,14 +206,18 @@
                                                         (list #$(file-append weechat "/bin/weechat-headless")
                                                               "-d" "/var/lib/weechat")
                                                         #:environment-variables
-                                                        (list
-                                                          (string-append
-                                                            "PYTHONPATH="
-                                                            (string-join
-                                                              (list
-                                                                #$(file-append python-xmpppy
-                                                                               "/lib/python3.8/site-packages"))
-                                                              ":")))))
+                                                        (append
+                                                          (list
+                                                            (string-append
+                                                              "PYTHONPATH="
+                                                              (string-join
+                                                                (list
+                                                                  #$(file-append python-xmpppy
+                                                                                 "/lib/python3.8/site-packages"))
+                                                                ":"))
+                                                            "SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt"
+                                                            "SSL_CERT_DIR=/etc/ssl/certs")
+                                                          (environ))))
                                              (stop #~(make-kill-destructor))
                                              (respawn? #t))))
                     ;(service wpa-supplicant-service-type
@@ -255,6 +260,10 @@
                                       (public-key "kccZA+GAc0VStb28A+Kr0z8iPCWsiuRMfwHW391Qrko=")
                                       (allowed-ips '("10.0.0.4/32"))
                                       (keep-alive 10))))))
+                     (service biboumi-service-type
+                              (biboumi-configuration
+                                (user "biboumi")
+                                (home "/tmp")))
                      (simple-service 'no-eth shepherd-root-service-type
                                      (list (shepherd-service
                                              (documentation "Set enp4s0u1 link down.")
