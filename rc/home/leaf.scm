@@ -18,6 +18,7 @@
                #:use-module (gnu packages web-browsers)
                #:use-module (nongnu packages mozilla)
                #:use-module (flat packages emacs)
+               #:use-module (rc packages discord)
                #:export (env))
 
 (define gajim-full
@@ -33,7 +34,7 @@
     (home-directory "/home/leaf")
    ;(symlink-name ".guix-home")
     (packages (list firefox ungoogled-chromium nyxt
-                    dino weechat irssi profanity poezio gajim-full gajim-omemo gajim-openpgp
+                    dino weechat irssi profanity poezio gajim-full gajim-omemo gajim-openpgp discord
                     termite alacritty
                     emacs-pgtk-native-comp emacs-evil emacs-ivy emacs-vterm emacs-geiser))
     (services
