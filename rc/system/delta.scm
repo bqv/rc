@@ -43,6 +43,7 @@
                #:use-module (gnu packages irc)
                #:use-module (nongnu packages linux)
                #:use-module (rc packages xmpppy)
+               #:use-module (rc packages biboumi)
                #:export (os))
 
 (define (os)
@@ -263,7 +264,28 @@
                      (service biboumi-service-type
                               (biboumi-configuration
                                 (user "biboumi")
-                                (home "/tmp")))
+                                (home "/tmp")
+                                (config
+                                  (mixed-text-file "biboumi.cfg"
+                                                   #~(string-join
+                                                       (map (lambda (p) (string-append
+                                                                          (symbol->string (car p))
+                                                                          "="
+                                                                          (cdr p)))
+                                                            `((admin . "qy@xa0.uk")
+                                                              (ca_file . "/etc/ssl/certs/ca-certificates.crt")
+                                                              (db_name . "/var/lib/biboumi/biboumi.sqlite")
+                                                              (hostname . "irc.xa0.uk")
+                                                              (identd_port . "113")
+                                                              (log_level . "1")
+                                                              (password . ,(assq-ref (load "/.scm") 'biboumi-pass))
+                                                              (persistent_by_default . "false")
+                                                              (policy_directory . ,(string-append #$biboumi "/etc/biboumi"))
+                                                              (port . "5347")
+                                                              (realname_customization . "true")
+                                                              (realname_from_jid . "false")
+                                                              (xmpp_server_ip . "10.0.0.1")))
+                                                       "\n")))))
                      (simple-service 'no-eth shepherd-root-service-type
                                      (list (shepherd-service
                                              (documentation "Set enp4s0u1 link down.")

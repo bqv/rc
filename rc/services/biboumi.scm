@@ -13,10 +13,12 @@
 (define-record-type* <biboumi-configuration>
   biboumi-configuration make-biboumi-configuration
   biboumi-configuration?
-  (biboumi biboumi-configuration-biboumi     ;<package>
+  (biboumi   biboumi-configuration-biboumi   ;<package>
              (default biboumi))
-  (arguments biboumi-configuration-arguments ;list of strings
-             (default '()))
+  (name      biboumi-configuration-name      ;string
+             (default #f))
+  (config    biboumi-configuration-file      ;<file>
+             (default (plain-file "biboumi.cfg" "")))
   (user      biboumi-configuration-user      ;string
              (default #f))
   (group     biboumi-configuration-group     ;string
@@ -26,16 +28,17 @@
 
 (define biboumi-shepherd-service
   (match-lambda
-    (($ <biboumi-configuration> biboumi arguments user group home)
+    (($ <biboumi-configuration> biboumi name config user group home)
      (list
       (shepherd-service
-       (provision (list (string->symbol (string-append "biboumi-" user))))
+       (provision (list (string->symbol (if name
+                                            (string-append "biboumi-" name)
+                                            "biboumi"))))
        (documentation "Run biboumi.")
        (requirement '(networking))
        (start #~(make-forkexec-constructor
-                 (append (list (string-append #$biboumi "/bin/biboumi")
-                               "-no-restart")
-                         '#$arguments)
+                 (list (string-append #$biboumi "/bin/biboumi")
+                       #$config)
                  #:user #$user
                  #:group #$group
                  #:environment-variables
