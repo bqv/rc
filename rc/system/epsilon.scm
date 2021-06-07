@@ -8,6 +8,7 @@
 	       #:use-module (guix channels)
 	       #:use-module (guix inferior)
 	       #:use-module (srfi srfi-1)
+	       #:use-module (gcrypt pk-crypto)
 	       #:use-module (gnu services networking)
 	       #:use-module (gnu services ssh)
 	       #:use-module (gnu services xorg)
@@ -32,6 +33,9 @@
 	       #:use-module (gnu packages vim)
 	       #:use-module (gnu packages tmux)
 	       #:use-module (gnu packages screen)
+	       #:use-module (gnu packages rsync)
+	       #:use-module (gnu packages suckless)
+	       #:use-module (gnu packages messaging)
 	       #:export (os))
 
 (define (os)
@@ -148,6 +152,29 @@
                               (openssh-configuration
                                 (permit-root-login #t)
                                 (authorized-keys
-                                  `(("root" ,(local-file "aion.pub"))
-                                    ("aion" ,(local-file "aion.pub"))))))
-                     %base-services))))
+                                  `(("root" ,(local-file "../../data/aion.pub"))
+                                    ("aion" ,(local-file "../../data/aion.pub"))))))
+                     (modify-services
+                       %base-services
+                       (guix-service-type config =>
+                                          (guix-configuration
+                                            (inherit config)
+                                            (substitute-urls
+                                              (append
+                                                (list "https://mirror.brielmaier.net")
+                                                %default-substitute-urls))
+                                            (authorized-keys
+                                              (append
+                                                (list (plain-file
+                                                        "mirror.brielmair.net.pub"
+                                                        (canonical-sexp->string
+                                                          (sexp->canonical-sexp
+                                                            '(public-key
+                                                               (ecc
+                                                                 (curve Ed25519)
+                                                                 (q #vu8(117 20 248 215 41 219 25 53
+                                                                         71 10 88 28 227 133 30 217
+                                                                         253 111 31 155 175 225 216 190
+                                                                         199 122 147 26 219 122 67 55))))
+                                                            ))))
+                                                %default-authorized-guix-keys)))))))))
