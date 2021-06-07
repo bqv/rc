@@ -317,6 +317,18 @@
                                             (authorized-keys
                                               (append
                                                 (list (plain-file
+                                                        "bordeaux.guix.gnu.org"
+                                                        (canonical-sexp->string
+                                                          (sexp->canonical-sexp
+                                                            '(public-key
+                                                               (ecc
+                                                                 (curve Ed25519)
+                                                                 (q #vu8(125 96 41 2 211 162 219 184
+                                                                         63 138 15 185 134 2 167 84
+                                                                         197 73 59 11 119 140 141 29
+                                                                         212 224 244 29 225 77 227 79))))
+                                                            )))
+                                                      (plain-file
                                                         "mirror.brielmair.net.pub"
                                                         (canonical-sexp->string
                                                           (sexp->canonical-sexp
