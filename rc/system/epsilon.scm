@@ -124,7 +124,7 @@
                 emacs-next neovim vim neofetch
                 nyxt xterm sshfs tree curl git netcat rsync
                 tmux screen htop tcpdump st
-                guile-wm stumpwm wireguard nss-certs
+                guile-wm stumpwm awesome wireguard nss-certs
                 emacs-evil emacs-ivy emacs-vterm ;emacs-webkit
                 gajim gajim-omemo gajim-openpgp dino
                 %base-packages))
@@ -144,7 +144,7 @@
                      (service sddm-service-type
                               (sddm-configuration
                                 (auto-login-user "aion")
-                                (auto-login-session "stumpwm.desktop")
+                                (auto-login-session "awesome.desktop")
                                 (xorg-configuration
                                   (xorg-configuration
                                     (keyboard-layout keyboard-layout)))))
