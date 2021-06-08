@@ -1,21 +1,16 @@
 (define-module (rc packages)
+  #:use-module ((rc) #:prefix rc:)
   #:use-module ((gnu packages) #:prefix gnu:)
   #:use-module (guix diagnostics)
   #:use-module (guix i18n)
-  #:use-module (srfi srfi-1)
   #:export (search-patch
             search-patches
             %patch-path))
 
-(define %channel-root
-  (find (lambda (path)
-          (file-exists? (string-append path "/rc/packages.scm")))
-        %load-path))
-
 (define %patch-path
   (make-parameter
    (append
-    (list (string-append %channel-root "/patches"))
+    (list (string-append rc:%channel-root "/patches"))
     (gnu:%patch-path))))
 
 (define (search-patch file-name)
