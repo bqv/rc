@@ -166,6 +166,29 @@
                                             (authorized-keys
                                               (append
                                                 (list (plain-file
+                                                        "delta.fron.io.pub"
+                                                        (canonical-sexp->string
+                                                          (sexp->canonical-sexp
+                                                            '(public-key
+                                                               (ecc
+                                                                 (curve Ed25519)
+                                                                 (q #vu8(177 124 150 128 236 7 193 6
+                                                                         46 162 178 109 30 193 60 5
+                                                                         113 105 163 220 184 241 42 113
+                                                                         88 88 131 115 240 26 162 224))))
+                                                            )))
+                                                        "bordeaux.guix.gnu.org.pub"
+                                                        (canonical-sexp->string
+                                                          (sexp->canonical-sexp
+                                                            '(public-key
+                                                               (ecc
+                                                                 (curve Ed25519)
+                                                                 (q #vu8(125 96 41 2 211 162 219 184
+                                                                         63 138 15 185 134 2 167 84
+                                                                         197 73 59 11 119 140 141 29
+                                                                         212 224 244 29 225 77 227 79))))
+                                                            )))
+                                                      (plain-file
                                                         "mirror.brielmair.net.pub"
                                                         (canonical-sexp->string
                                                           (sexp->canonical-sexp
