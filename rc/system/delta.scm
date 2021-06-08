@@ -262,33 +262,35 @@
                                       (public-key "kccZA+GAc0VStb28A+Kr0z8iPCWsiuRMfwHW391Qrko=")
                                       (allowed-ips '("10.0.0.4/32"))
                                       (keep-alive 10))))))
+                     (service bluetooth-service-type)
                      (service biboumi-service-type
                               (biboumi-configuration
                                 (user "biboumi")
                                 (home "/tmp")
                                 (config
                                   (mixed-text-file "biboumi.cfg"
-                                                   #~(string-join
-                                                       (map (lambda (p) (string-append
-                                                                          (symbol->string (car p))
-                                                                          "="
-                                                                          (if (number? (cdr p))
-                                                                              (number->string (cdr p))
-                                                                              (cdr p))))
-                                                            `((admin . "qy@xa0.uk")
-                                                              (ca_file . "/etc/ssl/certs/ca-certificates.crt")
-                                                              (db_name . "/var/lib/biboumi/biboumi.sqlite")
-                                                              (hostname . "irc.xa0.uk")
-                                                              (identd_port . 113)
-                                                              (log_level . 1)
-                                                              (password . ,keys:biboumi/password)
-                                                              (persistent_by_default . "false")
-                                                              (policy_directory . ,(string-append #$biboumi "/etc/biboumi"))
-                                                              (port . 5347)
-                                                              (realname_customization . "true")
-                                                              (realname_from_jid . "false")
-                                                              (xmpp_server_ip . "10.0.0.1")))
-                                                       "\n")))))
+                                                   (let ((biboumi-password keys:biboumi/password))
+                                                     #~(string-join
+                                                         (map (lambda (p) (string-append
+                                                                            (symbol->string (car p))
+                                                                            "="
+                                                                            (if (number? (cdr p))
+                                                                                (number->string (cdr p))
+                                                                                (cdr p))))
+                                                              `((admin . "qy@xa0.uk")
+                                                                (ca_file . "/etc/ssl/certs/ca-certificates.crt")
+                                                                (db_name . "/var/lib/biboumi/biboumi.sqlite")
+                                                                (hostname . "irc.xa0.uk")
+                                                                (identd_port . 113)
+                                                                (log_level . 1)
+                                                                (password . ,#$biboumi-password)
+                                                                (persistent_by_default . "false")
+                                                                (policy_directory . ,(string-append #$biboumi "/etc/biboumi"))
+                                                                (port . 5347)
+                                                                (realname_customization . "true")
+                                                                (realname_from_jid . "false")
+                                                                (xmpp_server_ip . "10.0.0.1")))
+                                                         "\n"))))))
                      (simple-service 'no-eth shepherd-root-service-type
                                      (list (shepherd-service
                                              (documentation "Set enp4s0u1 link down.")
