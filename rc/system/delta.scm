@@ -136,7 +136,8 @@
                   %base-user-accounts))
   
     (packages (cons*
-                nss-certs vim htop mosh ripgrep tmux dvtm git go-ipfs file iwd
+                nss-certs vim htop mosh ripgrep tmux dvtm go-ipfs file iwd
+                git git-crypt git-remote-gcrypt (list git "send-email")
                 neovim sshfs tree curl screen jq gvfs wireguard efibootmgr
                 sway stumpwm awesome xinit xterm setxkbmap rsync gnupg python
                 fish fish-foreign-env netcat rofi python-wrapper
