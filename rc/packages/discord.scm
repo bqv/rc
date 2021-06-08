@@ -54,6 +54,7 @@
              ("dbus"                       ,dbus)
              ("expat"                      ,expat)
              ("fontconfig"                 ,fontconfig)
+             ("font-awesome"               ,font-awesome)
              ("font-dejavu"                ,font-dejavu)
              ("freetype"                   ,freetype)
              ("gdk-pixbuf"                 ,gdk-pixbuf)
@@ -104,8 +105,10 @@
                          (source   (assoc-ref %build-inputs "source"))
                          (tar      (assoc-ref %build-inputs "tar"))
                          (gzip     (assoc-ref %build-inputs "gzip"))
-                         (dejavu   (assoc-ref %build-inputs "font-dejavu"))
                          (output   (assoc-ref %outputs "out"))
+                         (fonts    (list
+                                     (assoc-ref %build-inputs "font-awesome")
+                                     (assoc-ref %build-inputs "font-dejavu")))
                          (libs     (cons
                                      (string-append (assoc-ref %build-inputs "nss") "/lib/nss")
                                      (map (lambda (i) (string-append (cdr i) "/lib"))
@@ -125,7 +128,10 @@
                       (display "<?xml version='1.0'?>\n" port)
                       (display "<!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>\n" port)
                       (display "<fontconfig>\n" port)
-                      (display (string-append "  <dir>" dejavu "</dir>\n") port)
+                      (for-each
+                        (lambda (font)
+                          (display (string-append "  <dir>" font "</dir>\n") port))
+                        fonts)
                       (display "</fontconfig>\n" port)
                       (close port))
                     (chmod (string-append output "/opt/discord/Discord") #o755)
