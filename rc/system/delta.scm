@@ -273,7 +273,7 @@
                                                                           "="
                                                                           (if (number? (cdr p))
                                                                               (number->string (cdr p))
-                                                                              (cdr p)))
+                                                                              (cdr p))))
                                                             `((admin . "qy@xa0.uk")
                                                               (ca_file . "/etc/ssl/certs/ca-certificates.crt")
                                                               (db_name . "/var/lib/biboumi/biboumi.sqlite")
@@ -314,12 +314,13 @@
                                             (inherit config)
                                             (substitute-urls
                                               (append
-                                                (list "https://mirror.brielmaier.net")
+                                                (list "https://bordeaux.guix.gnu.org"
+                                                      "https://mirror.brielmaier.net")
                                                 %default-substitute-urls))
                                             (authorized-keys
                                               (append
                                                 (list (plain-file
-                                                        "bordeaux.guix.gnu.org"
+                                                        "bordeaux.guix.gnu.org.pub"
                                                         (canonical-sexp->string
                                                           (sexp->canonical-sexp
                                                             '(public-key
