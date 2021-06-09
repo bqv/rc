@@ -9,6 +9,7 @@
                #:use-module (gnu services xorg)
                #:use-module (gnu services sddm)
                #:use-module (gnu services shepherd)
+               #:use-module (gnu services sound)
                #:use-module (gnu services ssh)
                #:use-module (gnu services networking)
                #:use-module (gnu services nix)
@@ -43,6 +44,7 @@
                #:use-module (gnu packages irc)
                #:use-module (nongnu packages linux)
                #:use-module (rc packages biboumi)
+               #:use-module (rc packages pipewire-next)
                #:use-module (rc packages xmpppy)
                #:export (os))
 
@@ -291,6 +293,8 @@
                                                                 (realname_from_jid . "false")
                                                                 (xmpp_server_ip . "10.0.0.1")))
                                                          "\n"))))))
+                     (udev-rules-service 'pipewire-add-udev-rules
+                                         pipewire-next)
                      (simple-service 'no-eth shepherd-root-service-type
                                      (list (shepherd-service
                                              (documentation "Set enp4s0u1 link down.")
@@ -313,6 +317,8 @@
                        %desktop-services
                        (delete gdm-service-type)
                        (delete network-manager-service-type)
+                       (delete pulseaudio-service-type)
+                       (delete alsa-service-type)
                        (guix-service-type config =>
                                           (guix-configuration
                                             (inherit config)
