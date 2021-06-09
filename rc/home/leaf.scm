@@ -9,6 +9,7 @@
                #:use-module (gnu home-services files)
                #:use-module (gnu home-services gnupg)
                #:use-module (gnu home-services shells)
+               #:use-module (gnu home-services shepherd)
                #:use-module (gnu home-services ssh)
                #:use-module (rc home-services pipewire)
                #:use-module (gnu packages admin)
@@ -24,6 +25,7 @@
                #:use-module (gnu packages web-browsers)
                #:use-module (nongnu packages mozilla)
                #:use-module (flat packages emacs)
+               #:use-module (rde packages)
                #:use-module (rc packages discord)
                #:use-module (rc packages pipewire-next)
                #:export (env))
@@ -75,11 +77,75 @@
                      (bash-profile '("\
                                      export HISTFILE=$XDG_CACHE_HOME/.bash_history"))))
   
-          (simple-service 'test-config
+          (simple-service 'pipewire-add-asoundrd
                           home-files-service-type
-                          (list `("config/test.conf"
-                                  ,(plain-file "tmp-file.txt"
-                                               "the content of ~/.config/test.conf"))))
+                          (list `("config/alsa/asoundrc"
+                                  ,(mixed-text-file
+                                     "asoundrc"
+                                     #~(string-append
+                                         "<"
+                                         #$(file-append
+                                             pipewire-next "/share/alsa/alsa.conf.d/50-pipewire.conf")
+                                         ">\n<"
+                                         #$(file-append
+                                             pipewire-next "/share/alsa/alsa.conf.d/99-pipewire-default.conf")
+                                         ">\n"
+                                         "
+pcm_type.pipewire {
+  lib " #$(file-append pipewire-next
+                       "/lib/alsa-lib/libasound_module_pcm_pipewire.so") "
+}
+ctl_type.pipewire {
+  lib " #$(file-append pipewire-next
+                       "/lib/alsa-lib/libasound_module_ctl_pipewire.so") "
+}
+")))))
+
+          (simple-service 'pipewire-set-some-env-vars
+                          home-environment-variables-service-type
+
+                          '(("DBUS_SESSION_BUS_ADDRESS"
+                             . "unix:path=$XDG_RUNTIME_DIR/dbus.sock")
+                            ;; ("RTC_USE_PIPEWIRE" . "true")
+                            ))
+          (simple-service
+            'dbus-add-shepherd-daemon
+            home-shepherd-service-type
+            (list
+              (shepherd-service
+                (requirement '(dbus-home))
+                (provision '(pipewire))
+                (start #~(make-forkexec-constructor
+                           (list #$(file-append pipewire-next "/bin/pipewire")))))
+              (shepherd-service
+                (requirement '(pipewire))
+                (provision '(pipewire-media-session))
+                (start #~(make-forkexec-constructor
+                           (list #$(file-append pipewire-next "/bin/pipewire-media-session")))))
+              (shepherd-service
+                (requirement '(pipewire))
+                (provision '(pipewire-pulse))
+                (start #~(make-forkexec-constructor
+                           (list #$(file-append pipewire-next "/bin/pipewire-pulse")))))
+              (shepherd-service
+                (provision '(dbus-home))
+                (start #~(make-forkexec-constructor
+                           (list #$(file-append (@@ (gnu packages glib) dbus)
+                                                "/bin/dbus-daemon")
+                                 "--session"
+                                 (string-append
+                                   "--address="
+                                   "unix:path="
+                                   (getenv "XDG_RUNTIME_DIR")
+                                   "/dbus.sock")))))))
+
+          (simple-service
+            'pipewire-add-packages
+            home-profile-service-type
+            (append
+              ;; TODO: Should be in feature-sway
+              (list xdg-desktop-portal-latest xdg-desktop-portal-wlr-latest)
+              (list pipewire-next)))
   
          ;(service home-ssh-service-type
          ;         (home-ssh-configuration
