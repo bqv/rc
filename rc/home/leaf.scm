@@ -1,24 +1,28 @@
 (define-module (rc home leaf)
                #:use-module (guix gexp)
                #:use-module (guix packages)
+               #:use-module (gnu services)
                #:use-module (gnu home)
                #:use-module (gnu home-services)
                #:use-module (gnu home-services gnupg)
                #:use-module (gnu home-services ssh)
                #:use-module (gnu home-services shells)
                #:use-module (gnu home-services files)
-               #:use-module (gnu services)
+               #:use-module (rc home-services pipewire)
                #:use-module (gnu packages admin)
                #:use-module (gnu packages chromium)
                #:use-module (gnu packages emacs)
                #:use-module (gnu packages emacs-xyz)
                #:use-module (gnu packages irc)
+               #:use-module (gnu packages linux)
                #:use-module (gnu packages messaging)
+               #:use-module (gnu packages suckless)
                #:use-module (gnu packages terminals)
                #:use-module (gnu packages web-browsers)
                #:use-module (nongnu packages mozilla)
                #:use-module (flat packages emacs)
                #:use-module (rc packages discord)
+               #:use-module (rc packages pipewire-next)
                #:export (env))
 
 (define gajim-full
@@ -35,10 +39,10 @@
    ;(symlink-name ".guix-home")
     (packages (list firefox ungoogled-chromium nyxt
                     dino weechat irssi profanity poezio gajim-full gajim-omemo gajim-openpgp discord
-                    termite alacritty
+                    termite alacritty st
                     emacs-pgtk-native-comp emacs-evil emacs-ivy emacs-vterm emacs-geiser))
     (services
-      (list
+      (cons*
         (service home-bash-service-type
                  (home-bash-configuration
                    (guix-defaults? #t)
@@ -64,4 +68,17 @@
                    (gpg-agent-config
                      (home-gpg-agent-configuration
                        (ssh-agent? #t)))))
-        ))))
+
+        (service pipewire-service-type
+                 (pipewire-configuration
+                   (package pipewire-next)
+                   (config (plain-file "pipewire.conf" ""))))
+        (service pipewire-pulse-service-type
+                 (pipewire-pulse-configuration
+                   (package pipewire-next)
+                   (config (plain-file "pipewire-pulse.conf" ""))))
+        (service pipewire-media-session-service-type
+                 (pipewire-media-session-configuration
+                   (package pipewire-next)))
+
+        (list)))))

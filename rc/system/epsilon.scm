@@ -177,6 +177,7 @@
                                                                          113 105 163 220 184 241 42 113
                                                                          88 88 131 115 240 26 162 224))))
                                                             )))
+                                                      (plain-file
                                                         "bordeaux.guix.gnu.org.pub"
                                                         (canonical-sexp->string
                                                           (sexp->canonical-sexp

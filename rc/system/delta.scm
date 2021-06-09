@@ -43,8 +43,8 @@
                #:use-module (gnu packages xdisorg)
                #:use-module (gnu packages irc)
                #:use-module (nongnu packages linux)
-               #:use-module (rc packages xmpppy)
                #:use-module (rc packages biboumi)
+               #:use-module (rc packages xmpppy)
                #:export (os))
 
 (define (os)
@@ -146,7 +146,7 @@
     (setuid-programs (cons*
                        #~(string-append #$opendoas "/bin/doas")
                        %setuid-programs))
-
+ 
     (sudoers-file (plain-file "sudoers" "\
                               root ALL=(ALL) ALL
                               %wheel ALL=(ALL) NOPASSWD:ALL\n"))
