@@ -24,7 +24,6 @@
                #:use-module (gnu packages ssh)
                #:use-module (gnu packages rust-apps)
                #:use-module (gnu packages tmux)
-               #:use-module (gnu packages dvtm)
                #:use-module (gnu packages version-control)
                #:use-module (gnu packages shells)
                #:use-module (gnu packages networking)
@@ -136,7 +135,7 @@
                   %base-user-accounts))
   
     (packages (cons*
-                nss-certs vim htop mosh ripgrep tmux dvtm go-ipfs file iwd
+                nss-certs vim htop mosh ripgrep tmux go-ipfs file iwd
                 git git-crypt git-remote-gcrypt (list git "send-email")
                 neovim sshfs tree curl screen jq gvfs wireguard efibootmgr
                 sway stumpwm awesome xinit xterm setxkbmap rsync gnupg python

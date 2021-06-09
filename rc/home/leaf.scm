@@ -1,6 +1,7 @@
 (define-module (rc home leaf)
                #:use-module (guix gexp)
                #:use-module (guix packages)
+               #:use-module (guix utils)
                #:use-module (gnu services)
                #:use-module (gnu home)
                #:use-module (gnu home-services)
@@ -11,6 +12,7 @@
                #:use-module (rc home-services pipewire)
                #:use-module (gnu packages admin)
                #:use-module (gnu packages chromium)
+               #:use-module (gnu packages dvtm)
                #:use-module (gnu packages emacs)
                #:use-module (gnu packages emacs-xyz)
                #:use-module (gnu packages irc)
@@ -25,6 +27,27 @@
                #:use-module (rc packages pipewire-next)
                #:export (env))
 
+(define dvtm-custom
+  (package
+    (inherit dvtm)
+    (arguments
+      (substitute-keyword-arguments (package-arguments dvtm)
+        ((#:phases phases)
+         `(modify-phases ,phases
+            (add-before 'build 'set-modifier
+              (lambda _
+                (substitute* "config.def.h"
+                  (("CTRL\\('g'\\)") "CTRL('q')"))
+                (substitute* "dvtm.1"
+                  (("\\^g") "^q"))
+                #t))
+            (add-after 'install 'store-config
+              (lambda* (#:key outputs #:allow-other-keys)
+                (let ((out (assoc-ref outputs "out")))
+                  (mkdir-p (string-append out "/include/dvtm"))
+                  (copy-file "config.h" (string-append out "/include/dvtm/config.h")))
+                #t))))))))
+
 (define gajim-full
   (package
     (inherit gajim)
@@ -38,8 +61,9 @@
     (home-directory "/home/leaf")
    ;(symlink-name ".guix-home")
     (packages (list firefox ungoogled-chromium nyxt
-                    dino weechat irssi profanity poezio gajim-full gajim-omemo gajim-openpgp discord
-                    termite alacritty st
+                    weechat irssi discord
+                    dino profanity poezio gajim-full gajim-omemo gajim-openpgp
+                    termite alacritty st dvtm-custom
                     emacs-pgtk-native-comp emacs-evil emacs-ivy emacs-vterm emacs-geiser))
     (services
       (cons*
