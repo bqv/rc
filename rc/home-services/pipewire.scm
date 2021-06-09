@@ -60,6 +60,7 @@
      (list
        (shepherd-service
          (provision '(pipewire-pulse))
+         (requirement '(pipewire))
          (documentation "Run pipewire-pulse.")
          (start #~(make-forkexec-constructor
                     (list (string-append #$pipewire "/bin/pipewire-pulse")
@@ -87,6 +88,7 @@
      (list
        (shepherd-service
          (provision '(pipewire-media-session))
+         (requirement '(pipewire))
          (documentation "Run pipewire-media-session.")
          (start #~(make-forkexec-constructor
                     (list (string-append #$pipewire "/bin/pipewire-media-session"))))
