@@ -22,4 +22,4 @@
 
 (define (current-home) ((assoc-ref homes (current-user))))
 
-(define (leaf) ((assoc-ref homes "leaf")))
+(define (leaf os) ((assoc-ref homes "leaf") os))

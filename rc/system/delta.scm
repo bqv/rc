@@ -298,7 +298,7 @@
                                              (requirement '(networking))
                                              (start #~(lambda _
                                                         (let ((ip (string-append #$iproute "/sbin/ip")))
-                                                          (invoke ip "link" "set" "enp4s0u1" "down")
+                                                          (system* ip "link" "set" "enp4s0u1" "down")
                                                           #t)))
                                              (one-shot? #t))))
                      (extra-special-file
