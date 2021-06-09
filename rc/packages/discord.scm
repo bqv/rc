@@ -26,6 +26,7 @@
   #:use-module (gnu packages xdisorg)
   #:use-module (gnu packages xml)
   #:use-module (gnu packages xorg)
+  #:use-module (rc packages font-twitter-emoji)
   #:use-module (rc packages systemd))
 
 (define-public discord
@@ -56,6 +57,8 @@
              ("fontconfig"                 ,fontconfig)
              ("font-awesome"               ,font-awesome)
              ("font-dejavu"                ,font-dejavu)
+             ("font-google-noto"           ,font-google-noto)
+             ("font-twitter-emoji"         ,font-twitter-emoji)
              ("freetype"                   ,freetype)
              ("gdk-pixbuf"                 ,gdk-pixbuf)
              ("glib"                       ,glib)
@@ -107,8 +110,10 @@
                          (gzip     (assoc-ref %build-inputs "gzip"))
                          (output   (assoc-ref %outputs "out"))
                          (fonts    (list
-                                     (assoc-ref %build-inputs "font-awesome")
-                                     (assoc-ref %build-inputs "font-dejavu")))
+                                     (assoc-ref %build-inputs "font-twitter-emoji")
+                                     (assoc-ref %build-inputs "font-google-noto")
+                                     (assoc-ref %build-inputs "font-dejavu")
+                                     (assoc-ref %build-inputs "font-awesome")))
                          (libs     (cons
                                      (string-append (assoc-ref %build-inputs "nss") "/lib/nss")
                                      (map (lambda (i) (string-append (cdr i) "/lib"))
@@ -154,3 +159,5 @@
    (description "Discord chat client.")
    (license #f)
    (home-page "https://discordapp.com")))
+
+discord
