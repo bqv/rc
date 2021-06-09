@@ -33,7 +33,7 @@
                          `("gajim-openpgp" ,gajim-openpgp)
                          (package-propagated-inputs gajim)))))
 
-(define (env)
+(define (env os)
   (home-environment
     (home-directory "/home/leaf")
    ;(symlink-name ".guix-home")
