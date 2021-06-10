@@ -312,6 +312,8 @@
                                                           (system* ip "link" "set" "enp4s0u1" "down")
                                                           #t)))
                                              (one-shot? #t))))
+                     (simple-service 'use-gnu-var session-environment-service-type
+                                     `(("GUIX_STATE_DIRECTORY" . "/gnu/var")))
                      (extra-special-file
                        "/etc/doas.conf"
                        (plain-file "doas.conf"
