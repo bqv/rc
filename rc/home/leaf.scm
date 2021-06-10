@@ -101,51 +101,34 @@ ctl_type.pipewire {
 }
 ")))))
 
-          (simple-service 'pipewire-set-some-env-vars
+          (simple-service 'dbus-set-env
                           home-environment-variables-service-type
-
                           '(("DBUS_SESSION_BUS_ADDRESS"
-                             . "unix:path=$XDG_RUNTIME_DIR/dbus.sock")
+                             . "unix:path=$XDG_RUNTIME_DIR/dbus.sock")))
                             ;; ("RTC_USE_PIPEWIRE" . "true")
-                            ))
-          (simple-service
-            'dbus-add-shepherd-daemon
-            home-shepherd-service-type
-            (list
-              (shepherd-service
-                (requirement '(dbus-home))
-                (provision '(pipewire))
-                (start #~(make-forkexec-constructor
-                           (list #$(file-append pipewire-next "/bin/pipewire")))))
-              (shepherd-service
-                (requirement '(pipewire))
-                (provision '(pipewire-media-session))
-                (start #~(make-forkexec-constructor
-                           (list #$(file-append pipewire-next "/bin/pipewire-media-session")))))
-              (shepherd-service
-                (requirement '(pipewire))
-                (provision '(pipewire-pulse))
-                (start #~(make-forkexec-constructor
-                           (list #$(file-append pipewire-next "/bin/pipewire-pulse")))))
-              (shepherd-service
-                (provision '(dbus-home))
-                (start #~(make-forkexec-constructor
-                           (list #$(file-append (@@ (gnu packages glib) dbus)
-                                                "/bin/dbus-daemon")
-                                 "--session"
-                                 (string-append
-                                   "--address="
-                                   "unix:path="
-                                   (getenv "XDG_RUNTIME_DIR")
-                                   "/dbus.sock")))))))
 
-          (simple-service
-            'pipewire-add-packages
-            home-profile-service-type
-            (append
-              ;; TODO: Should be in feature-sway
-              (list xdg-desktop-portal-latest xdg-desktop-portal-wlr-latest)
-              (list pipewire-next)))
+          (simple-service 'dbus-shepherd-daemon
+                          home-shepherd-service-type
+                          (list
+                            (shepherd-service
+                              (provision '(dbus))
+                              (start #~(make-forkexec-constructor
+                                         (list #$(file-append (@@ (gnu packages glib) dbus)
+                                                              "/bin/dbus-daemon")
+                                               "--session"
+                                               (string-append
+                                                 "--address="
+                                                 "unix:path="
+                                                 (getenv "XDG_RUNTIME_DIR")
+                                                 "/dbus.sock")))))))
+
+          (simple-service 'pipewire-add-packages
+                          home-profile-service-type
+                          (append
+                            ;; TODO: Should be in feature-sway
+                            (list xdg-desktop-portal-latest
+                                  xdg-desktop-portal-wlr-latest)
+                            (list pipewire-next)))
   
          ;(service home-ssh-service-type
          ;         (home-ssh-configuration

@@ -31,6 +31,7 @@
      (list
        (shepherd-service
          (provision '(pipewire))
+         (requirement '(dbus))
          (documentation "Run pipewire.")
          (start #~(make-forkexec-constructor
                     (list (string-append #$pipewire "/bin/pipewire")
