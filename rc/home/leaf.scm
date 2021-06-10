@@ -1,6 +1,7 @@
 (define-module (rc home leaf)
                #:use-module (guix gexp)
                #:use-module (guix packages)
+               #:use-module (guix profiles)
                #:use-module (guix utils)
                #:use-module (gnu system)
                #:use-module (gnu services)
@@ -77,6 +78,11 @@
                      (guix-defaults? #t)
                      (bash-profile '("export HISTFILE=$XDG_CACHE_HOME/.bash_history"))))
   
+          (simple-service 'add-imperative-profile
+                          home-shell-profile-service-type
+                          (list "GUIX_PROFILE=$HOME/.guix-profile"  
+                                "source $GUIX_PROFILE/etc/profile"))
+
           (service home-fish-service-type
                    (home-fish-configuration
                      (package fish)
@@ -84,9 +90,9 @@
                                    #~(string-append "set fish_function_path $fish_function_path "
                                                     #$fish-foreign-env
                                                     "/share/fish/functions")
-                                   "fenv source $HOME/.guix-home/setup-environment"
-                                   "fenv $HOME/.guix-home/on-first-login"
-                                   "fenv source $HOME/.guix-profile/etc/profile"))
+                                   "not set -q __fish_login_config_sourced and begin"
+                                   "  fenv source $HOME/.profile"
+                                   "end"))
                      (environment-variables
                        `(("VISUAL" . "nvim")
                          ("EDITOR" . "nvim")
