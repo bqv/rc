@@ -6,7 +6,6 @@
                #:use-module (gnu system nss)
                #:use-module (nongnu system linux-initrd)
                #:use-module (gnu services desktop)
-               #:use-module (gnu services xorg)
                #:use-module (gnu services sddm)
                #:use-module (gnu services shepherd)
                #:use-module (gnu services sound)
@@ -14,7 +13,9 @@
                #:use-module (gnu services networking)
                #:use-module (gnu services nix)
                #:use-module (gnu services vpn)
+               #:use-module (gnu services xorg)
                #:use-module (rc services biboumi)
+               #:use-module (rc services ipfs)
                #:use-module ((rc keys biboumi) #:prefix keys:biboumi/)
                #:use-module (gnu packages linux)
                #:use-module (gnu packages certs)
@@ -44,6 +45,7 @@
                #:use-module (gnu packages irc)
                #:use-module (nongnu packages linux)
                #:use-module (rc packages biboumi)
+               #:use-module (rc packages nix)
                #:use-module (rc packages pipewire-next)
                #:use-module (rc packages xmpppy)
                #:export (os))
@@ -162,12 +164,17 @@
                                 (openssh openssh-sans-x)))
                      (service nix-service-type
                               (nix-configuration
+                                (package nixUnstable)
                                 (extra-config
                                   (list
                                     "experimental-features = nix-command flakes ca-references recursive-nix"
                                     "show-trace = true"))))
                      (service ipfs-service-type
-                              (ipfs-configuration))
+                              (ipfs-configuration
+                                (migrate #t)
+                                (mount #f)
+                                (args '("--enable-pubsub-experiment"
+                                        "--enable-namesys-pubsub"))))
                      (service nftables-service-type
                               (nftables-configuration
                                 (ruleset
