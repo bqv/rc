@@ -20,6 +20,7 @@
                #:use-module (gnu packages irc)
                #:use-module (gnu packages linux)
                #:use-module (gnu packages messaging)
+               #:use-module (gnu packages shells)
                #:use-module (gnu packages suckless)
                #:use-module (gnu packages terminals)
                #:use-module (gnu packages web-browsers)
@@ -74,8 +75,25 @@
           (service home-bash-service-type
                    (home-bash-configuration
                      (guix-defaults? #t)
-                     (bash-profile '("\
-                                     export HISTFILE=$XDG_CACHE_HOME/.bash_history"))))
+                     (bash-profile '("export HISTFILE=$XDG_CACHE_HOME/.bash_history"))))
+  
+          (service home-fish-service-type
+                   (home-fish-configuration
+                     (package fish)
+                     (config (list "export HISTFILE=$XDG_CACHE_HOME/.fish_history"
+                                   #~(string-append "set fish_function_path $fish_function_path "
+                                                    #$fish-foreign-env
+                                                    "/share/fish/functions")
+                                   "fenv source $HOME/.guix-home/setup-environment"
+                                   "fenv $HOME/.guix-home/on-first-login"
+                                   "fenv source $HOME/.guix-profile/etc/profile"))
+                     (environment-variables
+                       `(("VISUAL" . "nvim")
+                         ("EDITOR" . "nvim")
+                         ("NIX_PATH" . "nixpkgs=/nix/var/nix/profiles/system/flake/input/master")
+                         ("GUIX" . "$HOME/.config/guix/current/share/guile/site/3.0")))
+                     (aliases '(("vim" . "nvim")))
+                     (abbreviations '())))
   
           (simple-service 'pipewire-add-asoundrd
                           home-files-service-type
