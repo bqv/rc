@@ -90,7 +90,7 @@
                                    #~(string-append "set fish_function_path $fish_function_path "
                                                     #$fish-foreign-env
                                                     "/share/fish/functions")
-                                   "not set -q __fish_login_config_sourced and begin"
+                                   "not set -q __fish_login_config_sourced\nand begin"
                                    "  fenv source $HOME/.profile"
                                    "end"))
                      (environment-variables
@@ -108,11 +108,11 @@
                                      "asoundrc"
                                      #~(string-append
                                          "<"
-                                         #$(file-append
-                                             pipewire-next "/share/alsa/alsa.conf.d/50-pipewire.conf")
+                                         #$(file-append pipewire-next
+                                                        "/share/alsa/alsa.conf.d/50-pipewire.conf")
                                          ">\n<"
-                                         #$(file-append
-                                             pipewire-next "/share/alsa/alsa.conf.d/99-pipewire-default.conf")
+                                         #$(file-append pipewire-next
+                                                        "/share/alsa/alsa.conf.d/99-pipewire-default.conf")
                                          ">\n"
                                          "
 pcm_type.pipewire {
@@ -139,11 +139,13 @@ ctl_type.pipewire {
                               (start #~(make-forkexec-constructor
                                          (list #$(file-append (@@ (gnu packages glib) dbus)
                                                               "/bin/dbus-daemon")
+                                               "--nofork"
                                                "--session"
                                                (string-append
                                                  "--address="
                                                  "unix:path="
-                                                 (getenv "XDG_RUNTIME_DIR")
+                                                 (or (getenv "XDG_RUNTIME_DIR")
+                                                     (format #f "/run/user/~a" (getuid)))
                                                  "/dbus.sock")))))))
 
           (simple-service 'pipewire-add-packages

@@ -15,8 +15,10 @@
                #:use-module (gnu services vpn)
                #:use-module (gnu services xorg)
                #:use-module (rc services biboumi)
+               #:use-module (rc services home)
                #:use-module (rc services ipfs)
                #:use-module ((rc keys biboumi) #:prefix keys:biboumi/)
+               #:use-module (gnu packages android)
                #:use-module (gnu packages linux)
                #:use-module (gnu packages certs)
                #:use-module (gnu packages gnome)
@@ -135,8 +137,14 @@
                     (group "users")
                     (shell (file-append fish "/bin/fish"))
                     (supplementary-groups '("wheel" "netdev"
-                                            "audio" "video")))
+                                            "audio" "video"
+                                            "adbusers")))
                   %base-user-accounts))
+  
+    (groups (cons* (user-group
+                     (name "adbusers")
+                     (system? #f))
+                   %base-groups))
   
     (packages (cons*
                 nss-certs vim htop mosh ripgrep tmux go-ipfs file iwd
@@ -302,6 +310,8 @@
                                                          "\n"))))))
                      (udev-rules-service 'pipewire-add-udev-rules
                                          pipewire-next)
+                     (udev-rules-service 'android-add-udev-rules
+                                         android-udev-rules)
                      (simple-service 'no-eth shepherd-root-service-type
                                      (list (shepherd-service
                                              (documentation "Set enp4s0u1 link down.")
@@ -322,6 +332,9 @@
                                                   "permit nopass setenv { SSH_AUTH_SOCK } :wheel"
                                                   "")
                                                 "\n")))
+                     (service home-service-type
+                              (home-configuration
+                                (user "leaf")))
                      (modify-services
                        %desktop-services
                        (delete gdm-service-type)

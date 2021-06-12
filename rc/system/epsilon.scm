@@ -1,5 +1,5 @@
 (define-module (rc system epsilon)
-	       #:use-module (gnu)
+               #:use-module ((gnu services) #:hide (delete))
 	       #:use-module (gnu packages linux)
 	       #:use-module (gnu system locale)
 	       #:use-module (nongnu packages linux)

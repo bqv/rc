@@ -35,12 +35,12 @@
   #:use-module (srfi srfi-43)
   #:use-module (ice-9 match)
   #:use-module (json)
-  #:export (ipfs-service-type
-            ipfs-configuration
-            ipfs-configuration?
-            ipfs-configuration-package
-            ipfs-configuration-gateway
-            ipfs-configuration-api))
+  #:replace (ipfs-service-type
+             ipfs-configuration
+             ipfs-configuration?
+             ipfs-configuration-package
+             ipfs-configuration-gateway
+             ipfs-configuration-api))
 
 ;;;
 ;;; IPFS
@@ -158,16 +158,17 @@
     #~(begin
         (umask #o077)
         ;; Recover old ipfs repo structure
-        (let ((dir #$(string-append %ipfs-home "/.ipfs")))
-          (when (file-exists? dir)
-            (let ((port (opendir dir)))
-              (do ((entry (readdir port) (readdir port)))
-                ((eof-object? entry))
-                (unless (member entry (list "." ".."))
-                  (rename-file (string-append dir "/" entry)
-                               (string-append #$%ipfs-home "/" entry))))
-              (closedir port))
-            (rmdir dir)))
+        (false-if-exception
+          (let ((dir #$(string-append %ipfs-home "/.ipfs")))
+            (when (file-exists? dir)
+              (let ((port (opendir dir)))
+                (do ((entry (readdir port) (readdir port)))
+                  ((eof-object? entry))
+                  (unless (member entry (list "." ".."))
+                    (rename-file (string-append dir "/" entry)
+                                 (string-append #$%ipfs-home "/" entry))))
+                (closedir port))
+              (rmdir dir))))
         ;; Create ipfs repo structure if not exists
         (unless (file-exists? #$(string-append %ipfs-home "/config"))
           (system* #$(ipfs-binary config) "init"))
