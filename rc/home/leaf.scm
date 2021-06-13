@@ -156,13 +156,85 @@ ctl_type.pipewire {
                                   xdg-desktop-portal-wlr-latest)
                             (list pipewire-next)))
   
-         ;(service home-ssh-service-type
-         ;         (home-ssh-configuration
-         ;           (extra-config
-         ;             (list
-         ;               (ssh-include "config.*")
-         ;               (ssh-host "savannah"
-         ;                         '((compression . #f)))))))
+          (service home-ssh-service-type
+                   (home-ssh-configuration
+                     (extra-config
+                       (list
+                         (ssh-host (host "ssh.dev.azure.com")
+                                   (options
+                                     `((identities-only . #t)
+                                       (user . "git")
+                                       (identity-file . "~/.ssh/id_rsa")
+                                       (host-key-algorithms . ,(string-join '("ssh-rsa" "ssh-dss") ",")))))
+                         (ssh-host (host "bitbucket.org")
+                                   (options
+                                     `((user . "git")
+                                       (identity-file . "~/.ssh/id_rsa")
+                                       (host-key-algorithms . ,(string-join '("ssh-rsa" "ssh-dss") ",")))))
+                         (ssh-host (host "hub.darcs.net")
+                                   (options
+                                     `((user . "darcs")
+                                       (identity-file . "~/.ssh/id_rsa")
+                                       (host-key-algorithms . ,(string-join '("ssh-rsa" "ssh-dss") ",")))))
+                         (ssh-host (host "10.0.0.3 delta")
+                                   (options
+                                     `()))
+                         (ssh-host (host "dev.fron.io")
+                                   (options
+                                     `((port . 5022)
+                                       (identity-file . "~/.ssh/id_rsa")
+                                       (ciphers . ,(string-join '("aes128-ctr" "aes192-ctr" "aes256-ctr" "aes128-cbc" "3des-cbc") ","))
+                                       (host-key-algorithms . ,(string-join '("ssh-rsa" "ssh-dss") ","))
+                                       (kex-algorithms . "+diffie-hellman-group1-sha1"))))
+                         (ssh-host (host "192.168.178.29 epsilon")
+                                   (options
+                                     `((user . "aion")
+                                       (host-name . "192.168.178.29"))))
+                         (ssh-host (host "github.com")
+                                   (options
+                                     `((user . "git")
+                                       (identity-file . "~/.ssh/id_rsa")
+                                       (host-key-algorithms . ,(string-join '("ssh-rsa" "ssh-dss") ",")))))
+                         (ssh-host (host "192.168.178.42 leo")
+                                   (options
+                                     `((user . "kani")
+                                       (host-name . "192.168.178.42"))))
+                         (ssh-host (host "localhost")
+                                   (options
+                                     `((forward-agent . #t)
+                                       (add-keys-to-agent . "ask"))))
+                         (ssh-host (host "10.0.0.4 192.168.178.135 leo")
+                                   (options
+                                     `((user . "leaf")
+                                       (host-name . "192.168.178.135"))))
+                         (ssh-host (host "10.0.0.2 192.168.178.135 theta")
+                                   (options
+                                     `((user . "leaf")
+                                       (host-name . "192.168.178.135"))))
+                         (ssh-host (host "10.0.0.1 zeta.fron.io zeta")
+                                   (options
+                                     `((user . "bao")
+                                       (host-name . "10.0.0.1")
+                                       (identity-file . "~/.ssh/id_rsa")
+                                       (set-env . "DVTM=off"))))))
+                     (default-options
+                       `((forward-agent . #f)
+                         (compression . #f)
+                         (server-alive-interval . 0)
+                         (server-alive-count-max . 3)
+                         (hash-known-hosts . #f)
+                         (user-known-hosts-file? . "/dev/null")
+                         (control-master . #f)
+                         (control-path . "~/.ssh/master-%r@%n:%p")
+                         (control-persist . #f)
+                         (verify-host-key-dns . #t)
+                         (visual-host-key . #t)
+                         ;(send-env . "LANG LC_*")
+                         ;(ciphers . ,(string-join '("+aes128-cbc" "3des-cbc" "aes192-cbc") ","})
+                         (ciphers . "+aes256-cbc")
+                         (strict-host-key-checking . #f)))
+                     (toplevel-options
+                       `((,(string->symbol "\ninclude") . "config.*")))))
   
           (service home-gnupg-service-type
                    (home-gnupg-configuration
