@@ -159,5 +159,3 @@
    (description "Discord chat client.")
    (license #f)
    (home-page "https://discordapp.com")))
-
-discord
