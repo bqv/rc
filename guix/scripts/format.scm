@@ -1,4 +1,4 @@
-(define-module (rc scripts format)
+(define-module (guix scripts format)
   #:use-module (guix ui)
   #:use-module (guix grafts)
   #:use-module (guix packages)
