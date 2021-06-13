@@ -36,7 +36,10 @@
          (start #~(make-forkexec-constructor
                     (list (string-append #$pipewire "/bin/pipewire")
                          ;#$config
-                          )))
+                          )
+                    #:environment-variables
+                    (list (string-append "XDG_RUNTIME_DIR="
+                                         (format #f "/run/user/~a" (getuid))))))
          (respawn? #t)
          (stop #~(make-kill-destructor)))))))
 
