@@ -229,7 +229,7 @@ ctl_type.pipewire {
                          (server-alive-interval . 0)
                          (server-alive-count-max . 3)
                          (hash-known-hosts . #f)
-                         (user-known-hosts-file? . "/dev/null")
+                         (user-known-hosts-file . "/dev/null")
                          (control-master . #f)
                          (control-path . "~/.ssh/master-%r@%n:%p")
                          (control-persist . #f)
