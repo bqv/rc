@@ -18,14 +18,6 @@
         (openpgp-fingerprint
           "50F3 3E2E 5B0C 3D90 0424  ABE8 9BDC F497 A4BB CC7F"))))
   (channel
-    (name guix-home-manager)
-    (url "https://framagit.org/tyreunom/guix-home-manager.git")
-    (introduction
-      (make-channel-introduction
-        "b5f32950a8fa9c05efb27a0014f9b336bb318d69"
-        (openpgp-fingerprint
-          "1EFB 0909 1F17 D28C CBF9  B13A 53D4 57B2 D636 EE82"))))
-  (channel
     (name nonguix)
     (url "https://gitlab.com/nonguix/nonguix.git")
     (introduction
