@@ -105,9 +105,11 @@
                          ("NIX_PATH" . "nixpkgs=/nix/var/nix/profiles/system/flake/input/master")
                          ("GUIX" . "$HOME/.config/guix/current/share/guile/site/3.0")))
                      (aliases '(("vim" . "nvim")))
-                     (abbreviations '())))
+                     (abbreviations '(("rg" . "rg -p")
+                                      ("less" . "less -RF")
+                                      ("jq" . "jq -C")))))
   
-          (simple-service 'pipewire-add-asoundrd
+          (simple-service 'pipewire-add-asoundrc
                           home-files-service-type
                           (list `("config/alsa/asoundrc"
                                   ,(mixed-text-file
@@ -119,23 +121,24 @@
                                          ">\n<"
                                          #$(file-append pipewire-next
                                                         "/share/alsa/alsa.conf.d/99-pipewire-default.conf")
-                                         ">\n"
-                                         "
-pcm_type.pipewire {
-  lib " #$(file-append pipewire-next
-                       "/lib/alsa-lib/libasound_module_pcm_pipewire.so") "
-}
-ctl_type.pipewire {
-  lib " #$(file-append pipewire-next
-                       "/lib/alsa-lib/libasound_module_ctl_pipewire.so") "
-}
-")))))
+                                         ">\n\npcm_type.pipewire {\nlib "
+                                         #$(file-append pipewire-next
+                                                        "/lib/alsa-lib/libasound_module_pcm_pipewire.so")
+                                         "\n}\nctl_type.pipewire {\nlib "
+                                         #$(file-append pipewire-next
+                                                        "/lib/alsa-lib/libasound_module_ctl_pipewire.so")
+                                         "\n}\n")
+                                     ))))
 
           (simple-service 'dbus-set-env
                           home-environment-variables-service-type
                           '(("DBUS_SESSION_BUS_ADDRESS"
                              . "unix:path=$XDG_RUNTIME_DIR/dbus.sock")))
                             ;; ("RTC_USE_PIPEWIRE" . "true")
+
+         ;(simple-service 'sway-set-env
+         ;                home-environment-variables-service-type
+         ;                '(("SWAYSOCK" . "$XDG_RUNTIME_DIR/dbus.sock")))
 
           (simple-service 'dbus-shepherd-daemon
                           home-shepherd-service-type
@@ -156,11 +159,9 @@ ctl_type.pipewire {
 
           (simple-service 'pipewire-add-packages
                           home-profile-service-type
-                          (append
-                            ;; TODO: Should be in feature-sway
-                            (list xdg-desktop-portal-latest
-                                  xdg-desktop-portal-wlr-latest)
-                            (list pipewire-next)))
+                          (list xdg-desktop-portal-latest
+                                xdg-desktop-portal-wlr-latest
+                                pipewire-next))
   
           (service home-ssh-service-type
                    (home-ssh-configuration
