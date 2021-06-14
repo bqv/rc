@@ -26,12 +26,6 @@ Format stdin and return it pretty-printed to stdout\n"))
     (newline)
   (show-bug-report-information))
 
-(define-command (guix-format . args)
-  (synopsis "format guile scheme code")
-
-  (with-error-handling
-    (scmfmt)))
-
 
 ;; Helper methods for maintaining comments and whitespace.
 (define (copy-line-comment)
@@ -55,3 +49,11 @@ Format stdin and return it pretty-printed to stdout\n"))
               ((char-whitespace? char) (read-char))
               (#t (pretty-print (read))))
         (scmfmt)))))
+
+
+;; Cmd
+(define-command (guix-format . args)
+  (synopsis "format guile scheme code")
+
+  (with-error-handling
+    (scmfmt)))
