@@ -28,28 +28,30 @@
        (provision (list (string->symbol (string-append "home-" user))))
        (documentation "Run home shepherd.")
        (requirement '())
-       (start #~(make-forkexec-constructor
-                 (let ((launch-exp
-                         #$((@@ (gnu home-services shepherd) launch-shepherd-gexp)
-                            (service-value
-                              (car (filter
-                                     (lambda (s) (eq? (service-type-name (service-kind s))
-                                                      'home-shepherd))
-                                     ((@ (gnu home) home-environment-services)
-                                      ((@ (rc home) leaf) (@ (rc system) delta)))))))))
-                   (list #$(file-append guile-3.0 "/bin/guile")
-                         "--no-auto-compile"
-                         #$(string-append (or profile
-                                              (string-append "/home/" user
-                                                             "/.guix-home"))
-                                        "/on-first-login")))
-                 #:user #$user
-                 #:group #$group
-                 #:environment-variables
-                 (append (list #$(string-append "HOME="
-                                              (passwd:dir (getpw user)))
-                               "SSL_CERT_DIR=/etc/ssl/certs"
-                               "SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt"))))
+       (start #~(lambda _
+                  (fork+exec-command
+                    (let ((launch-exp
+                            #$((@@ (gnu home-services shepherd) launch-shepherd-gexp)
+                               (service-value
+                                 (car (filter
+                                        (lambda (s) (eq? (service-type-name (service-kind s))
+                                                         'home-shepherd))
+                                        ((@ (gnu home) home-environment-services)
+                                         ((@ (rc home) leaf) (@ (rc system) delta)))))))))
+                      (list #$(file-append guile-3.0 "/bin/guile")
+                            "--no-auto-compile"
+                            #$(string-append (or profile
+                                                 (string-append "/home/" user
+                                                                "/.guix-home"))
+                                             "/on-first-login")))
+                    #:user #$user
+                    #:group #$group
+                    #:environment-variables
+                    (append (list #$(string-append "HOME="
+                                                   (passwd:dir (getpw user)))
+                                  "SSL_CERT_DIR=/etc/ssl/certs"
+                                  "SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt")))
+                  #t))
        (one-shot? #t)
        (respawn? #f)
        (stop #~(make-kill-destructor)))))))
