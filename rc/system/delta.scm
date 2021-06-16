@@ -135,15 +135,25 @@
                     (name "leaf")
                     (password (crypt "alice" "$6$abc"))
                     (group "users")
+                    (comment "Data User")
                     (shell (file-append fish "/bin/fish"))
                     (supplementary-groups '("wheel" "netdev"
                                             "audio" "video"
                                             "adbusers")))
+                  (user-account
+                    (name "python")
+                    (group "python")
+                    (comment "Python Env")
+                    (home-directory "/home/python")
+                    (shell "/home/python/.guix-profile/bin/python")
+                    (supplementary-groups '()))
                   %base-user-accounts))
   
     (groups (cons* (user-group
                      (name "adbusers")
                      (system? #f))
+                   (user-group
+                     (name "python"))
                    %base-groups))
   
     (packages (cons*
