@@ -44,7 +44,7 @@
                       ;; TODO: replace this with lisp (use install-jars, etc)
                       (let ((port (open-file (string-append output "/bin/minecraft-server") "a")))
                         (display (string-append "#!" (string-append bash "/bin/sh") "\n") port)
-                        (display (string-append "exec -a minecraft-server "
+                        (display (string-append "exec "
                                                 (string-append openjdk "/bin/java ")
                                                 "$@ "
                                                 "-jar "

@@ -47,6 +47,7 @@
                #:use-module (gnu packages irc)
                #:use-module (nongnu packages linux)
                #:use-module (rc packages biboumi)
+               #:use-module (rc packages minecraft)
                #:use-module (rc packages nix)
                #:use-module (rc packages pipewire)
                #:use-module (rc packages xmpppy)
@@ -147,9 +148,16 @@
                     (home-directory "/home/python")
                     (shell "/home/python/.guix-profile/bin/python")
                     (supplementary-groups '()))
+                  (user-account
+                    (name "minecraft")
+                    (group "games")
+                    (home-directory "/var/lib/minecraft"))
                   %base-user-accounts))
   
     (groups (cons* (user-group
+                     (name "games")
+                     (system? #t))
+                   (user-group
                      (name "adbusers")
                      (system? #f))
                    (user-group
@@ -322,6 +330,26 @@
                                          pipewire-next)
                      (udev-rules-service 'android-add-udev-rules
                                          android-udev-rules)
+                     (simple-service 'minecraft-server shepherd-root-service-type
+                                     (list (shepherd-service
+                                             (documentation "Minecraft Server.")
+                                             (provision '(minecraft))
+                                             (requirement '(networking))
+                                             (start #~(lambda _
+                                                        (let ((mc (string-append #$minecraft-server
+                                                                                 "/bin/minecraft-server"))
+                                                              (user (getpwnam "minecraft")))
+                                                          (mkdir-p "/var/lib/minecraft")
+                                                          (chmod "/var/lib/minecraft" #o755)
+                                                          (chown "/var/lib/minecraft"
+                                                                 (passwd:uid user) (passwd:gid user))
+                                                          (chdir "/var/lib/minecraft")
+                                                          ;; /nix/store/41zy3hnpbd1rnfxc72h7mb1xjj78rh3i-unit-script-minecraft-server-pre-start/bin/minecraft-server-pre-start
+                                                          ;;  -> https://gateway.ipfs.io/ipfs/QmbzcDZzxFDggQcKNGwRCDQvVqZovUvVDMq6nnMbYjboZs
+                                                          (fork+exec-command
+                                                            (list mc "-Xmx2048M" "-Xms2048M")
+                                                            #:user (passwd:uid user)
+                                                            #:group (passwd:gid user))))))))
                      (simple-service 'no-eth shepherd-root-service-type
                                      (list (shepherd-service
                                              (documentation "Set enp4s0u1 link down.")
