@@ -134,7 +134,10 @@
                  (gnu system file-systems)))
       (start #~(make-forkexec-constructor/container
                 #$ipfs-daemon-command
-                #:namespaces '#$(fold delq %namespaces '(user net))
+                #:namespaces '#$(fold delq %namespaces
+                                      `(user net
+                                        ,@(if (ipfs-configuration-mount config)
+                                              '(mnt) '())))
                 #:mappings (list #$%ipfs-home-mapping
                                  #$%ipfs-mount-ipfs-mapping
                                  #$%ipfs-mount-ipns-mapping)

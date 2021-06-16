@@ -198,7 +198,8 @@
                      (service ipfs-service-type
                               (ipfs-configuration
                                 (migrate #t)
-                                (mount #f)
+                                (mount #t)
+                                (settings '(("Experimental.AcceleratedDHTClient" "true")))
                                 (args '("--enable-pubsub-experiment"
                                         "--enable-namesys-pubsub"))))
                      (service nftables-service-type
@@ -367,7 +368,7 @@
                        (plain-file "doas.conf"
                                    (string-join (list
                                                   "permit nopass keepenv root" ; allowed to do anything
-                                                  "permit nopass setenv { SSH_AUTH_SOCK } :wheel"
+                                                  "permit nopass setenv { SSH_AUTH_SOCK IPFS_PATH } :wheel"
                                                   "")
                                                 "\n")))
                      (service home-service-type
