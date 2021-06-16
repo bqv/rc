@@ -38,13 +38,13 @@
                #:use-module (gnu packages curl)
                #:use-module (gnu packages screen)
                #:use-module (gnu packages xorg)
-               #:use-module (gnu packages wm)
                #:use-module (gnu packages ipfs)
                #:use-module (gnu packages web)
                #:use-module (gnu packages rsync)
                #:use-module (gnu packages gnupg)
-               #:use-module (gnu packages xdisorg)
                #:use-module (gnu packages irc)
+               #:use-module (gnu packages wm)
+               #:use-module (gnu packages xdisorg)
                #:use-module (nongnu packages linux)
                #:use-module (rc packages biboumi)
                #:use-module (rc packages minecraft)
@@ -174,6 +174,7 @@
   
     (setuid-programs (cons*
                        #~(string-append #$opendoas "/bin/doas")
+                       #~(string-append #$swaylock "/bin/swaylock")
                        %setuid-programs))
  
     (sudoers-file (plain-file "sudoers" "\
