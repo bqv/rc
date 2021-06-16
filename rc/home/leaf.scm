@@ -35,7 +35,7 @@
                #:use-module (flat packages emacs)
                #:use-module (rde packages)
                #:use-module (rc packages discord)
-               #:use-module (rc packages pipewire-next)
+               #:use-module (rc packages pipewire)
                #:export (env))
 
 (define dvtm-custom

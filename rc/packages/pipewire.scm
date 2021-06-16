@@ -1,4 +1,4 @@
-(define-module (rc packages pipewire-next)
+(define-module (rc packages pipewire)
                #:use-module (guix git-download)
                #:use-module (guix utils)
                #:use-module (guix packages)

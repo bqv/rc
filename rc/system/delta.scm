@@ -48,7 +48,7 @@
                #:use-module (nongnu packages linux)
                #:use-module (rc packages biboumi)
                #:use-module (rc packages nix)
-               #:use-module (rc packages pipewire-next)
+               #:use-module (rc packages pipewire)
                #:use-module (rc packages xmpppy)
                #:export (os))
 
