@@ -199,7 +199,7 @@
                      (service ipfs-service-type
                               (ipfs-configuration
                                 (migrate #t)
-                                (mount #t)
+                                (mount #f)
                                 (settings '(("Experimental.AcceleratedDHTClient" "true")))
                                 (args '("--enable-pubsub-experiment"
                                         "--enable-namesys-pubsub"))))
@@ -372,9 +372,9 @@
                                                   "permit nopass setenv { SSH_AUTH_SOCK IPFS_PATH } :wheel"
                                                   "")
                                                 "\n")))
-                     (service home-service-type
-                              (home-configuration
-                                (user "leaf")))
+                    ;(service home-service-type
+                    ;         (home-configuration
+                    ;           (user "leaf")))
                      (modify-services
                        %desktop-services
                        (delete gdm-service-type)
@@ -391,19 +391,8 @@
                                                 %default-substitute-urls))
                                             (authorized-keys
                                               (append
+                                                %default-authorized-guix-keys
                                                 (list (plain-file
-                                                        "bordeaux.guix.gnu.org.pub"
-                                                        (canonical-sexp->string
-                                                          (sexp->canonical-sexp
-                                                            '(public-key
-                                                               (ecc
-                                                                 (curve Ed25519)
-                                                                 (q #vu8(125 96 41 2 211 162 219 184
-                                                                         63 138 15 185 134 2 167 84
-                                                                         197 73 59 11 119 140 141 29
-                                                                         212 224 244 29 225 77 227 79))))
-                                                            )))
-                                                      (plain-file
                                                         "mirror.brielmair.net.pub"
                                                         (canonical-sexp->string
                                                           (sexp->canonical-sexp
@@ -414,5 +403,17 @@
                                                                          71 10 88 28 227 133 30 217
                                                                          253 111 31 155 175 225 216 190
                                                                          199 122 147 26 219 122 67 55))))
+                                                            )))
+                                                      (plain-file
+                                                        "bordeaux.guix.gnu.org.pub"
+                                                        (canonical-sexp->string
+                                                          (sexp->canonical-sexp
+                                                            '(public-key
+                                                               (ecc
+                                                                 (curve Ed25519)
+                                                                 (q #vu8(125 96 41 2 211 162 219 184
+                                                                         63 138 15 185 134 2 167 84
+                                                                         197 73 59 11 119 140 141 29
+                                                                         212 224 244 29 225 77 227 79))))
                                                             ))))
-                                                %default-authorized-guix-keys)))))))))
+                                                (list))))))))))
