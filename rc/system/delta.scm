@@ -68,6 +68,8 @@
                   (keyboard-layout keyboard-layout)))
   
     (kernel linux)
+    ;; CONFIG_IKCONFIG=y
+    ;; CONFIG_IKCONFIG_PROC=y
     (kernel-arguments (cons*;"nomodeset"
                              "i915.modeset=0"
                              "modprobe.blacklist=pcspkr"
@@ -346,22 +348,14 @@
                                                           (chown "/var/lib/minecraft"
                                                                  (passwd:uid user) (passwd:gid user))
                                                           (chdir "/var/lib/minecraft")
-                                                          ;; /nix/store/41zy3hnpbd1rnfxc72h7mb1xjj78rh3i-unit-script-minecraft-server-pre-start/bin/minecraft-server-pre-start
-                                                          ;;  -> https://gateway.ipfs.io/ipfs/QmbzcDZzxFDggQcKNGwRCDQvVqZovUvVDMq6nnMbYjboZs
                                                           (fork+exec-command
                                                             (list mc "-Xmx2048M" "-Xms2048M")
                                                             #:user (passwd:uid user)
-                                                            #:group (passwd:gid user))))))))
-                     (simple-service 'no-eth shepherd-root-service-type
-                                     (list (shepherd-service
-                                             (documentation "Set enp4s0u1 link down.")
-                                             (provision '(no-eth))
-                                             (requirement '(networking))
-                                             (start #~(lambda _
-                                                        (let ((ip (string-append #$iproute "/sbin/ip")))
-                                                          (system* ip "link" "set" "enp4s0u1" "down")
-                                                          #t)))
-                                             (one-shot? #t))))
+                                                            #:group (passwd:gid user)
+                                                            #:environment-variables
+                                                            (list (string-append "HOME=" (passwd:dir user))
+                                                                  "SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt"
+                                                                  "SSL_CERT_DIR=/etc/ssl/certs"))))))))
                      (simple-service 'use-gnu-var session-environment-service-type
                                      `(("GUIX_STATE_DIRECTORY" . "/gnu/var")))
                      (extra-special-file
