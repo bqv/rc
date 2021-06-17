@@ -359,11 +359,11 @@
                                                           (chmod "/var/lib/minecraft" #o755)
                                                           (chown "/var/lib/minecraft"
                                                                  (passwd:uid user) (passwd:gid user))
-                                                          (chdir "/var/lib/minecraft")
                                                           (fork+exec-command
                                                             (list mc "-Xmx2048M" "-Xms2048M")
                                                             #:user (passwd:uid user)
                                                             #:group (passwd:gid user)
+                                                            #:directory "/var/lib/minecraft"
                                                             #:environment-variables
                                                             (list (string-append "HOME=" (passwd:dir user))
                                                                   "SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt"
