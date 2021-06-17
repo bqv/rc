@@ -23,6 +23,7 @@
                #:use-module (gnu packages compression)
                #:use-module (gnu packages cpio)
                #:use-module (gnu packages curl)
+               #:use-module (gnu packages disk)
                #:use-module (gnu packages display-managers)
                #:use-module (gnu packages file)
                #:use-module (gnu packages glib)
@@ -173,6 +174,7 @@
                 neovim sshfs tree curl screen jq gvfs wireguard efibootmgr
                 sway stumpwm awesome xinit xterm setxkbmap rsync gnupg python
                 fish fish-foreign-env netcat rofi python-wrapper
+                net-tools strace unzip gptfdisk
                 %base-packages))
   
     (setuid-programs (cons*
