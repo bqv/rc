@@ -368,6 +368,16 @@
                                                             (list (string-append "HOME=" (passwd:dir user))
                                                                   "SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt"
                                                                   "SSL_CERT_DIR=/etc/ssl/certs"))))))))
+                     (simple-service 'no-faulty-usb4 shepherd-root-service-type
+                                     (list (shepherd-service
+                                             (documentation "Disables the faulty usb4 device.")
+                                             (provision '(disable-usb4))
+                                             (start #~(lambda _
+                                                        (with-output-to-file
+                                                          "/sys/bus/pci/drivers/xhci_hcd/unbind"
+                                                          (lambda _ (display "0000:04:00.0")))
+                                                        #t))
+                                             (one-shot? #t))))
                      (simple-service 'use-gnu-var session-environment-service-type
                                      `(("GUIX_STATE_DIRECTORY" . "/gnu/var")))
                      (extra-special-file
