@@ -17,7 +17,6 @@
                #:use-module (rc services biboumi)
                #:use-module (rc services home)
                #:use-module (rc services ipfs)
-               #:use-module ((rc keys biboumi) #:prefix keys:biboumi/)
                #:use-module (gnu packages android)
                #:use-module (gnu packages linux)
                #:use-module (gnu packages certs)
@@ -308,7 +307,7 @@
                                 (home "/tmp")
                                 (config
                                   (mixed-text-file "biboumi.cfg"
-                                                   (let ((biboumi-password keys:biboumi/password))
+                                                   (let ((biboumi-password (@ (rc keys biboumi) password)))
                                                      #~(string-join
                                                          (map (lambda (p) (string-append
                                                                             (symbol->string (car p))
