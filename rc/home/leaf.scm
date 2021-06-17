@@ -17,7 +17,9 @@
                #:use-module (gnu home-services shepherd)
                #:use-module (gnu home-services ssh)
                #:use-module (rc home-services pipewire)
+               #:use-module (gnu packages abduco)
                #:use-module (gnu packages admin)
+               #:use-module (gnu packages android)
                #:use-module (gnu packages chromium)
                #:use-module (gnu packages dvtm)
                #:use-module (gnu packages emacs)
@@ -25,18 +27,45 @@
                #:use-module (gnu packages irc)
                #:use-module (gnu packages linux)
                #:use-module (gnu packages messaging)
+               #:use-module (gnu packages ncurses)
                #:use-module (gnu packages package-management)
+               #:use-module (gnu packages pulseaudio)
                #:use-module (gnu packages python)
                #:use-module (gnu packages shells)
                #:use-module (gnu packages suckless)
+               #:use-module (gnu packages task-management)
                #:use-module (gnu packages terminals)
                #:use-module (gnu packages web-browsers)
+               #:use-module (gnu packages wm)
+               #:use-module (gnu packages xdisorg)
                #:use-module (nongnu packages mozilla)
+               #:use-module (nongnu packages steam-client)
                #:use-module (flat packages emacs)
                #:use-module (rde packages)
                #:use-module (rc packages discord)
                #:use-module (rc packages pipewire)
                #:export (env))
+
+(define abduco-custom
+  (package
+    (inherit abduco)
+    (arguments
+      (substitute-keyword-arguments (package-arguments abduco)
+        ((#:phases phases)
+         `(modify-phases ,phases
+            (add-before 'build 'set-modifier
+              (lambda _
+                (substitute* "config.def.h"
+                  (("CTRL\\('\\\\\\\\'\\)") "CTRL('/')"))
+                (substitute* "abduco.1"
+                  (("\\^\\\\\\\\") "^/"))
+                #t))
+            (add-after 'install 'store-config
+              (lambda* (#:key outputs #:allow-other-keys)
+                (let ((out (assoc-ref outputs "out")))
+                  (mkdir-p (string-append out "/include/abduco"))
+                  (copy-file "config.h" (string-append out "/include/abduco/config.h")))
+                #t))))))))
 
 (define dvtm-custom
   (package
@@ -72,11 +101,14 @@
     (home-environment
       (home-directory "/home/leaf")
      ;(symlink-name ".guix-home")
-      (packages (list firefox ungoogled-chromium nyxt
+      (packages (list nyxt ungoogled-chromium firefox
                       weechat irssi discord
                       dino profanity poezio gajim-full gajim-omemo gajim-openpgp
-                      termite alacritty st dvtm-custom
-                      emacs-pgtk-native-comp emacs-evil emacs-ivy emacs-vterm emacs-geiser))
+                      ncurses termite alacritty st dvtm-custom abduco-custom tmate
+                      emacs-pgtk-native-comp emacs-evil emacs-ivy emacs-vterm emacs-geiser
+                      alsa-utils pavucontrol pulsemixer
+                      taskwarrior mako adb fastboot
+                      flatpak wofi steam))
       (services
         (cons*
           (service home-bash-service-type
