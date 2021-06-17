@@ -391,9 +391,9 @@
                                                   "permit nopass setenv { SSH_AUTH_SOCK IPFS_PATH } :wheel"
                                                   "")
                                                 "\n")))
-                    ;(service home-service-type
-                    ;         (home-configuration
-                    ;           (user "leaf")))
+                     (service home-service-type
+                              (home-configuration
+                                (user "leaf")))
                      (modify-services
                        %desktop-services
                        (delete gdm-service-type)

@@ -50,10 +50,10 @@
                     (append (list #$(string-append "HOME="
                                                    (passwd:dir (getpw user)))
                                   "SSL_CERT_DIR=/etc/ssl/certs"
-                                  "SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt")))
-                  #t))
+                                  "SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt")))))
        (one-shot? #t)
        (respawn? #f)
+       (auto-start? #f)
        (stop #~(make-kill-destructor)))))))
 
 (define home-service-type
