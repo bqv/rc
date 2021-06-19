@@ -14,6 +14,7 @@
                #:use-module (gnu home-services files)
                #:use-module (gnu home-services gnupg)
                #:use-module (gnu home-services shells)
+               #:use-module (gnu home-services shellutils)
                #:use-module (gnu home-services shepherd)
                #:use-module (gnu home-services ssh)
                #:use-module (rc home-services pipewire)
@@ -32,6 +33,7 @@
                #:use-module (gnu packages pulseaudio)
                #:use-module (gnu packages python)
                #:use-module (gnu packages shells)
+               #:use-module (gnu packages shellutils)
                #:use-module (gnu packages suckless)
                #:use-module (gnu packages task-management)
                #:use-module (gnu packages terminals)
@@ -115,6 +117,14 @@
                    (home-bash-configuration
                      (guix-defaults? #t)
                      (bash-profile '("export HISTFILE=$XDG_CACHE_HOME/.bash_history"))))
+  
+          (service home-zsh-service-type
+                   (home-zsh-configuration
+                     (xdg-flavor? #t)
+                     (package zsh)
+                     (zshrc
+                       (list))))
+          (service home-zsh-autosuggestions-service-type)
   
           (simple-service 'add-imperative-profile
                           home-shell-profile-service-type
