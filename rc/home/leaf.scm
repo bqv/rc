@@ -117,38 +117,56 @@
           (service home-bash-service-type
                    (home-bash-configuration
                      (guix-defaults? #t)
-                     (bash-profile '("export HISTFILE=$XDG_CACHE_HOME/.bash_history"))))
+                     (bash-profile
+		       (list
+                         "source $HOME/.profile"
+			 "export HISTFILE=$XDG_CACHE_HOME/.bash_history"))))
   
           (service home-zsh-service-type
                    (home-zsh-configuration
-                     (xdg-flavor? #t)
+                     (xdg-flavor? #f)
                      (package zsh)
+                     (zshenv
+                       (list
+                         "source $HOME/.profile"
+                         "export HISTFILE=$HOME/.zhistory"))
+                     (zprofile (list))
                      (zshrc
                        (list
                          #~(string-append "source " #$zsh-antigen "/share/zsh/antigen.zsh")
-                         "antigen use oh-my-zsh"
-
-                         ; Bundles from the default repo (robbyrussell's oh-my-zsh).
-                         "antigen bundle git"
+                         "antigen use oh-my-zsh" ; Bundles from the default repo (robbyrussell's oh-my-zsh).
                          "antigen bundle heroku"
                          "antigen bundle pip"
                          "antigen bundle lein"
                          "antigen bundle command-not-found"
-
-                         ; Syntax highlighting bundle.
-                         "antigen bundle zsh-users/zsh-syntax-highlighting"
-
-                         ;
-                         "antigen bundle zsh-users/zsh-history-substring-search"
-                         "antigen bundle zsh-users/zsh-completions"
-
-                         ; Tell Antigen that you're done.
                          "antigen apply"
+
                          #~(string-append "source " #$zsh-zplugin "/zplugin.zsh")
-                         "zplugin snippet OMZ::themes/nicoulaj.zsh-theme" ; terminalparty
-                        ;"autoload -Uz _zplugin"
-                        ;"(( ${+_comps} )) && _comps[zplugin]=_zplugin"
-                         ))))
+                         "autoload -Uz _zplugin"
+                         "(( ${+_comps} )) && _comps[zplugin]=_zplugin"
+
+                         "zplugin light zsh-users/zsh-autosuggestions"
+			 "zplugin ice compile\"*.lzui\" from\"notabug\"; zplugin load zdharma/zui"
+                         "zplugin load zsh-users/zsh-history-substring-search"
+			 "zplugin load zdharma/history-search-multi-word"
+			;"zplugin ice as\"program\" make'!' atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' src\"zhook.zsh\"; zplugin light direnv/direnv"
+			 "zplugin snippet OMZ::plugins/direnv/direnv.plugin.zsh"
+			 "zplugin snippet OMZ::lib/git.zsh"
+			 "zplugin ice wait\"0\" atload\"unalias grv\"; zplugin snippet OMZ::plugins/git/git.plugin.zsh"
+			 "zplugin snippet OMZ::plugins/taskwarrior/taskwarrior.plugin.zsh"
+                         "zplugin load olets/zsh-abbr"
+			 "zplugin light ptavares/zsh-z"
+                        ;"zplugin load fabiogibson/envrc-zsh-plugin"
+                         "zplugin snippet OMZ::themes/terminalparty.zsh-theme" ; nicoulaj
+			;"zplugin ice as\"completion\"; zplugin snippet OMZ::plugins/adb/_adb"
+			;"zplugin ice as\"completion\"; zplugin snippet OMZ::plugins/ipfs/_ipfs"
+			;"zplugin ice as\"completion\"; zplugin snippet OMZ::plugins/ripgrep/_ripgrep"
+                         "zplugin load zsh-users/zsh-completions"
+			 "autoload -U compinit && compinit"
+                         "zplugin ice wait\"0\" atinit\"zpcompinit; zpcdreplay\" lucid; zplugin load zsh-users/zsh-syntax-highlighting"
+                         ))
+                     (zlogin (list))
+                     (zlogout (list))))
           (service home-zsh-autosuggestions-service-type)
   
           (simple-service 'add-imperative-profile

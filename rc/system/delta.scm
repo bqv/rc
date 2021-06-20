@@ -141,17 +141,18 @@
                     (password (crypt "alice" "$6$abc"))
                     (group "users")
                     (comment "Data User")
-                    (shell (file-append fish "/bin/fish"))
-                    (supplementary-groups '("wheel" "netdev"
+                   ;(shell (file-append fish "/bin/fish"))
+                    (shell (file-append zsh "/bin/zsh"))
+                    (supplementary-groups '("wheel" "stem"
                                             "audio" "video"
-                                            "adbusers")))
+                                            "adbusers" "netdev")))
                   (user-account
                     (name "python")
                     (group "python")
                     (comment "Python Env")
                     (home-directory "/home/python")
                     (shell "/home/python/.guix-profile/bin/python")
-                    (supplementary-groups '()))
+                    (supplementary-groups '("stem")))
                   (user-account
                     (name "minecraft")
                     (group "games")
@@ -166,6 +167,8 @@
                      (system? #f))
                    (user-group
                      (name "python"))
+                   (user-group
+                     (name "stem"))
                    %base-groups))
   
     (packages (cons*
