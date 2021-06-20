@@ -46,6 +46,7 @@
                #:use-module (rde packages)
                #:use-module (rc packages discord)
                #:use-module (rc packages pipewire)
+               #:use-module ((rc packages zsh) #:prefix zsh-)
                #:export (env))
 
 (define abduco-custom
@@ -123,7 +124,31 @@
                      (xdg-flavor? #t)
                      (package zsh)
                      (zshrc
-                       (list))))
+                       (list
+                         #~(string-append "source " #$zsh-antigen "/share/zsh/antigen.zsh")
+                         "antigen use oh-my-zsh"
+
+                         ; Bundles from the default repo (robbyrussell's oh-my-zsh).
+                         "antigen bundle git"
+                         "antigen bundle heroku"
+                         "antigen bundle pip"
+                         "antigen bundle lein"
+                         "antigen bundle command-not-found"
+
+                         ; Syntax highlighting bundle.
+                         "antigen bundle zsh-users/zsh-syntax-highlighting"
+
+                         ;
+                         "antigen bundle zsh-users/zsh-history-substring-search"
+                         "antigen bundle zsh-users/zsh-completions"
+
+                         ; Tell Antigen that you're done.
+                         "antigen apply"
+                         #~(string-append "source " #$zsh-zplugin "/zplugin.zsh")
+                         "zplugin snippet OMZ::themes/nicoulaj.zsh-theme" ; terminalparty
+                        ;"autoload -Uz _zplugin"
+                        ;"(( ${+_comps} )) && _comps[zplugin]=_zplugin"
+                         ))))
           (service home-zsh-autosuggestions-service-type)
   
           (simple-service 'add-imperative-profile
