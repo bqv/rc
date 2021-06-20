@@ -102,7 +102,8 @@
     `(#:modules ((guix build utils))
       #:builder (begin
                   (use-modules (guix build utils)
-                               (srfi srfi-26))
+                               (srfi srfi-26)
+			       (sxml simple))
                   (let* ((patchelf (assoc-ref %build-inputs "patchelf"))
                          (glibc    (assoc-ref %build-inputs "glibc"))
                          (source   (assoc-ref %build-inputs "source"))
@@ -129,24 +130,22 @@
                     (mkdir-p (string-append output "/bin")) 
                     (mkdir-p (string-append output "/share/pixmaps"))
                     (mkdir-p (string-append output "/etc")) 
-                    (let ((port (open-file (string-append output "/etc/fonts.conf") "a")))
-                      (display "<?xml version='1.0'?>\n" port)
-                      (display "<!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>\n" port)
-                      (display "<fontconfig>\n" port)
-                      (for-each
-                        (lambda (font)
-                          (display (string-append "  <dir>" font "</dir>\n") port))
-                        fonts)
-                      (display "</fontconfig>\n" port)
-                      (close port))
+                    (with-output-to-file
+		      (string-append output "/etc/fonts.conf")
+		      (lambda _
+			(display "<?xml version='1.0'?>\n")
+			(display "<!DOCTYPE fontconfig SYSTEM 'fonts.dtd'>\n")
+			(sxml->xml `(fontconfig
+				      ,@(map (lambda (f) `(dir ,f)) fonts)))))
                     (chmod (string-append output "/opt/discord/Discord") #o755)
-                    (let ((port (open-file (string-append output "/bin/discord") "a")))
-                      (display "#!/bin/sh\n" port)
-                      (display (string-append "export LD_LIBRARY_PATH=" libpath "\n") port)
-                      (display (string-append "export FONTCONFIG_FILE=" output "/etc/fonts.conf\n") port)
-                      (display (string-append "export PATH=" binpath ":$PATH\n") port)
-                      (display (string-append "exec -a discord " output "/opt/discord/Discord\n") port)
-                      (close port))
+                    (with-output-to-file
+		      (string-append output "/bin/discord")
+		      (lambda _
+			(display "#!/bin/sh\n")
+			(display (string-append "export LD_LIBRARY_PATH=" libpath "\n"))
+			(display (string-append "export FONTCONFIG_FILE=" output "/etc/fonts.conf\n"))
+			(display (string-append "export PATH=" binpath ":$PATH\n"))
+			(display (string-append "exec -a discord " output "/opt/discord/Discord\n"))))
                     (chmod (string-append output "/bin/discord") #o755) 
                     (invoke (string-append patchelf "/bin/patchelf")
                             "--set-interpreter"
