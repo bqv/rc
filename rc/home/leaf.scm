@@ -62,9 +62,9 @@
             (add-before 'build 'set-modifier
               (lambda _
                 (substitute* "config.def.h"
-                  (("CTRL\\('\\\\\\\\'\\)") "CTRL('/')"))
+                  (("CTRL\\('\\\\\\\\'\\)") "CTRL('^')"))
                 (substitute* "abduco.1"
-                  (("\\^\\\\\\\\") "^/"))
+                  (("\\^\\\\\\\\") "^^"))
                 #t))
             (add-after 'install 'store-config
               (lambda* (#:key outputs #:allow-other-keys)
