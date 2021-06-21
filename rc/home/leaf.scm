@@ -171,32 +171,36 @@
                      (zshenv
                        (list
                          "source $HOME/.profile"
-                         "export HISTFILE=$HOME/.zhistory"))
+                         "HISTFILE=$HOME/.zhistory"
+                         "HISTSIZE=1048576"
+                         "SAVEHIST=65536"
+                         "export VISUAL=nvim"
+                         "export EDITOR=nvim"
+                         "export NIX_PATH=nixpkgs=/nix/var/nix/profiles/system/flake/input/master"
+                         "export GUIX=$HOME/.config/guix/current/share/guile/site/3.0"))
                      (zprofile (list))
                      (zshrc
                        (list
-                         #~(string-append "source " #$zsh-antigen "/share/zsh/antigen.zsh")
-                         "antigen use oh-my-zsh" ; Bundles from the default repo (robbyrussell's oh-my-zsh).
-                         "antigen bundle heroku"
-                         "antigen bundle pip"
-                         "antigen bundle lein"
-                         "antigen bundle command-not-found"
-                         "antigen apply"
-
                          #~(string-append "source " #$zsh-zplugin "/zplugin.zsh")
                          "autoload -Uz _zplugin"
                          "(( ${+_comps} )) && _comps[zplugin]=_zplugin"
+			 "setopt promptsubst"
+                         "setopt extended_history"       ; record timestamp of command in HISTFILE
+                         "setopt hist_expire_dups_first" ; delete duplicates first when HISTFILE size exceeds HISTSIZE
+                         "setopt hist_ignore_dups"       ; ignore duplicated commands history list
+                         "setopt hist_ignore_space"      ; ignore commands that start with space
+                         "setopt hist_verify"            ; show command with history expansion to user before running it
+                         "setopt share_history"          ; share command history data
 
                          "zplugin light zsh-users/zsh-autosuggestions"
 			 "zplugin ice compile\"*.lzui\" from\"notabug\"; zplugin load zdharma/zui"
-                         "zplugin load zsh-users/zsh-history-substring-search"
 			 "zplugin load zdharma/history-search-multi-word"
 			;"zplugin ice as\"program\" make'!' atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' src\"zhook.zsh\"; zplugin light direnv/direnv"
 			 "zplugin snippet OMZ::plugins/direnv/direnv.plugin.zsh"
 			 "zplugin snippet OMZ::lib/git.zsh"
 			 "zplugin ice wait\"0\" atload\"unalias grv\"; zplugin snippet OMZ::plugins/git/git.plugin.zsh"
 			 "zplugin snippet OMZ::plugins/taskwarrior/taskwarrior.plugin.zsh"
-                         "zplugin load olets/zsh-abbr"
+                         "zplugin load momo-lab/zsh-abbrev-alias"
 			 "zplugin light ptavares/zsh-z"
                         ;"zplugin load fabiogibson/envrc-zsh-plugin"
                          "zplugin snippet OMZ::themes/terminalparty.zsh-theme" ; nicoulaj
@@ -206,6 +210,18 @@
                          "zplugin load zsh-users/zsh-completions"
 			 "autoload -U compinit && compinit"
                          "zplugin ice wait\"0\" atinit\"zpcompinit; zpcdreplay\" lucid; zplugin load zsh-users/zsh-syntax-highlighting"
+                         "zplugin ice wait\"0\" lucid; zplugin load zsh-users/zsh-history-substring-search"
+
+                         "zle -N history-substring-search-up"
+                         "zle -N history-substring-search-down"
+                         "bindkey \"$terminfo[kcuu1]\" history-substring-search-up"
+                         "bindkey \"$terminfo[kcud1]\" history-substring-search-down"
+			 "zplugin snippet OMZ::lib/key-bindings.zsh"
+
+			 "alias vim=nvim"
+			 "abbrev-alias rg=\"rg -p\""
+                         "abbrev-alias less=\"less -RF\""
+                         "abbrev-alias jq=\"jq -C\""
                          ))
                      (zlogin (list))
                      (zlogout (list))))
