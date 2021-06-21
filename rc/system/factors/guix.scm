@@ -19,6 +19,18 @@
                            (append
                              %default-authorized-guix-keys
                              (list (plain-file
+                                     "delta.pub"
+                                     (canonical-sexp->string
+                                       (sexp->canonical-sexp
+                                         '(public-key
+                                            (ecc
+                                              (curve Ed25519)
+                                              (q #vu8(177 124 150 128 236 7 193 6
+                                                      46 162 178 109 30 193 60 5
+                                                      113 105 163 220 184 241 42 113
+                                                      88 88 131 115 240 26 162 224))))
+                                         )))
+                                   (plain-file
                                      "mirror.brielmair.net.pub"
                                      (canonical-sexp->string
                                        (sexp->canonical-sexp
