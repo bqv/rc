@@ -156,11 +156,19 @@
                   (user-account
                     (name "minecraft")
                     (group "games")
-                    (home-directory "/var/lib/minecraft"))
+                    (home-directory "/var/lib/minecraft")
+		    (system? #t))
+                  (user-account
+		    (name "biboumi")
+		    (group "biboumi")
+		    (system? #t))
                   %base-user-accounts))
   
     (groups (cons* (user-group
                      (name "games")
+                     (system? #t))
+                   (user-group
+                     (name "biboumi")
                      (system? #t))
                    (user-group
                      (name "adbusers")
