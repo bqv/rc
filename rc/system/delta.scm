@@ -357,7 +357,7 @@
                                                                 (xmpp_server_ip . "10.0.0.1")))
                                                          "\n"))))))
                      (udev-rules-service 'pipewire-add-udev-rules
-                                         pipewire-next)
+                                         pipewire-0.3)
                      (udev-rules-service 'android-add-udev-rules
                                          android-udev-rules)
                      (simple-service 'minecraft-server shepherd-root-service-type

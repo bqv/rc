@@ -144,7 +144,6 @@
 (define (env os)
   (let* ((system (os)))
     (home-environment
-      (home-directory "/home/leaf")
      ;(symlink-name ".guix-home")
       (packages (list nyxt ungoogled-chromium (delayed firefox)
                       weechat irssi discord
@@ -259,16 +258,16 @@
                                      "asoundrc"
                                      #~(string-append
                                          "<"
-                                         #$(file-append pipewire-next
+                                         #$(file-append pipewire-0.3
                                                         "/share/alsa/alsa.conf.d/50-pipewire.conf")
                                          ">\n<"
-                                         #$(file-append pipewire-next
+                                         #$(file-append pipewire-0.3
                                                         "/share/alsa/alsa.conf.d/99-pipewire-default.conf")
                                          ">\n\npcm_type.pipewire {\nlib "
-                                         #$(file-append pipewire-next
+                                         #$(file-append pipewire-0.3
                                                         "/lib/alsa-lib/libasound_module_pcm_pipewire.so")
                                          "\n}\nctl_type.pipewire {\nlib "
-                                         #$(file-append pipewire-next
+                                         #$(file-append pipewire-0.3
                                                         "/lib/alsa-lib/libasound_module_ctl_pipewire.so")
                                          "\n}\n")
                                      ))))
@@ -304,7 +303,7 @@
                           home-profile-service-type
                           (list xdg-desktop-portal-latest
                                 xdg-desktop-portal-wlr-latest
-                                pipewire-next))
+                                pipewire-0.3))
   
           (service home-ssh-service-type
                    (home-ssh-configuration
@@ -394,14 +393,14 @@
   
           (service pipewire-service-type
                    (pipewire-configuration
-                     (package pipewire-next)
+                     (package pipewire-0.3)
                      (config (plain-file "pipewire.conf" ""))))
           (service pipewire-pulse-service-type
                    (pipewire-pulse-configuration
-                     (package pipewire-next)
+                     (package pipewire-0.3)
                      (config (plain-file "pipewire-pulse.conf" ""))))
           (service pipewire-media-session-service-type
                    (pipewire-media-session-configuration
-                     (package pipewire-next)))
+                     (package pipewire-0.3)))
   
           (list))))))
