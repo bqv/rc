@@ -1,9 +1,6 @@
 (define-module (rc home leaf)
                #:use-module (srfi srfi-1)
                #:use-module (guix gexp)
-               #:use-module (guix inferior)
-               #:use-module (guix channels)
-               #:use-module (guix modules)
                #:use-module (guix monads)
                #:use-module (guix packages)
                #:use-module (guix profiles)
@@ -13,6 +10,7 @@
                #:use-module (gnu services)
                #:use-module (gnu services shepherd)
                #:use-module (gnu home)
+               #:use-module (rc home)
                #:use-module (gnu home-services)
                #:use-module (gnu home-services files)
                #:use-module (gnu home-services gnupg)
@@ -20,6 +18,7 @@
                #:use-module (gnu home-services shellutils)
                #:use-module (gnu home-services shepherd)
                #:use-module (gnu home-services ssh)
+               #:use-module (gnu home-services wm)
                #:use-module (rc home-services pipewire)
                #:use-module (gnu packages abduco)
                #:use-module (gnu packages admin)
@@ -28,6 +27,7 @@
                #:use-module (gnu packages dvtm)
                #:use-module (gnu packages emacs)
                #:use-module (gnu packages emacs-xyz)
+               #:use-module (gnu packages freedesktop)
                #:use-module (gnu packages irc)
                #:use-module (gnu packages linux)
                #:use-module (gnu packages messaging)
@@ -102,57 +102,17 @@
                          `("gajim-openpgp" ,gajim-openpgp)
                          (package-propagated-inputs gajim)))))
 
-(define (delay-inferiors) ; for stuff that moves way too fucking fast
-  (let* ((channels
-	   (list (channel
-		   (name 'guix)
-		   (url "https://git.savannah.gnu.org/git/guix.git")
-		   (commit "d027858e70c4a37aca90b1d4ecb2f0421a95d987")
-		   (introduction
-		     (make-channel-introduction
-		       "9edb3f66fd807b096b48283debdcddccfea34bad"
-		       (openpgp-fingerprint "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA"))))
-		 (channel
-		   (name 'rde)
-		   (url "https://git.sr.ht/~abcdw/rde")
-		   (commit "6d40090ef287a4523fee32d4350b4dcd5fe90f0b"))
-		 (channel
-		   (name 'guix-gaming-games)
-		   (url "https://gitlab.com/guix-gaming-channels/games.git")
-		   (commit "b89dc67d0609b63c06d73a4b52d758380feb1373"))
-		 (channel
-		   (name 'nonguix)
-		   (url "https://gitlab.com/nonguix/nonguix")
-		   (commit "d81564f21e7d8800e6f6187fe2e1f6476e06bc30")
-		   (introduction
-		     (make-channel-introduction
-		       "897c1a470da759236cc11798f4e0a5f7d4d59fbc"
-		       (openpgp-fingerprint "2A39 3FFF 68F4 EF7A 3D29  12AF 6F51 20A0 22FB B2D5"))))
-		 (channel
-		   (name 'flat)
-		   (url "https://github.com/flatwhatson/guix-channel.git")
-		   (commit "9eeca8a9976d815234c03289fca4bedc9f2667d0"))))
-	 (inferior (inferior-for-channels channels)))
-    `((firefox . ,(first (lookup-inferior-packages inferior "firefox")))
-      (emacs . ,(first (lookup-inferior-packages inferior "emacs-pgtk-native-comp"))))))
-
-(define-syntax delayed
-  (syntax-rules ()
-    ((_ sym)
-     (assoc-ref (delay-inferiors) (quote sym)))))
-
 (define (env os)
   (let* ((system (os)))
     (home-environment
      ;(symlink-name ".guix-home")
-      (packages (list nyxt ungoogled-chromium (delayed firefox)
+      (packages (list nyxt ungoogled-chromium (delayed 'firefox) (delayed 'emacs)
                       weechat irssi discord
                       dino profanity poezio gajim-full gajim-omemo gajim-openpgp
                       ncurses termite alacritty st dvtm-custom abduco-custom tmate
-                      (delayed emacs) emacs-evil emacs-ivy emacs-vterm emacs-geiser
                       alsa-utils pavucontrol pulsemixer
                       taskwarrior mako adb fastboot
-                      flatpak wofi steam))
+                      flatpak steam))
       (services
         (cons*
           (service home-bash-service-type
@@ -175,6 +135,7 @@
                          "SAVEHIST=65536"
                          "export VISUAL=nvim"
                          "export EDITOR=nvim"
+                         "export ALTERNATE_EDITOR=emacsclient"
                          "export NIX_PATH=nixpkgs=/nix/var/nix/profiles/system/flake/input/master"
                          "export GUIX=$HOME/.config/guix/current/share/guile/site/3.0"))
                      (zprofile (list))
@@ -221,6 +182,7 @@
 			 "abbrev-alias rg=\"rg -p\""
                          "abbrev-alias less=\"less -RF\""
                          "abbrev-alias jq=\"jq -C\""
+                         "abbrev-alias ls\"exa\""
                          ))
                      (zlogin (list))
                      (zlogout (list))))
@@ -301,8 +263,8 @@
 
           (simple-service 'pipewire-add-packages
                           home-profile-service-type
-                          (list xdg-desktop-portal-latest
-                                xdg-desktop-portal-wlr-latest
+                          (list xdg-desktop-portal
+                                xdg-desktop-portal-wlr
                                 pipewire-0.3))
   
           (service home-ssh-service-type
@@ -378,8 +340,8 @@
                          (control-persist . #f)
                          (verify-host-key-dns . #t)
                          (visual-host-key . #t)
-                         ;(send-env . "LANG LC_*")
-                         ;(ciphers . ,(string-join '("+aes128-cbc" "3des-cbc" "aes192-cbc") ","})
+                        ;(send-env . "LANG LC_*")
+                        ;(ciphers . ,(string-join '("+aes128-cbc" "3des-cbc" "aes192-cbc") ","})
                          (ciphers . "+aes256-cbc")
                          (strict-host-key-checking . #f)))
                      (toplevel-options
@@ -402,5 +364,34 @@
           (service pipewire-media-session-service-type
                    (pipewire-media-session-configuration
                      (package pipewire-0.3)))
+
+          (service home-sway-service-type
+                   (home-sway-configuration
+                     (config
+                       `((include "~/.config/sway/local")
+                         (include ,(file-append sway "/etc/sway/config"))
+                         (include ,(local-file "../../data/sway.config"))))))
+          (simple-service 'sway-reload-config-on-change
+                          home-run-on-change-service-type
+                          `("files/config/sway/config"
+                            ,#~(system* #$(file-append sway "/bin/swaymsg") "reload")))
+          (simple-service 'packages-for-sway
+                          home-profile-service-type
+                          (list wofi qtwayland
+                                xdg-desktop-portal xdg-desktop-portal-wlr))
+          (simple-service 'set-wayland-specific-env-vars
+                          home-environment-variables-service-type
+                          ;; export NO_AT_BRIDGE=1
+                          '(("XDG_CURRENT_DESKTOP" . "sway")
+                            ("XDG_SESSION_TYPE" . "wayland")
+                            ;; FIXME: Should be in feature-pipewire
+                            ("RTC_USE_PIPEWIRE" . "true")
+                            ("SDL_VIDEODRIVER" . "wayland")
+                            ("MOZ_ENABLE_WAYLAND" . "1")
+                            ("CLUTTER_BACKEND" . "wayland")
+                            ("ELM_ENGINE" . "wayland_egl")
+                            ("ECORE_EVAS_ENGINE" . "wayland-egl")
+                            ("QT_QPA_PLATFORM" . "wayland-egl")
+                            ("_JAVA_AWT_WM_NONREPARENTING" . "1")))
   
           (list))))))
