@@ -56,4 +56,5 @@ Format stdin and return it pretty-printed to stdout\n"))
   (synopsis "format guile scheme code")
 
   (with-error-handling
+    (format #f "~A" args)
     (scmfmt)))
