@@ -1,14 +1,44 @@
 (define-module (rc packages minecraft)
   #:use-module (rc packages)
+  #:use-module (guix download)
   #:use-module (guix gexp)
   #:use-module (guix packages)
-  #:use-module (guix download)
+  #:use-module (guix utils)
   #:use-module ((guix licenses) #:prefix license:)
   #:use-module (guix build-system trivial)
   #:use-module (gnu packages)
   #:use-module (gnu packages bash)
   #:use-module (gnu packages java)
-  #:export (minecraft-server))
+  #:use-module (gnu packages qt)
+  #:use-module ((games packages minecraft) #:prefix games:)
+  #:export (multimc minecraft-server))
+
+(define multimc
+  (package
+    (inherit games:multimc)
+    (arguments
+      (substitute-keyword-arguments (package-arguments games:multimc)
+        ((#:phases phases)
+         `(modify-phases ,phases
+            (add-after 'patch-paths 'repatch-paths-with-java
+              (lambda* (#:key inputs outputs #:allow-other-keys)
+                (let* ((out            (assoc-ref outputs "out"))
+                       (bin            (string-append out "/bin"))
+                       (exe            (string-append bin "/multimc"))
+                       (java           (assoc-ref inputs "java")))
+                  (wrap-program exe
+                    `("PATH" ":" prefix (,(string-append java "/bin"))))
+                  #t)))))))
+    (native-inputs
+      (assoc-set!
+        (package-native-inputs games:multimc)
+        "jdk" (list icedtea "jdk")))
+    (inputs
+      (cons*
+        `("java" ,openjdk16 "jdk")
+        (assoc-set!
+          (assoc-remove! (package-inputs games:multimc) "jdk")
+          "qtbase" (list qtbase-5))))))
 
 (define* (make-minecraft-server
            #:key (mc-version "1.17")

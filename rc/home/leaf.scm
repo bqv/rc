@@ -48,6 +48,7 @@
                #:use-module (flat packages emacs)
                #:use-module (rde packages)
                #:use-module (rc packages discord)
+               #:use-module (rc packages minecraft)
                #:use-module (rc packages pipewire)
                #:use-module ((rc packages zsh) #:prefix zsh-)
                #:export (env))
@@ -112,7 +113,7 @@
                       ncurses termite alacritty st dvtm-custom abduco-custom tmate
                       alsa-utils pavucontrol pulsemixer
                       taskwarrior mako adb fastboot
-                      flatpak steam))
+                      flatpak steam multimc))
       (services
         (cons*
           (service home-bash-service-type
