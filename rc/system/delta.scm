@@ -217,7 +217,8 @@
                               (ipfs-configuration
                                 (migrate #t)
                                 (mount #f)
-                                (settings '(("Experimental.AcceleratedDHTClient" "true")))
+                                (settings '(("Experimental.AcceleratedDHTClient" "true")
+                                            ("Experimental.FilestoreEnabled" "true")))
                                 (args '("--enable-pubsub-experiment"
                                         "--enable-namesys-pubsub"))))
                      (service nftables-service-type
