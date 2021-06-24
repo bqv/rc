@@ -70,7 +70,16 @@
                                      (let* ((out (assoc-ref outputs "out")))
                                        (substitute* "CMakeLists.txt"
                                                     (("/etc/biboumi")
-                                                     (string-append out "/etc/biboumi")))))))
+                                                     (string-append out "/etc/biboumi"))))))
+                       (add-after 'install 'fix-starlink
+                                   (lambda* (#:key outputs #:allow-other-keys)
+                                     (let* ((out (assoc-ref outputs "out")))
+                                       (with-current-output-file
+                                         (string-append
+                                           out
+                                           "/etc/biboumi/irc.starlink-irc.org.policy.txt")
+                                         (lambda _
+                                           (display "verify_certificate = false\n")))))))
         #:tests? #f))
     (native-inputs `(("python-sphinx" ,python-sphinx)
                      ("python" ,python-wrapper)))

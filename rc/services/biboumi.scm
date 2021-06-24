@@ -38,7 +38,10 @@
        (requirement '(networking))
        (start #~(lambda _
                   (mkdir-p "/var/lib/biboumi")
+                  (with-output-to-file "/var/log/biboumi.log"
+                                       (lambda _ (newline)))
                   (let ((pwd (getpwnam "biboumi")))
+                    (chown "/var/log/biboumi.log" (passwd:uid pwd) (passwd:gid pwd))
                     (chown "/var/lib/biboumi" (passwd:uid pwd) (passwd:gid pwd)))
                   (fork+exec-command
                     (list #$(file-append biboumi "/bin/biboumi")
