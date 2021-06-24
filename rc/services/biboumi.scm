@@ -36,21 +36,25 @@
                                             "biboumi"))))
        (documentation "Run biboumi.")
        (requirement '(networking))
-       (start #~(make-forkexec-constructor
-                 (list (string-append #$biboumi "/bin/biboumi")
-                       #$config)
-                 #:user #$user
-                 #:group #$group
-                 #:environment-variables
-                 (append (list (string-append "HOME="
-                                              (or #$home (passwd:dir (getpw #$user))))
-                               "SSL_CERT_DIR=/etc/ssl/certs"
-                               "SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt")
-                         (remove (lambda (str)
-                                   (or (string-prefix? "HOME=" str)
-                                       (string-prefix? "SSL_CERT_DIR=" str)
-                                       (string-prefix? "SSL_CERT_FILE=" str)))
-                                 (environ)))))
+       (start #~(lambda _
+                  (mkdir-p "/var/lib/biboumi")
+                  (let ((pwd (getpwnam "biboumi")))
+                    (chown "/var/lib/biboumi" (passwd:uid pwd) (passwd:gid pwd)))
+                  (fork+exec-command
+                    (list #$(file-append biboumi "/bin/biboumi")
+                          #$config)
+                    #:user #$user
+                    #:group #$group
+                    #:environment-variables
+                    (append (list (string-append "HOME="
+                                                 (or #$home (passwd:dir (getpw #$user))))
+                                  "SSL_CERT_DIR=/etc/ssl/certs"
+                                  "SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt")
+                            (remove (lambda (str)
+                                      (or (string-prefix? "HOME=" str)
+                                          (string-prefix? "SSL_CERT_DIR=" str)
+                                          (string-prefix? "SSL_CERT_FILE=" str)))
+                                    (environ))))))
        (respawn? #t)
        (stop #~(make-kill-destructor)))))))
 
