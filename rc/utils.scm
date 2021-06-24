@@ -1,11 +1,14 @@
 (define-module (rc utils)
   #:use-module (guix gexp)
   #:use-module (guix packages)
+  #:use-module (guix inferior)
   #:use-module (guix licenses)
   #:use-module (guix build-system trivial)
   #:use-module (srfi srfi-1)
+  #:use-module (gnu packages)
   #:export (list-directory
-            file->package))
+            file->package
+            inferior-package->package))
 
 (define (list-directory path)
   (cddr (reverse
@@ -42,3 +45,18 @@
     (description (format #f "~A" file))
     (home-page home-page)
     (license license)))
+
+(define* (inferior-package->package inferior
+                                    #:key
+                                    (license (package-license
+                                               (specification->package
+                                                 (inferior-package-name inferior)))))
+  (package
+    (name (inferior-package-name inferior))
+    (version (inferior-package-version inferior))
+    (source inferior)
+    (build-system (@ (guix build-system copy) copy-build-system))
+    (synopsis (inferior-package-synopsis inferior))
+    (description (inferior-package-description inferior))
+    (license license)
+    (home-page (inferior-package-home-page inferior))))

@@ -6,12 +6,15 @@
                #:use-module (guix profiles)
                #:use-module (guix store)
                #:use-module (guix utils)
+               #:use-module (rc utils)
                #:use-module (gnu system)
                #:use-module (gnu services)
                #:use-module (gnu services shepherd)
                #:use-module (gnu home)
                #:use-module (rc home)
+	       #:use-module (rc home factors emacs)
                #:use-module (gnu home-services)
+               #:use-module (gnu home-services emacs)
                #:use-module (gnu home-services files)
                #:use-module (gnu home-services gnupg)
                #:use-module (gnu home-services shells)
@@ -26,7 +29,6 @@
                #:use-module (gnu packages chromium)
                #:use-module (gnu packages dvtm)
                #:use-module (gnu packages emacs)
-               #:use-module (gnu packages emacs-xyz)
                #:use-module (gnu packages freedesktop)
                #:use-module (gnu packages irc)
                #:use-module (gnu packages linux)
@@ -35,6 +37,7 @@
                #:use-module (gnu packages package-management)
                #:use-module (gnu packages pulseaudio)
                #:use-module (gnu packages python)
+               #:use-module (gnu packages qt)
                #:use-module (gnu packages shells)
                #:use-module (gnu packages shellutils)
                #:use-module (gnu packages suckless)
@@ -107,7 +110,7 @@
   (let* ((system (os)))
     (home-environment
      ;(symlink-name ".guix-home")
-      (packages (list nyxt ungoogled-chromium (delayed 'firefox) (delayed 'emacs)
+      (packages (list nyxt ungoogled-chromium (delayed 'firefox)
                       weechat irssi discord
                       dino profanity poezio gajim-full gajim-omemo gajim-openpgp
                       ncurses termite alacritty st dvtm-custom abduco-custom tmate
@@ -187,7 +190,7 @@
                          ))
                      (zlogin (list))
                      (zlogout (list))))
-          (service home-zsh-autosuggestions-service-type)
+         ;(service home-zsh-autosuggestions-service-type)
   
           (simple-service 'add-imperative-profile
                           home-shell-profile-service-type
@@ -395,4 +398,6 @@
                             ("QT_QPA_PLATFORM" . "wayland-egl")
                             ("_JAVA_AWT_WM_NONREPARENTING" . "1")))
   
-          (list))))))
+          (fold (lambda (a b) (apply a (list b)))
+		(list)
+		(list use-emacs-services)))))))

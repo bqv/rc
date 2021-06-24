@@ -5,7 +5,9 @@
                #:use-module (gnu)
                #:use-module (gnu system nss)
                #:use-module (nongnu system linux-initrd)
+               #:use-module (rc system factors doas)
                #:use-module (rc system factors guix)
+               #:use-module (rc system factors home)
                #:use-module (gnu services desktop)
                #:use-module (gnu services sddm)
                #:use-module (gnu services shepherd)
@@ -56,7 +58,7 @@
                #:use-module (rc packages xmpppy)
                #:export (os))
 
-(define (os)
+(define* (os #:rest home-envs)
   (operating-system
     (host-name "delta")
     (timezone "Europe/London")
@@ -142,7 +144,6 @@
                     (password (crypt "alice" "$6$abc"))
                     (group "users")
                     (comment "Data User")
-                   ;(shell (file-append fish "/bin/fish"))
                     (shell (file-append zsh "/bin/zsh"))
                     (supplementary-groups '("wheel" "stem"
                                             "audio" "video"
@@ -190,7 +191,6 @@
                 %base-packages))
   
     (setuid-programs (cons*
-                       #~(string-append #$opendoas "/bin/doas")
                        #~(string-append #$swaylock "/bin/swaylock")
                        %setuid-programs))
  
@@ -394,16 +394,6 @@
                                                             (lambda _ (display "0000:04:00.0"))))
                                                         #t))
                                              (one-shot? #t))))
-                     (simple-service 'use-gnu-var session-environment-service-type
-                                     `(("GUIX_STATE_DIRECTORY" . "/gnu/var")))
-                     (extra-special-file
-                       "/etc/doas.conf"
-                       (plain-file "doas.conf"
-                                   (string-join (list
-                                                  "permit nopass keepenv root" ; allowed to do anything
-                                                  "permit nopass setenv { SSH_AUTH_SOCK IPFS_PATH } :wheel"
-                                                  "")
-                                                "\n")))
                      (fold (lambda (a b) (apply a (list b)))
                            (modify-services
                              %desktop-services
@@ -411,4 +401,6 @@
                              (delete network-manager-service-type)
                              (delete pulseaudio-service-type)
                              (delete alsa-service-type))
-                           (list modify-guix-service))))))
+                           (list modify-guix-service
+                                 use-doas-services
+                                 (apply-home-services home-envs)))))))
