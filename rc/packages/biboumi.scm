@@ -63,7 +63,9 @@
               #t))))
     (build-system cmake-build-system)
     (arguments
-      `(#:phases
+      `(;#:modules ((ice-9 textual-ports)
+        ;           ,@%cmake-build-system-modules)
+        #:phases
         (modify-phases %standard-phases
                        (add-before 'configure 'fix-cmakelists
                                    (lambda* (#:key outputs #:allow-other-keys)
@@ -74,7 +76,7 @@
                        (add-after 'install 'fix-starlink
                                    (lambda* (#:key outputs #:allow-other-keys)
                                      (let* ((out (assoc-ref outputs "out")))
-                                       (with-current-output-file
+                                       ((@ (guile) with-output-to-file)
                                          (string-append
                                            out
                                            "/etc/biboumi/irc.starlink-irc.org.policy.txt")

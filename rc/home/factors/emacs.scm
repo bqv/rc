@@ -250,7 +250,7 @@
                    (add-hook 'prog-mode-hook
                              (lambda () (setq show-trailing-whitespace t)))
 
-                   (load-theme 'modus-operandi t)))
+                   (load-theme 'modus-vivendi t)))
               ;(early-init-el
               ;  `(,(slurp-file-gexp (local-file "~/.emacs.d/early-init.el"))))
                ;;; TODO: Rebuilding packages with emacs will be useful for
