@@ -20,6 +20,7 @@
                #:use-module (rc services biboumi)
                #:use-module (rc services home)
                #:use-module (rc services ipfs)
+               #:use-module (rc services iwd)
                #:use-module (gnu packages admin)
                #:use-module (gnu packages android)
                #:use-module (gnu packages certs)
@@ -328,6 +329,7 @@
                                       (public-key "kccZA+GAc0VStb28A+Kr0z8iPCWsiuRMfwHW391Qrko=")
                                       (allowed-ips '("10.0.0.4/32"))
                                       (keep-alive 10))))))
+                     (service iwd-service-type)
                      (service bluetooth-service-type)
                      (service biboumi-service-type
                               (biboumi-configuration
