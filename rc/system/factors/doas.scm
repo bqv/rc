@@ -1,8 +1,17 @@
 (define-module (rc system factors doas)
+ ;#:use-module (srfi srfi-28)
   #:use-module (guix gexp)
+  #:use-module (guix records)
   #:use-module (gnu services)
   #:use-module (gnu packages admin)
   #:export (use-doas-services))
+
+(define-record-type* <doas-configuration>
+  doas-configuration make-doas-configuration
+  doas-configuration?
+  (doas doas-configuration-doas (default opendoas))
+  (rules doas-configuration-rules
+         (default '("permit :wheel"))))
 
 (define (use-doas-services services)
   (cons*
