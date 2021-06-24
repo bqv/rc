@@ -224,7 +224,7 @@
                                  emacs-modus-themes
                                  ))
                (server-mode? #t)
-               (xdg-flavor? #t)
+               (xdg-flavor? #f)
                (init-el
                  `((setq custom-file "~/.emacs.d/custom.el")
                    (when (file-exists-p custom-file)
