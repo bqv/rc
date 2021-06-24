@@ -8,12 +8,34 @@
 
 (define (modify-guix-service services)
   (cons*
+    (simple-service 'os-release etc-service-type
+                    `(("os-release"
+                       ,(plain-file
+                          "os-release"
+                          (string-append
+                            "NAME=\"Guix System\"\n"
+                            "PRETTY_NAME=\"Guix System\"\n"
+                            "VERSION=\"" ((@ (guix packages) package-version)
+                                          (@ (gnu packages package-management) guix)) "\"\n"
+                            "VERSION_ID=\"" ((@ (guix utils) version-major+minor+point)
+                                             ((@ (guix packages) package-version)
+                                              (@ (gnu packages package-management) guix))) "\"\n"
+                            "ID=guix\n"
+                            "HOME_URL=\"https://www.gnu.org/software/guix/\"\n"
+                            "SUPPORT_URL=\"https://www.gnu.org/software/guix/help/\"\n"
+                            "BUG_REPORT_URL=\"mailto:bug-guix@gnu.org\"\n")))))
     (simple-service 'use-gnu-var session-environment-service-type
                     `(("GUIX_STATE_DIRECTORY" . "/gnu/var")))
+    (service guix-publish-service-type
+             (guix-publish-configuration
+               (host "0.0.0.0")
+               (port 3000)
+               (advertise? #t)))
     (modify-services services
       (guix-service-type config =>
                          (guix-configuration
                            (inherit config)
+                           (discover? #t)
                            (substitute-urls
                              (append
                                (list "https://bordeaux.guix.gnu.org"
@@ -58,4 +80,7 @@
                                                         197 73 59 11 119 140 141 29
                                                         212 224 244 29 225 77 227 79))))
                                            ))))
-                               (list))))))))
+                               (list)))
+                           (extra-options
+                             (list "--gc-keep-derivations=yes"
+                                   "--gc-keep-outputs=yes")))))))
