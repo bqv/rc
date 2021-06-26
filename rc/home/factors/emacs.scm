@@ -237,7 +237,7 @@
                    (add-hook 'prog-mode-hook
                              (lambda () (setq show-trailing-whitespace t)))
 
-                   (load-theme 'modus-vivendi t)
+                   (load-theme 'doom-nord t)
 
                    (defvar bootstrap-version)
                    (let ((bootstrap-file
@@ -260,7 +260,7 @@
                                            ;(minimal (core appearance))
                                            ;(mail (core vi mail appearance helm space emoji not-org mail gnus begin-mail))
                                            ;(news (begin-news core vi helm space web appearance helm core-post not-org))
-                                           ;;; core web org emoji 
+                                           ;;; core web org emoji
                                            ;(tracking (core vi space appearance org begin-tracking not-org))
                                            ;(programming (core appearance ivy org programming vc))
                                            ;(org (core vi space begin-org appearance completion files web finance helm vc programming custom server auto language-server shell help projects subtitles dashboard core-post org afterload wakatime music modeline))

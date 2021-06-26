@@ -30,6 +30,7 @@
                #:use-module (gnu packages disk)
                #:use-module (gnu packages display-managers)
                #:use-module (gnu packages file)
+               #:use-module (gnu packages fonts)
                #:use-module (gnu packages glib)
                #:use-module (gnu packages gnome)
                #:use-module (gnu packages gnupg)
@@ -53,6 +54,7 @@
                #:use-module (gnu packages xorg)
                #:use-module (nongnu packages linux)
                #:use-module (rc packages biboumi)
+               #:use-module (rc packages font-twitter-emoji)
                #:use-module (rc packages minecraft)
                #:use-module (rc packages nix)
                #:use-module (rc packages pipewire)
@@ -189,6 +191,7 @@
                 sway stumpwm awesome xinit xterm setxkbmap rsync gnupg python
                 fish fish-foreign-env netcat rofi python-wrapper
                 net-tools strace unzip gptfdisk
+                font-dejavu font-twitter-emoji font-google-noto font-awesome
                 %base-packages))
   
     (setuid-programs (cons*

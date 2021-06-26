@@ -121,8 +121,7 @@
                       ncurses termite alacritty st dvtm-custom abduco-custom tmate
                       alsa-utils pavucontrol pulsemixer
                       taskwarrior mako adb fastboot password-store execline direnv
-                      font-dejavu font-twitter-emoji font-google-noto font-awesome
-                      flatpak steam multimc))
+                      font-manager flatpak steam multimc))
       (services
         (cons*
           (service home-bash-service-type
