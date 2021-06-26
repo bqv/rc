@@ -226,35 +226,7 @@
                               (nftables-configuration
                                 (ruleset
                                   (plain-file "ruleset" 
-                                              (let ((unlines
-                                                      (lambda* (#:rest l)
-                                                               (string-join l "\n"))))
-                                              (unlines
-                                                "table inet filter {"
-                                                (unlines
-                                                  "chain input {"
-                                                  (unlines
-                                                    "type filter hook input priority filter; policy drop;"
-                                                    "ct state invalid drop"
-                                                    "ct state { established, related } accept"
-                                                    "iifname \"lo\" accept"
-                                                    "ip protocol icmp accept"
-                                                    "ip6 nexthdr ipv6-icmp accept"
-                                                    "tcp dport 22 accept"
-                                                    "udp dport 60000-65535 accept"
-                                                    "accept");"reject")
-                                                  "}")
-                                                (unlines
-                                                  "chain forward {"
-                                                  (unlines
-                                                    "type filter hook forward priority filter; policy drop;")
-                                                  "}")
-                                                (unlines
-                                                  "chain output {"
-                                                  (unlines
-                                                    "type filter hook output priority filter; policy accept;")
-                                                  "}")
-                                                "}"))))))
+                                              (@ (rc keys nftables) %ruleset)))))
                      (simple-service 'weechat shepherd-root-service-type
                                      (list (shepherd-service
                                              (documentation "Run the weechat daemon.")

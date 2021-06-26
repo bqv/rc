@@ -12,20 +12,6 @@
 
 (define (use-emacs-services services)
   (cons*
-   ;(simple-service 'emacs-profile-service home-profile-service-type
-   ;                (map (let ()
-   ;                       (define (with-emacs pkg)
-   ;                         (package
-   ;                           (inherit pkg)
-   ;                           (native-inputs
-   ;                             (assoc-set!
-   ;                               (package-native-inputs pkg)
-   ;                               "emacs" (list (delayed 'emacs))))))
-   ;                       (package-mapping with-emacs
-   ;                                        (lambda (p)
-   ;                                          (not (string-prefix-ci? "emacs-" (package-name p))))
-   ;                                        #:deep? #f))
-   ;                       (list)))
     (service home-emacs-service-type
              (home-emacs-configuration
                (package emacs-pgtk-native-comp)
@@ -120,6 +106,7 @@
                                  emacs-git-timemachine ; git-timemachine.nix
                                 ;emacs-gnus ; gnus.nix
                                  emacs-go-mode ; go-mode.nix
+                                 emacs-guix
                                  emacs-haskell-mode ; haskell-mode.nix
                                 ;emacs-hc-zenburn-theme ; hc-zenburn-theme.nix
                                  emacs-helm ; helm.nix
@@ -250,7 +237,44 @@
                    (add-hook 'prog-mode-hook
                              (lambda () (setq show-trailing-whitespace t)))
 
-                   (load-theme 'modus-vivendi t)))
+                   (load-theme 'modus-vivendi t)
+
+                   (defvar bootstrap-version)
+                   (let ((bootstrap-file
+                           (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+                         (bootstrap-version 5))
+                     (unless (file-exists-p bootstrap-file)
+                       (with-current-buffer
+                         (url-retrieve-synchronously
+                           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+                           'silent 'inhibit-cookies)
+                         (goto-char (point-max))
+                         (eval-print-last-sexp)))
+                     (load bootstrap-file nil 'nomessage))
+                   (straight-use-package 'use-package)
+
+                   (use-package modular-config
+                     :straight t
+                     :custom
+                     (modular-config-list '(
+                                           ;(minimal (core appearance))
+                                           ;(mail (core vi mail appearance helm space emoji not-org mail gnus begin-mail))
+                                           ;(news (begin-news core vi helm space web appearance helm core-post not-org))
+                                           ;;; core web org emoji 
+                                           ;(tracking (core vi space appearance org begin-tracking not-org))
+                                           ;(programming (core appearance ivy org programming vc))
+                                           ;(org (core vi space begin-org appearance completion files web finance helm vc programming custom server auto language-server shell help projects subtitles dashboard core-post org afterload wakatime music modeline))
+                                           ;(chat (core appearance space vi irc slack begin-chat))
+                                           ;(orgtest (org))
+                                           ;(wm (wm))
+                                           ;(doom (org doom))
+                                           ;(utilities (core))
+                                           ;(main (core appearance programming emoji ivy web org finance news mail documents server space workspace dashboard core-post))
+                                            (none ())))
+                     (modular-config-default 'none)
+                     (modular-config-path "~/.emacs.d/lisp")
+                     :config
+                     (modular-config-command-line-args-process))))
               ;(early-init-el
               ;  `(,(slurp-file-gexp (local-file "~/.emacs.d/early-init.el"))))
                ;;; TODO: Rebuilding packages with emacs will be useful for

@@ -9,6 +9,7 @@
                #:use-module (rc utils)
                #:use-module (gnu system)
                #:use-module (gnu services)
+               #:use-module (gnu services base)
                #:use-module (gnu services shepherd)
                #:use-module (gnu home)
                #:use-module (rc home)
@@ -29,17 +30,20 @@
                #:use-module (gnu packages chromium)
                #:use-module (gnu packages dvtm)
                #:use-module (gnu packages emacs)
+               #:use-module (gnu packages fonts)
                #:use-module (gnu packages freedesktop)
                #:use-module (gnu packages irc)
                #:use-module (gnu packages linux)
                #:use-module (gnu packages messaging)
                #:use-module (gnu packages ncurses)
                #:use-module (gnu packages package-management)
+               #:use-module (gnu packages password-utils)
                #:use-module (gnu packages pulseaudio)
                #:use-module (gnu packages python)
                #:use-module (gnu packages qt)
                #:use-module (gnu packages shells)
                #:use-module (gnu packages shellutils)
+               #:use-module (gnu packages skarnet)
                #:use-module (gnu packages suckless)
                #:use-module (gnu packages task-management)
                #:use-module (gnu packages terminals)
@@ -53,6 +57,7 @@
                #:use-module (rc packages discord)
                #:use-module (rc packages minecraft)
                #:use-module (rc packages pipewire)
+               #:use-module (rc packages font-twitter-emoji)
                #:use-module ((rc packages zsh) #:prefix zsh-)
                #:export (env))
 
@@ -115,7 +120,8 @@
                       dino profanity poezio gajim-full gajim-omemo gajim-openpgp
                       ncurses termite alacritty st dvtm-custom abduco-custom tmate
                       alsa-utils pavucontrol pulsemixer
-                      taskwarrior mako adb fastboot
+                      taskwarrior mako adb fastboot password-store execline direnv
+                      font-dejavu font-twitter-emoji font-google-noto font-awesome
                       flatpak steam multimc))
       (services
         (cons*

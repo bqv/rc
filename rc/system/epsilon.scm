@@ -1,20 +1,31 @@
 (define-module (rc system epsilon)
                #:use-module ((gnu services) #:hide (delete))
 	       #:use-module (gnu packages linux)
+	       #:use-module (gnu system)
+	       #:use-module (gnu system file-systems)
+	       #:use-module (gnu system keyboard)
+	       #:use-module (gnu system linux-initrd)
 	       #:use-module (gnu system locale)
+	       #:use-module (gnu system shadow)
+	       #:use-module (gnu bootloader)
+	       #:use-module (gnu bootloader grub)
 	       #:use-module (nongnu packages linux)
 	       #:use-module (nongnu system linux-initrd)
                #:use-module (rc system factors guix)
+	       #:use-module (guix gexp)
 	       #:use-module (guix packages)
 	       #:use-module (guix channels)
 	       #:use-module (guix inferior)
 	       #:use-module (srfi srfi-1)
 	       #:use-module (gcrypt pk-crypto)
+	       #:use-module (gnu services base)
+	       #:use-module (gnu services avahi)
 	       #:use-module (gnu services networking)
 	       #:use-module (gnu services ssh)
 	       #:use-module (gnu services xorg)
 	       #:use-module (gnu services sddm)
 	       #:use-module (gnu services desktop)
+	       #:use-module (gnu packages base)
 	       #:use-module (gnu packages admin)
 	       #:use-module (gnu packages networking)
 	       #:use-module (gnu packages certs)
@@ -35,6 +46,7 @@
 	       #:use-module (gnu packages tmux)
 	       #:use-module (gnu packages screen)
 	       #:use-module (gnu packages rsync)
+	       #:use-module (gnu packages terminals)
 	       #:use-module (gnu packages suckless)
 	       #:use-module (gnu packages messaging)
 	       #:export (os))
@@ -124,8 +136,8 @@
     (packages (cons*
                 emacs-next neovim vim neofetch
                 nyxt xterm sshfs tree curl git netcat rsync
-                tmux screen htop tcpdump st
-                guile-wm stumpwm awesome wireguard nss-certs
+                tmux screen htop tcpdump st termite
+                guile-wm stumpwm awesome i3-wm wireguard nss-certs
                 emacs-evil emacs-ivy emacs-vterm ;emacs-webkit
                 gajim gajim-omemo gajim-openpgp dino
                 %base-packages))
@@ -142,6 +154,8 @@
                                 (config-file "/etc/wpa_supplicant/wpa_supplicant.conf")))
                      (service elogind-service-type
                               (elogind-configuration))
+                     (service avahi-service-type
+                              (avahi-configuration))
                      (service sddm-service-type
                               (sddm-configuration
                                 (auto-login-user "aion")
