@@ -1,6 +1,7 @@
 (define-module (rc home leaf)
                #:use-module (srfi srfi-1)
                #:use-module (guix gexp)
+               #:use-module (guix git-download)
                #:use-module (guix monads)
                #:use-module (guix packages)
                #:use-module (guix profiles)
@@ -13,7 +14,7 @@
                #:use-module (gnu services shepherd)
                #:use-module (gnu home)
                #:use-module (rc home)
-	       #:use-module (rc home factors emacs)
+               #:use-module (rc home factors emacs)
                #:use-module (gnu home-services)
                #:use-module (gnu home-services emacs)
                #:use-module (gnu home-services files)
@@ -24,6 +25,7 @@
                #:use-module (gnu home-services ssh)
                #:use-module (gnu home-services wm)
                #:use-module (rc home-services pipewire)
+               #:use-module (gnu packages)
                #:use-module (gnu packages abduco)
                #:use-module (gnu packages admin)
                #:use-module (gnu packages android)
@@ -31,10 +33,12 @@
                #:use-module (gnu packages dvtm)
                #:use-module (gnu packages emacs)
                #:use-module (gnu packages fonts)
+               #:use-module (gnu packages fontutils)
                #:use-module (gnu packages freedesktop)
                #:use-module (gnu packages irc)
                #:use-module (gnu packages linux)
                #:use-module (gnu packages messaging)
+               #:use-module (gnu packages mpd)
                #:use-module (gnu packages ncurses)
                #:use-module (gnu packages package-management)
                #:use-module (gnu packages password-utils)
@@ -47,6 +51,7 @@
                #:use-module (gnu packages suckless)
                #:use-module (gnu packages task-management)
                #:use-module (gnu packages terminals)
+               #:use-module (gnu packages video)
                #:use-module (gnu packages web-browsers)
                #:use-module (gnu packages wm)
                #:use-module (gnu packages xdisorg)
@@ -106,6 +111,20 @@
 (define gajim-full
   (package
     (inherit gajim)
+    (source
+     (origin
+       (method git-fetch)
+       (uri (git-reference
+              (url "https://dev.gajim.org/gajim/gajim.git")
+              (commit "318ca493a6d716bb69d927c0bbb6d9b543c6ab35")))
+       (sha256
+        (base32 "0wxrg1smdi3gvxq99jq6fdmw6qy49gxc8av9zw07wx64abi7agjf"))
+       (patches (search-patches "gajim-honour-GAJIM_PLUGIN_PATH.patch"))))
+    (arguments
+      (substitute-keyword-arguments (package-arguments gajim)
+                                    ((#:phases phases)
+                                     `(modify-phases %standard-phases
+                                                     (delete 'check)))))
     (propagated-inputs (cons*
                          `("gajim-omemo" ,gajim-omemo)
                          `("gajim-openpgp" ,gajim-openpgp)
@@ -121,17 +140,18 @@
                       ncurses termite alacritty st dvtm-custom abduco-custom tmate
                       alsa-utils pavucontrol pulsemixer
                       taskwarrior mako adb fastboot password-store execline direnv
-                      font-manager flatpak steam multimc))
+                      fontmanager flatpak steam multimc
+                      cantata mpv))
       (services
         (cons*
           (service home-bash-service-type
                    (home-bash-configuration
                      (guix-defaults? #t)
                      (bash-profile
-		       (list
+                       (list
                          "source $HOME/.profile"
-			 "export HISTFILE=$XDG_CACHE_HOME/.bash_history"))))
-  
+                         "export HISTFILE=$XDG_CACHE_HOME/.bash_history"))))
+
           (service home-zsh-service-type
                    (home-zsh-configuration
                      (xdg-flavor? #f)
@@ -153,7 +173,7 @@
                          #~(string-append "source " #$zsh-zplugin "/zplugin.zsh")
                          "autoload -Uz _zplugin"
                          "(( ${+_comps} )) && _comps[zplugin]=_zplugin"
-			 "setopt promptsubst"
+                         "setopt promptsubst"
                          "setopt extended_history"       ; record timestamp of command in HISTFILE
                          "setopt hist_expire_dups_first" ; delete duplicates first when HISTFILE size exceeds HISTSIZE
                          "setopt hist_ignore_dups"       ; ignore duplicated commands history list
@@ -162,22 +182,22 @@
                          "setopt share_history"          ; share command history data
 
                          "zplugin light zsh-users/zsh-autosuggestions"
-			 "zplugin ice compile\"*.lzui\" from\"notabug\"; zplugin load zdharma/zui"
-			 "zplugin load zdharma/history-search-multi-word"
-			;"zplugin ice as\"program\" make'!' atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' src\"zhook.zsh\"; zplugin light direnv/direnv"
-			 "zplugin snippet OMZ::plugins/direnv/direnv.plugin.zsh"
-			 "zplugin snippet OMZ::lib/git.zsh"
-			 "zplugin ice wait\"0\" atload\"unalias grv\"; zplugin snippet OMZ::plugins/git/git.plugin.zsh"
-			 "zplugin snippet OMZ::plugins/taskwarrior/taskwarrior.plugin.zsh"
+                         "zplugin ice compile\"*.lzui\" from\"notabug\"; zplugin load zdharma/zui"
+                         "zplugin load zdharma/history-search-multi-word"
+                        ;"zplugin ice as\"program\" make'!' atclone'./direnv hook zsh > zhook.zsh' atpull'%atclone' src\"zhook.zsh\"; zplugin light direnv/direnv"
+                         "zplugin snippet OMZ::plugins/direnv/direnv.plugin.zsh"
+                         "zplugin snippet OMZ::lib/git.zsh"
+                         "zplugin ice wait\"0\" atload\"unalias grv\"; zplugin snippet OMZ::plugins/git/git.plugin.zsh"
+                         "zplugin snippet OMZ::plugins/taskwarrior/taskwarrior.plugin.zsh"
                          "zplugin load momo-lab/zsh-abbrev-alias"
-			 "zplugin light ptavares/zsh-z"
+                         "zplugin light ptavares/zsh-z"
                         ;"zplugin load fabiogibson/envrc-zsh-plugin"
                          "zplugin snippet OMZ::themes/terminalparty.zsh-theme" ; nicoulaj
-			;"zplugin ice as\"completion\"; zplugin snippet OMZ::plugins/adb/_adb"
-			;"zplugin ice as\"completion\"; zplugin snippet OMZ::plugins/ipfs/_ipfs"
-			;"zplugin ice as\"completion\"; zplugin snippet OMZ::plugins/ripgrep/_ripgrep"
+                        ;"zplugin ice as\"completion\"; zplugin snippet OMZ::plugins/adb/_adb"
+                        ;"zplugin ice as\"completion\"; zplugin snippet OMZ::plugins/ipfs/_ipfs"
+                        ;"zplugin ice as\"completion\"; zplugin snippet OMZ::plugins/ripgrep/_ripgrep"
                          "zplugin load zsh-users/zsh-completions"
-			 "autoload -U compinit && compinit"
+                         "autoload -U compinit && compinit"
                          "zplugin ice wait\"0\" atinit\"zpcompinit; zpcdreplay\" lucid; zplugin load zsh-users/zsh-syntax-highlighting"
                          "zplugin ice wait\"0\" lucid; zplugin load zsh-users/zsh-history-substring-search"
 
@@ -185,10 +205,10 @@
                          "zle -N history-substring-search-down"
                          "bindkey \"$terminfo[kcuu1]\" history-substring-search-up"
                          "bindkey \"$terminfo[kcud1]\" history-substring-search-down"
-			 "zplugin snippet OMZ::lib/key-bindings.zsh"
+                         "zplugin snippet OMZ::lib/key-bindings.zsh"
 
-			 "alias vim=nvim"
-			 "abbrev-alias rg=\"rg -p\""
+                         "alias vim=nvim"
+                         "abbrev-alias rg=\"rg -p\""
                          "abbrev-alias less=\"less -RF\""
                          "abbrev-alias jq=\"jq -C\""
                          "abbrev-alias ls\"exa\""
@@ -196,10 +216,10 @@
                      (zlogin (list))
                      (zlogout (list))))
          ;(service home-zsh-autosuggestions-service-type)
-  
+
           (simple-service 'add-imperative-profile
                           home-shell-profile-service-type
-                          (list "GUIX_PROFILE=$HOME/.guix-profile"  
+                          (list "GUIX_PROFILE=$HOME/.guix-profile"
                                 "source $GUIX_PROFILE/etc/profile"))
 
           (service home-fish-service-type
@@ -221,7 +241,7 @@
                      (abbreviations '(("rg" . "rg -p")
                                       ("less" . "less -RF")
                                       ("jq" . "jq -C")))))
-  
+
           (simple-service 'pipewire-add-asoundrc
                           home-files-service-type
                           (list `("config/alsa/asoundrc"
@@ -275,7 +295,7 @@
                           (list xdg-desktop-portal
                                 xdg-desktop-portal-wlr
                                 pipewire-0.3))
-  
+
           (service home-ssh-service-type
                    (home-ssh-configuration
                      (extra-config
@@ -355,13 +375,13 @@
                          (strict-host-key-checking . #f)))
                      (toplevel-options
                        `((,(string->symbol "\ninclude") . "config.*")))))
-  
+
           (service home-gnupg-service-type
                    (home-gnupg-configuration
                      (gpg-agent-config
                        (home-gpg-agent-configuration
                          (ssh-agent? #t)))))
-  
+
           (service pipewire-service-type
                    (pipewire-configuration
                      (package pipewire-0.3)
@@ -382,8 +402,8 @@
                          (include ,(local-file "../../data/sway.config"))))))
           (simple-service 'sway-reload-config-on-change
                           home-run-on-change-service-type
-                          `("files/config/sway/config"
-                            ,#~(system* #$(file-append sway "/bin/swaymsg") "reload")))
+                          `(("files/config/sway/config"
+                            ,#~(system* #$(file-append sway "/bin/swaymsg") "reload"))))
           (simple-service 'packages-for-sway
                           home-profile-service-type
                           (list wofi qtwayland
@@ -402,7 +422,7 @@
                             ("ECORE_EVAS_ENGINE" . "wayland-egl")
                             ("QT_QPA_PLATFORM" . "wayland-egl")
                             ("_JAVA_AWT_WM_NONREPARENTING" . "1")))
-  
+
           (fold (lambda (a b) (apply a (list b)))
-		(list)
-		(list use-emacs-services)))))))
+                (list)
+                (list use-emacs-services)))))))

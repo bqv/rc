@@ -219,7 +219,15 @@
                    ,#~""
                    (setq inhibit-splash-screen t)
                    ,#~""
-                   ;; (define-key global-map (kbd "M-/") 'hippie-expand)
+                   (let ((env (mapcar (lambda (s) (split-string s "="))
+                                      (split-string (shell-command-to-string
+                                                     (format "%s -lc env" (getenv "SHELL")))
+                                                    "\n" t)))
+                         (old-env (mapcar (lambda (s) (split-string s "="))
+                                          process-environment)))
+                     (mapcar (lambda (e) (assoc-delete-all (car e) env)) old-env)
+                     (mapcar (lambda (e) (setenv (car e) (string-join (cdr e) "=")))
+                             (assoc-delete-all "PWD" (assoc-delete-all "_" env))))
 
                    (tool-bar-mode 0)
                    (evil-mode t)
