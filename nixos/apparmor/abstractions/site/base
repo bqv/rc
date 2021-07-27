@@ -1,0 +1,22 @@
+{ pkgs, ... }: ''
+/etc/machine-id r,
+
+/sys/devices/system/cpu/ r,
+/sys/devices/system/cpu/** r,
+
+owner @{PROC}/@{pid}/stat r,
+owner @{PROC}/@{pid}/cmdline r,
+
+# compatibility .so files from old packages
+/opt/compat/*.so* mr,
+
+# Blacklist here shouldn't be relied upon for actual deny, only for audit
+#  private-tmp in wrapper scripts is the proper solution for not sharing stuff there
+audit deny /tmp/{ssh,gpg}-*/** rwlkmx,
+audit deny /tmp/{u,}screens/** rwlkmx,
+audit deny /tmp/tmux-*/** rwlkmx,
+audit deny /tmp/emacs*/** rwlkmx,
+audit deny /tmp/systemd-*/** rwlkmx,
+audit deny /tmp/claws-mail-*/** rwlkmx,
+audit deny /tmp/efreetd_* rwlkmx,
+''
