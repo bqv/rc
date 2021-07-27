@@ -629,22 +629,6 @@
         "type": "github"
       }
     },
-    "giara": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1620248215,
-        "narHash": "sha256-7fjFXAVh5XyaGse7DyZ9zwQvw1ZeNXbm4ZWhED0mHZo=",
-        "ref": "master",
-        "rev": "e1b716e05537a28df51dabd3281236f96fcad35a",
-        "revCount": 292,
-        "type": "git",
-        "url": "https://gitlab.gnome.org/world/giara"
-      },
-      "original": {
-        "type": "git",
-        "url": "https://gitlab.gnome.org/world/giara"
-      }
-    },
     "git-bug": {
       "flake": false,
       "locked": {
@@ -1480,38 +1464,6 @@
         "type": "github"
       }
     },
-    "pr96368": {
-      "locked": {
-        "lastModified": 1607803217,
-        "narHash": "sha256-sqpLHWuz8w/+YrDx68W1rcgKTOyife1QfI7LdFhrSP8=",
-        "owner": "islandusurper",
-        "repo": "nixpkgs",
-        "rev": "83ad263f809222634e831d07c59b3e6745fd971e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "islandusurper",
-        "ref": "lbry-desktop",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
-    "pr99188": {
-      "locked": {
-        "lastModified": 1604152845,
-        "narHash": "sha256-QeFfbiENK/XNc3ZQOJ4mFdP7JTFYR8r5edSJViCzp/4=",
-        "owner": "atemu",
-        "repo": "nixpkgs",
-        "rev": "7a9c42d6865648a29fde5a599fb89a0ba0a76b12",
-        "type": "github"
-      },
-      "original": {
-        "owner": "atemu",
-        "ref": "giara-init",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "priv": {
       "locked": {
         "narHash": "sha256-HDw+NaGZGVY0s+xE0Lp7/zjPJ11uufzFIu28OP6GFZA=",
@@ -1785,7 +1737,6 @@
         "fsnoop": "fsnoop",
         "funkwhale": "funkwhale",
         "gh-notify": "gh-notify",
-        "giara": "giara",
         "git-bug": "git-bug",
         "git-get": "git-get",
         "git-pullrequest": "git-pullrequest",
@@ -1815,8 +1766,6 @@
         "nyxt": "nyxt",
         "pr75800": "pr75800",
         "pr93659": "pr93659",
-        "pr96368": "pr96368",
-        "pr99188": "pr99188",
         "priv": "priv",
         "processmgmt": "processmgmt",
         "rel1803": "rel1803",

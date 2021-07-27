@@ -23,8 +23,6 @@
     rel1803 = { url = "github:nixos/nixpkgs/18.03"; flake = false; };
     pr75800.url = "github:nixos/nixpkgs/517b290754f6a7cc487ce11932a8b750f868324d"; #|\ Pull
     pr93659.url = "github:ju1m/nixpkgs/security.pass";                             #|/ Reqs
-    pr99188.url = "github:atemu/nixpkgs/giara-init";                               #||
-    pr96368.url = "github:islandusurper/nixpkgs/lbry-desktop";                     #||
 
     nix.url = "github:nixos/nix";                             #|- Nix
     nix-ipfs.url = "github:obsidiansystems/nix/ipfs-develop"; #|  ^^^IPFS
@@ -116,7 +114,6 @@
     explain-pause-mode = { url = "github:lastquestion/explain-pause-mode"; flake = false; };
     gnome-network-displays = { url = "git+https://gitlab.gnome.org/gnome/gnome-network-displays"; flake = false; };
     emacs-webkit = { url = "github:akirakyle/emacs-webkit"; flake = false; };
-    giara = { url = "git+https://gitlab.gnome.org/world/giara"; flake = false; };
     ini2json = { url = "github:anubisss/ini2json"; flake = false; };
     mfs-replace-root = { url = "github:hsanjuan/mfs-replace-root"; flake = false; };
     brig = { url = "github:sahib/brig/develop"; flake = false; };
