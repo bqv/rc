@@ -29,6 +29,7 @@
                #:use-module (gnu packages abduco)
                #:use-module (gnu packages admin)
                #:use-module (gnu packages android)
+               #:use-module (gnu packages bittorrent)
                #:use-module (gnu packages chromium)
                #:use-module (gnu packages dvtm)
                #:use-module (gnu packages emacs)
@@ -60,6 +61,7 @@
                #:use-module (flat packages emacs)
                #:use-module (rde packages)
                #:use-module (rc packages discord)
+               #:use-module (rc packages gajim)
                #:use-module (rc packages minecraft)
                #:use-module (rc packages pipewire)
                #:use-module (rc packages font-twitter-emoji)
@@ -108,28 +110,6 @@
                   (copy-file "config.h" (string-append out "/include/dvtm/config.h")))
                 #t))))))))
 
-(define gajim-full
-  (package
-    (inherit gajim)
-    (source
-     (origin
-       (method git-fetch)
-       (uri (git-reference
-              (url "https://dev.gajim.org/gajim/gajim.git")
-              (commit "318ca493a6d716bb69d927c0bbb6d9b543c6ab35")))
-       (sha256
-        (base32 "0wxrg1smdi3gvxq99jq6fdmw6qy49gxc8av9zw07wx64abi7agjf"))
-       (patches (search-patches "gajim-honour-GAJIM_PLUGIN_PATH.patch"))))
-    (arguments
-      (substitute-keyword-arguments (package-arguments gajim)
-                                    ((#:phases phases)
-                                     `(modify-phases %standard-phases
-                                                     (delete 'check)))))
-    (propagated-inputs (cons*
-                         `("gajim-omemo" ,gajim-omemo)
-                         `("gajim-openpgp" ,gajim-openpgp)
-                         (package-propagated-inputs gajim)))))
-
 (define (env os)
   (let* ((system (os)))
     (home-environment
@@ -138,10 +118,9 @@
                       weechat irssi discord
                       dino profanity poezio gajim-full gajim-omemo gajim-openpgp
                       ncurses termite alacritty st dvtm-custom abduco-custom tmate
-                      alsa-utils pavucontrol pulsemixer
+                      alsa-utils pavucontrol pulsemixer cantata mpv
                       taskwarrior mako adb fastboot password-store execline direnv
-                      fontmanager flatpak steam multimc
-                      cantata mpv))
+                      fontmanager flatpak steam multimc aria2))
       (services
         (cons*
           (service home-bash-service-type

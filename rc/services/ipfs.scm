@@ -53,9 +53,9 @@
   (package  ipfs-configuration-package
             (default go-ipfs))
   (gateway  ipfs-configuration-gateway
-            (default "/ip4/127.0.0.1/tcp/8082"))
+            (default "\"/ip4/127.0.0.1/tcp/8082\""))
   (api      ipfs-configuration-api
-            (default "/ip4/127.0.0.1/tcp/5001"))
+            (default "\"/ip4/127.0.0.1/tcp/5001\""))
   (migrate  ipfs-configuration-migrate
             (default #f))
   (mount    ipfs-configuration-mount
@@ -105,7 +105,10 @@
 (define %ipfs-environment
   #~(list #$(string-append "HOME=" %ipfs-home)
           #$(string-append "IPFS_PATH=" %ipfs-home)
-          (string-append "PATH=" #$(file-append fuse "/bin") ":" (getenv "PATH"))))
+         ;(string-append "PATH=" #$(file-append fuse "/bin") ":" (getenv "PATH"))
+         ;; add fuse to setuid
+          (string-append "PATH=" "/run/setuid-programs" ":" (getenv "PATH"))
+          ))
 
 (define %ipfs-global-environment
   `(("IPFS_PATH" . ,%ipfs-home)))
@@ -138,9 +141,10 @@
                                       `(user net
                                         ,@(if (ipfs-configuration-mount config)
                                               '(mnt) '())))
-                #:mappings (list #$%ipfs-home-mapping
-                                 #$%ipfs-mount-ipfs-mapping
-                                 #$%ipfs-mount-ipns-mapping)
+                #$@(if (not (ipfs-configuration-mount config))
+                       `(#:mappings (list ,%ipfs-home-mapping
+                                          ,%ipfs-mount-ipfs-mapping
+                                          ,%ipfs-mount-ipns-mapping)) '())
                 #:log-file "/var/log/ipfs.log"
                 #:user "ipfs"
                 #:group "ipfs"
@@ -150,12 +154,13 @@
 (define (%ipfs-activation config)
   "Return an activation gexp for IPFS with CONFIG"
   (define (ipfs-config-command setting value)
-    #~(#$(ipfs-binary config) "--offline" "config" #$setting #$value))
+    #~(#$(ipfs-binary config) "--offline" "config" "--json" #$setting #$value))
   (define (set-config!-gexp setting value)
     #~(system* #$@(ipfs-config-command setting value)))
   (define settings
     `(("Addresses.API" ,(ipfs-configuration-api config))
       ("Addresses.Gateway" ,(ipfs-configuration-gateway config))
+      ("Mounts.FuseAllowOther" "true")
       ,@(ipfs-configuration-settings config)))
   (define inner-gexp
     #~(begin

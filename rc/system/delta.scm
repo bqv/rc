@@ -220,7 +220,7 @@
                      (service ipfs-service-type
                               (ipfs-configuration
                                 (migrate #t)
-                                (mount #f)
+                                (mount #t)
                                 (settings '(("Experimental.AcceleratedDHTClient" "true")
                                             ("Experimental.FilestoreEnabled" "true")))
                                 (args '("--enable-pubsub-experiment"
