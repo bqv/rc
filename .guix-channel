@@ -37,7 +37,5 @@
  ;  (name keys)
  ;  (url "/gnu/secrets")
  ;  (branch "inert"))
-  (channel
-    (name zaijab)
-    (url "https://github.com/zaijab/guix-channel")))
+  )
   (url "https://github.com/bqv/rc.git"))
