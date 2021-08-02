@@ -190,7 +190,7 @@
                          "abbrev-alias rg=\"rg -p\""
                          "abbrev-alias less=\"less -RF\""
                          "abbrev-alias jq=\"jq -C\""
-                         "abbrev-alias ls\"exa\""
+                         "alias ls=exa"
                          ))
                      (zlogin (list))
                      (zlogout (list))))

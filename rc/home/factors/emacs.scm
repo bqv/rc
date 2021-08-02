@@ -38,6 +38,7 @@
                                 ;emacs-cl ; cl.nix
                                  emacs-company-box ; company-box.nix
                                  emacs-company-cabal ; company-cabal.nix
+                                 emacs-company-lsp
                                 ;emacs-company-terraform ; company-terraform.nix
                                  emacs-company ; company.nix
                                  emacs-counsel-projectile ; counsel-projectile.nix

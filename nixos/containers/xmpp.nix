@@ -42,14 +42,20 @@ in {
 
           services.prosody = rec {
             enable = true;
+            package = pkgs.prosody.override {
+              withExtraLibs = [ pkgs.luaPackages.lpty ];
+              withCommunityModules = [ "firewall" ];
+            };
             admins = [ "qy@${usr.secrets.domains.srvc}" ];
             allowRegistration = true;
+            c2sRequireEncryption = false;
             extraConfig = ''
               local_interfaces = { "*", "::" }
               Component "irc.${usr.secrets.domains.srvc}"
                   component_port = { 5347 }
                   component_secret = "${usr.secrets.weechat.credentials.password}"
             '';
+            extraModules = [ "firewall" ];
             httpPorts = [ 5280 ];
             httpsPorts = [ 5281 ];
             group = "keys";
@@ -58,6 +64,7 @@ in {
             modules.bosh = true;
             modules.groups = true;
             modules.legacyauth = true;
+            modules.watchregistrations = true;
             modules.websocket = true;
             muc = [{
               domain = "muc.${usr.secrets.domains.srvc}";
