@@ -3,16 +3,19 @@
                #:use-module (gcrypt pk-crypto)
                #:use-module (guix packages)
                #:use-module (gnu)
+               #:use-module (gnu system setuid)
                #:use-module (gnu system nss)
                #:use-module (nongnu system linux-initrd)
                #:use-module (rc system factors doas)
                #:use-module (rc system factors guix)
                #:use-module (rc system factors home)
+               #:use-module (gnu services admin)
                #:use-module (gnu services desktop)
                #:use-module (gnu services sddm)
                #:use-module (gnu services shepherd)
                #:use-module (gnu services sound)
                #:use-module (gnu services ssh)
+               #:use-module (gnu services sysctl)
                #:use-module (gnu services networking)
                #:use-module (gnu services nix)
                #:use-module (gnu services vpn)
@@ -50,6 +53,7 @@
                #:use-module (gnu packages vpn)
                #:use-module (gnu packages web)
                #:use-module (gnu packages wm)
+               #:use-module (gnu packages xiph)
                #:use-module (gnu packages xdisorg)
                #:use-module (gnu packages xorg)
                #:use-module (nongnu packages linux)
@@ -131,6 +135,11 @@
                                         (options "subvol=gnu")
                                         (type "btrfs"))
                            (file-system (device ssd)
+                                        (mount-point "/var/guix")
+                                        (mount-may-fail? #t)
+                                        (options "subvolid=498") ; /gnu/var
+                                        (type "btrfs"))
+                           (file-system (device ssd)
                                         (mount-point "/nix")
                                         (flags '(no-atime))
                                         (options "subvol=nix")
@@ -149,7 +158,7 @@
                     (comment "Data User")
                     (shell (file-append zsh "/bin/zsh"))
                     (supplementary-groups '("wheel" "stem"
-                                            "audio" "video"
+                                            "audio" "video" "kvm"
                                             "adbusers" "netdev")))
                   (user-account
                     (name "python")
@@ -195,7 +204,8 @@
                 %base-packages))
   
     (setuid-programs (cons*
-                       #~(string-append #$swaylock "/bin/swaylock")
+                       (setuid-program
+                         (program #~(string-append #$swaylock "/bin/swaylock")))
                        %setuid-programs))
  
     (sudoers-file (plain-file "sudoers" "\
@@ -210,6 +220,16 @@
                               (openssh-configuration
                                 (permit-root-login #t)
                                 (openssh openssh-sans-x)))
+                     (service unattended-upgrade-service-type
+                              (unattended-upgrade-configuration
+                                (schedule #~"00 12 * * *")
+                                (channels
+                                  (local-file "/etc/guix/channels.scm" "channels.scm"))
+                                (operating-system-file
+                                  (file-append (local-file "/srv/code/rc" "config-dir" #:recursive? #t)
+                                               "/config.scm"))
+                                (services-to-restart
+                                  (list 'mcron))))
                      (service nix-service-type
                               (nix-configuration
                                 (package nixUnstable)
@@ -338,6 +358,20 @@
                                          pipewire-0.3)
                      (udev-rules-service 'android-add-udev-rules
                                          android-udev-rules)
+                     (simple-service 'icecast-server shepherd-root-service-type
+                                     (list (shepherd-service
+                                             (documentation "Icecast2 service.")
+                                             (provision '(icecast))
+                                             (requirement '(networking))
+                                             (start #~(lambda _
+                                                        (let ((icecast (string-append #$icecast
+                                                                                      "/bin/icecast")))
+                                                          (fork+exec-command
+                                                            (list icecast "-c" "/etc/icecast.xml")
+                                                            #:environment-variables
+                                                            (list "SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt"
+                                                                  "SSL_CERT_DIR=/etc/ssl/certs")))
+                                                        #t)))))
                      (simple-service 'minecraft-server shepherd-root-service-type
                                      (list (shepherd-service
                                              (documentation "Minecraft Server.")
@@ -374,6 +408,12 @@
                      (fold (lambda (a b) (apply a (list b)))
                            (modify-services
                              %desktop-services
+                             (sysctl-service-type config =>
+                                                  (sysctl-configuration
+                                                    (inherit config)
+                                                    (settings (cons*
+                                                                '("kernel.pid_max" . "4194304")
+                                                                (sysctl-configuration-settings config)))))
                              (delete gdm-service-type)
                              (delete network-manager-service-type)
                              (delete pulseaudio-service-type)

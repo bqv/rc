@@ -149,7 +149,7 @@
       '';
     in [
       appimage-run steam-run manix # Package Tools
-      abduco dvtm # Terminal Multiplexing
+      abduco dvtm nvimpager # Terminal Multiplexing
       yadm # Dotfile Management
       pstree bottom # Process Monitoring
       pv pup # Pipe Management

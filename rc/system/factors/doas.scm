@@ -3,6 +3,7 @@
   #:use-module (guix gexp)
   #:use-module (guix records)
   #:use-module (gnu services)
+  #:use-module (gnu system setuid)
   #:use-module (gnu packages admin)
   #:export (use-doas-services))
 
@@ -26,5 +27,6 @@
     (simple-service 'doas-profile-service profile-service-type
                     (list opendoas))
     (simple-service 'doas-setuid-service setuid-program-service-type
-                    (list #~(string-append #$opendoas "/bin/doas")))
+                    (list (setuid-program
+                            (program #~(string-append #$opendoas "/bin/doas")))))
     services))

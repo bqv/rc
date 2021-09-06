@@ -17,7 +17,6 @@
                #:use-module (rc home factors emacs)
                #:use-module (gnu home-services)
                #:use-module (gnu home-services emacs)
-               #:use-module (gnu home-services files)
                #:use-module (gnu home-services gnupg)
                #:use-module (gnu home-services shells)
                #:use-module (gnu home-services shellutils)
@@ -145,6 +144,7 @@
                          "export EDITOR=nvim"
                          "export ALTERNATE_EDITOR=emacsclient"
                          "export NIX_PATH=nixpkgs=/nix/var/nix/profiles/system/flake/input/master"
+                         "export PATH=$PATH:$HOME/bin"
                          "export GUIX=$HOME/.config/guix/current/share/guile/site/3.0"))
                      (zprofile (list))
                      (zshrc
@@ -258,7 +258,7 @@
                             (shepherd-service
                               (provision '(dbus))
                               (start #~(make-forkexec-constructor
-                                         (list #$(file-append (@@ (gnu packages glib) dbus)
+                                         (list #$(file-append (@ (gnu packages glib) dbus)
                                                               "/bin/dbus-daemon")
                                                "--nofork"
                                                "--session"
@@ -360,6 +360,17 @@
                      (gpg-agent-config
                        (home-gpg-agent-configuration
                          (ssh-agent? #t)))))
+
+          (simple-service 'darkice-shepherd-daemon
+                          home-shepherd-service-type
+                          (list
+                            (shepherd-service
+                              (provision '(darkice))
+                              (start #~(make-forkexec-constructor
+                                         (list #$(file-append (@ (gnu packages audio) darkice)
+                                                              "/bin/darkice")
+                                               "-c" "/etc/darkice.cfg")))
+                              (auto-start? #f))))
 
           (service pipewire-service-type
                    (pipewire-configuration

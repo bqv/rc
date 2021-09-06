@@ -48,7 +48,7 @@
                           #$config)
                     #:user #$user
                     #:group #$group
-                    #:log-level "/var/log/biboumi.log"
+                    #:log-file "/var/log/biboumi.log"
                     #:environment-variables
                     (append (list (string-append "HOME="
                                                  (or #$home (passwd:dir (getpw #$user))))

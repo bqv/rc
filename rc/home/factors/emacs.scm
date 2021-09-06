@@ -1,14 +1,53 @@
 (define-module (rc home factors emacs)
+  #:use-module (system base compile)
+  #:use-module ((rc) #:prefix rc:)
   #:use-module (rc home)
   #:use-module (rc utils)
   #:use-module (guix gexp)
   #:use-module (guix packages)
+  #:use-module (guix scripts import)
   #:use-module (gnu home-services)
   #:use-module (gnu home-services emacs)
   #:use-module (gnu packages emacs)
   #:use-module (gnu packages emacs-xyz)
   #:use-module (flat packages emacs)
   #:export (use-emacs-services))
+
+(define (outsource-melpa pkg)
+  (define (melpa-name->package-name name)
+    "Given the NAME of an Emacs package, return the corresponding Guix name."
+    (let ((package-name-prefix "emacs-"))
+      (if (string-prefix? package-name-prefix name)
+          (string-downcase name)
+          (string-append package-name-prefix (string-downcase name)))))
+
+  (let ((edir (string-append rc:%channel-root "/rc/packages/emacs"))
+        (name (symbol->string pkg)))
+    (let();false-if-exception
+      (let ((scm (string-append edir "/" name ".scm"))
+            (pkg-name (melpa-name->package-name name)))
+        (unless (file-exists? edir)
+          (mkdir edir))
+        (unless (file-exists? scm)
+          (with-output-to-file scm
+            (lambda ()
+              (display `(define-module (rc packages emacs ,pkg)
+                                       #:use-module (guix build-system emacs)
+                                       #:use-module (guix download)
+                                       #:use-module (guix packages)
+                                       #:use-module (gnu packages emacs)
+                                       #:use-module (gnu packages emacs-xyz)
+                                       #:export ()))
+              (display "\n")
+              (guix-import "elpa" "-r" "--archive=melpa" name)
+              (display (string-append "\n" pkg-name))))
+          (compile-file scm)
+          (load-compiled (compiled-file-name scm)))
+        (module-ref (resolve-module `(rc packages emacs ,pkg))
+                    (string->symbol pkg-name))))))
+
+(define-syntax-rule (melpa pkg)
+  (outsource-melpa (quote pkg)))
 
 (define (use-emacs-services services)
   (cons*
@@ -17,6 +56,7 @@
                (package emacs-pgtk-native-comp)
               ;(package (inferior-package->package (delayed 'emacs) #:license #f))
                (elisp-packages (list
+                                 (melpa weechat)
                                  emacs-ace-window ; ace-window.nix
                                 ;emacs-ahg ; ahg.nix
                                  emacs-all-the-icons ; all-the-icons.nix
@@ -35,6 +75,7 @@
                                 ;emacs-calfw-org ; calfw-org.nix
                                  emacs-calfw ; calfw.nix
                                 ;emacs-cargo ; cargo.nix
+                                 emacs-ccls
                                 ;emacs-cl ; cl.nix
                                  emacs-company-box ; company-box.nix
                                  emacs-company-cabal ; company-cabal.nix
