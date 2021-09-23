@@ -66,6 +66,7 @@
                #:use-module (rc packages minecraft)
                #:use-module (rc packages nix)
                #:use-module (rc packages pipewire)
+               #:use-module (rc packages usbreset)
                #:use-module (rc packages xmpppy)
                #:use-module (rc packages yggdrasil)
                #:export (os))
@@ -204,7 +205,7 @@
                 neovim sshfs tree curl screen jq gvfs wireguard efibootmgr
                 sway stumpwm awesome xinit xterm setxkbmap rsync gnupg python
                 fish fish-foreign-env netcat rofi python-wrapper
-                net-tools strace unzip gptfdisk
+                net-tools strace unzip gptfdisk usbreset
                 font-dejavu font-twitter-emoji font-google-noto font-awesome
                 %base-packages))
   
