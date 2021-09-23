@@ -114,7 +114,7 @@
   (let* ((system (os)))
     (home-environment
      ;(symlink-name ".guix-home")
-      (packages (list nyxt ungoogled-chromium (delayed 'firefox)
+      (packages (list nyxt ungoogled-chromium firefox
                       weechat irssi discord
                       dino profanity poezio gajim-full gajim-omemo gajim-openpgp
                       ncurses termite alacritty st dvtm-custom abduco-custom tmate
@@ -146,7 +146,9 @@
                          "export ALTERNATE_EDITOR=emacsclient"
                          "export NIX_PATH=nixpkgs=/nix/var/nix/profiles/system/flake/input/master"
                          "export PATH=$PATH:$HOME/bin"
-                         "export GUIX=$HOME/.config/guix/current/share/guile/site/3.0"))
+                         "export GUIX=$HOME/.config/guix/current/share/guile/site/3.0"
+                         #~(string-append "export RIPGREP_CONFIG_PATH="
+                                          #$(plain-file "ripgrep-config" "--follow"))))
                      (zprofile (list))
                      (zshrc
                        (list
@@ -197,7 +199,7 @@
                      (zlogout (list))))
          ;(service home-zsh-autosuggestions-service-type)
 
-          (simple-service 'make-guix-aware-of-guix-home-subcomand
+          (simple-service 'set-guix-load-path
                           home-environment-variables-service-type
                           '(("GUILE_LOAD_PATH" .
                              "$XDG_CONFIG_HOME/guix/current/share/guile/site/3.0:$GUILE_LOAD_PATH")
