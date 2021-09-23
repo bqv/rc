@@ -56,7 +56,7 @@
                (package emacs-pgtk-native-comp)
               ;(package (inferior-package->package (delayed 'emacs) #:license #f))
                (elisp-packages (list
-                                 (melpa weechat)
+                                ;(melpa weechat)
                                  emacs-ace-window ; ace-window.nix
                                 ;emacs-ahg ; ahg.nix
                                  emacs-all-the-icons ; all-the-icons.nix

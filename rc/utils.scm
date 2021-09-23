@@ -8,6 +8,7 @@
   #:use-module (gnu packages)
   #:export (list-directory
             file->package
+            program-package
             inferior-package->package))
 
 (define (list-directory path)
@@ -23,6 +24,7 @@
 (define* (file->package file
                         #:optional (name "file")
                                    (version "0")
+                                   (bin #f)
                         #:key (synopsis "Generated file")
                               (home-page "")
                               (license #f))
@@ -39,12 +41,21 @@
                        (srfi srfi-26))
           (copy-file
             (assoc-ref %build-inputs "source")
-            (assoc-ref %outputs "out"))
+            (if ,bin
+                (let ((bindir (string-append (assoc-ref %outputs "out") "/bin")))
+                  (mkdir-p bindir)
+                  (string-append bindir "/" ,name))
+                (assoc-ref %outputs "out")))
           #t)))
     (synopsis synopsis)
     (description (format #f "~A" file))
     (home-page home-page)
     (license license)))
+
+(define (program-package name gexp)
+  (file->package
+    (program-file name gexp)
+    name "0" #t))
 
 (define* (inferior-package->package inferior
                                     #:key

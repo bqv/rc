@@ -64,6 +64,7 @@
                #:use-module (rc packages minecraft)
                #:use-module (rc packages pipewire)
                #:use-module (rc packages font-twitter-emoji)
+               #:use-module (rc packages wayvnc)
                #:use-module ((rc packages zsh) #:prefix zsh-)
                #:export (env))
 
@@ -119,7 +120,7 @@
                       ncurses termite alacritty st dvtm-custom abduco-custom tmate
                       alsa-utils pavucontrol pulsemixer cantata mpv
                       taskwarrior mako adb fastboot password-store execline direnv
-                      fontmanager flatpak steam multimc aria2))
+                      fontmanager flatpak steam multimc aria2 wayvnc))
       (services
         (cons*
           (service home-bash-service-type
@@ -196,6 +197,13 @@
                      (zlogout (list))))
          ;(service home-zsh-autosuggestions-service-type)
 
+          (simple-service 'make-guix-aware-of-guix-home-subcomand
+                          home-environment-variables-service-type
+                          '(("GUILE_LOAD_PATH" .
+                             "$XDG_CONFIG_HOME/guix/current/share/guile/site/3.0:$GUILE_LOAD_PATH")
+                            ("GUILE_LOAD_COMPILED_PATH" .
+                             "$XDG_CONFIG_HOME/guix/current/lib/guile/3.0/site-ccache:$GUILE_LOAD_COMPILED_PATH")))
+
           (simple-service 'add-imperative-profile
                           home-shell-profile-service-type
                           (list "GUIX_PROFILE=$HOME/.guix-profile"
@@ -248,9 +256,9 @@
                              . "unix:path=$XDG_RUNTIME_DIR/dbus.sock")))
                             ;; ("RTC_USE_PIPEWIRE" . "true")
 
-         ;(simple-service 'sway-set-env
-         ;                home-environment-variables-service-type
-         ;                '(("SWAYSOCK" . "$XDG_RUNTIME_DIR/dbus.sock")))
+          ;(simple-service 'sway-set-env
+          ;                home-environment-variables-service-type
+          ;                '(("SWAYSOCK" . "$XDG_RUNTIME_DIR/dbus.sock")))
 
           (simple-service 'dbus-shepherd-daemon
                           home-shepherd-service-type
@@ -393,7 +401,7 @@
           (simple-service 'sway-reload-config-on-change
                           home-run-on-change-service-type
                           `(("files/config/sway/config"
-                            ,#~(system* #$(file-append sway "/bin/swaymsg") "reload"))))
+                             ,#~(system* #$(file-append sway "/bin/swaymsg") "reload"))))
           (simple-service 'packages-for-sway
                           home-profile-service-type
                           (list wofi qtwayland

@@ -1,4 +1,5 @@
 (define-module (rc system delta)
+               #:use-module (rc utils)
                #:use-module (srfi srfi-1)
                #:use-module (gcrypt pk-crypto)
                #:use-module (guix packages)
@@ -42,14 +43,17 @@
                #:use-module (gnu packages linux)
                #:use-module (gnu packages networking)
                #:use-module (gnu packages python)
+               #:use-module (gnu packages radio)
                #:use-module (gnu packages rsync)
                #:use-module (gnu packages rust-apps)
                #:use-module (gnu packages screen)
                #:use-module (gnu packages shells)
+               #:use-module (gnu packages skarnet)
                #:use-module (gnu packages ssh)
                #:use-module (gnu packages tmux)
                #:use-module (gnu packages version-control)
                #:use-module (gnu packages vim)
+               #:use-module (gnu packages virtualization)
                #:use-module (gnu packages vpn)
                #:use-module (gnu packages web)
                #:use-module (gnu packages wm)
@@ -63,6 +67,7 @@
                #:use-module (rc packages nix)
                #:use-module (rc packages pipewire)
                #:use-module (rc packages xmpppy)
+               #:use-module (rc packages yggdrasil)
                #:export (os))
 
 (define* (os #:rest home-envs)
@@ -75,7 +80,7 @@
   
     (bootloader (bootloader-configuration
                   (bootloader grub-efi-bootloader)
-                  (target "/boot/EFI")
+                  (targets '("/boot/EFI"))
                   (terminal-outputs '(gfxterm vga_text console))
                   (keyboard-layout keyboard-layout)))
   
@@ -84,7 +89,7 @@
     ;; CONFIG_IKCONFIG_PROC=y
     (kernel-arguments (cons*;"nomodeset"
                              "i915.modeset=0"
-                             "modprobe.blacklist=pcspkr"
+                             "modprobe.blacklist=pcspkr,dvb_usb_rtl28xxu"
                              (delete "quiet" %default-kernel-arguments)))
     (initrd microcode-initrd)
     (initrd-modules (cons*;"amdgpu"
@@ -159,7 +164,7 @@
                     (shell (file-append zsh "/bin/zsh"))
                     (supplementary-groups '("wheel" "stem"
                                             "audio" "video" "kvm"
-                                            "adbusers" "netdev")))
+                                            "adbusers" "netdev" "yggdrasil")))
                   (user-account
                     (name "python")
                     (group "python")
@@ -171,11 +176,11 @@
                     (name "minecraft")
                     (group "games")
                     (home-directory "/var/lib/minecraft")
-		    (system? #t))
+                    (system? #t))
                   (user-account
-		    (name "biboumi")
-		    (group "biboumi")
-		    (system? #t))
+                    (name "biboumi")
+                    (group "biboumi")
+                    (system? #t))
                   %base-user-accounts))
   
     (groups (cons* (user-group
@@ -272,7 +277,7 @@
                                                             "SSL_CERT_DIR=/etc/ssl/certs")
                                                           (environ))))
                                              (stop #~(make-kill-destructor))
-                                             (respawn? #t))))
+                                             (respawn? #f))))
                     ;(service wpa-supplicant-service-type
                     ;         (wpa-supplicant-configuration
                     ;           (interface "wlo1")
@@ -324,6 +329,11 @@
                                       (public-key "kccZA+GAc0VStb28A+Kr0z8iPCWsiuRMfwHW391Qrko=")
                                       (allowed-ips '("10.0.0.4/32"))
                                       (keep-alive 10))))))
+                     (service yggdrasil-service-type
+                              (yggdrasil-configuration
+                                (package yggdrasil)
+                                (log-level 'debug)))
+                     (extra-special-file "/etc/yggdrasil.conf" "/etc/yggdrasil-private.conf")
                      (service iwd-service-type)
                      (service bluetooth-service-type)
                      (service biboumi-service-type
@@ -358,6 +368,7 @@
                                          pipewire-0.3)
                      (udev-rules-service 'android-add-udev-rules
                                          android-udev-rules)
+                     (udev-rules-service 'rtl-sdr rtl-sdr)
                      (simple-service 'icecast-server shepherd-root-service-type
                                      (list (shepherd-service
                                              (documentation "Icecast2 service.")
@@ -405,6 +416,63 @@
                                                             (lambda _ (display "0000:04:00.0"))))
                                                         #t))
                                              (one-shot? #t))))
+                     (simple-service 'fhs-shepherd-service shepherd-root-service-type
+                       (list (shepherd-service
+                               (documentation "S6 Container")
+                               (provision '(fhs))
+                               (requirement '())
+                               (start #~(make-forkexec-constructor
+                                          (list #$(program-file "fhs-start"
+                                                    #~(let ((info-fd (open-fdes "/var/lib/containers/s6.json"
+                                                                                (logior O_WRITEONLY O_CREAT))))
+                                                        (fcntl info-fd F_SETFL (logior O_NONBLOCK
+                                                                                       (fcntl info-fd F_GETFL)))
+                                                        (execlp
+                                                          #$(file-append bubblewrap "/bin/bwrap")
+                                                          "--bind" "/var/lib/containers/s6" "/"
+                                                          "--dev" "/dev"
+                                                          "--proc" "/proc"
+                                                          "--bind" "/tmp" "/tmp"
+                                                          "--ro-bind" "/sys" "/sys"
+                                                          "--ro-bind" "/etc/resolv.conf" "/etc/resolv.conf"
+                                                          "--bind" "/home/leaf" "/home/leaf"
+                                                          "--bind" "/srv" "/srv"
+                                                          "--bind" "/run" "/run"
+                                                          "--ro-bind" "/gnu" "/gnu"
+                                                          "--ro-bind" "/var/guix" "/var/guix"
+                                                          "--ro-bind" "/nix" "/nix"
+                                                          "--unshare-all" "--share-net" "--as-pid-1"
+                                                          "--info-fd" (number->string info-fd)
+                                                          "--lock-file" "/var/lib/containers/s6.lock"
+                                                          "--die-with-parent" "--chdir" "/"
+                                                          "/usr/bin/env" "PATH=/bin:/sbin:$PATH"
+                                                          "/etc/s6-linux-init/bin/init" "default"))))
+                                          #:log-file "/var/log/s6.log"))
+                               (stop #~(make-kill-destructor)))))
+                     (simple-service 'fhs-profile-service profile-service-type
+                       (list
+                         (file->package
+                           (program-file
+                             "fhs"
+                             #~(let ((args (cdr (command-line))))
+                                 (setenv "PATH" (string-append "/bin:/sbin:" (getenv "PATH")))
+                                 (apply execlp
+                                        (cons* #$(file-append bubblewrap "/bin/bwrap") "bwrap"
+                                               "--bind" "/var/lib/containers/s6" "/"
+                                               "--dev" "/dev"
+                                               "--proc" "/proc"
+                                               "--bind" "/tmp" "/tmp"
+                                               "--ro-bind" "/sys" "/sys"
+                                               "--ro-bind" "/etc/resolv.conf" "/etc/resolv.conf"
+                                               "--bind" "/home/leaf" "/home/leaf"
+                                               "--bind" "/srv" "/srv"
+                                               "--bind" "/run" "/run"
+                                               "--ro-bind" "/gnu" "/gnu"
+                                               "--ro-bind" "/var/guix" "/var/guix"
+                                               "--ro-bind" "/nix" "/nix"
+                                               args))
+                                 #t))
+                           "fhs" "0" #t)))
                      (fold (lambda (a b) (apply a (list b)))
                            (modify-services
                              %desktop-services
