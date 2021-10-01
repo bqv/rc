@@ -41,10 +41,6 @@
 		       "9edb3f66fd807b096b48283debdcddccfea34bad"
 		       (openpgp-fingerprint "BBB0 2DDF 2CEA F6A8 0D1D  E643 A2A0 6DF2 A33A 54FA"))))
 		 (channel
-		   (name 'rde)
-		   (url "https://git.sr.ht/~abcdw/rde")
-		   (commit "6d40090ef287a4523fee32d4350b4dcd5fe90f0b"))
-		 (channel
 		   (name 'guix-gaming-games)
 		   (url "https://gitlab.com/guix-gaming-channels/games.git")
 		   (commit "b89dc67d0609b63c06d73a4b52d758380feb1373"))

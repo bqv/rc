@@ -182,6 +182,14 @@
                     (name "biboumi")
                     (group "biboumi")
                     (system? #t))
+                  (user-account
+                    (name "s6log")
+                    (group "s6log")
+                    (comment "S6 log user")
+                    (system? #t)
+                    (uid 19)
+                    (home-directory "/var/empty")
+                    (shell (file-append shadow "/bin/nologin")))
                   %base-user-accounts))
   
     (groups (cons* (user-group
@@ -190,6 +198,10 @@
                    (user-group
                      (name "biboumi")
                      (system? #t))
+                   (user-group
+                     (name "s6log")
+                     (system? #t)
+                     (id 992))
                    (user-group
                      (name "adbusers")
                      (system? #f))
@@ -204,8 +216,8 @@
                 git git-crypt git-remote-gcrypt (list git "send-email")
                 neovim sshfs tree curl screen jq gvfs wireguard efibootmgr
                 sway stumpwm awesome xinit xterm setxkbmap rsync gnupg python
-                fish fish-foreign-env netcat rofi python-wrapper
-                net-tools strace unzip gptfdisk usbreset
+                fish fish-foreign-env netcat rofi python-wrapper execline s6
+                net-tools strace unzip gptfdisk usbreset s6-rc s6-linux-init
                 font-dejavu font-twitter-emoji font-google-noto font-awesome
                 %base-packages))
   
@@ -405,7 +417,8 @@
                                                             #:environment-variables
                                                             (list (string-append "HOME=" (passwd:dir user))
                                                                   "SSL_CERT_FILE=/etc/ssl/certs/ca-certificates.crt"
-                                                                  "SSL_CERT_DIR=/etc/ssl/certs"))))))))
+                                                                  "SSL_CERT_DIR=/etc/ssl/certs")))))
+                                             (respawn? #f))))
                      (simple-service 'no-faulty-usb4 shepherd-root-service-type
                                      (list (shepherd-service
                                              (documentation "Disables the faulty usb4 device.")
@@ -424,30 +437,34 @@
                                (requirement '())
                                (start #~(make-forkexec-constructor
                                           (list #$(program-file "fhs-start"
-                                                    #~(let ((info-fd (open-fdes "/var/lib/containers/s6.json"
-                                                                                (logior O_WRITEONLY O_CREAT))))
+                                                    #~(let ((info-fd (begin
+                                                                       (delete-file "/var/lib/containers/s6.json")
+                                                                       (open-fdes "/var/lib/containers/s6.json"
+                                                                                  (logior O_WRONLY O_CREAT)))))
                                                         (fcntl info-fd F_SETFL (logior O_NONBLOCK
                                                                                        (fcntl info-fd F_GETFL)))
                                                         (execlp
-                                                          #$(file-append bubblewrap "/bin/bwrap")
-                                                          "--bind" "/var/lib/containers/s6" "/"
+                                                          #$(file-append bubblewrap "/bin/bwrap") "bwrap"
+                                                          "--dev-bind" "/var/lib/containers/s6" "/"
                                                           "--dev" "/dev"
+                                                          "--dev-bind" "/dev/null" "/dev/log"
                                                           "--proc" "/proc"
                                                           "--bind" "/tmp" "/tmp"
                                                           "--ro-bind" "/sys" "/sys"
                                                           "--ro-bind" "/etc/resolv.conf" "/etc/resolv.conf"
+                                                          "--ro-bind" "/etc/hostname" "/etc/hostname"
                                                           "--bind" "/home/leaf" "/home/leaf"
                                                           "--bind" "/srv" "/srv"
                                                           "--bind" "/run" "/run"
                                                           "--ro-bind" "/gnu" "/gnu"
                                                           "--ro-bind" "/var/guix" "/var/guix"
                                                           "--ro-bind" "/nix" "/nix"
-                                                          "--unshare-all" "--share-net" "--as-pid-1"
-                                                          "--info-fd" (number->string info-fd)
-                                                          "--lock-file" "/var/lib/containers/s6.lock"
-                                                          "--die-with-parent" "--chdir" "/"
+                                                          "--unshare-pid" "--unshare-cgroup"
+                                                          "--unshare-uts" "--unshare-ipc"
+                                                          "--as-pid-1" "--info-fd" (number->string info-fd)
+                                                          "--die-with-parent" "--new-session" "--chdir" "/"
                                                           "/usr/bin/env" "PATH=/bin:/sbin:$PATH"
-                                                          "/etc/s6-linux-init/bin/init" "default"))))
+                                                          "/sbin/init" "default"))))
                                           #:log-file "/var/log/s6.log"))
                                (stop #~(make-kill-destructor)))))
                      (simple-service 'fhs-profile-service profile-service-type
@@ -458,19 +475,10 @@
                              #~(let ((args (cdr (command-line))))
                                  (setenv "PATH" (string-append "/bin:/sbin:" (getenv "PATH")))
                                  (apply execlp
-                                        (cons* #$(file-append bubblewrap "/bin/bwrap") "bwrap"
-                                               "--bind" "/var/lib/containers/s6" "/"
-                                               "--dev" "/dev"
-                                               "--proc" "/proc"
-                                               "--bind" "/tmp" "/tmp"
-                                               "--ro-bind" "/sys" "/sys"
-                                               "--ro-bind" "/etc/resolv.conf" "/etc/resolv.conf"
-                                               "--bind" "/home/leaf" "/home/leaf"
-                                               "--bind" "/srv" "/srv"
-                                               "--bind" "/run" "/run"
-                                               "--ro-bind" "/gnu" "/gnu"
-                                               "--ro-bind" "/var/guix" "/var/guix"
-                                               "--ro-bind" "/nix" "/nix"
+                                        (cons* #$(file-append execline "/bin/backtick") "backtick"
+                                               "-E" "pid"
+                                               "jq" ".\"child-pid\"" "/var/lib/containers/s6.json"
+                                               "" "doas" "nsenter" "-at" "$pid"
                                                args))
                                  #t))
                            "fhs" "0" #t)))

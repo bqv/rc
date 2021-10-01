@@ -9,7 +9,7 @@
   #:use-module (gnu packages golang)
   #:use-module (gnu packages linux)
   #:use-module ((gnu packages networking) #:prefix gnu:)
-  #:export (yggdrasil))
+  #:replace (yggdrasil))
 
 (define-public go-github-com-arceliar-ironwood
   (package

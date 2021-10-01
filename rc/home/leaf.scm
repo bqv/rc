@@ -58,7 +58,6 @@
                #:use-module (nongnu packages mozilla)
                #:use-module (nongnu packages steam-client)
                #:use-module (flat packages emacs)
-               #:use-module (rde packages)
                #:use-module (rc packages discord)
                #:use-module (rc packages gajim)
                #:use-module (rc packages minecraft)
@@ -284,6 +283,10 @@
                           (list xdg-desktop-portal
                                 xdg-desktop-portal-wlr
                                 pipewire-0.3))
+
+          (simple-service 's6-packages
+                          home-profile-service-type
+                          (list s6-portable-utils s6-networking s6-dns))
 
           (service home-ssh-service-type
                    (home-ssh-configuration

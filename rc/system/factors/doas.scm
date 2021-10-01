@@ -1,5 +1,4 @@
 (define-module (rc system factors doas)
- ;#:use-module (srfi srfi-28)
   #:use-module (guix gexp)
   #:use-module (guix records)
   #:use-module (gnu services)
@@ -21,7 +20,16 @@
       (plain-file "doas.conf"
                   (string-join (list
                                  "permit nopass keepenv root" ; allowed to do anything
-                                 "permit nopass setenv { SSH_AUTH_SOCK IPFS_PATH } :wheel"
+                                 "permit nopass keepenv :wheel cmd guix"
+                                 "permit nolog :users cmd pkill"
+                                 "permit nolog :users cmd htop"
+                                 (string-append
+                                   "permit nopass setenv { " (string-join
+                                                               '("PATH"
+                                                                 "SSH_AUTH_SOCK"
+                                                                 "IPFS_PATH"
+                                                                 "GUIX_STATE_DIRECTORY")
+                                                               " ") " } :wheel")
                                  "")
                                "\n")))
     (simple-service 'doas-profile-service profile-service-type
